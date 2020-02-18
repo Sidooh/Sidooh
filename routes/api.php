@@ -20,6 +20,6 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::apiResource('accounts', 'AccountController', ['only' => ['index', 'store']]);
     Route::apiResource('referrals', 'ReferralController', ['only' => ['index', 'store']]);
 
-    Route::apiResource('ussd', 'USSDController@index');
+    Route::post('ussd', 'USSDController@index');
 
 });

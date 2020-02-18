@@ -3,11 +3,26 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AccountStoreRequest;
+use App\Http\Resources\AccountResource;
 use App\Model\Account;
+use App\Repositories\AccountRepository;
 use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
+    protected $account;
+
+    /**
+     * ReferralController constructor.
+     *
+     * @param ReferralRepository $account
+     */
+    public function __construct(AccountRepository $account)
+    {
+        $this->account = $account;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -31,12 +46,13 @@ class AccountController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param AccountStoreRequest $request
+     * @return AccountResource
      */
-    public function store(Request $request)
+    public function store(AccountStoreRequest $request)
     {
         //
+        return new AccountResource($this->account->store($request));
     }
 
     /**

@@ -6,6 +6,7 @@ namespace App\Repositories;
 use App\Model\Referral;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 
 class ReferralRepository extends Model
@@ -40,15 +41,20 @@ class ReferralRepository extends Model
 
     public function store(Request $request): Referral
     {
-
-        $acc = AccountRepository::wherePhone($request['phone'])->first();
+        if ($request->has('account_id'))
+            $acc = (int)$request->get('account_id');
+        else {
+            $acc = AccountRepository::firstOrCreate(['phone' => $request['phone']])->id;
+        }
 
         $arr = [
-            'referee' => $request['referee'],
-            'account_id' => $acc->id
+            'referee_phone' => $request['referee_phone'],
+            'account_id' => $acc
         ];
 
-        $referral = $this->create();
+        Log::info($arr);
+
+        return $this->create($arr);
 
     }
 }

@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ReferralStoreRequest;
+use App\Http\Resources\ReferralResource;
 use App\Model\Referral;
 use App\Repositories\ReferralRepository;
 use Illuminate\Http\Request;
 
 class ReferralController extends Controller
 {
-
     protected $referral;
 
     /**
@@ -25,11 +26,12 @@ class ReferralController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return ReferralResource
      */
     public function index()
     {
         //
+        return new ReferralResource($this->referral->all());
     }
 
     /**
@@ -46,19 +48,19 @@ class ReferralController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param ReferralStoreRequest $request
+     * @return ReferralResource
      */
-    public function store(Request $request)
+    public function store(ReferralStoreRequest $request)
     {
         //
-        $this->referral->store($request);
+        return new ReferralResource($this->referral->store($request));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Referral  $referral
+     * @param \App\Model\Referral $referral
      * @return \Illuminate\Http\Response
      */
     public function show(Referral $referral)

@@ -16,9 +16,9 @@ class CreateSubscriptionTypesTable extends Migration
         Schema::create('subscription_types', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string('title');
+            $table->string('title', 32);
             $table->float('amount');
-            $table->enum('status', ['inactive', 'active']);
+            $table->boolean('active')->default(true);
 
             $table->timestamps();
         });

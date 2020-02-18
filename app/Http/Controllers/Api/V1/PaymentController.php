@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Account;
+use App\Http\Controllers\Controller;
+use App\Model\Payment;
 use Illuminate\Http\Request;
 
-class AccountController extends Controller
+class PaymentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +42,10 @@ class AccountController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Account  $account
+     * @param  \App\Payment  $payment
      * @return \Illuminate\Http\Response
      */
-    public function show(Account $account)
+    public function show(Payment $payment)
     {
         //
     }
@@ -52,10 +53,10 @@ class AccountController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Account  $account
+     * @param  \App\Payment  $payment
      * @return \Illuminate\Http\Response
      */
-    public function edit(Account $account)
+    public function edit(Payment $payment)
     {
         //
     }
@@ -64,10 +65,10 @@ class AccountController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Account  $account
+     * @param  \App\Payment  $payment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Account $account)
+    public function update(Request $request, Payment $payment)
     {
         //
     }
@@ -75,10 +76,10 @@ class AccountController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Account  $account
+     * @param  \App\Payment  $payment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Account $account)
+    public function destroy(Payment $payment)
     {
         //
     }

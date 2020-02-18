@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Telco;
+use App\Http\Controllers\Controller;
+use App\Model\ProductSetting;
 use Illuminate\Http\Request;
 
-class TelcoController extends Controller
+class ProductSettingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +42,10 @@ class TelcoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Telco  $telco
+     * @param  \App\ProductSetting  $productSetting
      * @return \Illuminate\Http\Response
      */
-    public function show(Telco $telco)
+    public function show(ProductSetting $productSetting)
     {
         //
     }
@@ -52,10 +53,10 @@ class TelcoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Telco  $telco
+     * @param  \App\ProductSetting  $productSetting
      * @return \Illuminate\Http\Response
      */
-    public function edit(Telco $telco)
+    public function edit(ProductSetting $productSetting)
     {
         //
     }
@@ -64,10 +65,10 @@ class TelcoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Telco  $telco
+     * @param  \App\ProductSetting  $productSetting
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Telco $telco)
+    public function update(Request $request, ProductSetting $productSetting)
     {
         //
     }
@@ -75,10 +76,10 @@ class TelcoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Telco  $telco
+     * @param  \App\ProductSetting  $productSetting
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Telco $telco)
+    public function destroy(ProductSetting $productSetting)
     {
         //
     }

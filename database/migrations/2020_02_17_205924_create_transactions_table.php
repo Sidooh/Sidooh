@@ -17,8 +17,8 @@ class CreateTransactionsTable extends Migration
             $table->bigIncrements('id');
 
             $table->float('amount');
-            $table->enum('status', ['pending', 'complete'])->default('pending');
-            $table->enum('type', ['P', 'W']);
+            $table->string('status', 10)->default('pending');
+            $table->string('type', 10); // Payment or Withdrawal
 
             $table->timestamps();
         });

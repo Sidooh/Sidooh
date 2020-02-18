@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Transaction;
+use App\Http\Controllers\Controller;
+use App\Model\Telco;
 use Illuminate\Http\Request;
 
-class TransactionController extends Controller
+class TelcoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +42,10 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Transaction  $transaction
+     * @param  \App\Telco  $telco
      * @return \Illuminate\Http\Response
      */
-    public function show(Transaction $transaction)
+    public function show(Telco $telco)
     {
         //
     }
@@ -52,10 +53,10 @@ class TransactionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Transaction  $transaction
+     * @param  \App\Telco  $telco
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transaction $transaction)
+    public function edit(Telco $telco)
     {
         //
     }
@@ -64,10 +65,10 @@ class TransactionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Transaction  $transaction
+     * @param  \App\Telco  $telco
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transaction $transaction)
+    public function update(Request $request, Telco $telco)
     {
         //
     }
@@ -75,10 +76,10 @@ class TransactionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Transaction  $transaction
+     * @param  \App\Telco  $telco
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaction $transaction)
+    public function destroy(Telco $telco)
     {
         //
     }

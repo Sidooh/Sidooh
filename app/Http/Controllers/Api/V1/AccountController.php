@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Referral;
+use App\Http\Controllers\Controller;
+use App\Model\Account;
 use Illuminate\Http\Request;
 
-class ReferralController extends Controller
+class AccountController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +42,10 @@ class ReferralController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Referral  $referral
+     * @param  \App\Account  $account
      * @return \Illuminate\Http\Response
      */
-    public function show(Referral $referral)
+    public function show(Account $account)
     {
         //
     }
@@ -52,10 +53,10 @@ class ReferralController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Referral  $referral
+     * @param  \App\Account  $account
      * @return \Illuminate\Http\Response
      */
-    public function edit(Referral $referral)
+    public function edit(Account $account)
     {
         //
     }
@@ -64,10 +65,10 @@ class ReferralController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Referral  $referral
+     * @param  \App\Account  $account
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Referral $referral)
+    public function update(Request $request, Account $account)
     {
         //
     }
@@ -75,10 +76,10 @@ class ReferralController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Referral  $referral
+     * @param  \App\Account  $account
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Referral $referral)
+    public function destroy(Account $account)
     {
         //
     }

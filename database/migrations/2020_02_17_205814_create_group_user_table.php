@@ -16,8 +16,8 @@ class CreateGroupUserTable extends Migration
         Schema::create('group_user', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->enum('status', ['pending', 'active'])->default('pending');
-            $table->enum('type', ['normal', 'admin'])->default('normal');
+            $table->string('status', 10)->default('pending');
+            $table->string('type', 10)->default('normal');
 
             $table->timestamps();
         });

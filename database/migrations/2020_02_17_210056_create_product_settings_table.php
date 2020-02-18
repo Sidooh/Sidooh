@@ -19,7 +19,7 @@ class CreateProductSettingsTable extends Migration
             $table->float("g_percentage");
             $table->float('u_percentage');
             $table->float('o_percentage');
-            $table->enum('status', ['inactive', 'active'])->default('pending');
+            $table->boolean('active')->default(true);
 
             $table->timestamps();
         });

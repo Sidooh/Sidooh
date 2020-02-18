@@ -16,10 +16,10 @@ class CreateGroupsTable extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string("Name")->unique();
+            $table->string("Name", 32)->unique();
             $table->float('amount');
-            $table->enum('status', ['pending', 'active'])->default('pending');
-            $table->enum('type', ['D', 'W', 'M'])->default('M');
+            $table->string('status', 10)->default('pending');
+            $table->string('type', 10)->default('monthly');
             $table->timestamp("start_date")->default(now());
 
             $table->timestamps();

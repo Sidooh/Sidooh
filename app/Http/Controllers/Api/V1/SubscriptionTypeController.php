@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\SubscriptionType;
+use App\Http\Controllers\Controller;
+use App\Model\SubscriptionType;
 use Illuminate\Http\Request;
 
 class SubscriptionTypeController extends Controller

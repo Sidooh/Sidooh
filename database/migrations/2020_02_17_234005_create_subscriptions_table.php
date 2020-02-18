@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEarningsTable extends Migration
+class CreateSubscriptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateEarningsTable extends Migration
      */
     public function up()
     {
-        Schema::create('earnings', function (Blueprint $table) {
+        Schema::create('subscriptions', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string('aggregate_transactions')->nullable();
-            $table->float('earnings');
-//            $table->integer('referee_id');
+            $table->float('amount');
+            $table->boolean('active')->default(true);
 
             $table->timestamps();
         });
@@ -31,6 +30,6 @@ class CreateEarningsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('earnings');
+        Schema::dropIfExists('subscriptions');
     }
 }

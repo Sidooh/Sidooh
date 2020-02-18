@@ -16,8 +16,8 @@ class CreateTelcosTable extends Migration
         Schema::create('telcos', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string('initials')->unique();
-            $table->string("Name")->unique();
+            $table->string('initials', 10)->unique();
+            $table->string("Name", 32)->unique();
             $table->boolean('active')->default(true);
 
             $table->timestamps();

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Earning;
+use App\Http\Controllers\Controller;
+use App\Model\Earning;
 use Illuminate\Http\Request;
 
 class EarningController extends Controller

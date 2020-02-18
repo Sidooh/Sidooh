@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\ProductSetting;
+use App\Http\Controllers\Controller;
+use App\Model\Group;
 use Illuminate\Http\Request;
 
-class ProductSettingController extends Controller
+class GroupController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +42,10 @@ class ProductSettingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\ProductSetting  $productSetting
+     * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function show(ProductSetting $productSetting)
+    public function show(Group $group)
     {
         //
     }
@@ -52,10 +53,10 @@ class ProductSettingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\ProductSetting  $productSetting
+     * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProductSetting $productSetting)
+    public function edit(Group $group)
     {
         //
     }
@@ -64,10 +65,10 @@ class ProductSettingController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ProductSetting  $productSetting
+     * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ProductSetting $productSetting)
+    public function update(Request $request, Group $group)
     {
         //
     }
@@ -75,10 +76,10 @@ class ProductSettingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\ProductSetting  $productSetting
+     * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProductSetting $productSetting)
+    public function destroy(Group $group)
     {
         //
     }

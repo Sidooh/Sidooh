@@ -16,11 +16,11 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string("payable_type")->unique();
             $table->integer('payable_id');
+            $table->string("payable_type")->unique();
             $table->float('amount');
-            $table->enum('status', ['pending', 'complete']);
-            $table->enum('type', ['mobile', 'bank', 'paypal', 'other']);
+            $table->string('status', 10); // pending or complete
+            $table->string('type', 15); // ['mobile', 'bank', 'paypal', 'other'] payment methods?
 
             $table->timestamp("start_date")->default(now());
 

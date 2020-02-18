@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Group;
+use App\Http\Controllers\Controller;
+use App\Model\Transaction;
 use Illuminate\Http\Request;
 
-class GroupController extends Controller
+class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +42,10 @@ class GroupController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Group  $group
+     * @param  \App\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $group)
+    public function show(Transaction $transaction)
     {
         //
     }
@@ -52,10 +53,10 @@ class GroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Group  $group
+     * @param  \App\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function edit(Group $group)
+    public function edit(Transaction $transaction)
     {
         //
     }
@@ -64,10 +65,10 @@ class GroupController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Group  $group
+     * @param  \App\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Group $group)
+    public function update(Request $request, Transaction $transaction)
     {
         //
     }
@@ -75,10 +76,10 @@ class GroupController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Group  $group
+     * @param  \App\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Group $group)
+    public function destroy(Transaction $transaction)
     {
         //
     }

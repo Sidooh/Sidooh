@@ -16,8 +16,8 @@ class CreateReferralsTable extends Migration
         Schema::create('referrals', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->integer('referee')->unique();
-            $table->enum('status', ['pending', 'active'])->default(true);
+            $table->integer('referee_phone')->unique();
+            $table->string('status', 10)->default('pending');
 
             $table->timestamps();
         });

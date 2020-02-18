@@ -16,8 +16,8 @@ class CreateAccountsTable extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->integer('phone')->unique();
-            $table->boolean('status')->default(true);
+            $table->bigInteger('phone')->unique();
+            $table->boolean('active')->default(true);
 
             $table->timestamps();
         });

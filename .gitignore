@@ -17,3 +17,5 @@ yarn-error.log
 /.idea/php.xml
 /.idea/Sidooh.iml
 /.idea/vcs.xml
+/.idea/dataSources.local.xml
+/.idea/dataSources.xml

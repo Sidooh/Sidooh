@@ -20,7 +20,7 @@ class AddRelationshipsToSubscriptionsTable extends Migration
                 $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             }
             if (!Schema::hasColumn('subscriptions', 'subscription_type_id')) {
-                $table->bigInteger('subscription_type_id')->unsigned();
+                $table->bigInteger('subscription_type_id')->unsigned()->nullable();
                 $table->foreign('subscription_type_id')->references('id')->on('subscription_types')->onDelete('set null');
             }
         });

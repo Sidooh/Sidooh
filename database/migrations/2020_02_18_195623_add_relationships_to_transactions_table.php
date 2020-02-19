@@ -20,7 +20,7 @@ class AddRelationshipsToTransactionsTable extends Migration
                 $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             }
             if (!Schema::hasColumn('transactions', 'product_id')) {
-                $table->bigInteger('product_id')->unsigned();
+                $table->bigInteger('product_id')->unsigned()->nullable();
                 $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
             }
         });

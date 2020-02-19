@@ -17,7 +17,7 @@ class CreateTelcosTable extends Migration
             $table->bigIncrements('id');
 
             $table->string('initials', 10)->unique();
-            $table->string("Name", 32)->unique();
+            $table->string("name", 32)->unique();
             $table->boolean('active')->default(true);
 
             $table->timestamps();

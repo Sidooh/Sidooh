@@ -16,11 +16,11 @@ class AddRelationshipsToReferralsTable extends Migration
         Schema::table('referrals', function (Blueprint $table) {
             //
             if (!Schema::hasColumn('referrals', 'account_id')) {
-                $table->integer('account_id')->unsigned();
+                $table->bigInteger('account_id')->unsigned();
                 $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             }
             if (!Schema::hasColumn('referrals', 'user_id')) {
-                $table->integer('referee_id')->unsigned()->unique()->nullable();
+                $table->bigInteger('referee_id')->unsigned()->unique()->nullable();
                 $table->foreign('referee_id')->references('id')->on('accounts')->onDelete('cascade');
             }
         });

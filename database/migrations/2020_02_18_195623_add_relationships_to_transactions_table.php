@@ -16,11 +16,11 @@ class AddRelationshipsToTransactionsTable extends Migration
         Schema::table('transactions', function (Blueprint $table) {
             //
             if (!Schema::hasColumn('transactions', 'account_id')) {
-                $table->integer('account_id')->unsigned();
+                $table->bigInteger('account_id')->unsigned();
                 $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             }
             if (!Schema::hasColumn('transactions', 'product_id')) {
-                $table->integer('product_id')->unsigned();
+                $table->bigInteger('product_id')->unsigned();
                 $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
             }
         });

@@ -16,11 +16,11 @@ class AddRelationshipsToGroupUserTable extends Migration
         Schema::table('group_user', function (Blueprint $table) {
             //
             if (!Schema::hasColumn('group_user', 'group_id')) {
-                $table->integer('group_id')->unsigned()->nullable();
+                $table->bigInteger('group_id')->unsigned()->nullable();
                 $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
             }
             if (!Schema::hasColumn('group_user', 'user_id')) {
-                $table->integer('user_id')->unsigned()->nullable();
+                $table->bigInteger('user_id')->unsigned()->nullable();
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             }
         });

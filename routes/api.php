@@ -17,9 +17,14 @@
 
 Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], function () {
 //    Route::post('change-password', 'ChangePasswordController@changePassword')->name('auth.change_password');
-    Route::apiResource('accounts', 'AccountController', ['only' => ['index', 'store']]);
-    Route::apiResource('referrals', 'ReferralController', ['only' => ['index', 'store']]);
+    Route::apiResource('accounts', 'AccountController', ['only' => ['index', 'store', 'show']]);
+    Route::get('accounts/{account}/referrer', 'AccountController@referrer')->name('accounts.referrer');
+    Route::get('accounts/{account}/referrals', 'AccountController@referrals')->name('accounts.referrals');
 
-    Route::post('ussd', 'USSDController@index');
+
+    Route::apiResource('referrals', 'ReferralController', ['only' => ['index', 'store']]);
+    Route::get('referrals/{phone}', 'ReferralController@byPhone')->name('referrals.byPhone');
+
+    Route::post('ussd', 'USSDController@index')->name('ussd');
 
 });

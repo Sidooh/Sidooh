@@ -16,13 +16,11 @@ class AddRelationshipsToEarningsTable extends Migration
         Schema::table('earnings', function (Blueprint $table) {
             //
             if (!Schema::hasColumn('earnings', 'account_id')) {
-                // TODO: Remove default value for prod mysql
-                $table->integer('account_id')->unsigned()->default('default_value');
+                $table->integer('account_id')->unsigned();
                 $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             }
             if (!Schema::hasColumn('earnings', 'transaction_id')) {
-                // TODO: Remove default value for prod mysql
-                $table->integer('transaction_id')->unsigned()->default('default_value');
+                $table->integer('transaction_id')->unsigned();
                 $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('set null');
             }
         });

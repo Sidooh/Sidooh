@@ -13,7 +13,22 @@ class Account extends Model
      * @var array
      */
     protected $fillable = [
-        'telco_id', 'phone',
-//         'password',
+        'telco_id', 'phone', 'referrer_id'
     ];
+
+    public function pendingReferrals()
+    {
+        return $this->hasMany(Referral::class)->pending();
+    }
+
+    public function activeReferrals()
+    {
+        return $this->hasMany(Referral::class)->active();
+    }
+
+    public function referrer()
+    {
+        return $this->belongsTo(Account::class, 'referrer_id');
+    }
+
 }

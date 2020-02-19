@@ -16,8 +16,7 @@ class AddRelationshipsToProductSettingsTable extends Migration
         Schema::table('product_settings', function (Blueprint $table) {
             //
             if (!Schema::hasColumn('product_settings', 'product_id')) {
-                // TODO: Remove default value for prod mysql
-                $table->integer('product_id')->unsigned()->default('default_value');
+                $table->integer('product_id')->unsigned();
                 $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             }
         });

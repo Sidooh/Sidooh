@@ -31,6 +31,7 @@ class AccountController extends Controller
     public function index()
     {
         //
+        return new AccountResource($this->account->all());
     }
 
     /**
@@ -64,6 +65,7 @@ class AccountController extends Controller
     public function show(Account $account)
     {
         //
+        return new AccountResource($account);
     }
 
     /**
@@ -92,11 +94,35 @@ class AccountController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Account  $account
+     * @param \App\Account $account
      * @return \Illuminate\Http\Response
      */
     public function destroy(Account $account)
     {
         //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Account $account
+     * @return AccountResource
+     */
+    public function referrals(Account $account)
+    {
+        //
+        return new AccountResource($this->account->with(['pendingReferrals', 'activeReferrals'])->find($account->id));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Account $account
+     * @return AccountResource
+     */
+    public function referrer(Account $account)
+    {
+        //
+        return new AccountResource($account->referrer);
     }
 }

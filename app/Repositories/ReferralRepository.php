@@ -57,4 +57,16 @@ class ReferralRepository extends Model
         return $this->create($arr);
 
     }
+
+    public function findByPhone(string $phoneNumber): ?Referral
+    {
+        return $this->timeActive()
+            ->whereRefereePhone($phoneNumber)
+            ->first();
+    }
+
+    public function checkReferral(int $id): Referral
+    {
+        return $this->findorFail($id);
+    }
 }

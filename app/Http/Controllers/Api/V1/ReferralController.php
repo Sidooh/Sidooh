@@ -94,11 +94,23 @@ class ReferralController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Referral  $referral
+     * @param \App\Referral $referral
      * @return \Illuminate\Http\Response
      */
     public function destroy(Referral $referral)
     {
         //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param string $phone
+     * @return ReferralResource
+     */
+    public function byPhone(string $phone)
+    {
+        //
+        return new ReferralResource($this->referral->findByPhone($phone));
     }
 }

@@ -16,13 +16,11 @@ class AddRelationshipsToSubscriptionsTable extends Migration
         Schema::table('subscriptions', function (Blueprint $table) {
             //
             if (!Schema::hasColumn('subscriptions', 'account_id')) {
-                // TODO: Remove default value for prod mysql
-                $table->integer('account_id')->unsigned()->default('default_value');
+                $table->integer('account_id')->unsigned();
                 $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             }
             if (!Schema::hasColumn('subscriptions', 'subscription_type_id')) {
-                // TODO: Remove default value for prod mysql
-                $table->integer('subscription_type_id')->unsigned()->default('default_value');
+                $table->integer('subscription_type_id')->unsigned();
                 $table->foreign('subscription_type_id')->references('id')->on('subscription_types')->onDelete('set null');
             }
         });

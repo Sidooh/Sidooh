@@ -16,8 +16,7 @@ class AddRelationshipsToReferralsTable extends Migration
         Schema::table('referrals', function (Blueprint $table) {
             //
             if (!Schema::hasColumn('referrals', 'account_id')) {
-                // TODO: Remove default value for prod mysql
-                $table->integer('account_id')->unsigned()->default('default_value');
+                $table->integer('account_id')->unsigned();
                 $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             }
             if (!Schema::hasColumn('referrals', 'user_id')) {

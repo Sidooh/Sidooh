@@ -16,13 +16,11 @@ class AddRelationshipsToTransactionsTable extends Migration
         Schema::table('transactions', function (Blueprint $table) {
             //
             if (!Schema::hasColumn('transactions', 'account_id')) {
-                // TODO: Remove default value for prod mysql
-                $table->integer('account_id')->unsigned()->default('default_value');
+                $table->integer('account_id')->unsigned();
                 $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             }
             if (!Schema::hasColumn('transactions', 'product_id')) {
-                // TODO: Remove default value for prod mysql
-                $table->integer('product_id')->unsigned()->default('default_value');
+                $table->integer('product_id')->unsigned();
                 $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
             }
         });

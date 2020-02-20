@@ -53,4 +53,34 @@ class AccountRepository extends Model
 
     }
 
+    public function getReferrer(Account $account, $level): Account
+    {
+        if ($level)
+            return $this->nth_level_referrers($account, $level);
+
+        return $account->referrer;
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Account $account
+     * @return Account
+     */
+    public function nth_level_referrers(Account $account, $level = 1, $withAccount = true)
+    {
+        //
+        $max_level = 6;
+
+        $level = $level > $max_level ? $max_level : $level;
+
+//        TODO: try get specific depth then use path to get user ids for earnings module possibly
+        if (!$withAccount)
+            return $account->ancestors()->whereDepth('>=', -$level)->get();
+
+        $account['level_referrers'] = $account->ancestors()->whereDepth('>=', -$level)->get();
+
+        return $account;
+    }
+
 }

@@ -3,10 +3,18 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Account extends Model
 {
     //
+    use HasRecursiveRelationships;
+
+    public function getParentKeyName()
+    {
+        return 'referrer_id';
+    }
+
     /**
      * The attributes that are mass assignable.
      *

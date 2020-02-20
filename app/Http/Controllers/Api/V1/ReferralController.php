@@ -60,7 +60,7 @@ class ReferralController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Model\Referral $referral
+     * @param Referral $referral
      * @return \Illuminate\Http\Response
      */
     public function show(Referral $referral)
@@ -71,7 +71,7 @@ class ReferralController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Referral  $referral
+     * @param Referral $referral
      * @return \Illuminate\Http\Response
      */
     public function edit(Referral $referral)
@@ -82,8 +82,8 @@ class ReferralController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Referral  $referral
+     * @param \Illuminate\Http\Request $request
+     * @param Referral $referral
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Referral $referral)
@@ -94,7 +94,7 @@ class ReferralController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Referral $referral
+     * @param Referral $referral
      * @return \Illuminate\Http\Response
      */
     public function destroy(Referral $referral)
@@ -111,6 +111,6 @@ class ReferralController extends Controller
     public function byPhone(string $phone)
     {
         //
-        return new ReferralResource($this->referral->findByPhone($phone));
+        return new ReferralResource($this->referral->findByPhone($phone) ?: abort(404, 'No referral found.'));
     }
 }

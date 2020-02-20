@@ -42,8 +42,9 @@ class ReferralStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'phone.phone' => 'The phone field has to be in the correct format.',
+            'phone.phone' => 'The phone field seems to be invalid.',
             'phone.exists' => 'The selected phone does not exist.',
+            'referee_phone.phone' => 'The referee phone field seems to be invalid..',
 //            'name.required' => 'Name is required!',
 //            'password.required' => 'Password is required!'
         ];

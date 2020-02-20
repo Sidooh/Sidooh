@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
+use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class ReferralRepository extends Model
 {
@@ -58,11 +60,31 @@ class ReferralRepository extends Model
 
     }
 
+    public function validatePhone(string $phoneNumber)
+    {
+        $country = null;
+
+        if (substr($phoneNumber, 0, 1) !== '+')
+            $phoneNumber = '+' . $phoneNumber;
+
+        try {
+            $country = PhoneNumber::make($phoneNumber)->getCountry();
+        } catch (NumberParseException $e) {
+            Log::info($e);
+        }
+
+        return $country ? true : false;
+    }
+
     public function findByPhone(string $phoneNumber): ?Referral
     {
-        return $this->timeActive()
-            ->whereRefereePhone($phoneNumber)
-            ->first();
+        $valid = $this->validatePhone($phoneNumber);
+
+        return !$valid ? abort(422, 'Phone seems to be invalid.') :
+
+            $this->timeActive()
+                ->whereRefereePhone($phoneNumber)
+                ->first();
     }
 
     public function checkReferral(int $id): Referral

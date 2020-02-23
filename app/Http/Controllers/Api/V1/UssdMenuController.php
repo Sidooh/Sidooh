@@ -27,6 +27,7 @@ class UssdMenuController extends Controller
     public function create()
     {
         //
+
     }
 
     /**
@@ -38,6 +39,7 @@ class UssdMenuController extends Controller
     public function store(Request $request)
     {
         //
+        return UssdMenu::create($request->all());
     }
 
     /**

@@ -16,14 +16,14 @@ class CreateUssdMenuItemsTable extends Migration
         Schema::create('ussd_menu_items', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->integer('menu_id')->unsigned();
+            $table->bigInteger('menu_id')->unsigned();
             $table->foreign('menu_id')
                 ->references('id')
                 ->on('ussd_menus')
                 ->onDelete('cascade');
             $table->string('description');
             $table->integer('type')->default(0);
-            $table->integer('next_menu_id')->default(NULL);
+            $table->bigInteger('next_menu_id')->default(NULL);
             $table->integer('step');
             $table->string('confirmation_phrase');
 

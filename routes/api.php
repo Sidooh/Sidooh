@@ -25,6 +25,6 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::apiResource('referrals', 'ReferralController', ['only' => ['index', 'store']]);
     Route::get('referrals/{phone}', 'ReferralController@byPhone')->name('referrals.byPhone');
 
-    Route::post('ussd', 'USSDController@index')->name('ussd');
+    Route::post('ussd', 'UssdController@index')->name('ussd');
 
 });

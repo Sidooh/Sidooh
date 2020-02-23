@@ -58,7 +58,7 @@ class AccountRepository extends Model
         if ($level)
             return $this->nth_level_referrers($account, $level);
 
-        return $account->referrer;
+        return $account->referrer ?? abort(404, "No referrer found for this account.");
     }
 
     /**

@@ -15,47 +15,47 @@ class UssdMenuSeeder extends Seeder
         //
         $menus = [
             array(
-                'title' => 'Welcome to Keheala',
+                'title' => 'Welcome to Sidooh',
                 'is_parent' => 1,
                 'type' => 1,
                 'confirmation_message' => "",
             ),
             array(
-                'title' => 'Treatment Verification',
+                'title' => 'Buy Airtime',
                 'is_parent' => 0,
                 'type' => 2,
                 'confirmation_message' => "",
             ),
-            array(
-                'title' => 'Compliance Score',
-                'is_parent' => 0,
-                'type' => 3,
-                'confirmation_message' => "",
-            ),
-            array(
-                'title' => 'TB Info',
-                'is_parent' => 0,
-                'type' => 1,
-                'confirmation_message' => "",
-            ),
-            array(
-                'title' => 'Supporter Chat',
-                'is_parent' => 0,
-                'type' => 2,
-                'confirmation_message' => "",
-            ),
-            array(
-                'title' => 'Ask TB Coordinator',
-                'is_parent' => 0,
-                'type' => 2,
-                'confirmation_message' => "",
-            ),
-            array(
-                'title' => 'Help',
-                'is_parent' => 0,
-                'type' => 1,
-                'confirmation_message' => "",
-            ),
+//            array(
+//                'title' => 'Compliance Score',
+//                'is_parent' => 0,
+//                'type' => 3,
+//                'confirmation_message' => "",
+//            ),
+//            array(
+//                'title' => 'TB Info',
+//                'is_parent' => 0,
+//                'type' => 1,
+//                'confirmation_message' => "",
+//            ),
+//            array(
+//                'title' => 'Supporter Chat',
+//                'is_parent' => 0,
+//                'type' => 2,
+//                'confirmation_message' => "",
+//            ),
+//            array(
+//                'title' => 'Ask TB Coordinator',
+//                'is_parent' => 0,
+//                'type' => 2,
+//                'confirmation_message' => "",
+//            ),
+//            array(
+//                'title' => 'Help',
+//                'is_parent' => 0,
+//                'type' => 1,
+//                'confirmation_message' => "",
+//            ),
 //            array(
 //                'title' => 'Repay Loan',
 //                'is_parent' => 0,

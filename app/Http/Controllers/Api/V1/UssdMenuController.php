@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Controller;
 use App\Models\UssdMenu;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,7 @@ class UssdMenuController extends Controller
     public function index()
     {
         //
+        return UssdMenu::all();
     }
 
     /**

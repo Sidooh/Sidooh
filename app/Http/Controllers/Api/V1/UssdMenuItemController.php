@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Models\UssdLog;
+use App\Http\Controllers\Controller;
+use App\Models\UssdMenuItem;
 use Illuminate\Http\Request;
 
-class UssdLogController extends Controller
+class UssdMenuItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +16,7 @@ class UssdLogController extends Controller
     public function index()
     {
         //
+        return UssdMenuItem::all();
     }
 
     /**
@@ -41,10 +43,10 @@ class UssdLogController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\UssdLog $ussdLog
+     * @param \App\Models\UssdMenuItems $ussdMenuItems
      * @return \Illuminate\Http\Response
      */
-    public function show(UssdLog $ussdLog)
+    public function show(UssdMenuItems $ussdMenuItems)
     {
         //
     }
@@ -52,10 +54,10 @@ class UssdLogController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\UssdLog $ussdLog
+     * @param \App\Models\UssdMenuItems $ussdMenuItems
      * @return \Illuminate\Http\Response
      */
-    public function edit(UssdLog $ussdLog)
+    public function edit(UssdMenuItems $ussdMenuItems)
     {
         //
     }
@@ -64,10 +66,10 @@ class UssdLogController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\UssdLog $ussdLog
+     * @param \App\Models\UssdMenuItems $ussdMenuItems
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UssdLog $ussdLog)
+    public function update(Request $request, UssdMenuItems $ussdMenuItems)
     {
         //
     }
@@ -75,10 +77,10 @@ class UssdLogController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\UssdLog $ussdLog
+     * @param \App\Models\UssdMenuItems $ussdMenuItems
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UssdLog $ussdLog)
+    public function destroy(UssdMenuItems $ussdMenuItems)
     {
         //
     }

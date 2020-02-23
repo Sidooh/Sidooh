@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Models\UssdMenuItems;
+use App\Http\Controllers\Controller;
+use App\Models\UssdResponse;
 use Illuminate\Http\Request;
 
-class UssdMenuItemController extends Controller
+class UssdResponseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +16,7 @@ class UssdMenuItemController extends Controller
     public function index()
     {
         //
+        return UssdResponse::all();
     }
 
     /**
@@ -41,10 +43,10 @@ class UssdMenuItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\UssdMenuItems $ussdMenuItems
+     * @param \App\Models\UssdResponse $ussdResponse
      * @return \Illuminate\Http\Response
      */
-    public function show(UssdMenuItems $ussdMenuItems)
+    public function show(UssdResponse $ussdResponse)
     {
         //
     }
@@ -52,10 +54,10 @@ class UssdMenuItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\UssdMenuItems $ussdMenuItems
+     * @param \App\Models\UssdResponse $ussdResponse
      * @return \Illuminate\Http\Response
      */
-    public function edit(UssdMenuItems $ussdMenuItems)
+    public function edit(UssdResponse $ussdResponse)
     {
         //
     }
@@ -64,10 +66,10 @@ class UssdMenuItemController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\UssdMenuItems $ussdMenuItems
+     * @param \App\Models\UssdResponse $ussdResponse
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UssdMenuItems $ussdMenuItems)
+    public function update(Request $request, UssdResponse $ussdResponse)
     {
         //
     }
@@ -75,10 +77,10 @@ class UssdMenuItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\UssdMenuItems $ussdMenuItems
+     * @param \App\Models\UssdResponse $ussdResponse
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UssdMenuItems $ussdMenuItems)
+    public function destroy(UssdResponse $ussdResponse)
     {
         //
     }

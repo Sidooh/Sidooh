@@ -27,4 +27,10 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
 
     Route::post('ussd', 'UssdController@index')->name('ussd');
 
+    Route::apiResource('ussd_users', 'UssdUserController', ['only' => ['index', 'store', 'show']]);
+    Route::apiResource('ussd_menus', 'UssdMenuController', ['only' => ['index', 'store', 'show']]);
+    Route::apiResource('ussd_menu_items', 'UssdMenuItemController', ['only' => ['index', 'store', 'show']]);
+    Route::apiResource('ussd_responses', 'UssdResponseController', ['only' => ['index', 'store', 'show']]);
+    Route::apiResource('ussd_logs', 'UssdLogController', ['only' => ['index', 'store', 'show']]);
+
 });

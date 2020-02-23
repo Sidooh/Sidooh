@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Models\UssdResponse;
+use App\Http\Controllers\Controller;
+use App\Models\UssdUser;
 use Illuminate\Http\Request;
 
-class UssdResponseController extends Controller
+class UssdUserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +16,7 @@ class UssdResponseController extends Controller
     public function index()
     {
         //
+        return UssdUser::all();
     }
 
     /**
@@ -41,10 +43,10 @@ class UssdResponseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\UssdResponse $ussdResponse
+     * @param \App\Models\UssdUser $ussdUser
      * @return \Illuminate\Http\Response
      */
-    public function show(UssdResponse $ussdResponse)
+    public function show(UssdUser $ussdUser)
     {
         //
     }
@@ -52,10 +54,10 @@ class UssdResponseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\UssdResponse $ussdResponse
+     * @param \App\Models\UssdUser $ussdUser
      * @return \Illuminate\Http\Response
      */
-    public function edit(UssdResponse $ussdResponse)
+    public function edit(UssdUser $ussdUser)
     {
         //
     }
@@ -64,10 +66,10 @@ class UssdResponseController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\UssdResponse $ussdResponse
+     * @param \App\Models\UssdUser $ussdUser
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UssdResponse $ussdResponse)
+    public function update(Request $request, UssdUser $ussdUser)
     {
         //
     }
@@ -75,10 +77,10 @@ class UssdResponseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\UssdResponse $ussdResponse
+     * @param \App\Models\UssdUser $ussdUser
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UssdResponse $ussdResponse)
+    public function destroy(UssdUser $ussdUser)
     {
         //
     }

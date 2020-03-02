@@ -8,7 +8,6 @@ class Transaction extends Model
 {
     //
 
-
     public function payment()
     {
         return $this->morphMany(Payment::class, 'payable');

@@ -16,6 +16,7 @@ class CreateAccountsTable extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->bigIncrements('id');
 
+//            TODO: Shift to varchar(15) for the phone fields
             $table->bigInteger('phone')->unique();
             $table->boolean('active')->default(true);
 

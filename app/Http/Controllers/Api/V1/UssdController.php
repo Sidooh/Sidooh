@@ -30,7 +30,7 @@ class UssdController extends Controller
     public function index()
     {
         //
-        $this->ussd->process();
+        $this->ussd->processAirtimeUSSD();
 //        return new UssdRepository($this->ussd->process());
 //        'END Thank you for reaching out.';
     }

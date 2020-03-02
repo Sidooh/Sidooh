@@ -30,4 +30,11 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'at' => [
+        'key' => env('AT_API_KEY'),
+        'username' => env('AT_USERNAME'),
+        'phone' => env('AT_PHONE'),
+        'env' => env('AT_ENV', 'local')
+    ],
+
 ];

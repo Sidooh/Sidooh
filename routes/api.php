@@ -33,4 +33,8 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::apiResource('ussd_responses', 'UssdResponseController', ['only' => ['index', 'store', 'show']]);
     Route::apiResource('ussd_logs', 'UssdLogController', ['only' => ['index', 'store', 'show']]);
 
+    Route::post('payments/mpesa/stk', 'TransactionController@mpesaStkPush')->name('payments.mpesa.stk');
+    Route::post('payments/mpesa/stk/callback', 'TransactionController@mpesaStkPushCallback')->name('payments.mpesa.stk.callback');
+
+
 });

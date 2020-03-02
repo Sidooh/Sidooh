@@ -14,54 +14,68 @@ class UssdMenuSeeder extends Seeder
     {
         //
         $menus = [
+//            array(
+//                'title' => 'Welcome to Sidooh. What would you like to do?',
+//                'is_parent' => 1,
+//                'type' => 1,
+//                'confirmation_message' => "",
+//            ),
+//            array(
+//                'title' => 'Buy Airtime for:',
+//                'is_parent' => 0,
+//                'type' => 2,
+//                'confirmation_message' => "",
+//            ),
+//            array(
+//                'title' => 'Enter amount\n(Min: Ksh 5. Max: 10,000)',
+//                'is_parent' => 0,
+//                'type' => 3,
+//                'confirmation_message' => "",
+//            ),
+
+
             array(
-                'title' => 'Welcome to Sidooh',
+                'title' => 'Welcome to Keheala',
                 'is_parent' => 1,
                 'type' => 1,
                 'confirmation_message' => "",
             ),
             array(
-                'title' => 'Buy Airtime',
+                'title' => 'Treatment Verification',
                 'is_parent' => 0,
                 'type' => 2,
                 'confirmation_message' => "",
             ),
-//            array(
-//                'title' => 'Compliance Score',
-//                'is_parent' => 0,
-//                'type' => 3,
-//                'confirmation_message' => "",
-//            ),
-//            array(
-//                'title' => 'TB Info',
-//                'is_parent' => 0,
-//                'type' => 1,
-//                'confirmation_message' => "",
-//            ),
-//            array(
-//                'title' => 'Supporter Chat',
-//                'is_parent' => 0,
-//                'type' => 2,
-//                'confirmation_message' => "",
-//            ),
-//            array(
-//                'title' => 'Ask TB Coordinator',
-//                'is_parent' => 0,
-//                'type' => 2,
-//                'confirmation_message' => "",
-//            ),
-//            array(
-//                'title' => 'Help',
-//                'is_parent' => 0,
-//                'type' => 1,
-//                'confirmation_message' => "",
-//            ),
-//            array(
-//                'title' => 'Repay Loan',
-//                'is_parent' => 0,
-//                'type' => 3,
-//                'confirmation_message' => "Please transfer Ksh. XX to paybill number XXXXXX to pay your loan",
-//            ),
+            array(
+                'title' => 'TB Info',
+                'is_parent' => 0,
+                'type' => 1,
+                'confirmation_message' => "",
+            ),
+            array(
+                'title' => 'Supporter Chat',
+                'is_parent' => 0,
+                'type' => 2,
+                'confirmation_message' => "",
+            ),
+            array(
+                'title' => 'Ask TB Coordinator',
+                'is_parent' => 0,
+                'type' => 2,
+                'confirmation_message' => "",
+            ),
+            array(
+                'title' => 'Help',
+                'is_parent' => 0,
+                'type' => 1,
+                'confirmation_message' => "",
+            ),
+            array(
+                'title' => 'Repay Loan',
+                'is_parent' => 0,
+                'type' => 3,
+                'confirmation_message' => "Please transfer Ksh. XX to paybill number XXXXXX to pay your loan",
+            ),
 
         ];
 

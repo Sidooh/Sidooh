@@ -53,6 +53,31 @@ class AccountRepository extends Model
 
     }
 
+    public function create(array $acc): Account
+    {
+        $phone = ltrim(PhoneNumber::make($acc['phone'], 'KE')->formatE164(), '+');
+
+        $referral = (new ReferralRepository)->findByPhone($phone);
+
+        $arr = [
+            'telco_id' => 1,
+            'phone' => $phone,
+            'referrer_id' => $referral ? $referral->account_id : null
+        ];
+
+        $acc = $this->firstOrCreate($arr);
+
+        if ($referral) {
+            $referral->referee_id = $acc->id;
+            $referral->status = 'active';
+
+            $referral->save();
+        }
+
+        return $acc;
+
+    }
+
     public function getReferrer(Account $account, $level): Account
     {
         if ($level)

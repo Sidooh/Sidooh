@@ -16,7 +16,7 @@ class AddRelationshipsToSubscriptionsTable extends Migration
         Schema::table('subscriptions', function (Blueprint $table) {
             //
             if (!Schema::hasColumn('subscriptions', 'account_id')) {
-                $table->bigInteger('account_id')->unsigned();
+                $table->bigInteger('account_id')->unsigned()->nullable();
                 $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             }
             if (!Schema::hasColumn('subscriptions', 'subscription_type_id')) {

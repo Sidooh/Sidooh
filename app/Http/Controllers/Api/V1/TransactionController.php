@@ -3,21 +3,36 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TransactionResource;
 use App\Model\Transaction;
+use App\Repositories\TransactionRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
 {
+    protected $repo;
+
+    /**
+     * TransactionController constructor.
+     *
+     * @param TransactionRepository $repo
+     */
+    public function __construct(TransactionRepository $repo)
+    {
+        $this->repo = $repo;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return TransactionResource
      */
     public function index()
     {
         //
+        return new TransactionResource($this->repo->with(['payment'])->get());
     }
 
     /**

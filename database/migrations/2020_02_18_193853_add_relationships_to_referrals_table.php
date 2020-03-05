@@ -15,8 +15,9 @@ class AddRelationshipsToReferralsTable extends Migration
     {
         Schema::table('referrals', function (Blueprint $table) {
             //
+//            TODO: Change name to referrer_id?
             if (!Schema::hasColumn('referrals', 'account_id')) {
-                $table->bigInteger('account_id')->unsigned();
+                $table->bigInteger('account_id')->unsigned()->nullable();
                 $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             }
             if (!Schema::hasColumn('referrals', 'user_id')) {

@@ -50,17 +50,12 @@ class Airtime
     {
         Log::info('====== Airtime Purchase ======');
 
-//        $stkResponse = [];
-
         $stkResponse = mpesa_request($this->phone, $this->amount, '001-AIRTIME', 'Airtime Purchase');
 
         $accountRep = new AccountRepository();
         $account = $accountRep->create([
             'phone' => $this->phone
         ]);
-
-        Log::info('------------ Account Creation ------------');
-        Log::info([$account]);
 
         $productRep = new ProductRepository();
         $product = $productRep->store(['name' => 'Airtime']);
@@ -77,18 +72,15 @@ class Airtime
         $payment = new Payment([
             'amount' => $this->amount,
             'status' => 'Pending',
-            'type' => 'MPESA'
+            'type' => 'MPESA',
+            'subtype' => 'STK',
+            'payment_id' => $stkResponse->id
         ]);
 
         $transaction->payment()->save($payment);
 
-//        $transaction->save();
+        return $transaction;
 
-        Log::info([$stkResponse, $account, $product, $transaction, $payment]);
-
-//        return true;
-
-//        return (new AfricasTalkingApi())->airtime($this->phone, $this->amount);
     }
 
 

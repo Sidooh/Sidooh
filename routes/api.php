@@ -21,6 +21,9 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::get('accounts/{account}/referrer', 'AccountController@referrer')->name('accounts.referrer');
     Route::get('accounts/{account}/referrals', 'AccountController@referrals')->name('accounts.referrals');
 
+    Route::apiResource('transactions', 'TransactionController', ['only' => ['index', 'store', 'show']]);
+
+    Route::apiResource('payments', 'PaymentController', ['only' => ['index', 'store', 'show']]);
 
     Route::apiResource('referrals', 'ReferralController', ['only' => ['index', 'store']]);
     Route::get('referrals/{phone}', 'ReferralController@byPhone')->name('referrals.byPhone');
@@ -36,5 +39,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::post('payments/mpesa/stk', 'TransactionController@mpesaStkPush')->name('payments.mpesa.stk');
     Route::post('payments/mpesa/stk/callback', 'TransactionController@mpesaStkPushCallback')->name('payments.mpesa.stk.callback');
 
+    Route::post('products/airtime', 'ProductController@airtime')->name('products.airtime');
+    Route::post('products/airtime/status/callback', 'ProductController@airtimeStatusCallback')->name('products.airtime.status.callback');
 
 });

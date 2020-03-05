@@ -12,10 +12,9 @@ class AirtimePurchaseEvent
 
     /**
      * Create a new event instance.
-     *
-     * @return void
+     * @param \App\Models\AirtimeRequest $request
      */
-    public function __construct()
+    public function __construct(\App\Models\AirtimeRequest $request)
     {
         //
     }

@@ -16,7 +16,7 @@ class AddRelationshipsToProductSettingsTable extends Migration
         Schema::table('product_settings', function (Blueprint $table) {
             //
             if (!Schema::hasColumn('product_settings', 'product_id')) {
-                $table->bigInteger('product_id')->unsigned();
+                $table->bigInteger('product_id')->unsigned()->nullable();
                 $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             }
         });

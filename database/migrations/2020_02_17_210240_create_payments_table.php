@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,12 +18,14 @@ class CreatePaymentsTable extends Migration
             $table->bigIncrements('id');
 
             $table->integer('payable_id');
-            $table->string("payable_type")->unique();
+            $table->string("payable_type");
             $table->float('amount');
             $table->string('status', 10); // pending or complete
-            $table->string('type', 15); // ['mobile', 'bank', 'paypal', 'other'] payment methods?
+            $table->string('type', 15); // ['mobile', 'sidooh', 'bank', 'paypal', 'other'] payment methods?
+            $table->string('subtype', 15); // 'stk', 'c2b', 'cba', 'wallet', 'bonus'
+            $table->bigInteger('payment_id');
 
-            $table->timestamp("start_date")->default(now());
+            $table->timestamp("start_date")->default(Carbon::now());
 
             $table->timestamps();
         });

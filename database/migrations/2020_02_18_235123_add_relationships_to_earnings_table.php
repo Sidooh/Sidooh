@@ -16,7 +16,7 @@ class AddRelationshipsToEarningsTable extends Migration
         Schema::table('earnings', function (Blueprint $table) {
             //
             if (!Schema::hasColumn('earnings', 'account_id')) {
-                $table->bigInteger('account_id')->unsigned();
+                $table->bigInteger('account_id')->unsigned()->nullable();
                 $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             }
             if (!Schema::hasColumn('earnings', 'transaction_id')) {

@@ -3,19 +3,35 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PaymentResource;
 use App\Model\Payment;
+use App\Repositories\PaymentRepository;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
+    protected $repo;
+
+    /**
+     * TransactionController constructor.
+     *
+     * @param PaymentRepository $repo
+     */
+    public function __construct(PaymentRepository $repo)
+    {
+        $this->repo = $repo;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return PaymentResource
      */
     public function index()
     {
         //
+
+        return new PaymentResource($this->repo->with(['payable'])->get());
     }
 
     /**
@@ -31,7 +47,7 @@ class PaymentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -42,8 +58,8 @@ class PaymentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Payment  $payment
-     * @return \Illuminate\Http\Response
+     * @param Payment $payment
+     * @return void
      */
     public function show(Payment $payment)
     {
@@ -53,8 +69,8 @@ class PaymentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Payment  $payment
-     * @return \Illuminate\Http\Response
+     * @param Payment $payment
+     * @return void
      */
     public function edit(Payment $payment)
     {
@@ -64,9 +80,9 @@ class PaymentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Payment  $payment
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Payment $payment
+     * @return void
      */
     public function update(Request $request, Payment $payment)
     {
@@ -76,8 +92,8 @@ class PaymentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Payment  $payment
-     * @return \Illuminate\Http\Response
+     * @param Payment $payment
+     * @return void
      */
     public function destroy(Payment $payment)
     {

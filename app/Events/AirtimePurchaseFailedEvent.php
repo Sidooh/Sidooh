@@ -3,13 +3,12 @@
 namespace App\Events;
 
 use App\Models\AirtimeResponse;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class AirtimePurchaseSuccessEvent
+class AirtimePurchaseFailedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -27,13 +26,12 @@ class AirtimePurchaseSuccessEvent
     {
         //
         $this->airtime_response = $response;
-
     }
 
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel|array
+     * @return \Illuminate\Broadcasting\Channel|array
      */
     public function broadcastOn()
     {

@@ -14,9 +14,9 @@ class AccountController extends Controller
     protected $account;
 
     /**
-     * ReferralController constructor.
+     * AccountController constructor.
      *
-     * @param ReferralRepository $account
+     * @param AccountRepository $account
      */
     public function __construct(AccountRepository $account)
     {

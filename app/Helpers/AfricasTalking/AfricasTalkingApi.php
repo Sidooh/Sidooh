@@ -57,7 +57,7 @@ class AfricasTalkingApi
         ]);
     }
 
-    public function airtime($to, $amount, $currency = 'KES')
+    public function airtime(string $to, string $amount, string $currency = 'KES')
     {
         // Get airtime service
         $airtime = $this->AT->airtime();
@@ -73,6 +73,5 @@ class AfricasTalkingApi
             ]
         ]);
 
-        event(new AirtimePurchaseEvent($airtime, request()));
     }
 }

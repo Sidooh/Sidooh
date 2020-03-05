@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
-use Illuminate\Support\Facades\Log;
+use App\Model\Payment;
+use App\Repositories\ProductRepository;
 use Samerior\MobileMoney\Mpesa\Events\StkPushPaymentSuccessEvent;
 
 class StkPaymentReceived
@@ -28,10 +28,18 @@ class StkPaymentReceived
     {
         //
         $stk = $event->stk_callback; //an instance of mpesa callback model
-        $mpesa_request = $event->mpesa_response;// mpesa response as array
+        $mpesa_response = $event->mpesa_response;// mpesa response as array
 
-        $response = (new AfricasTalkingApi())->airtime('+' . $stk->PhoneNumber, $stk->Amount);
+        $airtime = [
+            'phone' => $stk->PhoneNumber,
+            'amount' => $stk->Amount
+        ];
 
-        Log::info([$stk, $mpesa_request, $response]);
+        $p = Payment::wherePaymentId($stk->id)->firstOrFail();
+        $p->status = 'Complete';
+
+        $p->save();
+
+        (new ProductRepository())->airtime($p->payable, $airtime);
     }
 }

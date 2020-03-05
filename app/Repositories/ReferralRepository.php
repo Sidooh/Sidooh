@@ -18,7 +18,7 @@ class ReferralRepository extends Model
     /**
      * The model being queried.
      *
-     * @var \Illuminate\Database\Eloquent\Model
+     * @var Model
      */
     protected $model;
 

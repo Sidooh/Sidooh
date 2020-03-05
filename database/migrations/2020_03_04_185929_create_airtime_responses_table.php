@@ -20,9 +20,9 @@ class CreateAirtimeResponsesTable extends Migration
             $table->string('errorMessage');
             $table->string('amount');
             $table->string('status')->default('Sent');
-            $table->boolean('requestID')->index();
+            $table->string('requestID')->index();
             $table->string('discount');
-            $table->bigInteger('airtime_request_id')->unsigned();
+            $table->unsignedBigInteger('airtime_request_id');
 
             $table->foreign('airtime_request_id')
                 ->references('id')

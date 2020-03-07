@@ -54,7 +54,7 @@ class ReferralController extends Controller
     public function store(ReferralStoreRequest $request)
     {
         //
-        return new ReferralResource($this->referral->store($request));
+        return new ReferralResource($this->referral->store($request->all()));
     }
 
     /**

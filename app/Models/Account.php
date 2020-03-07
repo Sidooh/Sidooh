@@ -24,6 +24,16 @@ class Account extends Model
         'telco_id', 'phone', 'referrer_id'
     ];
 
+    public function subscription()
+    {
+        return true;
+    }
+
+    public function isRoot()
+    {
+        return $this->referrer_id == null;
+    }
+
     public function pendingReferrals()
     {
         return $this->hasMany(Referral::class)->pending();
@@ -38,5 +48,16 @@ class Account extends Model
     {
         return $this->belongsTo(Account::class, 'referrer_id');
     }
+
+//    /**
+//     * Scope a query to only include active subscriptions.
+//     *
+//     * @param Builder $query
+//     * @return Builder
+//     */
+//    public function scopeSubscribed($query)
+//    {
+//        return $query->whereStatus('pending')->timeActive($query);
+//    }
 
 }

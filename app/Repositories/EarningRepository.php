@@ -3,14 +3,14 @@
 
 namespace App\Repositories;
 
-use App\Events\TransactionSuccessEvent;
+use App\Model\Earning;
 use App\Model\Transaction;
-use App\Models\AirtimeResponse;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 
-class TransactionRepository extends Model
+class EarningRepository extends Model
 {
     use Repository;
 
@@ -26,35 +26,54 @@ class TransactionRepository extends Model
      */
     public function __construct()
     {
-        $this->model = app(Transaction::class);
+        $this->model = app(Earning::class);
     }
 
-    public function statusUpdate(AirtimeResponse $airtime_response)
+    public function calcEarnings(Transaction $transaction, float $earnings)
     {
-        Log::info('------------------------ Transaction Status Update ' . now() . ' ---------------------- ');
+        Log::info('------------------------ Calc Earnings ' . now() . ' ---------------------- ');
 
-        $airtime_request = $airtime_response->request;
+        $acc = $transaction->account;
 
-        $responses = $airtime_request->responses;
+        $groupEarnings = $earnings * .75;
 
-        $successful = $responses->filter(function ($value, $key) {
-            return $value->status == 'Success';
-        });
+        if ($acc->isRoot()) {
+            $e = Earning::create([
+                'account_id' => $acc->id,
+                'transaction_id' => $transaction->id,
+                'earnings' => $groupEarnings
+            ]);
+        } else {
+            $referrals = (new AccountRepository)->nth_level_referrers($acc, 6, false);
 
-        if (count($successful) == count($responses)) {
+            $userEarnings = $groupEarnings / (count($referrals) + 1);
 
-            $transaction = $airtime_request->transaction;
+            $now = Carbon::now('utc')->toDateTimeString();
 
-            $transaction->status = 'success';
+            $earnings = array(
+                [
+                    'account_id' => $acc->id,
+                    'transaction_id' => $transaction->id,
+                    'earnings' => $userEarnings,
+                    'created_at' => $now,
+                    'updated_at' => $now
+                ]
+            );
 
-            $transaction->save();
+            foreach ($referrals as $referral) {
+                array_push($earnings, [
+                    'account_id' => $referral->id,
+                    'transaction_id' => $transaction->id,
+                    'earnings' => $userEarnings,
+                    'created_at' => $now,
+                    'updated_at' => $now
+                ]);
+            }
 
-//            TODO:: add transaction successful event to proceed to earnings
+            $e = Earning::insert($earnings);
 
-            $totalEarned = explode(" ", $airtime_request->totalDiscount)[1];
-
-            event(new TransactionSuccessEvent($transaction, $totalEarned));
         }
+
 
     }
 

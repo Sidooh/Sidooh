@@ -78,6 +78,7 @@ class ProductRepository
 
     private function fireAirtimePurchaseEvent(AirtimeResponse $response, array $request)
     {
+
         if ($request['status'] == 'Success') {
             event(new AirtimePurchaseSuccessEvent($response));
         } else {

@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\AirtimeRequest;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -12,9 +13,9 @@ class AirtimePurchaseEvent
 
     /**
      * Create a new event instance.
-     * @param \App\Models\AirtimeRequest $request
+     * @param AirtimeRequest $request
      */
-    public function __construct(\App\Models\AirtimeRequest $request)
+    public function __construct(AirtimeRequest $request)
     {
         //
     }

@@ -4,6 +4,7 @@
 namespace App\Repositories;
 
 
+use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Helpers\Sidooh\Airtime;
 use App\Model\User;
 use App\Models\UssdLog;
@@ -53,30 +54,42 @@ class UssdRepository
             $response .= "4. Refer \n";
             $response .= "5. Check My Account";
 
-        } else if ($text == "1") {
+        }
+
+//        $textArr = $this->parse_text($text);
+//
+//        switch ($textArr[0]) {
+//            case "1":
+//                $response = Airtime::ussdProcessor($phoneNumber, count($textArr), $textArr);
+//                break;
+//
+//            default:
+//                $response = "CON Welcome to Sidooh. What would you like to do?\n";
+//                $response .= "1. Buy Airtime \n";
+//                $response .= "2. Pay \n";
+//                $response .= "3. Save \n";
+//                $response .= "4. Refer \n";
+//                $response .= "5. Check My Account";
+//        }
+
+        else if ($text == "1") {
+
             // Business logic for first level response
             $response = "CON Buy airtime for: \n";
             $response .= "1. Self ($phoneNumber) \n";
             $response .= "2. Other Number\n\n";
 
         } else if ($text == "2") {
-            // Business logic for first level response
-            // This is a terminal request. Note how we start the response with END
-//            $response = "END Your phone number is ".$phoneNumber;
             $response = "END Coming soon...";
 
         } else if ($text == "1*1") {
-            // This is a second level response where the user selected 1 in the first instance
-//            $accountNumber  = "ACC1001";
-
             $response = "CON Enter amount: \n(Min: Ksh 5. Max: Ksh 10,000) \n\n";
 
+        } else if ($text == "1*2") {
 
-            // This is a terminal request. Note how we start the response with END
-//            $response = "END Your account number is ".$accountNumber;
+            $response = "CON Enter phone number \n\n";
 
         } else if (count($this->parse_text($text)) == 3 && $this->parse_text($text)[1] == 1) {
-            // This is a second level response where the user selected 1 in the first instance
             $amount = $this->parse_text($text)[2];
 
             $response = "CON Buy Ksh $amount airtime for $phoneNumber using: \n";
@@ -85,29 +98,73 @@ class UssdRepository
             $response .= "3. Sidooh Bonus \n";
             $response .= "4. Other \n\n";
 
-            // This is a terminal request. Note how we start the response with END
-//            $response = "END Your balance is ".$balance;
+        } else if (count($this->parse_text($text)) == 3 && $this->parse_text($text)[1] == 2) {
+
+            $response = "CON Enter amount: \n(Min: Ksh 5. Max: Ksh 10,000) \n\n";
+
+        } else if (count($this->parse_text($text)) == 4 && $this->parse_text($text)[1] == 2) {
+
+            $amount = $this->parse_text($text)[3];
+            $phoneNumber = $this->parse_text($text)[2];
+
+            $response = "CON Buy Ksh $amount airtime for $phoneNumber using: \n";
+            $response .= "1. MPESA \n";
+            $response .= "2. Sidooh Points \n";
+            $response .= "3. Sidooh Bonus \n";
+            $response .= "4. Other \n\n";
+
         } else if (count($this->parse_text($text)) == 4 && $this->parse_text($text)[3] == 1) {
-            // This is a second level response where the user selected 1 in the first instance
             $amount = $this->parse_text($text)[2];
 
             $response = "CON Ksh $amount airtime for $phoneNumber will be deducted from your MPESA\n";
             $response .= "1. Accept \n";
             $response .= "2. Cancel \n\n";
 
-            // This is a terminal request. Note how we start the response with END
-//            $response = "END Your balance is ".$balance;
         } else if (count($this->parse_text($text)) == 5 && $this->parse_text($text)[4] == 1) {
-            // This is a second level response where the user selected 1 in the first instance
-            $amount = $this->parse_text($text)[2];
+            $amount = $this->parse_text($text)[3];
+            $phoneNumber = $this->parse_text($text)[2];
 
-//            mpesa_request($this->phone,$this->amount,'001-AIRT','Airtime Purchase');
+            $response = "CON Ksh $amount airtime for $phoneNumber will be deducted from your MPESA\n";
+            $response .= "1. Accept \n";
+            $response .= "2. Cancel \n\n";
+
+        } else if (count($this->parse_text($text)) == 5 && $this->parse_text($text)[4] == 1) {
+            $amount = $this->parse_text($text)[2];
 
             (new Airtime($amount, $phoneNumber))->purchase();
 
-            // This is a terminal request. Note how we start the response with END
             $response = "END Your request has been received and is being processed. You will receive a confirmation SMS shortly. \nThank you.";
+
+        } else if (count($this->parse_text($text)) == 6 && $this->parse_text($text)[5] == 1) {
+            $amount = $this->parse_text($text)[3];
+            $phone = $this->parse_text($text)[2];
+
+            (new Airtime($amount, $phoneNumber))->purchase($phone);
+
+            $response = "END Your request has been received and is being processed. You will receive a confirmation SMS shortly. \nThank you.";
+        } else if ($text == "4") {
+            $response = "CON Enter number to refer";
+
+        } else if (count($this->parse_text($text)) == 2 && $this->parse_text($text)[0] == 4) {
+            $phone = $this->parse_text($text)[1];
+
+            (new ReferralRepository())->store([
+                'phone' => $phoneNumber,
+                'referee_phone' => $phone
+            ]);
+
+            $message = "You have been referred by {$phoneNumber} on " . date('d/m/Y') . ". Dial *sss# to start buying airtime seamlessly. \n\nSidooh, Makes You Money!";
+
+            (new AfricasTalkingApi())->sms($phone, $message);
+
+            $message = "You have just referred {$phone}. Tell them to Dial *sss# to start buying airtime seamlessly. \n\nSidooh, Makes You Money!";
+
+            (new AfricasTalkingApi())->sms($phoneNumber, $message);
+
+            $response = "END We have sent $phone a message. You will receive a message soon too. \n\n";
+
         }
+
 
         if (count($this->parse_text($text)) > 1 && count($this->parse_text($text)) < 5) {
             $response .= "0. Back \n";

@@ -5,7 +5,6 @@ namespace App\Repositories;
 
 use App\Model\Referral;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
@@ -41,10 +40,10 @@ class ReferralRepository extends Model
 //            ->first();
 //    }
 
-    public function store(Request $request): Referral
+    public function store(array $request): Referral
     {
-        if ($request->has('account_id'))
-            $acc = (int)$request->get('account_id');
+        if (array_key_exists('account_id', $request))
+            $acc = (int)$request['account_id'];
         else {
             $acc = AccountRepository::firstOrCreate(['phone' => $request['phone']])->id;
         }

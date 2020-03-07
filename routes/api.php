@@ -42,4 +42,6 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::post('products/airtime', 'ProductController@airtime')->name('products.airtime');
     Route::post('products/airtime/status/callback', 'ProductController@airtimeStatusCallback')->name('products.airtime.status.callback');
 
+    Route::post('sms/callback', 'ProductController@smsCallback')->name('sms.callback');
+
 });

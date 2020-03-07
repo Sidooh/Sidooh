@@ -59,6 +59,11 @@ class AccountRepository extends Model
 
         $referral = (new ReferralRepository)->findByPhone($phone);
 
+        $acc = $this->wherePhone($phone)->first();
+
+        if ($acc)
+            return $acc;
+
         $arr = [
             'telco_id' => 1,
             'phone' => $phone,
@@ -90,6 +95,8 @@ class AccountRepository extends Model
      * Display the specified resource.
      *
      * @param Account $account
+     * @param int $level
+     * @param bool $withAccount
      * @return Account
      */
     public function nth_level_referrers(Account $account, $level = 1, $withAccount = true)

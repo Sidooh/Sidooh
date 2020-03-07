@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Events\AirtimePurchaseFailedEvent;
 use App\Events\AirtimePurchaseSuccessEvent;
+use App\Events\TransactionSuccessEvent;
 use App\Listeners\AirtimePurchaseFailed;
 use App\Listeners\AirtimePurchaseSuccess;
 use App\Listeners\StkPaymentReceived;
+use App\Listeners\TransactionSuccess;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -34,6 +36,10 @@ class EventServiceProvider extends ServiceProvider
 
         AirtimePurchaseFailedEvent::class => [
             AirtimePurchaseFailed::class
+        ],
+
+        TransactionSuccessEvent::class => [
+            TransactionSuccess::class
         ]
     ];
 

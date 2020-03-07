@@ -116,13 +116,26 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Product $product
-     * @return Response
+     * @param Request $request
+     * @return void
      */
     public function airtimeStatusCallback(Request $request)
     {
         //
         $this->product->airtimeCallback($request->all());
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function smsCallback(Request $request)
+    {
+        //
+        return Response("Received", 200);
 
     }
 }

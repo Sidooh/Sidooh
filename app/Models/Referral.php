@@ -27,7 +27,7 @@ class Referral extends Model
      */
     public function scopeTimeActive($query)
     {
-        return $query->where('created_at', '>', Carbon::now()->subHours(24));
+        return $query->where('created_at', '>', Carbon::now()->subHours(48));
     }
 
     /**
@@ -50,6 +50,17 @@ class Referral extends Model
     public function scopeActive($query)
     {
         return $query->whereStatus('active');
+    }
+
+    /**
+     * Scope a query to only include expired referrals.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeExpired($query)
+    {
+        return $query->whereStatus('pending')->where('created_at', '<', Carbon::now()->subHours(48));
     }
 
     public function account()

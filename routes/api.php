@@ -30,6 +30,9 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
 
     Route::post('ussd', 'UssdController@index')->name('ussd');
 
+//    TEST USSD V2
+    Route::post('ussd2', 'UssdController@ussd')->name('ussd2');
+
     Route::apiResource('ussd_users', 'UssdUserController', ['only' => ['index', 'store', 'show']]);
     Route::apiResource('ussd_menus', 'UssdMenuController', ['only' => ['index', 'store', 'show']]);
     Route::apiResource('ussd_menu_items', 'UssdMenuItemController', ['only' => ['index', 'store', 'show']]);

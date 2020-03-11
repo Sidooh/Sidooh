@@ -4,14 +4,18 @@ namespace App\Providers;
 
 use App\Events\AirtimePurchaseFailedEvent;
 use App\Events\AirtimePurchaseSuccessEvent;
+use App\Events\ReferralJoinedEvent;
 use App\Events\TransactionSuccessEvent;
 use App\Listeners\AirtimePurchaseFailed;
 use App\Listeners\AirtimePurchaseSuccess;
+use App\Listeners\ReferralJoined;
+use App\Listeners\StkPaymentFailed;
 use App\Listeners\StkPaymentReceived;
 use App\Listeners\TransactionSuccess;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Samerior\MobileMoney\Mpesa\Events\StkPushPaymentFailedEvent;
 use Samerior\MobileMoney\Mpesa\Events\StkPushPaymentSuccessEvent;
 
 class EventServiceProvider extends ServiceProvider
@@ -30,6 +34,10 @@ class EventServiceProvider extends ServiceProvider
             StkPaymentReceived::class,// your listening class
         ],
 
+        StkPushPaymentFailedEvent::class => [
+            StkPaymentFailed::class, //your listening classs
+        ],
+
         AirtimePurchaseSuccessEvent::class => [
             AirtimePurchaseSuccess::class
         ],
@@ -40,6 +48,10 @@ class EventServiceProvider extends ServiceProvider
 
         TransactionSuccessEvent::class => [
             TransactionSuccess::class
+        ],
+
+        ReferralJoinedEvent::class => [
+            ReferralJoined::class
         ]
     ];
 

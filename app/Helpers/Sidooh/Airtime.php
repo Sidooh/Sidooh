@@ -6,9 +6,12 @@ namespace App\Helpers\Sidooh;
 
 use App\Model\Payment;
 use App\Model\Transaction;
+use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
 use App\Repositories\ProductRepository;
+use App\Repositories\ReferralRepository;
 use Illuminate\Support\Facades\Log;
+use libphonenumber\NumberParseException;
 
 class Airtime
 {
@@ -51,66 +54,140 @@ class Airtime
         return explode('*', $text);
     }
 
-    public static function ussdProcessor($phoneNumber, $level, $text)
+    public static function ussdProcessor(UssdUser $user, array $result, $message)
     {
-        Log::info($level);
+        if ($user->session == 1 && count($result) > 1) {
+            switch ($message) {
+                case 1:
+                    $user->session = 11;
+                    break;
+                case 2:
+                    $user->session = 12;
+                    break;
+                default:
+                    $user->session = 1;
+            }
 
-        switch ($level) {
-            case 1:
-                // Business logic for first level response
-                $response = "CON Buy airtime for: \n";
-                $response .= "1. Self ($phoneNumber) \n";
-                $response .= "2. Other Number\n\n";
+            $user->save();
+        }
+
+        if ($user->session == 1211) {
+            switch ($message) {
+                case 1:
+                    $user->session = 12111;
+            }
+        }
+
+        if ($user->session == 1111) {
+            switch ($message) {
+                case 1:
+                    $user->session = 11111;
+            }
+        }
+
+        if ($user->session == 121) {
+            if ((int)$message > 4 && (int)$message < 10000)
+                $user->session = 1211;
+        }
+
+        if ($user->session == 111) {
+            switch ($message) {
+                case 1:
+                    $user->session = 1111;
+            }
+        }
+
+        if ($user->session == 12) {
+            try {
+                if (ReferralRepository::validatePhone($message))
+                    $user->session = 121;
+            } catch (NumberParseException $e) {
+
+            }
+        }
+
+        if ($user->session == 11) {
+            if ((int)$message > 4 && (int)$message < 10000)
+                $user->session = 111;
+        }
+
+        $user->save();
+
+        switch ($user->session) {
+            case 121:
+            case 11:
+                $response = "Enter amount: \n(Min: Ksh 5. Max: Ksh 10,000) \n\n";
 
                 break;
 
-            case 2:
-                $response = "CON Enter amount: \n(Min: Ksh 5. Max: Ksh 10,000) \n\n";
+            case 12:
+                $response = "Enter phone number \n\n";
 
                 break;
 
-            case 3:
-                $amount = $text[$level];
+            case 111:
+//                TODO: fetch from DB
+                $amount = 5;
 
-                if ((int)$amount < 5 || (int)$amount > 9999)
-                    $response = "CON Please enter VALID amount: \n(Min: Ksh 5. Max: Ksh 10,000) \n\n";
-                else {
-
-                    $response = "CON Buy Ksh $amount airtime for $phoneNumber using: \n";
-                    $response .= "1. MPESA \n";
-                    $response .= "2. Sidooh Points \n";
-                    $response .= "3. Sidooh Bonus \n";
-                    $response .= "4. Other \n\n";
-
-                }
+                $response = "Buy Ksh $amount airtime for $user->phone using: \n";
+                $response .= "1. MPESA \n";
+                $response .= "2. Sidooh Points \n";
+                $response .= "3. Sidooh Bonus \n";
+                $response .= "4. Other \n\n";
 
                 break;
-            case 4:
-                $amount = $text[$level - 1];
 
-                $response = "CON Ksh $amount airtime for $phoneNumber will be deducted from your MPESA\n";
+            case 1111:
+                $amount = 5;
+
+                $response = "CON Ksh $amount airtime for $user->phone will be deducted from your MPESA\n";
                 $response .= "1. Accept \n";
                 $response .= "2. Cancel \n\n";
 
-            case 5:
-                (new Airtime($amount, $phoneNumber))->purchase();
+                break;
 
-                // This is a terminal request. Note how we start the response with END
+            case 1211:
+                $amount = 5;
+
+                $response = "Buy Ksh $amount airtime for $user->phone using: \n";
+                $response .= "1. MPESA \n";
+                $response .= "2. Sidooh Points \n";
+                $response .= "3. Sidooh Bonus \n";
+                $response .= "4. Other \n\n";
+
+                break;
+
+            case 12111:
+            case 11111:
+                $amount = 5;
+
+                (new Airtime($amount, $user->phone))->purchase();
+
                 $response = "END Your request has been received and is being processed. You will receive a confirmation SMS shortly. \nThank you.";
+
+                break;
+
+            default:
+
+                $response = "Buy airtime for: \n";
+                $response .= "1. Self ($user->phone) \n";
+                $response .= "2. Other Number\n\n";
+
         }
 
-        return $response;
+        $response .= "\n0. Go back \t00. Go Home";
 
+        return $response;
     }
 
-    public function purchase($phone = null)
+    public function purchase($targetNumber = null, $mpesaNumber = null)
     {
         Log::info('====== Airtime Purchase ======');
 
-        if ($phone)
-            $stkResponse = mpesa_request($this->phone, $this->amount, '001-AIRTIME', "Airtime Purchase - $phone");
-        else
-            $stkResponse = mpesa_request($this->phone, $this->amount, '001-AIRTIME', 'Airtime Purchase');
+        $description = $targetNumber ? "Airtime Purchase - $targetNumber" : "Airtime Purchase";
+        $number = $mpesaNumber ?? $this->phone;
+
+        $stkResponse = mpesa_request($number, $this->amount, '001-AIRTIME', $description);;
 
         $accountRep = new AccountRepository();
         $account = $accountRep->create([
@@ -140,6 +217,4 @@ class Airtime
         $transaction->payment()->save($payment);
 
     }
-
-
 }

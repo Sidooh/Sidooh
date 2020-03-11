@@ -37,43 +37,49 @@ class EarningRepository extends Model
 
         $groupEarnings = $earnings * .75;
 
-        if ($acc->isRoot()) {
-            $e = Earning::create([
-                'account_id' => $acc->id,
-                'transaction_id' => $transaction->id,
-                'earnings' => $groupEarnings
-            ]);
-        } else {
-            $referrals = (new AccountRepository)->nth_level_referrers($acc, 6, false);
+        if ($transaction->amount >= 20) {
 
-            $userEarnings = $groupEarnings / (count($referrals) + 1);
-
-            $now = Carbon::now('utc')->toDateTimeString();
-
-            $earnings = array(
-                [
+            if ($acc->isRoot()) {
+                $e = Earning::create([
                     'account_id' => $acc->id,
                     'transaction_id' => $transaction->id,
-                    'earnings' => $userEarnings,
-                    'created_at' => $now,
-                    'updated_at' => $now
-                ]
-            );
-
-            foreach ($referrals as $referral) {
-                array_push($earnings, [
-                    'account_id' => $referral->id,
-                    'transaction_id' => $transaction->id,
-                    'earnings' => $userEarnings,
-                    'created_at' => $now,
-                    'updated_at' => $now
+                    'earnings' => $groupEarnings
                 ]);
+            } else {
+                $referrals = (new AccountRepository)->nth_level_referrers($acc, 6, false);
+
+                $userEarnings = $groupEarnings / (count($referrals) + 1);
+
+                $now = Carbon::now('utc')->toDateTimeString();
+
+                $earnings = array(
+                    [
+                        'account_id' => $acc->id,
+                        'transaction_id' => $transaction->id,
+                        'earnings' => $userEarnings,
+                        'created_at' => $now,
+                        'updated_at' => $now
+                    ]
+                );
+
+                foreach ($referrals as $referral) {
+                    array_push($earnings, [
+                        'account_id' => $referral->id,
+                        'transaction_id' => $transaction->id,
+                        'earnings' => $userEarnings,
+                        'created_at' => $now,
+                        'updated_at' => $now
+                    ]);
+                }
+
+                $e = Earning::insert($earnings);
+
             }
 
-            $e = Earning::insert($earnings);
+            $transaction->status = 'completed';
+            $transaction->save();
 
         }
-
 
     }
 

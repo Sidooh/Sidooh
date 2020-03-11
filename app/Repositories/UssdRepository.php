@@ -13,9 +13,10 @@ use App\Models\UssdMenu;
 use App\Models\UssdMenuItem;
 use App\Models\UssdResponse;
 use App\Models\UssdUser;
-use App\Models\UssdUsers;
 use Illuminate\Support\Facades\Log;
+use libphonenumber\NumberParseException;
 use MrAtiebatie\Repository;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class UssdRepository
 {
@@ -100,7 +101,7 @@ class UssdRepository
 
         } else if (count($this->parse_text($text)) == 3 && $this->parse_text($text)[1] == 2) {
 
-            $response = "CON Enter amount: \n(Min: Ksh 5. Max: Ksh 10,000) \n\n";
+            $response = "CON Enter amount:\n(Min: Ksh 5. Max: Ksh 10,000) \n\n";
 
         } else if (count($this->parse_text($text)) == 4 && $this->parse_text($text)[1] == 2) {
 
@@ -113,20 +114,22 @@ class UssdRepository
             $response .= "3. Sidooh Bonus \n";
             $response .= "4. Other \n\n";
 
-        } else if (count($this->parse_text($text)) == 4 && $this->parse_text($text)[3] == 1) {
+        } else if (count($this->parse_text($text)) == 4 && $this->parse_text($text)[1] == 1 && $this->parse_text($text)[3] == 1) {
             $amount = $this->parse_text($text)[2];
 
             $response = "CON Ksh $amount airtime for $phoneNumber will be deducted from your MPESA\n";
             $response .= "1. Accept \n";
-            $response .= "2. Cancel \n\n";
+            $response .= "2. Cancel \n";
+            $response .= "3. Enter Mpesa Number \n\n";
 
-        } else if (count($this->parse_text($text)) == 5 && $this->parse_text($text)[4] == 1) {
+        } else if (count($this->parse_text($text)) == 5 && $this->parse_text($text)[1] == 2 && $this->parse_text($text)[4] == 1) {
             $amount = $this->parse_text($text)[3];
             $phoneNumber = $this->parse_text($text)[2];
 
             $response = "CON Ksh $amount airtime for $phoneNumber will be deducted from your MPESA\n";
             $response .= "1. Accept \n";
-            $response .= "2. Cancel \n\n";
+            $response .= "2. Cancel \n";
+            $response .= "3. Enter Mpesa Number \n\n";
 
         } else if (count($this->parse_text($text)) == 5 && $this->parse_text($text)[4] == 1) {
             $amount = $this->parse_text($text)[2];
@@ -135,6 +138,9 @@ class UssdRepository
 
             $response = "END Your request has been received and is being processed. You will receive a confirmation SMS shortly. \nThank you.";
 
+        } else if (count($this->parse_text($text)) == 5 && $this->parse_text($text)[4] == 3) {
+            $response = "CON Enter Mpesa Number\n";
+
         } else if (count($this->parse_text($text)) == 6 && $this->parse_text($text)[5] == 1) {
             $amount = $this->parse_text($text)[3];
             $phone = $this->parse_text($text)[2];
@@ -142,29 +148,78 @@ class UssdRepository
             (new Airtime($amount, $phoneNumber))->purchase($phone);
 
             $response = "END Your request has been received and is being processed. You will receive a confirmation SMS shortly. \nThank you.";
+
+        } else if (count($this->parse_text($text)) == 6 && $this->parse_text($text)[5] == 3) {
+            $response = "CON Enter Mpesa Number\n";
+
+        } else if (count($this->parse_text($text)) == 6 && $this->parse_text($text)[4] == 3) {
+            $amount = $this->parse_text($text)[2];
+            $mpesa = $this->parse_text($text)[5];
+
+            (new Airtime($amount, $phoneNumber))->purchase(null, $mpesa);
+
+            $response = "END Your request has been received and is being processed. You will receive a confirmation SMS shortly. \nThank you.";
+
+        } else if (count($this->parse_text($text)) == 7 && $this->parse_text($text)[5] == 3) {
+            $amount = $this->parse_text($text)[3];
+            $phone = $this->parse_text($text)[2];
+            $mpesa = $this->parse_text($text)[6];
+
+            (new Airtime($amount, $phoneNumber))->purchase($phone, $mpesa);
+
+            $response = "END Your request has been received and is being processed. You will receive a confirmation SMS shortly. \nThank you.";
+
         } else if ($text == "4") {
-            $response = "CON Enter number to refer";
+            $response = "CON Enter your friend’s mobile no: (format 2547xxxxxxxx) \n\n";
 
-        } else if (count($this->parse_text($text)) == 2 && $this->parse_text($text)[0] == 4) {
-            $phone = $this->parse_text($text)[1];
+        } else if (count($this->parse_text($text)) > 1 && $this->parse_text($text)[0] == 4) {
+            $arr = $this->parse_text($text);
+            $phone = end($arr);
 
-            (new ReferralRepository())->store([
-                'phone' => $phoneNumber,
-                'referee_phone' => $phone
-            ]);
+            try {
+                $ref = (new ReferralRepository())->findByPhone($phone, true);
+                $acc = (new AccountRepository())->findByPhone($phone);
 
-            $message = "You have been referred by {$phoneNumber} on " . date('d/m/Y') . ". Dial *sss# to start buying airtime seamlessly. \n\nSidooh, Makes You Money!";
+                $refPhone = PhoneNumber::make($phone, 'KE')->formatE164();
 
-            (new AfricasTalkingApi())->sms($phone, $message);
+                if (!$acc && !$ref && (strcmp($refPhone, $phoneNumber) !== 0)) {
+                    (new ReferralRepository())->store([
+                        'phone' => $phoneNumber,
+                        'referee_phone' => $phone
+                    ]);
 
-            $message = "You have just referred {$phone}. Tell them to Dial *sss# to start buying airtime seamlessly. \n\nSidooh, Makes You Money!";
+                    $message = "Hi, {$phoneNumber} has referred you to join Sidooh. Dial *123# for FREE to start earning from every purchase you & your referral group make through Sidooh.";
 
-            (new AfricasTalkingApi())->sms($phoneNumber, $message);
+                    (new AfricasTalkingApi())->sms($phone, $message);
 
-            $response = "END We have sent $phone a message. You will receive a message soon too. \n\n";
+//                $message = "You have just referred {$phone}. Tell them to Dial *sss# to start buying airtime seamlessly. \n\nSidooh, Makes You Money!";
+//
+//                (new AfricasTalkingApi())->sms($phoneNumber, $message);
+
+                    $response = "END Thank you for referring ${phone}.";
+                    $response .= " Your friend will receive a referral SMS. Once they register and purchase airtime within 48hrs you will start
+                earning your referral points for every purchase they & their referral group make through Sidooh.";
+                    $response .= " \n\n";
+
+                } else {
+
+//                    $message = "Hi, {$phoneNumber} has referred you to join " . date('d/m/Y') . ". Dial *sss# to start buying airtime seamlessly. \n\nSidooh, Makes You Money!";
+//
+//                    (new AfricasTalkingApi())->sms($phone, $message);
+
+//                    $message = "You have just referred {$phone}. Tell them to Dial *sss# to start buying airtime seamlessly. \n\nSidooh, Makes You Money!";
+//
+//                    (new AfricasTalkingApi())->sms($phoneNumber, $message);
+
+                    $response = "CON Sorry the number is not eligible for a referral. It is already registered with a member. Try a different number to start earning from all their purchases once they enroll within 48hrs. \n\n";
+
+                }
+
+            } catch (NumberParseException $e) {
+                $response = "CON Sorry the number you entered is not valid, please use the correct format (2547xxxxxxxx)\n\n";
+            }
 
         }
-
 
         if (count($this->parse_text($text)) > 1 && count($this->parse_text($text)) < 5) {
             $response .= "0. Back \n";
@@ -174,6 +229,168 @@ class UssdRepository
 // Echo the response back to the API
         header('Content-type: text/plain');
         echo $response;
+    }
+
+    public function processUssd()
+    {
+
+        error_reporting(0);
+        header('Content-type: text/plain');
+        set_time_limit(100);
+
+        //get inputs
+        $sessionId = $_REQUEST["sessionId"];
+        $serviceCode = $_REQUEST["serviceCode"];
+        $phoneNumber = $_REQUEST["phoneNumber"];
+        $text = $_REQUEST["text"];   //
+
+
+        $data = ['phone' => $phoneNumber, 'text' => $text, 'service_code' => $serviceCode, 'session_id' => $sessionId];
+
+        //log USSD request
+        UssdLog::create($data);
+
+        //verify that the user exists
+//        $no = substr($phoneNumber, -9);
+
+        $user = UssdUser::wherePhone($phoneNumber)->first();
+
+        if (!$user) {
+            Log::info('Ussd user being created.');
+
+            $usr = array();
+            $usr['phone'] = $phoneNumber;
+            $usr['session'] = 0;
+            $usr['progress'] = 0;
+            $usr['confirm_from'] = 0;
+            $usr['menu_item_id'] = 0;
+
+            $user = UssdUser::create($usr);
+        }
+
+        if (self::user_is_starting($text)) {
+            Log::info('Ussd user is starting.');
+            //lets get the home menu
+            //reset user
+            self::resetUser($user);
+            //user authentication
+            $message = '';
+
+//            $response = self::getMenuAndItems($user, 1);
+
+            $response = "Welcome to Sidooh. What would you like to do?\n";
+            $response .= "1. Buy Airtime \n";
+            $response .= "2. Pay \n";
+            $response .= "3. Save \n";
+            $response .= "4. Refer \n";
+            $response .= "5. Check My Account";
+
+            //get the home menu
+            Log::info('Ussd user is starting: ' . $response . $user);
+            self::sendResponse($response, 1, $user);
+
+        } else {
+
+            Log::info('Ussd user not starting.');
+
+            //message is the latest stuff
+            $result = explode("*", $text);
+            if (empty($result)) {
+                $message = $text;
+            } else {
+                end($result);
+                // move the internal pointer to the end of the array
+                $message = current($result);
+            }
+
+            if (count($result) == 1)
+                self::resetUser($user);
+
+            switch ($message) {
+                case 0:
+                    if (count(explode("", $user->session)) == 1)
+                        self::resetUser($user);
+                    else
+                        $user->session = substr($user->session, 0, -1);
+                    $user->save();
+                    break;
+                case 00:
+                    self::resetUser($user);
+                    break;
+            }
+
+            if ($user->session == 0) {
+                switch ($message) {
+                    case 1:
+                        $user->progress = 1;
+                        $user->session = 1;
+                        break;
+                    case 4:
+                        $user->progress = 4;
+                        $user->session = 1;
+                        break;
+                    default:
+                        $user->progress = 0;
+                }
+
+                $user->save();
+            }
+
+//            print($user);
+
+            switch ($user->progress) {
+                case 1:
+                    $response = Airtime::ussdProcessor($user, $result, $message);
+                    break;
+                case 4:
+                    $response = ReferralRepository::ussdProcessor($user, $result, $message);
+                    break;
+                default:
+                    self::resetUser($user);
+                    $response = "Welcome to Sidooh. What would you like to do?\n";
+                    $response .= "1. Buy Airtime \n";
+                    $response .= "2. Pay \n";
+                    $response .= "3. Save \n";
+                    $response .= "4. Refer \n";
+                    $response .= "5. Check My Account";
+
+            }
+
+//            Log::info('Ussd user session switching...');
+//            switch ($user->session) {
+//
+//                case 0 :
+//                    Log::info(' -- case 0.');
+//                    //neutral user
+//                    break;
+//                case 1 :
+//                    Log::info(' -- case 1.');
+//                    $response = self::continueUssdMenuProcess($user, $message);
+//                    //echo "Main Menu";
+//                    break;
+//                case 2 :
+//                    Log::info(' -- case 2.');
+//                    //confirm USSD Process
+//                    $response = self::confirmUssdProcess($user, $message);
+//                    break;
+//                case 3 :
+//                    Log::info(' -- case 3.');
+//                    //Go back menu
+//                    $response = self::confirmGoBack($user, $message);
+//                    break;
+//                case 4 :
+//                    Log::info(' -- case 4.');
+//                    //Go back menu
+//                    $response = self::confirmGoBack($user, $message);
+//                    break;
+//                default:
+//                    Log::info(' -- case default.');
+//                    break;
+//            }
+
+            self::sendResponse($response, 1, $user);
+        }
+
     }
 
     public function parse_text($text)
@@ -347,7 +564,6 @@ class UssdRepository
         } elseif (self::validationVariations($message, 2, "no")) {
             Log::info('Validated variations.');
             $response = self::nextMenuSwitch($user, $menu);
-            return $response;
 
         } else {
             Log::info('Not validated variations.');
@@ -357,9 +573,10 @@ class UssdRepository
             $output = self::confirmBatch($user, $menu);
 
             $response = $response . PHP_EOL . $output;
-            return $response;
+
         }
 
+        return $response;
 
     }
 
@@ -790,6 +1007,21 @@ class UssdRepository
 
         $user->session = 0;
         $user->progress = 0;
+        $user->menu_id = 0;
+        $user->difficulty_level = 0;
+        $user->confirm_from = 0;
+        $user->menu_item_id = 0;
+
+        return $user->save();
+
+    }
+
+    public function resetScreen($user, $screen, $product)
+    {
+        Log::info('Reset Screen.');
+
+        $user->session = $screen;
+        $user->progress = $product;
         $user->menu_id = 0;
         $user->difficulty_level = 0;
         $user->confirm_from = 0;

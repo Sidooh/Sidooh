@@ -34,4 +34,18 @@ class UssdController extends Controller
 //        return new UssdRepository($this->ussd->process());
 //        'END Thank you for reaching out.';
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return string
+     */
+    public function ussd()
+    {
+        //
+        $this->ussd->processUSSD();
+//        return new UssdRepository($this->ussd->process());
+//        'END Thank you for reaching out.';
+    }
+
 }

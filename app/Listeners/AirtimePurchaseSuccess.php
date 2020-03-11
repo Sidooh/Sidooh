@@ -39,7 +39,7 @@ class AirtimePurchaseSuccess
         $amount = explode(".", $event->airtime_response->amount)[0];
         $date = $event->airtime_response->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
 
-        $message = "You have received {$amount} airtime from Sidooh via MPESA account {$sender} on {$date}. Dial *144# to check your balance. \n\nSidooh, Makes You Money!";
+        $message = "You have received {$amount} airtime from Sidooh account {$sender} on {$date}. Dial *144# to check your balance. \n\nSidooh, Makes You Money!";
 
         (new AfricasTalkingApi())->sms($phone, $message);
 

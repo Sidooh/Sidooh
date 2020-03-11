@@ -3,6 +3,7 @@
 
 namespace App\Repositories;
 
+use App\Events\ReferralJoinedEvent;
 use App\Model\Account;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -57,12 +58,12 @@ class AccountRepository extends Model
     {
         $phone = ltrim(PhoneNumber::make($acc['phone'], 'KE')->formatE164(), '+');
 
-        $referral = (new ReferralRepository)->findByPhone($phone);
-
         $acc = $this->wherePhone($phone)->first();
 
         if ($acc)
             return $acc;
+
+        $referral = (new ReferralRepository)->findByPhone($phone);
 
         $arr = [
             'telco_id' => 1,
@@ -77,6 +78,8 @@ class AccountRepository extends Model
             $referral->status = 'active';
 
             $referral->save();
+
+            event(new ReferralJoinedEvent($referral));
         }
 
         return $acc;
@@ -113,6 +116,16 @@ class AccountRepository extends Model
         $account['level_referrers'] = $account->ancestors()->whereDepth('>=', -$level)->get();
 
         return $account;
+    }
+
+    public function findByPhone($phoneNumber, $throw = true)
+    {
+        $valid = (new ReferralRepository())->validatePhone($phoneNumber, $throw);
+
+        return !$valid ? abort(422, 'Phone seems to be invalid.') :
+
+            $this->wherePhone($phoneNumber)
+                ->first();
     }
 
 }

@@ -253,8 +253,6 @@ class UssdRepository
 
         } else if ($text == "2*1*1*1*1") {
             $amount = 350;
-            $phone = $this->parse_text($text)[2];
-            $mpesa = $this->parse_text($text)[6];
 
 //            TODO:: suscription flow picks up here
 //            (new Subscription($amount, $phoneNumber))->purchase($phone, $mpesa);
@@ -263,8 +261,6 @@ class UssdRepository
 
         } else if ($text == "2*1*2*1*1") {
             $amount = 950;
-            $phone = $this->parse_text($text)[2];
-            $mpesa = $this->parse_text($text)[6];
 
 //            TODO:: suscription flow picks up here
 //            (new Subscription($amount, $phoneNumber))->purchase($phone, $mpesa);

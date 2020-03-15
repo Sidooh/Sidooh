@@ -120,7 +120,7 @@ class UssdRepository
             $response .= "3. Sidooh Bonus \n";
             $response .= "4. Other \n\n";
 
-        } else if (count($this->parse_text($text)) == 4 && $this->parse_text($text)[1] == 1 && $this->parse_text($text)[3] == 1) {
+        } else if (count($this->parse_text($text)) == 4 && $this->parse_text($text)[0] == 1 && $this->parse_text($text)[1] == 1 && $this->parse_text($text)[3] == 1) {
             $amount = $this->parse_text($text)[2];
 
             $response = "CON Ksh $amount airtime for $phoneNumber will be deducted from your MPESA\n";
@@ -128,7 +128,7 @@ class UssdRepository
             $response .= "2. Cancel \n";
             $response .= "3. Enter Mpesa Number \n\n";
 
-        } else if (count($this->parse_text($text)) == 5 && $this->parse_text($text)[1] == 2 && $this->parse_text($text)[4] == 1) {
+        } else if (count($this->parse_text($text)) == 5 && $this->parse_text($text)[0] == 1 && $this->parse_text($text)[1] == 2 && $this->parse_text($text)[4] == 1) {
             $amount = $this->parse_text($text)[3];
             $phoneNumber = $this->parse_text($text)[2];
 
@@ -137,7 +137,7 @@ class UssdRepository
             $response .= "2. Cancel \n";
             $response .= "3. Enter Mpesa Number \n\n";
 
-        } else if (count($this->parse_text($text)) == 5 && $this->parse_text($text)[4] == 1) {
+        } else if (count($this->parse_text($text)) == 5 && $this->parse_text($text)[0] == 1 && $this->parse_text($text)[4] == 1) {
             $amount = $this->parse_text($text)[2];
 
             (new Airtime($amount, $phoneNumber))->purchase();

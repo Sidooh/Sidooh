@@ -96,7 +96,7 @@ class UssdRepository
             $response .= "1. Sidooh 1 @350Ksh/month \n";
             $response .= "2. Sidooh 2 @950Ksh/month \n";
 
-        } else if (count($this->parse_text($text)) == 3 && $this->parse_text($text)[1] == 1) {
+        } else if (count($this->parse_text($text)) == 3 && $this->parse_text($text)[0] == 1 && $this->parse_text($text)[1] == 1) {
             $amount = $this->parse_text($text)[2];
 
             $response = "CON Buy Ksh $amount airtime for $phoneNumber using: \n";
@@ -105,11 +105,11 @@ class UssdRepository
             $response .= "3. Sidooh Bonus \n";
             $response .= "4. Other \n\n";
 
-        } else if (count($this->parse_text($text)) == 3 && $this->parse_text($text)[1] == 2) {
+        } else if (count($this->parse_text($text)) == 3 && $this->parse_text($text)[0] == 1 && $this->parse_text($text)[1] == 2) {
 
             $response = "CON Enter amount:\n(Min: Ksh 5. Max: Ksh 10,000) \n\n";
 
-        } else if (count($this->parse_text($text)) == 4 && $this->parse_text($text)[1] == 2) {
+        } else if (count($this->parse_text($text)) == 4 && $this->parse_text($text)[0] == 1 && $this->parse_text($text)[1] == 2) {
 
             $amount = $this->parse_text($text)[3];
             $phoneNumber = $this->parse_text($text)[2];

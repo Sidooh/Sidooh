@@ -81,7 +81,8 @@ class UssdRepository
             $response .= "2. Other Number\n\n";
 
         } else if ($text == "2") {
-            $response = "END Coming soon...";
+            $response = "CON What would you like to pay for?\n";
+            $response .= "1. Sidooh Subscription \n";
 
         } else if ($text == "1*1") {
             $response = "CON Enter amount: \n(Min: Ksh 5. Max: Ksh 10,000) \n\n";
@@ -89,6 +90,11 @@ class UssdRepository
         } else if ($text == "1*2") {
 
             $response = "CON Enter phone number \n\n";
+
+        } else if ($text == "2*1") {
+            $response = "CON Please select option\n";
+            $response .= "1. Sidooh 1 @350Ksh/month \n";
+            $response .= "2. Sidooh 2 @950Ksh/month \n";
 
         } else if (count($this->parse_text($text)) == 3 && $this->parse_text($text)[1] == 1) {
             $amount = $this->parse_text($text)[2];
@@ -219,6 +225,69 @@ class UssdRepository
                 $response = "CON Sorry the number you entered is not valid, please use the correct format (2547xxxxxxxx)\n\n";
             }
 
+        } else if ($text == "2*1*1") {
+            $response = "CON Pay Ksh350 to Sidooh for Subscription 1 using:\n";
+            $response .= "1. MPESA \n";
+            $response .= "2. Sidooh Points \n";
+            $response .= "3. Sidooh Bonus \n";
+            $response .= "4. Other \n\n";
+
+        } else if ($text == "2*1*2") {
+            $response = "CON Pay Ksh950 to Sidooh for Subscription 1 using:\n";
+            $response .= "1. MPESA \n";
+            $response .= "2. Sidooh Points \n";
+            $response .= "3. Sidooh Bonus \n";
+            $response .= "4. Other \n\n";
+
+        } else if ($text == "2*1*1*1") {
+            $response = "CON Ksh350 for Sidooh Subscription 1 will be deducted from your MPESA:\n";
+            $response .= "1. Accept \n";
+            $response .= "2. Cancel \n";
+            $response .= "3. Enter Mpesa Number \n\n";
+
+        } else if ($text == "2*1*2*1") {
+            $response = "CON Ksh950 for Sidooh Subscription 2 will be deducted from your MPESA:\n";
+            $response .= "1. Accept \n";
+            $response .= "2. Cancel \n";
+            $response .= "3. Enter Mpesa Number \n\n";
+
+        } else if ($text == "2*1*1*1*1") {
+            $amount = 350;
+            $phone = $this->parse_text($text)[2];
+            $mpesa = $this->parse_text($text)[6];
+
+//            TODO:: suscription flow picks up here
+//            (new Subscription($amount, $phoneNumber))->purchase($phone, $mpesa);
+
+            $response = "END Your request has been received and is being processed. You will receive a confirmation SMS shortly. \nThank you.";
+
+        } else if ($text == "2*1*2*1*1") {
+            $amount = 950;
+            $phone = $this->parse_text($text)[2];
+            $mpesa = $this->parse_text($text)[6];
+
+//            TODO:: suscription flow picks up here
+//            (new Subscription($amount, $phoneNumber))->purchase($phone, $mpesa);
+
+            $response = "END Your request has been received and is being processed. You will receive a confirmation SMS shortly. \nThank you.";
+
+        } else if ($text == "2*1*1*1*3") {
+            $response = "CON Enter Mpesa Number\n";
+
+        } else if (count($this->parse_text($text)) == 6 && $this->parse_text($text)[4] == 3) {
+            $arr = $this->parse_text($text);
+            $phone = end($arr);
+
+            try {
+
+                $phone = PhoneNumber::make($phone, 'KE')->formatE164();
+
+                //            TODO:: suscription flow picks up here
+
+
+            } catch (NumberParseException $e) {
+                $response = "CON Sorry the number you entered is not valid, please use the correct format (2547xxxxxxxx)\n\n";
+            }
         }
 
         if (count($this->parse_text($text)) > 1 && count($this->parse_text($text)) < 5) {

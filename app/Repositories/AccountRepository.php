@@ -227,7 +227,7 @@ class AccountRepository extends Model
 
     public function earnings(Account $account, $start_date = null)
     {
-        $earnings = $start_date != null ? $account->earnings()->whereDate('created_at', '>', $start_date->toDateString())->get() : $account->earnings;
+        $earnings = $start_date != null ? $account->earnings()->whereDate('created_at', '>', $start_date->toDateTimeString())->get() : $account->earnings;
 
         return $earnings;
 
@@ -235,7 +235,7 @@ class AccountRepository extends Model
 
     public function withdrawals(Account $account, $start_date = null)
     {
-        $withdrawals = $start_date ? $account->transactions()->whereType('WITHDRAWAL')->whereDate('created_at', '>=', $start_date)->get() : $account->transactions()->whereType('WITHDRAWAL')->get();
+        $withdrawals = $start_date ? $account->transactions()->whereType('WITHDRAWAL')->whereDate('created_at', '>=', $start_date->toDateTimeString())->get() : $account->transactions()->whereType('WITHDRAWAL')->get();
 
         return $withdrawals;
 

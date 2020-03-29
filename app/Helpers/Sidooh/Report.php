@@ -117,7 +117,7 @@ class Report
 
         $this->start_date = $transaction ? Carbon::createFromTimeStamp(strtotime($transaction->created_at)) : null;
 
-//        Log::info([$this->start_date, $transaction]);
+//        Log::info([Carbon::createFromTimeStamp(strtotime($transaction->created_at)), $transaction]);
     }
 
     private function setEarnings()

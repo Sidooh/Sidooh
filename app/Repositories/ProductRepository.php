@@ -7,13 +7,17 @@ namespace App\Repositories;
 use App\Events\AirtimePurchaseEvent;
 use App\Events\AirtimePurchaseFailedEvent;
 use App\Events\AirtimePurchaseSuccessEvent;
+use App\Events\SubscriptionPurchaseEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Model\Product;
+use App\Model\SubscriptionType;
 use App\Model\Transaction;
 use App\Models\AirtimeRequest;
 use App\Models\AirtimeResponse;
+use App\Models\Subscription;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 
 class ProductRepository
@@ -58,6 +62,9 @@ class ProductRepository
 
             $req->responses()->createMany($response['data']['responses']);
 
+//            TODO:: Remove from here and await callback
+//            event(new AirtimePurchaseSuccessEvent($req->responses()->first()));
+
         });
 
         event(new AirtimePurchaseEvent($req));
@@ -78,7 +85,8 @@ class ProductRepository
 
     private function fireAirtimePurchaseEvent(AirtimeResponse $response, array $request)
     {
-
+//        TODO:: Remove Sent from airtime purchase event
+//        || $request['status'] == 'Sent'
         if ($request['status'] == 'Success') {
             event(new AirtimePurchaseSuccessEvent($response));
         } else {
@@ -101,5 +109,35 @@ class ProductRepository
         else {
             return $obj;
         }
+    }
+
+    public function subscription(Transaction $transaction, int $amount): Subscription
+    {
+        $subscription = [
+            'amount' => $amount,
+            'active' => true,
+        ];
+
+        Log::info((string)(int)$transaction->amount);
+
+        $sub = Subscription::create($subscription);
+
+//        DB::transaction(function () use ($sub, $amount, $transaction) {
+        $type = SubscriptionType::whereAmount((string)(int)$transaction->amount)->firstOrFail();
+
+        $sub->subscription_type()->associate($type);
+        $sub->account()->associate($transaction->account);
+
+        $transaction->status = 'success';
+        $transaction->save();
+
+        $sub->save();
+
+//        });
+
+        event(new SubscriptionPurchaseEvent($sub, $transaction));
+
+        return $sub;
+
     }
 }

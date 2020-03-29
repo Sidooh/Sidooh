@@ -37,8 +37,9 @@ class TransactionRepository extends Model
 
         $responses = $airtime_request->responses;
 
+//        TODO:: Remove Sent from successful
         $successful = $responses->filter(function ($value, $key) {
-            return $value->status == 'Success';
+            return $value->status == 'Success' || $value->status == 'Sent';
         });
 
         if (count($successful) == count($responses)) {
@@ -49,13 +50,18 @@ class TransactionRepository extends Model
 
             $transaction->save();
 
-//            TODO:: add transaction successful event to proceed to earnings
-
             $totalEarned = explode(" ", $airtime_request->totalDiscount)[1];
 
             event(new TransactionSuccessEvent($transaction, $totalEarned));
         }
 
+    }
+
+    public function updateToSuccess(Transaction $transaction)
+    {
+        $transaction->status = 'success';
+
+        $transaction->save();
     }
 
 //    public function store(Request $request): Account

@@ -35,7 +35,11 @@ class EarningRepository extends Model
 
         $acc = $transaction->account;
 
-        $groupEarnings = $earnings * .75;
+        $groupEarnings = round($earnings * .75, 4);
+
+        $userEarnings = round($groupEarnings / 7, 4);
+
+        $totalLeftOverEarnings = $groupEarnings;
 
         if ($transaction->amount >= 20) {
 
@@ -43,16 +47,20 @@ class EarningRepository extends Model
                 $e = Earning::create([
                     'account_id' => $acc->id,
                     'transaction_id' => $transaction->id,
-                    'earnings' => $groupEarnings
+                    'earnings' => $userEarnings
                 ]);
-            } else {
-                $referrals = (new AccountRepository)->nth_level_referrers($acc, 6, false);
 
-                $userEarnings = $groupEarnings / (count($referrals) + 1);
+                $totalLeftOverEarnings -= $userEarnings;
+
+            } else {
+                $referrals = (new AccountRepository)->subscribed_nth_level_referrers($acc, 6, false);
+
+                if (count($referrals) + 1 > 7)
+                    abort(500);
 
                 $now = Carbon::now('utc')->toDateTimeString();
 
-                $earnings = array(
+                $userEarning = array(
                     [
                         'account_id' => $acc->id,
                         'transaction_id' => $transaction->id,
@@ -62,19 +70,47 @@ class EarningRepository extends Model
                     ]
                 );
 
+                $totalLeftOverEarnings -= $userEarnings;
+
                 foreach ($referrals as $referral) {
-                    array_push($earnings, [
+                    array_push($userEarning, [
                         'account_id' => $referral->id,
                         'transaction_id' => $transaction->id,
                         'earnings' => $userEarnings,
                         'created_at' => $now,
                         'updated_at' => $now
                     ]);
+
+                    $totalLeftOverEarnings -= $userEarnings;
                 }
 
-                $e = Earning::insert($earnings);
+                $e = Earning::insert($userEarning);
 
             }
+
+            $now = Carbon::now('utc')->toDateTimeString();
+
+            $systemEarnings = array(
+                [
+//                    'account_id' => $acc->id,
+                    'transaction_id' => $transaction->id,
+                    'earnings' => $earnings - $groupEarnings,
+                    'created_at' => $now,
+                    'updated_at' => $now
+                ]
+            );
+
+            if ($totalLeftOverEarnings > 0) {
+                array_push($systemEarnings, [
+//                    'account_id' => $referral->id,
+                    'transaction_id' => $transaction->id,
+                    'earnings' => $totalLeftOverEarnings,
+                    'created_at' => $now,
+                    'updated_at' => $now
+                ]);
+            }
+
+            $e = Earning::insert($systemEarnings);
 
             $transaction->status = 'completed';
             $transaction->save();
@@ -82,86 +118,5 @@ class EarningRepository extends Model
         }
 
     }
-
-//    public function store(Request $request): Account
-//    {
-//        $phone = ltrim(PhoneNumber::make($request['phone'], 'KE')->formatE164(), '+');
-//
-//        $referral = (new ReferralRepository)->findByPhone($phone);
-//
-//        $arr = [
-//            'telco_id' => 1,
-//            'phone' => $phone,
-//            'referrer_id' => $referral ? $referral->account_id : null
-//        ];
-//
-//        $acc = $this->firstOrCreate($arr);
-//
-//        if ($referral) {
-//            $referral->referee_id = $acc->id;
-//            $referral->status = 'active';
-//
-//            $referral->save();
-//        }
-//
-//        return $acc;
-//
-//    }
-//
-//    public function create(array $acc): Account
-//    {
-//        $phone = ltrim(PhoneNumber::make($acc['phone'], 'KE')->formatE164(), '+');
-//
-//        $referral = (new ReferralRepository)->findByPhone($phone);
-//
-//        $arr = [
-//            'telco_id' => 1,
-//            'phone' => $phone,
-//            'referrer_id' => $referral ? $referral->account_id : null
-//        ];
-//
-//        $acc = $this->firstOrCreate($arr);
-//
-//        if ($referral) {
-//            $referral->referee_id = $acc->id;
-//            $referral->status = 'active';
-//
-//            $referral->save();
-//        }
-//
-//        return $acc;
-//
-//    }
-//
-//    public function getReferrer(Account $account, $level): Account
-//    {
-//        if ($level)
-//            return $this->nth_level_referrers($account, $level);
-//
-//        return $account->referrer ?? abort(404, "No referrer found for this account.");
-//    }
-//
-//    /**
-//     * Display the specified resource.
-//     *
-//     * @param Account $account
-//     * @return Account
-//     */
-//    public function nth_level_referrers(Account $account, $level = 1, $withAccount = true)
-//    {
-//        //
-//        $max_level = 6;
-//
-//        $level = $level > $max_level ? $max_level : $level;
-//
-////        TODO: try get specific depth then use path to get user ids for earnings module possibly
-//        if (!$withAccount)
-//            return $account->ancestors()->whereDepth('>=', -$level)->get();
-//
-//        $account['level_referrers'] = $account->ancestors()->whereDepth('>=', -$level)->get();
-//
-//        return $account;
-//    }
-
 
 }

@@ -6,6 +6,8 @@ namespace App\Repositories;
 
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Helpers\Sidooh\Airtime;
+use App\Helpers\Sidooh\Subscription;
+use App\Model\SubscriptionType;
 use App\Model\User;
 use App\Models\UssdLog;
 use App\Models\UssdLogs;
@@ -252,19 +254,17 @@ class UssdRepository
             $response .= "3. Enter Mpesa Number \n\n";
 
         } else if ($text == "2*1*1*1*1") {
-            $amount = 350;
+            $type = SubscriptionType::whereAmount('350')->firstOrFail();
 
-//            TODO:: suscription flow picks up here
-//            (new Subscription($amount, $phoneNumber))->purchase($phone, $mpesa);
+            (new Subscription($type, $phoneNumber))->purchase();
 
             $response = "END Your request has been received and is being processed. You will receive a confirmation SMS shortly. \nThank you.";
 
         } else if ($text == "2*1*2*1*1") {
-            $amount = 950;
+            $type = SubscriptionType::whereAmount('950')->firstOrFail();
 
-//            TODO:: suscription flow picks up here
-//            (new Subscription($amount, $phoneNumber))->purchase($phone, $mpesa);
-
+            (new Subscription($type, $phoneNumber))->purchase();
+//
             $response = "END Your request has been received and is being processed. You will receive a confirmation SMS shortly. \nThank you.";
 
         } else if ($text == "2*1*1*1*3") {
@@ -278,8 +278,9 @@ class UssdRepository
 
                 $phone = PhoneNumber::make($phone, 'KE')->formatE164();
 
-                //            TODO:: suscription flow picks up here
+                $type = SubscriptionType::whereAmount(950)->findOrFail();
 
+                (new Subscription($type, $phoneNumber))->purchase($phone);
 
             } catch (NumberParseException $e) {
                 $response = "CON Sorry the number you entered is not valid, please use the correct format (2547xxxxxxxx)\n\n";

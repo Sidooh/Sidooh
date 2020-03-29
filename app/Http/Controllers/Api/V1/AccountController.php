@@ -8,6 +8,7 @@ use App\Http\Resources\AccountResource;
 use App\Model\Account;
 use App\Repositories\AccountRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class AccountController extends Controller
 {
@@ -26,7 +27,7 @@ class AccountController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -37,7 +38,7 @@ class AccountController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -84,7 +85,7 @@ class AccountController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Account $account
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Account $account)
     {
@@ -94,9 +95,9 @@ class AccountController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param Account $account
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, Account $account)
     {
@@ -107,7 +108,7 @@ class AccountController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Account $account
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Account $account)
     {
@@ -123,7 +124,21 @@ class AccountController extends Controller
     public function referrals(Account $account)
     {
         //
-        return new AccountResource($this->account->with(['pendingReferrals', 'activeReferrals'])->find($account->id));
+        return new AccountResource($this->account->with(['pending_referrals', 'active_referrals'])->find($account->id));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Request $request
+     * @param Account $account
+     * @return AccountResource
+     */
+    public function referrer(Request $request, Account $account)
+    {
+        //
+
+        return new AccountResource($this->account->getReferrer($account, $request->query('level'), $request->query('subscribed')));
     }
 
     /**
@@ -132,10 +147,9 @@ class AccountController extends Controller
      * @param Account $account
      * @return AccountResource
      */
-    public function referrer(Request $request, Account $account)
+    public function subscriptions(Account $account)
     {
         //
-
-        return new AccountResource($this->account->getReferrer($account, $request->query('level')));
+        return new AccountResource($this->account->with(['active_subscription'])->find($account->id));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Models\Subscription;
 use Illuminate\Database\Eloquent\Model;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
@@ -24,9 +25,14 @@ class Account extends Model
         'telco_id', 'phone', 'referrer_id'
     ];
 
-    public function subscription()
+    public function subscriptions()
     {
-        return true;
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function active_subscription()
+    {
+        return $this->hasMany(Subscription::class)->active();
     }
 
     public function isRoot()
@@ -34,12 +40,12 @@ class Account extends Model
         return $this->referrer_id == null;
     }
 
-    public function pendingReferrals()
+    public function pending_referrals()
     {
         return $this->hasMany(Referral::class)->pending();
     }
 
-    public function activeReferrals()
+    public function active_referrals()
     {
         return $this->hasMany(Referral::class)->active();
     }
@@ -49,15 +55,30 @@ class Account extends Model
         return $this->belongsTo(Account::class, 'referrer_id');
     }
 
-//    /**
-//     * Scope a query to only include active subscriptions.
-//     *
-//     * @param Builder $query
-//     * @return Builder
-//     */
-//    public function scopeSubscribed($query)
-//    {
-//        return $query->whereStatus('pending')->timeActive($query);
-//    }
+    /**
+     * Scope a query to only include active subscriptions.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeSubscribed($query)
+    {
+        return $query->whereHas('active_subscription');
+    }
+
+    /**
+     * Scope a query to only include active subscriptions for respective level.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeSubscribedLevel($query, $level)
+    {
+        return $query->whereHas('active_subscription', function ($q) use ($level) {
+            $q->whereHas('subscription_type', function ($q) use ($level) {
+                $q->where('level_limit', '<=', $level);
+            });
+        })->whereDepth('>=', -$level);
+    }
 
 }

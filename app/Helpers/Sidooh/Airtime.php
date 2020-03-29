@@ -184,7 +184,7 @@ class Airtime
     {
         Log::info('====== Airtime Purchase ======');
 
-        $description = $targetNumber ? "Airtime Purchase - $targetNumber" : "Airtime Purchase";
+        $description = $targetNumber ? "Airtime Purchase - $targetNumber" : $mpesaNumber ? "Airtime Purchase - $this->phone" : "Airtime Purchase";
         $number = $mpesaNumber ?? $this->phone;
 
         $stkResponse = mpesa_request($number, $this->amount, '001-AIRTIME', $description);;

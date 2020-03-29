@@ -20,6 +20,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::apiResource('accounts', 'AccountController', ['only' => ['index', 'store', 'show']]);
     Route::get('accounts/{account}/referrer', 'AccountController@referrer')->name('accounts.referrer');
     Route::get('accounts/{account}/referrals', 'AccountController@referrals')->name('accounts.referrals');
+    Route::get('accounts/{account}/subscriptions', 'AccountController@subscriptions')->name('accounts.subscriptions');
 
     Route::apiResource('transactions', 'TransactionController', ['only' => ['index', 'store', 'show']]);
 
@@ -27,6 +28,9 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
 
     Route::apiResource('referrals', 'ReferralController', ['only' => ['index', 'store']]);
     Route::get('referrals/{phone}', 'ReferralController@byPhone')->name('referrals.byPhone');
+
+    Route::apiResource('subscriptions', 'SubscriptionController', ['only' => ['index', 'store', 'show']]);
+
 
     Route::post('ussd', 'UssdController@index')->name('ussd');
 

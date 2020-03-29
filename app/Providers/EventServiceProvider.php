@@ -5,12 +5,14 @@ namespace App\Providers;
 use App\Events\AirtimePurchaseFailedEvent;
 use App\Events\AirtimePurchaseSuccessEvent;
 use App\Events\ReferralJoinedEvent;
+use App\Events\SubscriptionPurchaseEvent;
 use App\Events\TransactionSuccessEvent;
 use App\Listeners\AirtimePurchaseFailed;
 use App\Listeners\AirtimePurchaseSuccess;
 use App\Listeners\ReferralJoined;
 use App\Listeners\StkPaymentFailed;
 use App\Listeners\StkPaymentReceived;
+use App\Listeners\SubscriptionPurchaseSuccess;
 use App\Listeners\TransactionSuccess;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -52,7 +54,11 @@ class EventServiceProvider extends ServiceProvider
 
         ReferralJoinedEvent::class => [
             ReferralJoined::class
-        ]
+        ],
+
+        SubscriptionPurchaseEvent::class => [
+            SubscriptionPurchaseSuccess::class
+        ],
     ];
 
     /**

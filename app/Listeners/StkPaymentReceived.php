@@ -35,22 +35,33 @@ class StkPaymentReceived
 
         $other_phone = explode(" - ", $stk->request->description);
 
-        if (count($other_phone) > 1)
-            $airtime = [
-                'phone' => $other_phone[1],
-                'amount' => $stk->Amount
-            ];
-        else
-            $airtime = [
-                'phone' => $stk->PhoneNumber,
-                'amount' => $stk->Amount
-            ];
-
         $p = Payment::wherePaymentId($stk->id)->firstOrFail();
         $p->status = 'Complete';
 
         $p->save();
 
-        (new ProductRepository())->airtime($p->payable, $airtime);
+        switch ($stk->request->reference) {
+            case '001-AIRTIME':
+                if (count($other_phone) > 1)
+                    $airtime = [
+                        'phone' => $other_phone[1],
+                        'amount' => $stk->Amount
+                    ];
+                else
+                    $airtime = [
+                        'phone' => $stk->PhoneNumber,
+                        'amount' => $stk->Amount
+                    ];
+
+                (new ProductRepository())->airtime($p->payable, $airtime);
+
+                break;
+
+            case '002-SUBS':
+
+                (new ProductRepository())->subscription($p->payable, $stk->Amount);
+        }
+
+
     }
 }

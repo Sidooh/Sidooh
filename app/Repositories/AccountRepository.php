@@ -86,8 +86,11 @@ class AccountRepository extends Model
 
     }
 
-    public function getReferrer(Account $account, $level): Account
+    public function getReferrer(Account $account, $level, $subscribed = false): Account
     {
+        if ($subscribed)
+            return $this->subscribed_nth_level_referrers($account, $level);
+
         if ($level)
             return $this->nth_level_referrers($account, $level);
 
@@ -109,6 +112,7 @@ class AccountRepository extends Model
 
         $level = $level > $max_level ? $max_level : $level;
 
+
 //        TODO: try get specific depth then use path to get user ids for earnings module possibly
         if (!$withAccount)
             return $account->ancestors()->whereDepth('>=', -$level)->get();
@@ -116,6 +120,98 @@ class AccountRepository extends Model
         $account['level_referrers'] = $account->ancestors()->whereDepth('>=', -$level)->get();
 
         return $account;
+    }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Account $account
+     * @param int $level
+     * @param bool $withAccount
+     * @return Account
+     */
+    public function subscribed_nth_level_referrers(Account $account, $level = 1, $withAccount = true)
+    {
+        //
+        $account_refs = $this->nth_level_referrers($account, $level, $withAccount);
+
+        if (!$withAccount)
+
+            $account = $account_refs->map(function ($item) {
+                $depth = abs((int)$item->depth);
+                $sub = $item->active_subscription->last();
+
+                if ($depth == 1)
+                    return $item->withoutRelations();
+
+                if ($depth < 4) {
+
+                    if ($sub) {
+                        $subtype = $sub->subscription_type;
+
+                        if ($subtype->level_limit == 4)
+                            return $item->withoutRelations();
+
+                    }
+
+                }
+
+                if ($depth <= 6) {
+
+                    if ($sub) {
+                        $subtype = $sub->subscription_type;
+
+                        if ($subtype->level_limit == 6)
+                            return $item->withoutRelations();
+
+                    }
+
+                }
+
+                return null;
+
+            })->filter()->all();
+
+        else
+
+            $account['level_referrers'] = $account_refs->level_referrers->map(function ($item) {
+                $depth = abs((int)$item->depth);
+                $sub = $item->active_subscription->last();
+
+                if ($depth == 1)
+                    return $item->withoutRelations();
+
+                if ($depth < 4) {
+
+                    if ($sub) {
+                        $subtype = $sub->subscription_type;
+
+                        if ($subtype->level_limit == 4)
+                            return $item->withoutRelations();
+
+                    }
+
+                }
+
+                if ($depth <= 6) {
+
+                    if ($sub) {
+                        $subtype = $sub->subscription_type;
+
+                        if ($subtype->level_limit == 6)
+                            return $item->withoutRelations();
+
+                    }
+
+                }
+
+                return null;
+
+            })->filter()->all();
+
+        return $account;
+
     }
 
     public function findByPhone($phoneNumber, $throw = true)

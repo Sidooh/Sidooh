@@ -33,7 +33,6 @@ class TransactionSuccessEvent
     public function __construct(Transaction $transaction, float $totalEarned)
     {
         //
-
         $this->transaction = $transaction;
         $this->totalEarned = $totalEarned;
 

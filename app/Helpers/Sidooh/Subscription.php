@@ -71,7 +71,8 @@ class Subscription
         $transaction = new Transaction();
 
         $transaction->amount = (int)$this->type->amount;
-        $transaction->type = 'Subscription';
+        $transaction->type = 'PAYMENT';
+        $transaction->type = 'Subscription Purchase';
         $transaction->account_id = $account->id;
         $transaction->product_id = $product->id;
 

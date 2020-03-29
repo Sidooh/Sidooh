@@ -25,6 +25,16 @@ class Account extends Model
         'telco_id', 'phone', 'referrer_id'
     ];
 
+    public function isRoot()
+    {
+        return $this->referrer_id == null;
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
@@ -33,11 +43,6 @@ class Account extends Model
     public function active_subscription()
     {
         return $this->hasMany(Subscription::class)->active();
-    }
-
-    public function isRoot()
-    {
-        return $this->referrer_id == null;
     }
 
     public function pending_referrals()
@@ -53,6 +58,11 @@ class Account extends Model
     public function referrer()
     {
         return $this->belongsTo(Account::class, 'referrer_id');
+    }
+
+    public function earnings()
+    {
+        return $this->hasMany(Earning::class);
     }
 
     /**

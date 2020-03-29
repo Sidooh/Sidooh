@@ -224,4 +224,35 @@ class AccountRepository extends Model
                 ->first();
     }
 
+    public function earnings(Account $account, $start_date = null)
+    {
+        $earnings = $start_date != null ? $account->earnings()->whereDate('created_at', '>', $start_date->toDateString())->get() : $account->earnings;
+
+        return $earnings;
+
+    }
+
+    public function withdrawals(Account $account, $start_date = null)
+    {
+        $withdrawals = $start_date ? $account->transactions()->whereType('WITHDRAWAL')->whereDate('created_at', '>=', $start_date)->get() : $account->transactions()->whereType('WITHDRAWAL')->get();
+
+        return $withdrawals;
+
+    }
+
+    public function earningsSummary($phoneNumber)
+    {
+        $acc = $this->findByPhone($phoneNumber);
+
+        //        TODO:: USE ONE QUERY FOR DB THEN COLLECTION FILTER? MORE EFFICIENT?
+//        $acc = $this->account->find($account->id);
+        $acc['total_earnings'] = $acc->earnings->sum('earnings');
+
+        $acc['self_earnings'] = $acc->earnings()->whereType('SELF')->sum('earnings');
+        $acc['referral_earnings'] = $acc->earnings()->whereType('REFERRAL')->sum('earnings');
+
+        return $acc;
+
+    }
+
 }

@@ -21,6 +21,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::get('accounts/{account}/referrer', 'AccountController@referrer')->name('accounts.referrer');
     Route::get('accounts/{account}/referrals', 'AccountController@referrals')->name('accounts.referrals');
     Route::get('accounts/{account}/subscriptions', 'AccountController@subscriptions')->name('accounts.subscriptions');
+    Route::get('accounts/{account}/earnings', 'AccountController@earnings')->name('accounts.earnings');
 
     Route::apiResource('transactions', 'TransactionController', ['only' => ['index', 'store', 'show']]);
 

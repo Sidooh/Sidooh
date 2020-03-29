@@ -47,7 +47,8 @@ class EarningRepository extends Model
                 $e = Earning::create([
                     'account_id' => $acc->id,
                     'transaction_id' => $transaction->id,
-                    'earnings' => $userEarnings
+                    'earnings' => $userEarnings,
+                    'type' => 'SELF'
                 ]);
 
                 $totalLeftOverEarnings -= $userEarnings;
@@ -65,6 +66,7 @@ class EarningRepository extends Model
                         'account_id' => $acc->id,
                         'transaction_id' => $transaction->id,
                         'earnings' => $userEarnings,
+                        'type' => 'SELF',
                         'created_at' => $now,
                         'updated_at' => $now
                     ]
@@ -77,6 +79,7 @@ class EarningRepository extends Model
                         'account_id' => $referral->id,
                         'transaction_id' => $transaction->id,
                         'earnings' => $userEarnings,
+                        'type' => 'REFERRAL',
                         'created_at' => $now,
                         'updated_at' => $now
                     ]);
@@ -95,6 +98,7 @@ class EarningRepository extends Model
 //                    'account_id' => $acc->id,
                     'transaction_id' => $transaction->id,
                     'earnings' => $earnings - $groupEarnings,
+                    'type' => 'SYSTEM',
                     'created_at' => $now,
                     'updated_at' => $now
                 ]
@@ -105,6 +109,7 @@ class EarningRepository extends Model
 //                    'account_id' => $referral->id,
                     'transaction_id' => $transaction->id,
                     'earnings' => $totalLeftOverEarnings,
+                    'type' => 'SYSTEM',
                     'created_at' => $now,
                     'updated_at' => $now
                 ]);

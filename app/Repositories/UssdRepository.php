@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Helpers\Sidooh\Airtime;
+use App\Helpers\Sidooh\Report;
 use App\Helpers\Sidooh\Subscription;
 use App\Model\SubscriptionType;
 use App\Model\User;
@@ -55,7 +56,7 @@ class UssdRepository
             $response .= "2. Pay \n";
             $response .= "3. Save \n";
             $response .= "4. Refer \n";
-            $response .= "5. Check My Account";
+            $response .= "5. My Account";
 
         }
 
@@ -85,6 +86,42 @@ class UssdRepository
         } else if ($text == "2") {
             $response = "CON What would you like to pay for?\n";
             $response .= "1. Sidooh Subscription \n";
+
+        } else if ($text == "5") {
+            $response = "CON What would you like to do?\n";
+            $response .= "1. KYC details (Coming very soon)\n";
+            $response .= "2. Earnings Report \n";
+            $response .= "3. Redeem (Coming even sooner)\n";
+
+        } else if ($text == "5*1") {
+            $response = "CON Your details are as follows.\n";
+            $response .= "\nName: ";
+            $response .= "\nID Number: ";
+            $response .= "\nNumber: " . $phoneNumber;
+
+            $response .= "\n\n1. Update details\n";
+
+        } else if ($text == "5*2") {
+            $response = "CON This will cost 1 Sidooh point. Proceed?\n";
+            $response .= "1. Accept \n";
+
+        } else if ($text == "5*3") {
+            $response = "CON Redeem to?\n";
+            $response .= "1. MPESA \n";
+            $response .= "2. Lipa Na Sidooh \n";
+
+        } else if ($text == "5*2*1") {
+            $response = "END You will receive an SMS message shortly.";
+
+            (new Report($phoneNumber))->generate();
+
+        } else if ($text == "5*3*1") {
+            $response = "END Coming soon";
+
+
+        } else if ($text == "5*3*2") {
+            $response = "END Coming soon";
+
 
         } else if ($text == "1*1") {
             $response = "CON Enter amount: \n(Min: Ksh 5. Max: Ksh 10,000) \n\n";
@@ -287,10 +324,10 @@ class UssdRepository
             }
         }
 
-        if (count($this->parse_text($text)) > 1 && count($this->parse_text($text)) < 5) {
-            $response .= "0. Back \n";
-            $response .= "00. Home";
-        }
+//        if (count($this->parse_text($text)) > 1 && count($this->parse_text($text)) < 5) {
+//            $response .= "0. Back \n";
+//            $response .= "00. Home";
+//        }
 
 // Echo the response back to the API
         header('Content-type: text/plain');

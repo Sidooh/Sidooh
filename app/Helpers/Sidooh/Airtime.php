@@ -184,7 +184,7 @@ class Airtime
     {
         Log::info('====== Airtime Purchase ======');
 
-        $description = $targetNumber ? "Airtime Purchase - $targetNumber" : $mpesaNumber ? "Airtime Purchase - $this->phone" : "Airtime Purchase";
+        $description = ($targetNumber ? "Airtime Purchase - $targetNumber" : $mpesaNumber) ? "Airtime Purchase - $this->phone" : "Airtime Purchase";
         $number = $mpesaNumber ?? $this->phone;
 
         $stkResponse = mpesa_request($number, $this->amount, '001-AIRTIME', $description);;
@@ -200,7 +200,8 @@ class Airtime
         $transaction = new Transaction();
 
         $transaction->amount = $this->amount;
-        $transaction->type = 'Payment';
+        $transaction->type = 'PAYMENT';
+        $transaction->description = $targetNumber ? "Airtime Purchase - $targetNumber" : "Airtime Purchase";
         $transaction->account_id = $account->id;
         $transaction->product_id = $product->id;
 

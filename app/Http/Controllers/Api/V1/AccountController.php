@@ -152,4 +152,16 @@ class AccountController extends Controller
         //
         return new AccountResource($this->account->with(['active_subscription'])->find($account->id));
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Account $account
+     * @return AccountResource
+     */
+    public function earnings(Account $account)
+    {
+        //
+        return new AccountResource($this->account->earningsSummary($account->phone));
+    }
 }

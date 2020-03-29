@@ -14,7 +14,7 @@ class Earning extends Model
      * @var array
      */
     protected $fillable = [
-        'earnings', 'account_id', 'transaction_id', 'aggregate_transactions'
+        'earnings', 'account_id', 'transaction_id', 'aggregate_transactions', 'type'
     ];
 
     public function account()

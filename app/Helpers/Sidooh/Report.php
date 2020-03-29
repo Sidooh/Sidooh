@@ -227,4 +227,15 @@ class Report
         return (new AfricasTalkingApi())->sms($this->phone, $msg);
     }
 
+    public function generateJson()
+    {
+        Log::info('====== Report Generation (Json) ======');
+
+        $this->setEarnings();
+
+        $this->setWithdrawals();
+
+        return json_encode(get_object_vars($this));
+    }
+
 }

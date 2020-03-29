@@ -164,4 +164,19 @@ class AccountController extends Controller
         //
         return new AccountResource($this->account->earningsSummary($account->phone));
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Account $account
+     * @return AccountResource
+     */
+    public function earningsReport(Account $account)
+    {
+        //
+
+        return $this->account->earningsReport($account->phone);
+        return new AccountResource($this->account->earningsReport($account->phone));
+    }
+
 }

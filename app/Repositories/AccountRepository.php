@@ -4,6 +4,7 @@
 namespace App\Repositories;
 
 use App\Events\ReferralJoinedEvent;
+use App\Helpers\Sidooh\Report;
 use App\Model\Account;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -253,6 +254,11 @@ class AccountRepository extends Model
 
         return $acc;
 
+    }
+
+    public function earningsReport($phoneNumber)
+    {
+        return (new Report($phoneNumber))->generateJson();
     }
 
 }

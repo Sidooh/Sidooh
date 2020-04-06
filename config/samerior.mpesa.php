@@ -85,31 +85,33 @@ return [
         /*
          * Sending app consumer key
          */
-        'consumer_key' => 'Ei4lr5xbDZXS9XEAZ1BhNE4xCBcAYGVyA',
+        'consumer_key' => env('MPESA_KEY'),
+//            'Ei4lr5xbDZXS9XEAZ1BhNE4xCBcAYGVyA',
         /*
          * Sending app consumer secret
          */
-        'consumer_secret' => 'eMhCDmzFQyx1SNSZ',
+        'consumer_secret' => env('MPESA_SECRET'),
+//            'eMhCDmzFQyx1SNSZ',
         /*
          * Shortcode sending funds
          */
-        'short_code' => 600000,
+        'short_code' => 600643,
         /*
         * This is the user initiating the transaction, usually from the Mpesa organization portal
         * Make sure this was the user who was used to 'GO LIVE'
         * https://org.ke.m-pesa.com/
         */
-        'initiator' => 'testapi',
+        'initiator' => 'TestInit643',
         /*
          * The user security credential.
          * Go to https://developer.safaricom.co.ke/test_credentials and paste your initiator password to generate
          * security credential
          */
-        'security_credential' => 'GXiVXirQFaJvEFOQyn+VJ4Gp3Ccvpoq6aqzFiNgvH18UMU59Qxc+UTAX7Blzo6L0+tQG2wUJ1fKH4YlPagtzDHT37796uu0NysS85uPjxZMjnbGhPNeHnhJLzwyrjppl8mZpnmVg4CaVrEdcriuyifKIiF1hmc0A/RnjBMzY6yevbIV0kAgrn5cDvCN99O1rr1nl69GaVbP7a/6AWnRkVUldnalQmqQhfgLbOdxjGOVGU2arqjuvgQ6glo1uK9PUnp3UH2Vv66Lu99JglWyjlcWufZhJXUmFFB9tfoKAX2URnPGi4PvvJ6OgJNdsJmTsevnG2c/KKOa45rzdvwrwKA==',
+        'security_credential' => 'NuaLznkkv0eEG0g51dESOPbAIg5IpAMRJSM74gO1FMhk+d36su7S2ND0mrlmE2XwMO0Gz0sk4NTaDpPGVK5VsUwQChsXbixmO3JL2TTEAWAVq/YNO6GN3sj6L/+654HzRufM2UKifuTQdBY3FitxFDMjwn5XbXg7QXXiNzv1ZBxyZhZmianAqrSFms5hS7fAZRVHoJnQ5yup4fgrjrK2KpNK5UjbEacRgymLMT5nVDKJRcvENa0YooiWt1Wo8PekaeqcV7V5W61esiCDH37AqMXyWxnHJ28fEF4WknCzsK19qMXOiMGrUA6IVNIjU6uYihCpoP361WZWFvSlSaP70A==',
         /*
          * Notification URL for timeout
          */
-        'timeout_url' => env('APP_URL') . '/payments/callbacks/timeout/',
+        'timeout_url' => env('APP_URL') . '/payments/callbacks/timeout_url/',
         /**
          * Result URL
          */

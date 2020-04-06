@@ -8,6 +8,7 @@ use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Helpers\Sidooh\Airtime;
 use App\Helpers\Sidooh\Report;
 use App\Helpers\Sidooh\Subscription;
+use App\Helpers\Sidooh\Withdrawal;
 use App\Model\SubscriptionType;
 use App\Model\User;
 use App\Models\UssdLog;
@@ -116,12 +117,17 @@ class UssdRepository
             (new Report($phoneNumber))->generate();
 
         } else if ($text == "5*3*1") {
-            $response = "END Coming soon";
-
+            $response = "CON Enter amount to redeem";
 
         } else if ($text == "5*3*2") {
             $response = "END Coming soon";
 
+        } else if (count($this->parse_text($text)) == 4 && $this->parse_text($text)[0] == 5 && $this->parse_text($text)[1] == 3) {
+            $amount = $this->parse_text($text)[3];
+
+            (new Withdrawal($phoneNumber))->withdraw($amount);
+
+            $response = "END You will receive an SMS message shortly.";
 
         } else if ($text == "1*1") {
             $response = "CON Enter amount: \n(Min: Ksh 5. Max: Ksh 10,000) \n\n";

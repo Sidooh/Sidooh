@@ -178,11 +178,37 @@ class UssdRepository
 
         } else if (count($this->parse_text($text)) == 3 && $this->parse_text($text)[0] == 1 && $this->parse_text($text)[1] == 2) {
 
-            $response = "CON Enter amount:\n(Min: Ksh 5. Max: Ksh 10,000) \n\n";
+            $response = "CON Enter amount: \n(Min: Ksh 20. Max: Ksh 100) \n\n";
+            $response .= "1. Ksh 20 \n";
+            $response .= "2. Ksh 30 \n";
+            $response .= "3. Ksh 50 \n";
+            $response .= "4. Ksh 70 \n";
+            $response .= "5. Ksh 100 \n\n";
 
         } else if (count($this->parse_text($text)) == 4 && $this->parse_text($text)[0] == 1 && $this->parse_text($text)[1] == 2) {
 
-            $amount = $this->parse_text($text)[3];
+            $choice = $this->parse_text($text)[3];
+
+            switch ($choice) {
+                case 1:
+                    $amount = 20;
+                    break;
+                case 2:
+                    $amount = 30;
+                    break;
+                case 3:
+                    $amount = 50;
+                    break;
+                case 4:
+                    $amount = 70;
+                    break;
+                case 5:
+                    $amount = 100;
+                    break;
+
+                default:
+                    throw new \Error('Wrong amount chosen');
+            }
             $phoneNumber = $this->parse_text($text)[2];
 
             $response = "CON Buy Ksh $amount airtime for $phoneNumber using: \n";
@@ -192,7 +218,28 @@ class UssdRepository
             $response .= "4. Other \n\n";
 
         } else if (count($this->parse_text($text)) == 4 && $this->parse_text($text)[0] == 1 && $this->parse_text($text)[1] == 1 && $this->parse_text($text)[3] == 1) {
-            $amount = $this->parse_text($text)[2];
+            $choice = $this->parse_text($text)[2];
+
+            switch ($choice) {
+                case 1:
+                    $amount = 20;
+                    break;
+                case 2:
+                    $amount = 30;
+                    break;
+                case 3:
+                    $amount = 50;
+                    break;
+                case 4:
+                    $amount = 70;
+                    break;
+                case 5:
+                    $amount = 100;
+                    break;
+
+                default:
+                    throw new \Error('Wrong amount chosen');
+            }
 
             $response = "CON Ksh $amount airtime for $phoneNumber will be deducted from your MPESA\n";
             $response .= "1. Accept \n";
@@ -200,7 +247,28 @@ class UssdRepository
             $response .= "3. Enter Mpesa Number \n\n";
 
         } else if (count($this->parse_text($text)) == 5 && $this->parse_text($text)[0] == 1 && $this->parse_text($text)[1] == 2 && $this->parse_text($text)[4] == 1) {
-            $amount = $this->parse_text($text)[3];
+            $choice = $this->parse_text($text)[3];
+
+            switch ($choice) {
+                case 1:
+                    $amount = 20;
+                    break;
+                case 2:
+                    $amount = 30;
+                    break;
+                case 3:
+                    $amount = 50;
+                    break;
+                case 4:
+                    $amount = 70;
+                    break;
+                case 5:
+                    $amount = 100;
+                    break;
+
+                default:
+                    throw new \Error('Wrong amount chosen');
+            }
             $phoneNumber = $this->parse_text($text)[2];
 
             $response = "CON Ksh $amount airtime for $phoneNumber will be deducted from your MPESA\n";
@@ -209,7 +277,28 @@ class UssdRepository
             $response .= "3. Enter Mpesa Number \n\n";
 
         } else if (count($this->parse_text($text)) == 5 && $this->parse_text($text)[0] == 1 && $this->parse_text($text)[4] == 1) {
-            $amount = $this->parse_text($text)[2];
+            $choice = $this->parse_text($text)[2];
+
+            switch ($choice) {
+                case 1:
+                    $amount = 20;
+                    break;
+                case 2:
+                    $amount = 30;
+                    break;
+                case 3:
+                    $amount = 50;
+                    break;
+                case 4:
+                    $amount = 70;
+                    break;
+                case 5:
+                    $amount = 100;
+                    break;
+
+                default:
+                    throw new \Error('Wrong amount chosen');
+            }
 
             (new Airtime($amount, $phoneNumber))->purchase();
 
@@ -219,7 +308,28 @@ class UssdRepository
             $response = "CON Enter Mpesa Number\n";
 
         } else if (count($this->parse_text($text)) == 6 && $this->parse_text($text)[5] == 1) {
-            $amount = $this->parse_text($text)[3];
+            $choice = $this->parse_text($text)[3];
+
+            switch ($choice) {
+                case 1:
+                    $amount = 20;
+                    break;
+                case 2:
+                    $amount = 30;
+                    break;
+                case 3:
+                    $amount = 50;
+                    break;
+                case 4:
+                    $amount = 70;
+                    break;
+                case 5:
+                    $amount = 100;
+                    break;
+
+                default:
+                    throw new \Error('Wrong amount chosen');
+            }
             $phone = $this->parse_text($text)[2];
 
             (new Airtime($amount, $phoneNumber))->purchase($phone);

@@ -130,7 +130,12 @@ class UssdRepository
             $response = "END You will receive an SMS message shortly.";
 
         } else if ($text == "1*1") {
-            $response = "CON Enter amount: \n(Min: Ksh 5. Max: Ksh 10,000) \n\n";
+            $response = "CON Enter amount: \n(Min: Ksh 20. Max: Ksh 100) \n\n";
+            $response .= "1. Ksh 20 \n";
+            $response .= "2. Ksh 30 \n";
+            $response .= "3. Ksh 50 \n";
+            $response .= "4. Ksh 70 \n";
+            $response .= "5. Ksh 100 \n\n";
 
         } else if ($text == "1*2") {
 
@@ -142,7 +147,28 @@ class UssdRepository
             $response .= "2. Sidooh 2 @950Ksh/month \n";
 
         } else if (count($this->parse_text($text)) == 3 && $this->parse_text($text)[0] == 1 && $this->parse_text($text)[1] == 1) {
-            $amount = $this->parse_text($text)[2];
+            $choice = $this->parse_text($text)[2];
+
+            switch ($choice) {
+                case 1:
+                    $amount = 20;
+                    break;
+                case 2:
+                    $amount = 30;
+                    break;
+                case 3:
+                    $amount = 50;
+                    break;
+                case 4:
+                    $amount = 70;
+                    break;
+                case 5:
+                    $amount = 100;
+                    break;
+
+                default:
+                    throw new \Error('Wrong amount chosen');
+            }
 
             $response = "CON Buy Ksh $amount airtime for $phoneNumber using: \n";
             $response .= "1. MPESA \n";
@@ -334,6 +360,8 @@ class UssdRepository
 //            $response .= "0. Back \n";
 //            $response .= "00. Home";
 //        }
+
+        Log::info($response);
 
 // Echo the response back to the API
         header('Content-type: text/plain');

@@ -28,7 +28,8 @@ class QueueTimeoutListener
         //
         Log::info('------------------------ Queue Timeout ' . now() . ' ---------------------- ');
 
-        Log::info($event);
+        Log::info($event->request);
+        Log::info($event->initiator);
 
     }
 }

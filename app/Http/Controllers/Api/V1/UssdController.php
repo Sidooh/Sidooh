@@ -43,7 +43,7 @@ class UssdController extends Controller
     public function ussd()
     {
         //
-        $this->ussd->processUSSD();
+        $this->ussd->processRefactored();
 //        return new UssdRepository($this->ussd->process());
 //        'END Thank you for reaching out.';
     }

@@ -8,6 +8,7 @@ use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Helpers\Sidooh\Airtime;
 use App\Helpers\Sidooh\Report;
 use App\Helpers\Sidooh\Subscription;
+use App\Helpers\Sidooh\USSD\USSD;
 use App\Helpers\Sidooh\Withdrawal;
 use App\Model\SubscriptionType;
 use App\Model\User;
@@ -360,7 +361,7 @@ class UssdRepository
             $response = "CON Enter your friend’s mobile no: (format 2547xxxxxxxx) \n\n";
 
         } else if (count($this->parse_text($text)) > 1 && $this->parse_text($text)[0] == 4) {
-            $arr = $this->parse_text($text);
+//            $arr = $this->parse_text($text);
             $phone = end($arr);
 
             try {
@@ -478,9 +479,71 @@ class UssdRepository
         echo $response;
     }
 
+    public function processRefactored()
+    {
+        error_reporting(0);
+        header('Content-type: text/plain');
+        set_time_limit(100);
+
+        //get inputs
+        $sessionId = $_REQUEST["sessionId"];
+        $serviceCode = $_REQUEST["serviceCode"];
+        $phoneNumber = $_REQUEST["phoneNumber"];
+        $text = $_REQUEST["text"];   //
+
+        $data = ['phone' => $phoneNumber, 'text' => $text, 'service_code' => $serviceCode, 'session_id' => $sessionId];
+
+        //log USSD request
+        UssdLog::create($data);
+
+        $user = UssdUser::wherePhone($phoneNumber)->first();
+
+        if (!$user) {
+            Log::info('Ussd user being created.');
+
+            $usr = array();
+            $usr['phone'] = $phoneNumber;
+            $usr['session'] = 0;
+            $usr['progress'] = 0;
+            $usr['confirm_from'] = 0;
+            $usr['menu_item_id'] = 0;
+
+            $user = UssdUser::create($usr);
+        }
+
+        $ussd = new USSD($sessionId, $user);
+
+        if (self::user_is_starting($text)) {
+            Log::info('Ussd user is starting.');
+            //lets get the home menu
+            //reset user
+            self::resetUser($user);
+
+            echo $ussd->process($user, $text);
+            exit;
+        }
+
+        $result = explode("*", $text);
+        if (empty($result)) {
+            $message = $text;
+        } else {
+            end($result);
+            // move the internal pointer to the end of the array
+            $message = current($result);
+        }
+
+        if (count($result) == 1)
+            self::resetUser($user);
+
+        error_log($message);
+        echo $ussd->process($user, $message);
+
+//        exit;
+    }
+
+
     public function processUssd()
     {
-
         error_reporting(0);
         header('Content-type: text/plain');
         set_time_limit(100);
@@ -1263,20 +1326,20 @@ class UssdRepository
 
     }
 
-    public function resetScreen($user, $screen, $product)
-    {
-        Log::info('Reset Screen.');
-
-        $user->session = $screen;
-        $user->progress = $product;
-        $user->menu_id = 0;
-        $user->difficulty_level = 0;
-        $user->confirm_from = 0;
-        $user->menu_item_id = 0;
-
-        return $user->save();
-
-    }
+//    public function resetScreen($user, $screen, $product)
+//    {
+//        Log::info('Reset Screen.');
+//
+//        $user->session = $screen;
+//        $user->progress = $product;
+//        $user->menu_id = 0;
+//        $user->difficulty_level = 0;
+//        $user->confirm_from = 0;
+//        $user->menu_item_id = 0;
+//
+//        return $user->save();
+//
+//    }
 
     public function user_is_starting($text)
     {

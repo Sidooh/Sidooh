@@ -43,6 +43,7 @@ class ReferralRepository extends Model
 
     public function store(array $request): Referral
     {
+//        TODO: Schedule every hour/30 mins?
         $this->removeExpiredReferrals();
 
         if (array_key_exists('account_id', $request))

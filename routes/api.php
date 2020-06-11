@@ -34,10 +34,10 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::apiResource('subscriptions', 'SubscriptionController', ['only' => ['index', 'store', 'show']]);
 
 
-    Route::post('ussd', 'UssdController@index')->name('ussd');
+    Route::post('ussd2', 'UssdController@index')->name('ussd');
 
 //    TEST USSD V2
-    Route::post('ussd2', 'UssdController@ussd')->name('ussd2');
+    Route::post('ussd', 'UssdController@ussd')->name('ussd2');
 
     Route::apiResource('ussd_users', 'UssdUserController', ['only' => ['index', 'store', 'show']]);
     Route::apiResource('ussd_menus', 'UssdMenuController', ['only' => ['index', 'store', 'show']]);

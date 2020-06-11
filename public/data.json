@@ -1,0 +1,269 @@
+{
+    "main_menu": {
+        "key": "main_menu",
+        "title": "Hi, Welcome to Sidooh. What would you like to do?",
+        "type": "GENESIS",
+        "options": {
+            "1": {
+                "title": "Know About Sidooh",
+                "type": "int",
+                "value": "1",
+                "next": "about"
+            },
+            "2": {
+                "title": "Buy Airtime",
+                "type": "int",
+                "value": "2",
+                "next": "airtime"
+            },
+            "3": {
+                "title": "Pay",
+                "type": "int",
+                "value": "3",
+                "next": "pay"
+            },
+            "4": {
+                "title": "Save",
+                "type": "int",
+                "value": "4",
+                "next": "coming_soon"
+            },
+            "5": {
+                "title": "Refer",
+                "type": "int",
+                "value": "5",
+                "next": "refer"
+            },
+            "6": {
+                "title": "Become an Agent",
+                "type": "int",
+                "value": "6",
+                "next": "coming_soon"
+            },
+            "7": {
+                "title": "My Account",
+                "type": "int",
+                "value": "7",
+                "next": "coming_soon"
+            },
+            "8": {
+                "title": "Pre-register as an Agent ",
+                "type": "int",
+                "value": "8",
+                "next": "coming_soon"
+            }
+        }
+    },
+    "about": {
+        "key": "about",
+        "type": "ENDs",
+        "title": "Thank you for your interest in Sidooh.\n\nSidooh is a digital platform that enables you to earn cash refunds on every airtime you purchased from the platform, allowing you to generate extra income to grow your finances and improve your financial life.",
+        "options": {}
+    },
+    "airtime": {
+        "key": "airtime",
+        "title": "Buy airtime",
+        "options": {
+            "1": {
+                "title": "Self {$my_number}",
+                "type": "int",
+                "value": "1",
+                "next": "airtime_amount"
+            },
+            "2": {
+                "title": "Other",
+                "type": "int",
+                "value": "2",
+                "next": "other_number"
+            }
+        }
+    },
+    "pay": {
+        "key": "pay",
+        "title": "What would you like to pay for?",
+        "super_product": true,
+        "options": {
+            "1": {
+                "title": "Sidooh Agent Subscription",
+                "type": "int",
+                "value": "1",
+                "next": "subscription"
+            }
+        }
+    },
+    "subscription": {
+        "key": "subscription",
+        "title": "Please select option:",
+        "super_product": true,
+        "options": {
+            "1": {
+                "title": "{$subscription_type_1} @Ksh{$subscription_amount_1}/{$period}",
+                "type": "int",
+                "value": "1",
+                "next": "payment_method"
+            },
+            "2": {
+                "title": "{$subscription_type_2} @Ksh{$subscription_amount_2}/{$period}",
+                "type": "int",
+                "value": "2",
+                "next": "payment_method"
+            }
+        }
+    },
+    "save": {
+        "key": "save",
+        "title": "Save",
+        "options": {
+            "1": {
+                "title": "Sidooh Agent Subscription",
+                "type": "int",
+                "value": "1",
+                "next": "agent_subscription"
+            }
+        }
+    },
+    "refer": {
+        "key": "refer",
+        "title": "Refer your friends to use Sidooh & start earning from every airtime they purchase from the platform once they enroll withing {$enrollment_time}hrs.\n\n Enter friend's no:",
+        "type": "OPEN",
+        "next": "refer_end",
+        "options": {}
+    },
+    "refer_fail": {
+        "key": "refer_fail",
+        "title": "Sorry, the number is not eligible for a referral. Try a different number to start earning from all their purchases from the platform once they enroll withing {$enrollment_time}hrs.\n\n Enter friend's no:",
+        "type": "OPEN",
+        "next": "refer_end",
+        "options": {}
+    },
+    "refer_end": {
+        "key": "refer_end",
+        "title": "Thank you for referring Sidooh. Your friend will receive a referral SMS. Once they register and purchase airtime within {$enrollment_time}hrs, you will start earning on every purchase they & their referral group make from Sidooh.",
+        "type": "END"
+    },
+    "agent_subscription": {
+        "key": "Please select option:",
+        "title": "agent_subscription",
+        "options": {
+            "1": {
+                "title": "Sidooh Ambitious Agent @ {$currency}{$agent1_amount}/{$period}",
+                "type": "int",
+                "value": "1",
+                "next": "payment_method"
+            },
+            "2": {
+                "title": "Sidooh Thriving Agent @ {$currency}{$agent1_amount}/{$period}",
+                "type": "int",
+                "value": "2",
+                "next": "payment_method"
+            }
+        }
+    },
+    "other_number": {
+        "key": "other_number",
+        "title": "Enter other number",
+        "type": "OPEN",
+        "next": "airtime_amount",
+        "options": {}
+    },
+    "airtime_amount": {
+        "key": "airtime_amount",
+        "title": "Select option",
+        "options": {
+            "1": {
+                "title": "Ksh100 earns you 0.5 points",
+                "type": "int",
+                "value": "100",
+                "next": "payment_method"
+            },
+            "2": {
+                "title": "Ksh70 earns you 0.35 points",
+                "type": "int",
+                "value": "70",
+                "next": "payment_method"
+            },
+            "3": {
+                "title": "Ksh50 earns you 0.25 points",
+                "type": "int",
+                "value": "50",
+                "next": "payment_method"
+            },
+            "4": {
+                "title": "Ksh30 earns you 0.15 points",
+                "type": "int",
+                "value": "30",
+                "next": "payment_method"
+            },
+            "5": {
+                "title": "Ksh20 earns you 0.1 points",
+                "type": "int",
+                "value": "20",
+                "next": "payment_method"
+            }
+        }
+    },
+    "payment_method": {
+        "key": "payment_method",
+        "title": "Buy Ksh{$amount} {$product} for {$number} using:",
+        "options": {
+            "1": {
+                "title": "MPESA",
+                "type": "int",
+                "value": "1",
+                "next": "payment_confirmation"
+            },
+            "2": {
+                "title": "Sidooh Points",
+                "type": "int",
+                "value": "2",
+                "next": "payment_confirmation"
+            }
+        }
+    },
+    "payment_confirmation": {
+        "key": "payment_confirmation",
+        "title": "Ksh{$amount} {$product} for {$number} will be deducted from {$payment_method} {$mpesa_number}:",
+        "options": {
+            "1": {
+                "title": "Accept",
+                "type": "int",
+                "value": "1",
+                "next": "payment_end"
+            },
+            "2": {
+                "title": "Cancel",
+                "type": "int",
+                "value": "2",
+                "next": "cancel"
+            },
+            "3": {
+                "title": "Other MPESA number",
+                "type": "int",
+                "value": "3",
+                "next": "other_number_mpesa"
+            }
+        }
+    },
+    "other_number_mpesa": {
+        "key": "other_number_mpesa",
+        "title": "Enter MPESA number",
+        "type": "OPEN",
+        "next": "payment_confirmation",
+        "options": {}
+    },
+    "payment_end": {
+        "key": "payment_end",
+        "title": "Your request has been received and is being processed. {$method_instruction}. Thank you.",
+        "type": "END"
+    },
+    "coming_soon": {
+        "key": "coming_soon",
+        "title": "COMING SOON. We shall inform you once the service is available.",
+        "type": "END"
+    },
+    "cancel": {
+        "key": "cancel",
+        "title": "Thank you for using Sidooh. Sidooh, makes you money.",
+        "type": "END"
+    }
+}

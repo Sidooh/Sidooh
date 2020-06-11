@@ -187,7 +187,9 @@ class Airtime
         $description = ($targetNumber ? "Airtime Purchase - $targetNumber" : $mpesaNumber) ? "Airtime Purchase - $this->phone" : "Airtime Purchase";
         $number = $mpesaNumber ?? $this->phone;
 
-        $stkResponse = mpesa_request($number, $this->amount, '001-AIRTIME', $description);;
+        $stkResponse = mpesa_request($number, $this->amount, '001-AIRTIME', $description);
+
+        error_log(json_encode($stkResponse));
 
         $accountRep = new AccountRepository();
         $account = $accountRep->create([
@@ -216,6 +218,5 @@ class Airtime
         ]);
 
         $transaction->payment()->save($payment);
-
     }
 }

@@ -57,6 +57,10 @@ class AccountRepository extends Model
 
     public function create(array $acc): Account
     {
+        error_log('-------------------');
+        error_log($acc['phone']);
+        error_log('-------------------');
+
         $phone = ltrim(PhoneNumber::make($acc['phone'], 'KE')->formatE164(), '+');
 
         $acc = $this->wherePhone($phone)->first();

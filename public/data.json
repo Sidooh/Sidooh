@@ -38,19 +38,19 @@
                 "title": "Become an Agent",
                 "type": "int",
                 "value": "6",
-                "next": "coming_soon"
+                "next": "agent_onboarding_name"
             },
             "7": {
                 "title": "My Account",
                 "type": "int",
                 "value": "7",
-                "next": "coming_soon"
+                "next": "account"
             },
             "8": {
                 "title": "Pre-register as an Agent ",
                 "type": "int",
                 "value": "8",
-                "next": "coming_soon"
+                "next": "pre_agent"
             }
         }
     },
@@ -128,6 +128,128 @@
         "type": "OPEN",
         "next": "refer_end",
         "options": {}
+    },
+    "agent_onboarding_name": {
+        "key": "agent_onboarding_name",
+        "title": "Please enter your Full Name\n\nFormat:\nFirstname Middlename Lastname",
+        "type": "OPEN",
+        "next": "agent_onboarding_mail",
+        "options": {},
+        "option_type": "NAME"
+    },
+    "account": {
+        "key": "account",
+        "title": "What would you like to do?",
+        "options": {
+            "1": {
+                "title": "KYC details",
+                "type": "int",
+                "value": "1",
+                "next": "kyc_details"
+            },
+            "2": {
+                "title": "Earnings",
+                "type": "int",
+                "value": "2",
+                "next": "coming_soon"
+            }
+        }
+    },
+    "pre_agent": {
+        "key": "pre_agent",
+        "title": "Thank you for your interest in Sidooh. By Pre-registering to be a Sidooh Agent you will earn recurring income (commissions) on every airtime purchased from the platform by your referred customers and sub agents for up to 2 years, WITHOUT PAYING MONTHLY SUBSCRIPTION FEES.",
+        "options": {
+            "1": {
+                "title": "Proceed to Pre-register as an Agent",
+                "type": "int",
+                "value": "1",
+                "next": "pre_agent_onboarding_name"
+            }
+        }
+    },
+    "pre_agent_onboarding_name": {
+        "key": "pre_agent_onboarding_name",
+        "title": "Please enter your Full Name\n\nFormat:\nFirstname Middlename Lastname",
+        "type": "OPEN",
+        "next": "pre_agent_onboarding_mail",
+        "options": {},
+        "option_type": "NAME"
+    },
+    "pre_agent_onboarding_mail": {
+        "key": "pre_agent_onboarding_mail",
+        "title": "Please enter your email address.\nEnter 0000 if you have no email",
+        "type": "OPEN",
+        "next": "pre_agent_onboarding_category",
+        "options": {},
+        "option_type": "EMAIL"
+    },
+    "pre_agent_onboarding_category": {
+        "key": "pre_agent_onboarding_category",
+        "title": "Please select your preferred agent category:",
+        "options": {
+            "1": {
+                "title": "Pre-register as a {$subscription_type_1} for only Ksh{$subscription_amount_1} and earn commissions on every airtime purchased by your referred customers and sub agents UP TO LEVEL {$level_limit_1} FOR {$period_1} WITHOUT PAYING THE MONTHLY FEES.",
+                "type": "int",
+                "value": "1",
+                "next": "pre_agent_onboarding_confirm"
+            },
+            "2": {
+                "title": "Pre-register as a {$subscription_type_2} for only Ksh{$subscription_amount_2} and earn commissions on every airtime purchased by your referred customers and sub agents UP TO LEVEL {$level_limit_2} FOR {$period_2} WITHOUT PAYING THE MONTHLY FEES.",
+                "type": "int",
+                "value": "2",
+                "next": "pre_agent_onboarding_confirm"
+            }
+        }
+    },
+    "pre_agent_onboarding_confirm": {
+        "key": "pre_agent_onboarding_confirm",
+        "title": "Please confirm your details.\n\nName: {$name}\nEmail: {$email}\nAgent: {$subscription_type}",
+        "options": {
+            "1": {
+                "title": "Confirm",
+                "type": "int",
+                "value": "1",
+                "next": "payment_method"
+            },
+            "2": {
+                "title": "Change Details",
+                "type": "int",
+                "value": "2",
+                "next": "pre_agent_onboarding_name"
+            }
+        }
+    },
+    "kyc_details": {
+        "key": "kyc_details",
+        "title": "Your details are as follows\n\nName: {$name}\nEmail: {$email}\nNumber: {$my_number}",
+        "type": "OPENs",
+        "options": {}
+    },
+    "agent_onboarding_mail": {
+        "key": "agent_onboarding_mail",
+        "title": "Please enter your email address.\nEnter 0000 if you have no email",
+        "type": "OPEN",
+        "next": "agent_onboarding_category",
+        "options": {},
+        "option_type": "EMAIL"
+    },
+    "agent_onboarding_category": {
+        "key": "agent_onboarding_category",
+        "title": "Please select your preferred agent category:",
+        "options": {
+            "1": {
+                "title": "{$subscription_type_1} @Ksh{$subscription_amount_1}/{$period} earns you commissions on every purchase by your referred customers and sub agents up to level {$level_limit_1}",
+                "type": "int",
+                "value": "1",
+                "next": "payment_method"
+            },
+            "2": {
+                "title": "{$subscription_type_2} @Ksh{$subscription_amount_2}/{$period} earns you commissions on every purchase by your referred customers and sub agents up to level {$level_limit_2}",
+                "type": "int",
+                "value": "2",
+                "next": "payment_method"
+            }
+        }
     },
     "refer_fail": {
         "key": "refer_fail",
@@ -216,7 +338,7 @@
                 "title": "Sidooh Points",
                 "type": "int",
                 "value": "2",
-                "next": "payment_confirmation"
+                "next": "coming_soon"
             }
         }
     },

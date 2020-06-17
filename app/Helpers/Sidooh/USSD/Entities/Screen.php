@@ -15,6 +15,7 @@ class Screen
     public string $option_string;
     public array $options;
     public ?Screen $previous = null;
+    public ?string $option_type;
 
     public function findOption(string $option): ?Option
     {

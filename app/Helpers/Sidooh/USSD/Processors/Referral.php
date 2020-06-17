@@ -3,6 +3,7 @@
 namespace App\Helpers\Sidooh\USSD\Processors;
 
 
+use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
 use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
@@ -62,8 +63,18 @@ class Referral extends Product
             if (!$acc && !$ref) {
                 $this->vars['{$number}'] = $phone;
             } else {
-                $this->screen = $this->previousScreen;
-                $this->screen->title = "Sorry the number you entered is not eligible for referral";
+
+                error_log('----------------');
+                error_log("Invalid number");
+                error_log($this->screen->key);
+                error_log($this->previousScreen->key);
+                error_log('----------------');
+
+                if ($this->screen->key == 'refer_end') {
+                    $this->screen = $this->previousScreen;
+                    $this->screen->title = "Sorry the number you entered is not eligible for referral";
+                }
+
             }
         }
     }
@@ -85,6 +96,10 @@ class Referral extends Product
             'referee_phone' => $phone
         ]);
 
-        error_log($ref->id);
+        $message = "Hi, {$phoneNumber} has referred you to Sidooh, a digital platform that enables you to earn cash
+         refunds on every airtime purchased from the platform, allowing you to generate extra income to grow your
+         finances. Dial *123# for FREE to start earning.";
+
+        (new AfricasTalkingApi())->sms($phone, $message);
     }
 }

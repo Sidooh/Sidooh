@@ -88,7 +88,6 @@ class AccountRepository extends Model
         }
 
         return $acc;
-
     }
 
     public function getReferrer(Account $account, $level, $subscribed = false): Account

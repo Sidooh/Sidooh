@@ -17,7 +17,6 @@ use App\Models\AirtimeResponse;
 use App\Models\Subscription;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 
 class ProductRepository
@@ -113,17 +112,20 @@ class ProductRepository
 
     public function subscription(Transaction $transaction, int $amount): Subscription
     {
+//        Log::info($transaction);
+
         $subscription = [
             'amount' => $amount,
             'active' => true,
         ];
 
-        Log::info((string)(int)$transaction->amount);
+//        Log::info($transaction->amount);
+//        Log::info((int)$transaction->amount);
 
         $sub = Subscription::create($subscription);
 
 //        DB::transaction(function () use ($sub, $amount, $transaction) {
-        $type = SubscriptionType::whereAmount((string)(int)$transaction->amount)->firstOrFail();
+        $type = SubscriptionType::whereAmount($transaction->amount)->firstOrFail();
 
         $sub->subscription_type()->associate($type);
         $sub->account()->associate($transaction->account);
@@ -138,6 +140,5 @@ class ProductRepository
         event(new SubscriptionPurchaseEvent($sub, $transaction));
 
         return $sub;
-
     }
 }

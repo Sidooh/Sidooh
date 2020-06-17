@@ -30,17 +30,6 @@ class ReferralRepository extends Model
         $this->model = app(Referral::class);
     }
 
-//    /**
-//     * Find published products by SKU
-//     * @param  {int} $sku
-//     * @return {Product}
-//     */
-//    public function findBySku(int $sku): Product {
-//        return $this->whereIsPublished(1)
-//            ->whereSku($sku)
-//            ->first();
-//    }
-
     public function store(array $request): Referral
     {
 //        TODO: Schedule every hour/30 mins?

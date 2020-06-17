@@ -52,12 +52,23 @@ class Subscription
     {
         Log::info('====== Subscription Purchase ======');
 
-//        assertNotNull($this->type);
+        if ($this->type->amount > 1000)
+            $amount = ceil($this->type->amount / 500);
+        else
+            $amount = ceil($this->type->amount / 50);
+        error_log($amount);
 
         $description = $targetNumber ? "Subscription Purchase - $targetNumber" : "Subscription Purchase";
         $number = $mpesaNumber ?? $this->phone;
 
-        $stkResponse = mpesa_request($number, (int)$this->type->amount / 10, '002-SUBS', $description);
+        switch ($this->type->amount) {
+            case 4975 || 9975:
+                $stkResponse = mpesa_request($number, $amount, '008-PRE_SUBS', $description);
+                break;
+            default:
+                $stkResponse = mpesa_request($number, $amount, '002-SUBS', $description);
+        }
+
 
         $accountRep = new AccountRepository();
 //        $account = $accountRep->create([
@@ -70,16 +81,16 @@ class Subscription
 
         $transaction = new Transaction();
 
-        $transaction->amount = (int)$this->type->amount;
+        $transaction->amount = $this->type->amount;
         $transaction->type = 'PAYMENT';
-        $transaction->type = 'Subscription Purchase';
+        $transaction->description = 'Subscription Purchase';
         $transaction->account_id = $account->id;
         $transaction->product_id = $product->id;
 
         $transaction->save();
 
         $payment = new Payment([
-            'amount' => (int)$this->type->amount,
+            'amount' => $this->type->amount,
             'status' => 'Pending',
             'type' => 'MPESA',
             'subtype' => 'STK',
@@ -87,6 +98,5 @@ class Subscription
         ]);
 
         $transaction->payment()->save($payment);
-
     }
 }

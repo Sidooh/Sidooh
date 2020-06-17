@@ -32,7 +32,7 @@ class ReferralJoined
         $message = "Congratulations! Your referral {$refPhone} has ";
         $message .= "successfully registered on Sidooh using your ";
         $message .= "referral code. Show them how to purchase ";
-        $message .= "airtime (or anything else available) on Sidooh. ";
+        $message .= "airtime on Sidooh. ";
         $message .= "This will unlock your referral earnings. The more ";
         $message .= "friends you refer to Sidooh, the more you earn.";
 

@@ -25,6 +25,11 @@ class Account extends Model
         'telco_id', 'phone', 'referrer_id'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function isRoot()
     {
         return $this->referrer_id == null;

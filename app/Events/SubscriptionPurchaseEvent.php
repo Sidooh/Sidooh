@@ -17,17 +17,18 @@ class SubscriptionPurchaseEvent
     /**
      * @var Subscription
      */
-    public $subscription;
+    public Subscription $subscription;
 
     /**
      * @var Transaction
      */
-    public $transaction;
+    public Transaction $transaction;
 
     /**
      * Create a new event instance.
      *
      * @param Subscription $subscription
+     * @param Transaction $transaction
      */
     public function __construct(Subscription $subscription, Transaction $transaction)
     {

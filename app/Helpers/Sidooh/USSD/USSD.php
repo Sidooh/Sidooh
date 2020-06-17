@@ -6,8 +6,11 @@ namespace App\Helpers\Sidooh\USSD;
 
 use App\Helpers\Sidooh\USSD\Entities\ProductTypes;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
+use App\Helpers\Sidooh\USSD\Processors\Account;
+use App\Helpers\Sidooh\USSD\Processors\Agent;
 use App\Helpers\Sidooh\USSD\Processors\Airtime;
 use App\Helpers\Sidooh\USSD\Processors\Pay;
+use App\Helpers\Sidooh\USSD\Processors\Pre_Agent;
 use App\Helpers\Sidooh\USSD\Processors\Product;
 use App\Helpers\Sidooh\USSD\Processors\Referral;
 use App\Helpers\Sidooh\USSD\Processors\Subscription;
@@ -109,14 +112,19 @@ class USSD
             case ProductTypes::PAY_SUBSCRIPTION:
                 $this->product = new Subscription($this->user, $this->sessionId);
                 break;
-//                case "4":
-////                    $this->product = new Airtime();
-//                    break;
             case ProductTypes::REFER:
                 $this->product = new Referral($this->user, $this->sessionId);
                 break;
+            case ProductTypes::AGENT:
+                $this->product = new Agent($this->user, $this->sessionId);
+                break;
+            case ProductTypes::ACCOUNT:
+                $this->product = new Account($this->user, $this->sessionId);
+                break;
+            case ProductTypes::PRE_AGENT:
+                $this->product = new Pre_Agent($this->user, $this->sessionId);
+                break;
         }
-
     }
 
     private function setScreen(Screen $screen, bool $keep_state = true)
@@ -138,6 +146,11 @@ class USSD
 
     private function saveState()
     {
+        error_log('#############');
+        error_log($this->screen->key);
+        error_log((string)$this->getProduct(true));
+        error_log('#############');
+
         error_log("saveState");
         $contents = json_encode([$this->getProduct(true), $this->screen]);
         Storage::put($this->sessionId . '_state.txt', $contents);
@@ -158,6 +171,12 @@ class USSD
             return ProductTypes::PAY;
         } else if ($this->product instanceof Referral)
             return ProductTypes::REFER;
+        else if ($this->product instanceof Agent)
+            return ProductTypes::AGENT;
+        else if ($this->product instanceof Account)
+            return ProductTypes::ACCOUNT;
+        else if ($this->product instanceof Pre_Agent)
+            return ProductTypes::PRE_AGENT;
 
         return ProductTypes::DEFAULT;
 
@@ -274,8 +293,11 @@ class USSD
                         $screen = $this->product ? $this->product->process($user, $this->screen, $screen) : $screen;
                     }
                 }
-
-                error_log($screen);
+//                else {
+//                    $screen = $this->screen;
+//                }
+//
+//                error_log($screen);
 
                 if ($screen)
                     $this->setScreen($screen);
@@ -321,6 +343,14 @@ class USSD
     private function validateOption(string $value)
     {
         error_log("Validating option");
+
+        switch ($this->screen->option_type) {
+            case "EMAIL":
+                return $this->validate_email($value);
+            case "NAME":
+                return $this->validate_name($value);
+        }
+
         $phone = $this->validate_number($value);
 
         if ($phone != false && $phone != $this->validate_number($this->product->phone)) {
@@ -336,5 +366,18 @@ class USSD
         } catch (NumberParseException $e) {
             return false;
         }
+    }
+
+    private function validate_name(string $name)
+    {
+        return preg_match("/^[A-z ,.'-]{3,}$/", $name);
+    }
+
+    private function validate_email(string $email)
+    {
+        $regex = '/^[^0-9][_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
+        $regex = '/^(0000)|([a-z0-9\+_\-]{2,})(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]{2,}\.)+[a-z]{2,6}$/';
+
+        return preg_match($regex, $email);
     }
 }

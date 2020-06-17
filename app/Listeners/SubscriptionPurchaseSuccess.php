@@ -36,15 +36,29 @@ class SubscriptionPurchaseSuccess
         $account = $event->subscription->account;
 
         $phone = ltrim($account->phone, '+');
-//        $sender = $event->airtime_response->request->transaction->account->phone;
-//
-//        $amount = explode(".", $event->airtime_response->amount)[0];
+
         $date = $event->subscription->created_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
 
-        $message = "Your {$type->title} subscription purchased on {$date} has been activated. Dial *144# to check your balance. \n\nSidooh, Makes You Money!";
+        switch ($type->amount) {
+            case 4975 || 9975:
+                $level_duration = $type->amount == 9975 ? "24 MONTHS" : "18 MONTHS";
+                $message = "Congratulations! You have successfully been pre-registered as a {$type->title} ";
+                $message .= "on {$date}. ";
+                $message .= "You will earn commissions on every airtime purchased by your referred customers ";
+                $message .= "and sub agents UP TO LEVEL {$type->level_limit} FOR {$level_duration} WITHOUT PAYING THE MONTHLY FEES.\n\n";
+                $message .= "Sidooh, Earns you money on every purchase";
+
+                break;
+
+            default:
+                $message = "Congratulations! You have successfully subscribed for {$type->title} Services ";
+                $message .= "at Ksh{$type->amount} on {$date}. ";
+                $message .= "This unlocks your referral earnings potential. ";
+                $message .= "You will earn commissions on every purchase by your referred customers ";
+                $message .= "and sub agents up to level {$type->level_limit}.\n\n";
+                $message .= "Sidooh, Earns you money on every purchase";
+        }
 
         (new AfricasTalkingApi())->sms($phone, $message);
-//
-//        (new TransactionRepository())->updateToSuccess($event->transaction);
     }
 }

@@ -34,11 +34,16 @@ class StkPaymentReceived
         $mpesa_response = $event->mpesa_response;// mpesa response as array
 
         $other_phone = explode(" - ", $stk->request->description);
+//
+//        Log::info($stk);
+//        Log::info($mpesa_response);
 
-        $p = Payment::wherePaymentId($stk->id)->firstOrFail();
+        $p = Payment::wherePaymentId($stk->request->id)->firstOrFail();
         $p->status = 'Complete';
 
         $p->save();
+
+//        Log::info($p);
 
         switch ($stk->request->reference) {
             case '001-AIRTIME':
@@ -58,6 +63,11 @@ class StkPaymentReceived
                 break;
 
             case '002-SUBS':
+
+                (new ProductRepository())->subscription($p->payable, $stk->Amount);
+                break;
+
+            case '008-PRE_SUBS':
 
                 (new ProductRepository())->subscription($p->payable, $stk->Amount);
         }

@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Hash;
 
 class Pre_Agent extends Product
 {
-
     /**
      * @param UssdUser $user
      * @param Screen $previousScreen

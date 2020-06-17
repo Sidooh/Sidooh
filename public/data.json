@@ -127,7 +127,8 @@
         "title": "Refer your friends to use Sidooh & start earning from every airtime they purchase from the platform once they enroll withing {$enrollment_time}hrs.\n\n Enter friend's no:",
         "type": "OPEN",
         "next": "refer_end",
-        "options": {}
+        "options": {},
+        "option_type": "NUMBER"
     },
     "agent_onboarding_name": {
         "key": "agent_onboarding_name",
@@ -256,7 +257,8 @@
         "title": "Sorry, the number is not eligible for a referral. Try a different number to start earning from all their purchases from the platform once they enroll withing {$enrollment_time}hrs.\n\n Enter friend's no:",
         "type": "OPEN",
         "next": "refer_end",
-        "options": {}
+        "options": {},
+        "option_type": "NUMBER"
     },
     "refer_end": {
         "key": "refer_end",
@@ -286,7 +288,8 @@
         "title": "Enter other number",
         "type": "OPEN",
         "next": "airtime_amount",
-        "options": {}
+        "options": {},
+        "option_type": "NUMBER"
     },
     "airtime_amount": {
         "key": "airtime_amount",
@@ -371,7 +374,8 @@
         "title": "Enter MPESA number",
         "type": "OPEN",
         "next": "payment_confirmation",
-        "options": {}
+        "options": {},
+        "option_type": "NUMBER"
     },
     "payment_end": {
         "key": "payment_end",

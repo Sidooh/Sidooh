@@ -179,21 +179,6 @@ class USSD
             return ProductTypes::PRE_AGENT;
 
         return ProductTypes::DEFAULT;
-
-//        switch ($value) {
-//            case ProductTypes::AIRTIME:
-//                $this->product = new Airtime();
-//                break;
-//            case "3":
-////                    $this->product = new Pay();
-//                break;
-////                case "4":
-//////                    $this->product = new Airtime();
-////                    break;
-//            case "5":
-////                    $this->product = new Referral();
-//                break;
-//        }
     }
 
     static function sendResponse($message)
@@ -349,14 +334,16 @@ class USSD
                 return $this->validate_email($value);
             case "NAME":
                 return $this->validate_name($value);
-        }
+            case "NUMBER":
+                $phone = $this->validate_number($value);
 
-        $phone = $this->validate_number($value);
-
-        if ($phone != false && $phone != $this->validate_number($this->product->phone)) {
-            return true;
+                if ($phone != false && $phone != $this->validate_number($this->product->phone)) {
+                    return true;
+                }
+                return false;
+            default:
+                return false;
         }
-        return false;
     }
 
     private function validate_number(string $phone)

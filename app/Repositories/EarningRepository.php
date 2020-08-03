@@ -3,6 +3,7 @@
 
 namespace App\Repositories;
 
+use App\Helpers\Sidooh\USSD\Processors\Account;
 use App\Model\Earning;
 use App\Model\Transaction;
 use Carbon\Carbon;
@@ -51,6 +52,9 @@ class EarningRepository extends Model
                     'type' => 'SELF'
                 ]);
 
+                $acc->in += $userEarnings;
+                $acc->save();
+
                 $totalLeftOverEarnings -= $userEarnings;
 
             } else {
@@ -88,6 +92,13 @@ class EarningRepository extends Model
                 }
 
                 $e = Earning::insert($userEarning);
+
+                foreach ($userEarning as $ue) {
+                    $acc = Account::find($ue['account_id']);
+
+                    $acc->in += $userEarnings;
+                    $acc->save();
+                }
 
             }
 

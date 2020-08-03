@@ -41,7 +41,7 @@
                 "next": "agent_onboarding_name"
             },
             "7": {
-                "title": "My Account",
+                "title": "Check My Account",
                 "type": "int",
                 "value": "7",
                 "next": "account"
@@ -149,12 +149,104 @@
                 "next": "kyc_details"
             },
             "2": {
-                "title": "Earnings",
+                "title": "Check Earnings",
+                "type": "int",
+                "value": "2",
+                "next": "confirm_pin"
+            },
+            "3": {
+                "title": "Redeem",
+                "type": "int",
+                "value": "3",
+                "next": "redeem_amount"
+            }
+        }
+    },
+    "redeem_amount": {
+        "key": "redeem_amount",
+        "title": "Enter points you wish to redeem:\n\n- Sidooh Points Balance: {$spb}\n- Sidooh Bonus Balance: {$sbb}\n- Withdrawable Balance: {$wb}\n",
+        "type": "OPEN",
+        "next": "redeem_account",
+        "options": {},
+        "option_type": "AMOUNT"
+    },
+    "redeem_account": {
+        "key": "redeem_account",
+        "title": "Where would you like us to send the money?",
+        "options": {
+            "1": {
+                "title": "MPESA Account",
+                "type": "int",
+                "value": "1",
+                "next": "redeem_account_select"
+            },
+            "2": {
+                "title": "Bank Account",
                 "type": "int",
                 "value": "2",
                 "next": "coming_soon"
             }
         }
+    },
+    "redeem_account_select": {
+        "key": "redeem_account_select",
+        "title": "Select the account to send the funds to:",
+        "options": {
+            "1": {
+                "title": "Self {$my_number}",
+                "type": "int",
+                "value": "1",
+                "next": "redeem_confirm"
+            },
+            "2": {
+                "title": "Other MPESA number",
+                "type": "int",
+                "value": "2",
+                "next": "other_number_mpesa"
+            }
+        }
+    },
+    "redeem_confirm": {
+        "key": "redeem_confirm",
+        "title": "Please confirm redemption details.\n\nWithdraw: {$points} Sidooh Points\nFor: KSH{$amount}\nTo Account: {$to_number}",
+        "options": {
+            "1": {
+                "title": "Accept",
+                "type": "int",
+                "value": "1",
+                "next": "confirm_pin"
+            },
+            "2": {
+                "title": "DEcline",
+                "type": "int",
+                "value": "2",
+                "next": "cancel"
+            },
+            "3": {
+                "title": "Change Details",
+                "type": "int",
+                "value": "3",
+                "next": "redeem_amount"
+            }
+        }
+    },
+    "redeem_end": {
+        "key": "redeem_end",
+        "title": "Your request has been received and is being processed. You will receive a confirmation SMS shortly. Thank you.",
+        "type": "END"
+    },
+    "confirm_pin": {
+        "key": "confirm_pin",
+        "title": "Please enter your Sidooh PIN",
+        "type": "OPEN",
+        "next": "earnings",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "earnings": {
+        "key": "earnings",
+        "title": "Here is a breakdown of your earnings:\n\n- Sidooh Points Balance: {$spb}\n- Sidooh Bonus Balance: {$sbb}\n- Withdrawable Balance: {$wb}\n",
+        "type": "END"
     },
     "pre_agent": {
         "key": "pre_agent",
@@ -224,7 +316,84 @@
         "key": "kyc_details",
         "title": "Your details are as follows\n\nName: {$name}\nEmail: {$email}\nNumber: {$my_number}",
         "type": "OPENs",
-        "options": {}
+        "options": {
+            "1": {
+                "title": "Set/Change Sidooh Pin",
+                "type": "int",
+                "value": "1",
+                "next": "kyc_details_pin"
+            },
+            "2": {
+                "title": "Update Details",
+                "type": "int",
+                "value": "2",
+                "next": "coming_soon"
+            }
+        }
+    },
+    "kyc_details_pin": {
+        "key": "kyc_details_pin",
+        "title": "What would you like to do?",
+        "type": "OPENs",
+        "options": {
+            "1": {
+                "title": "Set new PIN",
+                "type": "int",
+                "value": "1",
+                "next": "kyc_details_name"
+            },
+            "2": {
+                "title": "Change current PIN",
+                "type": "int",
+                "value": "2",
+                "next": "kyc_details_current_pin"
+            }
+        }
+    },
+    "kyc_details_current_pin": {
+        "key": "kyc_details_current_pin",
+        "title": "Please enter your current Sidooh PIN",
+        "type": "OPEN",
+        "next": "kyc_details_new_pin",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "kyc_details_name": {
+        "key": "kyc_details_name",
+        "title": "Please enter your Full Name\n\nFormat:\nFirstname Middlename Lastname",
+        "type": "OPEN",
+        "next": "kyc_details_mail",
+        "options": {},
+        "option_type": "NAME"
+    },
+    "kyc_details_mail": {
+        "key": "kyc_details_mail",
+        "title": "Please enter your email address.\nEnter 0000 if you have no email",
+        "type": "OPEN",
+        "next": "kyc_details_new_pin",
+        "options": {},
+        "option_type": "EMAIL"
+    },
+    "kyc_details_new_pin": {
+        "key": "kyc_details_new_pin",
+        "title": "Enter new four-digit Sidooh PIN:",
+        "type": "OPEN",
+        "next": "kyc_details_new_pin_confirm",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "kyc_details_new_pin_confirm": {
+        "key": "kyc_details_new_pin_confirm",
+        "title": "Please confirm your new Sidooh Pin:",
+        "type": "OPEN",
+        "next": "kyc_details_pin_end",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "kyc_details_pin_end": {
+        "key": "kyc_details_pin_end",
+        "title": "Your new Sidooh PIN is {$pin}. Please keep your PIN number safe. Do not share it with anyone.",
+        "type": "END"
     },
     "agent_onboarding_mail": {
         "key": "agent_onboarding_mail",

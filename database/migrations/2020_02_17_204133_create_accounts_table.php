@@ -17,8 +17,10 @@ class CreateAccountsTable extends Migration
             $table->bigIncrements('id');
 
 //            TODO: Shift to varchar(15) for the phone fields
-            $table->bigInteger('phone')->unique();
+            $table->string('phone', 15)->unique();
             $table->boolean('active')->default(true);
+            $table->float('in')->default(0);
+            $table->float('out')->default(0);
 
             $table->timestamps();
         });

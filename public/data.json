@@ -164,7 +164,7 @@
     },
     "redeem_amount": {
         "key": "redeem_amount",
-        "title": "Enter points you wish to redeem:\n\n- Sidooh Points Balance: {$spb}\n- Sidooh Bonus Balance: {$sbb}\n- Withdrawable Balance: {$wb}\n",
+        "title": "Enter points you wish to redeem:\n\n- Sidooh Points Balance: {$spb}\n- Sidooh Bonus Balance: {$sbb}\n- Withdrawable Balance: {$wb}",
         "type": "OPEN",
         "next": "redeem_account",
         "options": {},
@@ -314,7 +314,7 @@
     },
     "kyc_details": {
         "key": "kyc_details",
-        "title": "Your details are as follows\n\nName: {$name}\nEmail: {$email}\nNumber: {$my_number}",
+        "title": "Your details are as follows\n\nName: {$name}\nEmail: {$email}\nNumber: {$my_number}\n",
         "type": "OPENs",
         "options": {
             "1": {

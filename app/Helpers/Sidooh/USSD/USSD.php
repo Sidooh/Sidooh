@@ -223,7 +223,7 @@ class USSD
     private static function addResponseFooter($message)
     {
         $message .= PHP_EOL;
-        $message .= "0. Back" . PHP_EOL;
+//        $message .= "0. Back" . PHP_EOL;
         $message .= "00. Home" . PHP_EOL;
 
         return $message;
@@ -334,6 +334,10 @@ class USSD
                 return $this->validate_email($value);
             case "NAME":
                 return $this->validate_name($value);
+            case "AMOUNT":
+                return $this->validate_amount($value);
+            case "PIN":
+                return $this->validate_PIN($value);
             case "NUMBER":
                 $phone = $this->validate_number($value);
 
@@ -358,6 +362,23 @@ class USSD
     private function validate_name(string $name)
     {
         return preg_match("/^[A-z ,.'-]{3,}$/", $name);
+    }
+
+    private function validate_amount(string $amount)
+    {
+        return is_numeric($amount);
+    }
+
+    private function validate_PIN(string $pin)
+    {
+        error_log($pin);
+        error_log(is_numeric($pin));
+        error_log(strlen($pin));
+
+        if (is_numeric($pin)) {
+            return strlen(intval($pin)) == 4;
+        }
+        return false;
     }
 
     private function validate_email(string $email)

@@ -32,14 +32,14 @@ class Account extends Product
             case "main_menu":
                 $this->set_user_number();
                 break;
-            case "agent_onboarding_name":
+            case "kyc_details_name":
                 $this->set_name($previousScreen);
                 break;
-            case "agent_onboarding_mail":
+            case "kyc_details_mail":
                 $this->set_email($previousScreen);
                 break;
-            case "agent_onboarding_category":
-                $this->set_amount($previousScreen);
+            case "kyc_details_pin":
+                $this->set_pin($previousScreen);
                 break;
             case "payment_method":
                 $this->set_payment_method($previousScreen);
@@ -83,7 +83,7 @@ class Account extends Product
             $this->vars['{$email}'] = $previousScreen->option_string;
     }
 
-    private function set_amount(Screen $previousScreen)
+    private function set_pin(Screen $previousScreen)
     {
         $this->vars['{$amount}'] = $this->vars['{$subscription_amount_' . $previousScreen->option->value . '}'];
     }

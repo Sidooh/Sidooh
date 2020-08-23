@@ -56,6 +56,7 @@ class Airtime extends Product
 
     private function set_other_number(Screen $previousScreen)
     {
+        $this->vars['{$other_number}'] = $previousScreen->option_string;
         $this->vars['{$number}'] = $previousScreen->option_string;
     }
 
@@ -90,7 +91,7 @@ class Airtime extends Product
         error_log("Airtime: finalize");
 
         $amount = $this->vars['{$amount}'];
-        $phoneNumber = $this->vars['{$number}'];
+        $phoneNumber = $this->vars['{$my_number}'];
         $target = $this->vars['{other_number}'];
         $mpesa = $this->vars['{$mpesa_number}'];
 

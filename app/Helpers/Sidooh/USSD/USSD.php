@@ -139,17 +139,17 @@ class USSD
             $this->screen = $screen;
         }
 
-        error_log($screen);
+//        error_log($screen);
 
         $this->saveState();
     }
 
     private function saveState()
     {
-        error_log('#############');
-        error_log($this->screen->key);
-        error_log((string)$this->getProduct(true));
-        error_log('#############');
+//        error_log('#############');
+//        error_log($this->screen->key);
+//        error_log((string)$this->getProduct(true));
+//        error_log('#############');
 
         error_log("saveState");
         $contents = json_encode([$this->getProduct(true), $this->screen]);
@@ -201,13 +201,15 @@ class USSD
 
         $message .= $this->screen->title . PHP_EOL;
 
-        if (isset($this->screen->options))
-            foreach ($this->screen->options as $key => $option) {
-                $message .= $option->value . ". " . $option->title . PHP_EOL;
-            }
+        if ($this->screen->type !== "END") {
+            if (isset($this->screen->options))
+                foreach ($this->screen->options as $key => $option) {
+                    $message .= $option->value . ". " . $option->title . PHP_EOL;
+                }
 
-        if ($this->screen->previous && $this->screen->type !== "END") {
-            $message = self::addResponseFooter($message);
+            if ($this->screen->previous && $this->screen->type !== "END") {
+                $message = self::addResponseFooter($message);
+            }
         }
 
         return $message;
@@ -234,11 +236,15 @@ class USSD
 //        print_r('processing...');
         error_log("Chosen: " . $value . ' ' . $this->screen->type);
 
-        if ($this->screen->type !== "GENESIS")
-            if ($value === "0")
-                $this->back();
-            elseif ($value === "00")
+        if ($this->screen->type !== "GENESIS") {
+//            if ($value === "0") {
+////                Solve issues with going back first
+////                $this->back();
+//            }
+            if ($value === "00")
                 $this->home();
+
+        }
 
         if ($this->screen->type === "GENESIS")
             $this->setProduct($value);
@@ -371,9 +377,9 @@ class USSD
 
     private function validate_PIN(string $pin)
     {
-        error_log($pin);
-        error_log(is_numeric($pin));
-        error_log(strlen($pin));
+//        error_log($pin);
+//        error_log(is_numeric($pin));
+//        error_log(strlen($pin));
 
         if (is_numeric($pin)) {
             return strlen(intval($pin)) == 4;

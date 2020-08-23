@@ -208,7 +208,7 @@
     },
     "redeem_confirm": {
         "key": "redeem_confirm",
-        "title": "Please confirm redemption details.\n\nWithdraw: {$points} Sidooh Points\nFor: KSH{$amount}\nTo Account: {$to_number}",
+        "title": "Please confirm redemption details.\n\nWithdraw: {$points} Sidooh Points\nFor: KSH {$amount}\nTo Account: {$to_number}\n",
         "options": {
             "1": {
                 "title": "Accept",
@@ -217,7 +217,7 @@
                 "next": "confirm_pin"
             },
             "2": {
-                "title": "DEcline",
+                "title": "Decline",
                 "type": "int",
                 "value": "2",
                 "next": "cancel"
@@ -392,7 +392,7 @@
     },
     "kyc_details_pin_end": {
         "key": "kyc_details_pin_end",
-        "title": "Your new Sidooh PIN is {$pin}. Please keep your PIN number safe. Do not share it with anyone.",
+        "title": "Your new Sidooh PIN is {$confirm_pin}. Please keep your PIN number safe. Do not share it with anyone.",
         "type": "END"
     },
     "agent_onboarding_mail": {

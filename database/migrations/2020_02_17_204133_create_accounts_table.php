@@ -19,8 +19,9 @@ class CreateAccountsTable extends Migration
 //            TODO: Shift to varchar(15) for the phone fields
             $table->string('phone', 15)->unique();
             $table->boolean('active')->default(true);
-            $table->float('in')->default(0);
-            $table->float('out')->default(0);
+            $table->string('pin')->nullable();
+//            $table->float('in')->default(0);
+//            $table->float('out')->default(0);
 
             $table->timestamps();
         });

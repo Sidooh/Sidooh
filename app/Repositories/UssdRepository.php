@@ -4,7 +4,6 @@
 namespace App\Repositories;
 
 
-use App\Helpers\Sidooh\Airtime;
 use App\Helpers\Sidooh\USSD\USSD;
 use App\Model\User;
 use App\Models\UssdLog;
@@ -643,7 +642,6 @@ class UssdRepository
 
             switch ($user->progress) {
                 case 1:
-                    $response = Airtime::ussdProcessor($user, $result, $message);
                     break;
                 case 4:
                     $response = ReferralRepository::ussdProcessor($user, $result, $message);

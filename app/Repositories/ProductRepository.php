@@ -61,8 +61,8 @@ class ProductRepository
 
             $req->responses()->createMany($response['data']['responses']);
 
-//            TODO:: Remove from here and await callback
-            event(new AirtimePurchaseSuccessEvent($req->responses()->first()));
+////            TODO:: Remove from here and await callback
+//            event(new AirtimePurchaseSuccessEvent($req->responses()->first()));
 
         });
 

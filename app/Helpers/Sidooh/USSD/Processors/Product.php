@@ -77,6 +77,7 @@ class Product
 
     protected function process(UssdUser $user, Screen $previousScreen, Screen $screen)
     {
+//        $this->user = $user;
         $this->retrieveState();
 
         $this->setScreens($previousScreen, $screen);

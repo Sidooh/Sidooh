@@ -14,21 +14,27 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
-        Commands\GenerateMpesaToken::class
+//        Commands\GenerateMpesaToken::class
     ];
 
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('mpesa:generateToken')
-            ->cron('55 * * * *')->withoutOverlapping();
+//        $schedule->command('mpesa:generateToken')
+//            ->cron('55 * * * *')->withoutOverlapping();
+        $schedule->command('mpesa:query_status')
+            ->everyFiveMinutes()
+            ->withoutOverlapping(5)
+            ->sendOutputTo('storage/logs/command.log')
+            ->emailOutputOnFailure('jmnabangi@gmail.com')
+            ->runInBackground();
     }
 
     /**

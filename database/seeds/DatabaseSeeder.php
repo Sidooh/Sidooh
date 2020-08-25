@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TelcoSeeder::class);
         $this->call(AccountSeeder::class);
         $this->call(ReferralSeeder::class);
+        $this->call(SubAccountSeeder::class);
 
         $this->call(UssdMenuSeeder::class);
         $this->call(UssdMenuItemSeeder::class);

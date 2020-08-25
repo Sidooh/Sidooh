@@ -31,7 +31,7 @@ class AirtimePurchaseSuccess
         //
 //        TODO:: Send sms notification
 
-        Log::info('------------------------ Airtime Purchase Success ' . now() . ' ---------------------- ');
+        Log::info('----------------- Airtime Purchase Success ');
 
         $phone = ltrim($event->airtime_response->phoneNumber, '+');
         $sender = $event->airtime_response->request->transaction->account->phone;

@@ -20,8 +20,6 @@ class CreateAccountsTable extends Migration
             $table->string('phone', 15)->unique();
             $table->boolean('active')->default(true);
             $table->string('pin')->nullable();
-//            $table->float('in')->default(0);
-//            $table->float('out')->default(0);
 
             $table->timestamps();
         });

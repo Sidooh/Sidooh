@@ -2,7 +2,9 @@
 
 namespace App\Model;
 
+use App\Models\SubAccount;
 use App\Models\Subscription;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
@@ -38,6 +40,16 @@ class Account extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function sub_accounts()
+    {
+        return $this->hasMany(SubAccount::class);
+    }
+
+    public function sub_account()
+    {
+        return $this->hasOne(SubAccount::class)->type('CURRENT');
     }
 
     public function subscriptions()

@@ -180,13 +180,11 @@ class Account extends Product
 
         if ($acc)
             if ($acc->pin) {
-                $earnings = $acc->earnings;
+                $bal = $acc->sub_account->balance;
 
-                $sum = $earnings->sum('earnings');
-
-                $this->vars['{$spb}'] = $sum;
+                $this->vars['{$spb}'] = $bal;
                 $this->vars['{$sbb}'] = 0;
-                $this->vars['{$wb}'] = $sum > 30 ? $sum - 30 : 0;
+                $this->vars['{$wb}'] = $bal > 30 ? $bal - 30 : 0;
 
                 if ($this->vars['{$wb}'] == 0) {
                     $this->screen->title = "Sorry but your Withdrawable Balance is 0";

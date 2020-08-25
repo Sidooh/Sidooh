@@ -32,7 +32,7 @@ class TransactionRepository extends Model
 
     public function statusUpdate(AirtimeResponse $airtime_response)
     {
-        Log::info('------------------------ Transaction Status Update ' . now() . ' ---------------------- ');
+        Log::info('----------------- Transaction Status Update');
 
         $airtime_request = $airtime_response->request;
 

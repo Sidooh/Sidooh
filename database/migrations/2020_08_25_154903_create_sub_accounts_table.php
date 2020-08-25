@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEarningsTable extends Migration
+class CreateSubAccountsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateEarningsTable extends Migration
      */
     public function up()
     {
-        Schema::create('earnings', function (Blueprint $table) {
+        Schema::create('sub_accounts', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string('aggregate_transactions')->nullable();
-            $table->decimal('earnings', $total = 10, $places = 4);
+            $table->string('type', 32)->default('CURRENT');
+
+            $table->decimal('in', $total = 10, $places = 4)->default(0);
+            $table->decimal('out', $total = 10, $places = 4)->default(0);
 
             $table->timestamps();
         });
@@ -30,6 +32,6 @@ class CreateEarningsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('earnings');
+        Schema::dropIfExists('sub_accounts');
     }
 }

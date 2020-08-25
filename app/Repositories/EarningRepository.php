@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 use App\Model\Earning;
 use App\Model\Transaction;
+use App\Models\SubAccount;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
@@ -31,7 +32,7 @@ class EarningRepository extends Model
 
     public function calcEarnings(Transaction $transaction, float $earnings)
     {
-        Log::info('------------------------ Calc Earnings ' . now() . ' ---------------------- ');
+        Log::info('----------------- Calc Earnings ----------------- ');
 
         $acc = $transaction->account;
 
@@ -51,8 +52,9 @@ class EarningRepository extends Model
                     'type' => 'SELF'
                 ]);
 
-//                $acc->in += $userEarnings;
-//                $acc->save();
+                $sub_acc = $acc->sub_account;
+                $sub_acc->in += $userEarnings;
+                $sub_acc->save();
 
                 $totalLeftOverEarnings -= $userEarnings;
 
@@ -92,12 +94,12 @@ class EarningRepository extends Model
 
                 $e = Earning::insert($userEarning);
 
-//                foreach ($userEarning as $ue) {
-//                    $acc = Account::find($ue['account_id']);
-//
-//                    $acc->in += $userEarnings;
-//                    $acc->save();
-//                }
+                foreach ($userEarning as $ue) {
+                    $acc = SubAccount::type('CURRENT')->find($ue['account_id']);
+
+                    $acc->in += $userEarnings;
+                    $acc->save();
+                }
 
             }
 

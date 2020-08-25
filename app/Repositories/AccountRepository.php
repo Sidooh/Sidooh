@@ -51,6 +51,8 @@ class AccountRepository extends Model
             $referral->save();
         }
 
+        (new SubAccountRepository)->store($acc, 'CURRENT');
+
         return $acc;
 
     }
@@ -86,6 +88,8 @@ class AccountRepository extends Model
 
             event(new ReferralJoinedEvent($referral));
         }
+
+        (new SubAccountRepository)->store($acc, 'CURRENT');
 
         return $acc;
     }

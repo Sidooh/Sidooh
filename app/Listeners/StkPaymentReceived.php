@@ -28,7 +28,7 @@ class StkPaymentReceived
     public function handle(StkPushPaymentSuccessEvent $event)
     {
         //
-        Log::info('------------------------ STK Payment Received ' . now() . ' ---------------------- ');
+        Log::info('----------------- STK Payment Received ');
 
         $stk = $event->stk_callback; //an instance of mpesa callback model
         $mpesa_response = $event->mpesa_response;// mpesa response as array

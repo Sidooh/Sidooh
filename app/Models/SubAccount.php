@@ -21,11 +21,12 @@ class SubAccount extends Model
      * Scope a query to only include specific sub account type.
      *
      * @param Builder $query
+     * @param $type
      * @return Builder
      */
     public function scopeType($query, $type)
     {
-        return $query->whereType($type);
+        return $query->where('type', $type);
     }
 
     public function balance()

@@ -95,7 +95,7 @@ class EarningRepository extends Model
                 $e = Earning::insert($userEarning);
 
                 foreach ($userEarning as $ue) {
-                    $acc = SubAccount::type('CURRENT')->find($ue['account_id']);
+                    $acc = SubAccount::type('CURRENT')->whereAccountId($ue['account_id'])->first();
 
                     $acc->in += $userEarnings;
                     $acc->save();

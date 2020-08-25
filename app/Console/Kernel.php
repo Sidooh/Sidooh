@@ -33,7 +33,7 @@ class Kernel extends ConsoleKernel
             ->everyFiveMinutes()
             ->withoutOverlapping(5)
             ->sendOutputTo('storage/logs/command.log')
-            ->emailOutputOnFailure('jmnabangi@gmail.com')
+//            ->emailOutputOnFailure('sidserviceske@gmail.com')
             ->runInBackground();
     }
 

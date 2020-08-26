@@ -17,6 +17,7 @@ use App\Models\AirtimeResponse;
 use App\Models\Subscription;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 
 class ProductRepository
@@ -136,6 +137,8 @@ class ProductRepository
         $sub->save();
 
 //        });
+
+        Log::info($sub);
 
         event(new SubscriptionPurchaseEvent($sub, $transaction));
 

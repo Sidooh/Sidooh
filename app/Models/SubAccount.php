@@ -29,7 +29,7 @@ class SubAccount extends Model
         return $query->where('type', $type);
     }
 
-    public function balance()
+    public function getBalanceAttribute()
     {
         return $this->in - $this->out;
     }

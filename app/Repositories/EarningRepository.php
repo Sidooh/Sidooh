@@ -38,7 +38,7 @@ class EarningRepository extends Model
 
         $groupEarnings = round($earnings * .75, 4);
 
-        $userEarnings = round($groupEarnings / 7, 4);
+        $userEarnings = round($groupEarnings / 6, 4);
 
         $totalLeftOverEarnings = $groupEarnings;
 
@@ -59,9 +59,9 @@ class EarningRepository extends Model
                 $totalLeftOverEarnings -= $userEarnings;
 
             } else {
-                $referrals = (new AccountRepository)->subscribed_nth_level_referrers($acc, 6, false);
+                $referrals = (new AccountRepository)->subscribed_nth_level_referrers($acc, 5, false);
 
-                if (count($referrals) + 1 > 7)
+                if (count($referrals) + 1 > 6)
                     abort(500);
 
                 $now = Carbon::now('utc')->toDateTimeString();

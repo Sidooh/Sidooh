@@ -162,13 +162,11 @@ class Account extends Product
         $acc = $this->check_current_pin($previousScreen);
 
         if ($acc) {
-            $earnings = $acc->earnings;
+            $bal = $acc->sub_account->balance;
 
-            $sum = $earnings->sum('earnings');
-
-            $this->vars['{$spb}'] = $sum;
+            $this->vars['{$spb}'] = $bal;
             $this->vars['{$sbb}'] = 0;
-            $this->vars['{$wb}'] = $sum > 30 ? $sum - 30 : 0;
+            $this->vars['{$wb}'] = $bal > 30 ? $bal - 30 : 0;
 
         }
 

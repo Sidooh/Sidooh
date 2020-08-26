@@ -86,7 +86,7 @@ class Subscription extends Pay
 
         $type = SubscriptionType::whereAmount($this->vars['{$amount}'])->firstOrFail();
 
-        $phoneNumber = $this->vars['{$my_number}'];
+        $phoneNumber = substr($this->vars['{$my_number}'], 1);
         $phone = $this->vars['{$number}'];
 
         (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber))->purchase($phone);

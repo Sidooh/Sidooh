@@ -61,11 +61,11 @@ class Pre_Agent extends Product
 
         $this->vars['{$subscription_type_1}'] = "Sidooh Ambitious Agent";
         $this->vars['{$subscription_amount_1}'] = 4975;
-        $this->vars['{$level_limit_1}'] = 4;
+        $this->vars['{$level_limit_1}'] = 3;
         $this->vars['{$period_1}'] = "18 MONTHS";
         $this->vars['{$subscription_type_2}'] = "Sidooh Thriving Agent";
         $this->vars['{$subscription_amount_2}'] = 9975;
-        $this->vars['{$level_limit_2}'] = 6;
+        $this->vars['{$level_limit_2}'] = 5;
         $this->vars['{$period_2}'] = "24 MONTHS";
     }
 

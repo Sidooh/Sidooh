@@ -116,7 +116,7 @@ class AccountRepository extends Model
     public function nth_level_referrers(Account $account, $level = 1, $withAccount = true)
     {
         //
-        $max_level = 6;
+        $max_level = 5;
 
         $level = $level > $max_level ? $max_level : $level;
 
@@ -153,24 +153,24 @@ class AccountRepository extends Model
                 if ($depth == 1)
                     return $item->withoutRelations();
 
-                if ($depth < 4) {
+                if ($depth < 3) {
 
                     if ($sub) {
                         $subtype = $sub->subscription_type;
 
-                        if ($subtype->level_limit == 4)
+                        if ($subtype->level_limit == 3)
                             return $item->withoutRelations();
 
                     }
 
                 }
 
-                if ($depth <= 6) {
+                if ($depth <= 5) {
 
                     if ($sub) {
                         $subtype = $sub->subscription_type;
 
-                        if ($subtype->level_limit == 6)
+                        if ($subtype->level_limit == 5)
                             return $item->withoutRelations();
 
                     }
@@ -190,24 +190,24 @@ class AccountRepository extends Model
                 if ($depth == 1)
                     return $item->withoutRelations();
 
-                if ($depth < 4) {
+                if ($depth < 3) {
 
                     if ($sub) {
                         $subtype = $sub->subscription_type;
 
-                        if ($subtype->level_limit == 4)
+                        if ($subtype->level_limit == 3)
                             return $item->withoutRelations();
 
                     }
 
                 }
 
-                if ($depth <= 6) {
+                if ($depth <= 5) {
 
                     if ($sub) {
                         $subtype = $sub->subscription_type;
 
-                        if ($subtype->level_limit == 6)
+                        if ($subtype->level_limit == 5)
                             return $item->withoutRelations();
 
                     }

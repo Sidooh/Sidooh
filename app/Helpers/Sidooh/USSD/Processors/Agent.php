@@ -62,10 +62,10 @@ class Agent extends Product
 
         $this->vars['{$subscription_type_1}'] = "Sidooh Ambitious Agent";
         $this->vars['{$subscription_amount_1}'] = 475;
-        $this->vars['{$level_limit_1}'] = 4;
+        $this->vars['{$level_limit_1}'] = 3;
         $this->vars['{$subscription_type_2}'] = "Sidooh Thriving Agent";
         $this->vars['{$subscription_amount_2}'] = 975;
-        $this->vars['{$level_limit_2}'] = 6;
+        $this->vars['{$level_limit_2}'] = 5;
         $this->vars['{$period}'] = "month";
 
     }

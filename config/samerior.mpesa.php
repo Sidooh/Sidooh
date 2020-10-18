@@ -117,6 +117,42 @@ return [
          */
         'result_url' => env('APP_URL') . '/payments/callbacks/result/',
     ],
+    'b2b' => [
+        /*
+         * Sending app consumer key
+         */
+        'consumer_key' => env('MPESA_KEY'),
+//            'Ei4lr5xbDZXS9XEAZ1BhNE4xCBcAYGVyA',
+        /*
+         * Sending app consumer secret
+         */
+        'consumer_secret' => env('MPESA_SECRET'),
+//            'eMhCDmzFQyx1SNSZ',
+        /*
+         * Shortcode sending funds
+         */
+        'short_code' => 600000,
+        /*
+        * This is the user initiating the transaction, usually from the Mpesa organization portal
+        * Make sure this was the user who was used to 'GO LIVE'
+        * https://org.ke.m-pesa.com/
+        */
+        'initiator' => 'testapi',
+        /*
+         * The user security credential.
+         * Go to https://developer.safaricom.co.ke/test_credentials and paste your initiator password to generate
+         * security credential
+         */
+        'security_credential' => 'NuaLznkkv0eEG0g51dESOPbAIg5IpAMRJSM74gO1FMhk+d36su7S2ND0mrlmE2XwMO0Gz0sk4NTaDpPGVK5VsUwQChsXbixmO3JL2TTEAWAVq/YNO6GN3sj6L/+654HzRufM2UKifuTQdBY3FitxFDMjwn5XbXg7QXXiNzv1ZBxyZhZmianAqrSFms5hS7fAZRVHoJnQ5yup4fgrjrK2KpNK5UjbEacRgymLMT5nVDKJRcvENa0YooiWt1Wo8PekaeqcV7V5W61esiCDH37AqMXyWxnHJ28fEF4WknCzsK19qMXOiMGrUA6IVNIjU6uYihCpoP361WZWFvSlSaP70A==',
+        /*
+         * Notification URL for timeout
+         */
+        'timeout_url' => env('APP_URL') . '/payments/callbacks/timeout_url/',
+        /**
+         * Result URL
+         */
+        'result_url' => env('APP_URL') . '/payments/callbacks/result/',
+    ],
     /*
      * Configure slack notifications to receive mpesa events and callbacks
      */

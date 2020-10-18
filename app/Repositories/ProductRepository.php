@@ -114,22 +114,23 @@ class ProductRepository
     public function subscription(Transaction $transaction, int $amount): Subscription
     {
 //        Log::info($transaction);
-
-        $subscription = [
-            'amount' => $amount,
-            'active' => true,
-        ];
-
 //        Log::info($transaction->amount);
 //        Log::info((int)$transaction->amount);
-
-        $sub = Subscription::create($subscription);
 
 //        DB::transaction(function () use ($sub, $amount, $transaction) {
         $type = SubscriptionType::whereAmount($transaction->amount)->firstOrFail();
 
-        $sub->subscription_type()->associate($type);
-        $sub->account()->associate($transaction->account);
+        $subscription = [
+            'amount' => $amount,
+            'active' => true,
+            'account_id' => $transaction->account->id,
+            'subscription_type_id' => $type->id
+        ];
+
+        $sub = Subscription::create($subscription);
+
+//        $sub->subscription_type()->associate($type);
+//        $sub->account()->associate($transaction->account);
 
         $transaction->status = 'success';
         $transaction->save();

@@ -9,6 +9,7 @@ use App\Model\Transaction;
 use App\Repositories\AccountRepository;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Log;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class Airtime
 {
@@ -42,13 +43,16 @@ class Airtime
     public function __construct($amount, $phone, $method = 'MPESA')
     {
         $this->amount = $amount;
-        $this->phone = $phone;
+        $this->phone = PhoneNumber::make($phone, 'KE')->formatE164();
         $this->method = $method;
     }
 
     public function purchase($targetNumber = null, $mpesaNumber = null)
     {
         Log::info('====== Airtime Purchase ======');
+
+        $targetNumber = $targetNumber ? PhoneNumber::make($targetNumber, 'KE')->formatE164() : null;
+        $mpesaNumber = $mpesaNumber ? PhoneNumber::make($mpesaNumber, 'KE')->formatE164() : null;
 
         $description = ($targetNumber ? "Airtime Purchase - $targetNumber" : $mpesaNumber) ? "Airtime Purchase - $this->phone" : "Airtime Purchase";
         $number = $mpesaNumber ?? $this->phone;

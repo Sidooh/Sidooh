@@ -68,6 +68,8 @@ class Agent extends Product
         $this->vars['{$level_limit_2}'] = 5;
         $this->vars['{$period}'] = "month";
 
+        $this->vars['{$email}'] = $this->vars['{$my_number}'] . "@sid.ooh";
+
     }
 
     private function set_name(Screen $previousScreen)

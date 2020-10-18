@@ -18,7 +18,7 @@ class Subscription extends Model
      */
     protected $fillable = [
         'amount', 'active',
-//        'account_id', 'subscription_type_id'
+        'account_id', 'subscription_type_id'
     ];
 
     /**

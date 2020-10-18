@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Helpers\Sidooh\B2B\B2B;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PaymentResource;
 use App\Model\Payment;
 use App\Repositories\PaymentRepository;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Mpesa;
+use Samerior\MobileMoney\Mpesa\Library\Core;
 
 class PaymentController extends Controller
 {
@@ -37,7 +42,7 @@ class PaymentController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -48,7 +53,7 @@ class PaymentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -98,5 +103,19 @@ class PaymentController extends Controller
     public function destroy(Payment $payment)
     {
         //
+    }
+
+    public function b2b(Request $request)
+    {
+        $b2b = new B2B(new Core(new Client(['http_errors' => false,])), new \Samerior\MobileMoney\Mpesa\Repositories\Mpesa());
+        $res = $b2b->send('123454', 100, 'Trial b2b');
+
+//        $res = mpesa_send('600000', 100, 'Trial b2b');
+//        $mpesa  = new Mpesa();
+//
+//        $res = $mpesa->b2b('10000','BusinessPayBill','60000','4','4','paytest','cool');
+
+        return $res;
+
     }
 }

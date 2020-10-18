@@ -108,6 +108,7 @@ class Account extends Product
     private function set_name(Screen $previousScreen)
     {
         $this->vars['{$name}'] = $previousScreen->option_string;
+        $this->vars['{$email}'] = $this->vars['{$my_number}'] . "@sid.ooh";
     }
 
     private function set_email(Screen $previousScreen)
@@ -164,8 +165,10 @@ class Account extends Product
         if ($acc) {
             $bal = $acc->sub_account->balance;
 
-            $this->vars['{$spb}'] = $bal;
-            $this->vars['{$sbb}'] = 0;
+            $this->vars['{$sp}'] = $bal;
+            $this->vars['{$ab}'] = round(.2 * $bal, 4);
+            $this->vars['{$sni}'] = round(.8 * $bal, 4);
+            $this->vars['{$sb}'] = 0;
             $this->vars['{$wb}'] = $bal > 30 ? $bal - 30 : 0;
 
         }

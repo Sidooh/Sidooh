@@ -57,7 +57,7 @@
     "about": {
         "key": "about",
         "type": "ENDs",
-        "title": "Thank you for your interest in Sidooh.\n\nSidooh is a digital platform that enables you to earn cash refunds on every airtime you purchased from the platform, allowing you to generate extra income to grow your finances and improve your financial life.",
+        "title": "Thank you for your interest in Sidooh.\n\nSidooh is a digital platform that enables you to earn cash refunds on every airtime you purchase from the platform, which is then automatically saved and invested to generate passive income for you to increase your income and improve your financial life.",
         "options": {}
     },
     "airtime": {
@@ -88,6 +88,75 @@
                 "type": "int",
                 "value": "1",
                 "next": "subscription"
+            },
+            "2": {
+                "title": "Voucher",
+                "type": "int",
+                "value": "2",
+                "next": "voucher"
+            },
+            "3": {
+                "title": "Merchant",
+                "type": "int",
+                "value": "2",
+                "next": "merchant"
+            }
+        }
+    },
+    "merchant": {
+        "key": "merchant",
+        "title": "Enter merchant code:",
+        "type": "OPEN",
+        "next": "merchant_payment",
+        "options": {},
+        "option_type": "NUMBER"
+    },
+    "merchant_payment": {
+        "key": "merchant_payment",
+        "title": "Please enter amount:",
+        "type": "OPEN",
+        "next": "merchant_points",
+        "options": {},
+        "option_type": "NUMBER"
+    },
+    "merchant_points": {
+        "key": "merchant_points",
+        "title": "You have ${merchant_points} points worth ${merchant_points_value}. Enter amount to redeem.",
+        "type": "OPEN",
+        "next": "merchant_payment_method",
+        "options": {},
+        "option_type": "NUMBER"
+    },
+    "merchant_payment_method": {
+        "key": "merchant_payment_method",
+        "title": "Pay ${merchant_name} ${amount} using:",
+        "type": "OPEN",
+        "next": "merchant_payment_method",
+        "options": {
+            "1": {
+                "title": "Voucher (${voucher_balance})",
+                "type": "int",
+                "value": "1",
+                "next": "merchant_payment_confirmation"
+            }
+        },
+        "option_type": "NUMBER"
+    },
+    "merchant_payment_confirmation": {
+        "key": "merchant_payment_confirmation",
+        "title": "Ksh{$amount} to {merchant_name} will be deducted from {$payment_method}:",
+        "options": {
+            "1": {
+                "title": "Accept",
+                "type": "int",
+                "value": "1",
+                "next": "payment_end"
+            },
+            "2": {
+                "title": "Cancel",
+                "type": "int",
+                "value": "2",
+                "next": "cancel"
             }
         }
     },
@@ -124,7 +193,7 @@
     },
     "refer": {
         "key": "refer",
-        "title": "Refer your friends to use Sidooh & start earning from every airtime they purchase from the platform once they enroll withing {$enrollment_time}hrs.\n\n Enter friend's no:",
+        "title": "Refer your friends to use Sidooh & start earning from every airtime they purchase from the platform once they enroll within {$enrollment_time}hrs.\n\n Enter friend's no:",
         "type": "OPEN",
         "next": "refer_end",
         "options": {},
@@ -134,7 +203,7 @@
         "key": "agent_onboarding_name",
         "title": "Please enter your Full Name\n\nFormat:\nFirstname Middlename Lastname",
         "type": "OPEN",
-        "next": "agent_onboarding_mail",
+        "next": "agent_onboarding_category",
         "options": {},
         "option_type": "NAME"
     },
@@ -143,13 +212,13 @@
         "title": "What would you like to do?",
         "options": {
             "1": {
-                "title": "KYC details",
+                "title": "Profile",
                 "type": "int",
                 "value": "1",
                 "next": "kyc_details"
             },
             "2": {
-                "title": "Check Earnings",
+                "title": "Earnings",
                 "type": "int",
                 "value": "2",
                 "next": "confirm_pin"
@@ -159,8 +228,90 @@
                 "type": "int",
                 "value": "3",
                 "next": "redeem_amount"
+            },
+            "4": {
+                "title": "Biz",
+                "type": "int",
+                "value": "4",
+                "next": "biz"
             }
         }
+    },
+    "biz": {
+        "key": "biz",
+        "title": "What would you like to do?",
+        "options": {
+            "1": {
+                "title": "Create Merchant Acc.",
+                "type": "int",
+                "value": "1",
+                "next": "biz_kyc_details_name"
+            },
+            "2": {
+                "title": "Check Balance",
+                "type": "int",
+                "value": "2",
+                "next": "confirm_pin"
+            },
+            "3": {
+                "title": "Withdraw",
+                "type": "int",
+                "value": "3",
+                "next": "redeem_amount"
+            },
+            "4": {
+                "title": "Send",
+                "type": "int",
+                "value": "4",
+                "next": "send_merchant"
+            },
+            "5": {
+                "title": "Profile",
+                "type": "int",
+                "value": "5",
+                "next": "biz_profile"
+            }
+        }
+    },
+    "biz_kyc_details_name": {
+        "key": "biz_kyc_details_name",
+        "title": "Please enter Business Name:",
+        "type": "OPEN",
+        "next": "biz_kyc_details_code",
+        "options": {},
+        "option_type": "NAME"
+    },
+    "biz_kyc_details_code": {
+        "key": "biz_kyc_details_code",
+        "title": "Please enter Mpesa Paybill/Till No. If not available, enter mobile number to nominate:",
+        "type": "OPEN",
+        "next": "biz_kyc_details_contact_person_name",
+        "options": {},
+        "option_type": "NUMBER"
+    },
+    "biz_kyc_details_contact_person_name": {
+        "key": "biz_kyc_details_contact_person_name",
+        "title": "Please enter Contact Person Name:",
+        "type": "OPEN",
+        "next": "biz_kyc_details_contact_person_number",
+        "options": {},
+        "option_type": "NAME"
+    },
+    "biz_kyc_details_contact_person_number": {
+        "key": "biz_kyc_details_contact_person_number",
+        "title": "Please enter Contact Person Number:",
+        "type": "OPEN",
+        "next": "biz_kyc_details_pin",
+        "options": {},
+        "option_type": "NUMBER"
+    },
+    "biz_kyc_details_pin": {
+        "key": "biz_kyc_details_pin",
+        "title": "Enter Sidooh PIN:",
+        "type": "OPEN",
+        "next": "kyc_details_new_pin_confirm",
+        "options": {},
+        "option_type": "PIN"
     },
     "redeem_amount": {
         "key": "redeem_amount",
@@ -245,7 +396,7 @@
     },
     "earnings": {
         "key": "earnings",
-        "title": "Here is a breakdown of your earnings:\n\n- Sidooh Points Balance: {$spb}\n- Sidooh Bonus Balance: {$sbb}\n- Withdrawable Balance: {$wb}\n",
+        "title": "Here is a breakdown of your earnings:\n\n1. Sidooh Points: {$sp}\n\t   - Available Balance: {$ab}\n\t   - Savings & Investments: {$sni}\n2. Sidooh Bonus: {$sb}\n3. Withdrawable Amount: {$wb}\n",
         "type": "END"
     },
     "pre_agent": {
@@ -264,7 +415,7 @@
         "key": "pre_agent_onboarding_name",
         "title": "Please enter your Full Name\n\nFormat:\nFirstname Middlename Lastname",
         "type": "OPEN",
-        "next": "pre_agent_onboarding_mail",
+        "next": "pre_agent_onboarding_category",
         "options": {},
         "option_type": "NAME"
     },
@@ -281,13 +432,13 @@
         "title": "Please select your preferred agent category:",
         "options": {
             "1": {
-                "title": "Pre-register as a {$subscription_type_1} for only Ksh{$subscription_amount_1} and earn commissions on every airtime purchased by your referred customers and sub agents UP TO LEVEL {$level_limit_1} FOR {$period_1} WITHOUT PAYING THE MONTHLY FEES.",
+                "title": "Pre-register as a {$subscription_type_1} for only Ksh{$subscription_amount_1} and earn commissions on every airtime purchased by your referred customers and sub agents UP TO YOUR {$level_limit_1}rd RIPPLE FOR {$period_1} WITHOUT PAYING THE MONTHLY FEES.",
                 "type": "int",
                 "value": "1",
                 "next": "pre_agent_onboarding_confirm"
             },
             "2": {
-                "title": "Pre-register as a {$subscription_type_2} for only Ksh{$subscription_amount_2} and earn commissions on every airtime purchased by your referred customers and sub agents UP TO LEVEL {$level_limit_2} FOR {$period_2} WITHOUT PAYING THE MONTHLY FEES.",
+                "title": "Pre-register as a {$subscription_type_2} for only Ksh{$subscription_amount_2} and earn commissions on every airtime purchased by your referred customers and sub agents UP TO YOUR {$level_limit_2}th RIPPLE FOR {$period_2} WITHOUT PAYING THE MONTHLY FEES.",
                 "type": "int",
                 "value": "2",
                 "next": "pre_agent_onboarding_confirm"
@@ -296,7 +447,7 @@
     },
     "pre_agent_onboarding_confirm": {
         "key": "pre_agent_onboarding_confirm",
-        "title": "Please confirm your details.\n\nName: {$name}\nEmail: {$email}\nAgent: {$subscription_type}",
+        "title": "Please confirm your details.\n\nName: {$name}\nAgent: {$subscription_type}",
         "options": {
             "1": {
                 "title": "Confirm",
@@ -314,7 +465,7 @@
     },
     "kyc_details": {
         "key": "kyc_details",
-        "title": "Your details are as follows\n\nName: {$name}\nEmail: {$email}\nNumber: {$my_number}\n",
+        "title": "Your details are as follows\n\nName: {$name}\nNumber: {$my_number}\n",
         "type": "OPENs",
         "options": {
             "1": {
@@ -362,7 +513,7 @@
         "key": "kyc_details_name",
         "title": "Please enter your Full Name\n\nFormat:\nFirstname Middlename Lastname",
         "type": "OPEN",
-        "next": "kyc_details_mail",
+        "next": "kyc_details_new_pin",
         "options": {},
         "option_type": "NAME"
     },
@@ -408,13 +559,13 @@
         "title": "Please select your preferred agent category:",
         "options": {
             "1": {
-                "title": "{$subscription_type_1} @Ksh{$subscription_amount_1}/{$period} earns you commissions on every purchase by your referred customers and sub agents up to level {$level_limit_1}",
+                "title": "{$subscription_type_1} @Ksh{$subscription_amount_1}/{$period} earns you commissions on every purchase by your referred customers and sub agents up to your {$level_limit_1}rd Ripple",
                 "type": "int",
                 "value": "1",
                 "next": "payment_method"
             },
             "2": {
-                "title": "{$subscription_type_2} @Ksh{$subscription_amount_2}/{$period} earns you commissions on every purchase by your referred customers and sub agents up to level {$level_limit_2}",
+                "title": "{$subscription_type_2} @Ksh{$subscription_amount_2}/{$period} earns you commissions on every purchase by your referred customers and sub agents up to your {$level_limit_2}th Ripple",
                 "type": "int",
                 "value": "2",
                 "next": "payment_method"
@@ -423,7 +574,7 @@
     },
     "refer_fail": {
         "key": "refer_fail",
-        "title": "Sorry, the number is not eligible for a referral. Try a different number to start earning from all their purchases from the platform once they enroll withing {$enrollment_time}hrs.\n\n Enter friend's no:",
+        "title": "Sorry, the number is not eligible for a referral. Try a different number to start earning from all their purchases from the platform once they enroll within {$enrollment_time}hrs.\n\n Enter friend's no:",
         "type": "OPEN",
         "next": "refer_end",
         "options": {},
@@ -505,12 +656,6 @@
                 "type": "int",
                 "value": "1",
                 "next": "payment_confirmation"
-            },
-            "2": {
-                "title": "Sidooh Points",
-                "type": "int",
-                "value": "2",
-                "next": "coming_soon"
             }
         }
     },

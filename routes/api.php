@@ -53,4 +53,8 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
 
     Route::post('sms/callback', 'ProductController@smsCallback')->name('sms.callback');
 
+    Route::post('b2b/test', 'PaymentController@b2b')->name('b2b.test');
+
 });
+
+

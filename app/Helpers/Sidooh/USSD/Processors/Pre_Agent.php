@@ -72,6 +72,8 @@ class Pre_Agent extends Product
     private function set_name(Screen $previousScreen)
     {
         $this->vars['{$name}'] = $previousScreen->option_string;
+
+        $this->vars['{$email}'] = $this->vars['{$my_number}'] . "@sid.ooh";
     }
 
     private function set_email(Screen $previousScreen)

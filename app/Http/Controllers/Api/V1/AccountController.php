@@ -159,6 +159,18 @@ class AccountController extends Controller
      * @param Account $account
      * @return AccountResource
      */
+    public function vouchers(Account $account)
+    {
+        //
+        return new AccountResource($account->vouchers());
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Account $account
+     * @return AccountResource
+     */
     public function earnings(Account $account)
     {
         //

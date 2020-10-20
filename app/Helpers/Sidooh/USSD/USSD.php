@@ -112,6 +112,12 @@ class USSD
             case ProductTypes::PAY_SUBSCRIPTION:
                 $this->product = new Subscription($this->user, $this->sessionId);
                 break;
+            case ProductTypes::PAY_VOUCHER:
+                $this->product = new Voucher($this->user, $this->sessionId);
+                break;
+            case ProductTypes::PAY_MERCHANT:
+                $this->product = new Merchant($this->user, $this->sessionId);
+                break;
             case ProductTypes::REFER:
                 $this->product = new Referral($this->user, $this->sessionId);
                 break;
@@ -168,6 +174,10 @@ class USSD
         else if ($this->product instanceof Pay) {
             if ($this->product instanceof Subscription)
                 return ProductTypes::PAY_SUBSCRIPTION;
+            else if ($this->product instanceof Voucher)
+                return ProductTypes::PAY_VOUCHER;
+            else if ($this->product instanceof Merchant)
+                return ProductTypes::PAY_MERCHANT;
             return ProductTypes::PAY;
         } else if ($this->product instanceof Referral)
             return ProductTypes::REFER;

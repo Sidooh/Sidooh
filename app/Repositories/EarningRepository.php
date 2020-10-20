@@ -52,9 +52,14 @@ class EarningRepository extends Model
                     'type' => 'SELF'
                 ]);
 
-                $sub_acc = $acc->sub_account;
-                $sub_acc->in += $userEarnings;
+                $sub_acc = $acc->current_account;
+                $sub_acc2 = $acc->savings_account;
+
+                $sub_acc->in += .2 * $userEarnings;
+                $sub_acc2->in += .8 * $userEarnings;
+
                 $sub_acc->save();
+                $sub_acc2->save();
 
                 $totalLeftOverEarnings -= $userEarnings;
 
@@ -95,10 +100,15 @@ class EarningRepository extends Model
                 $e = Earning::insert($userEarning);
 
                 foreach ($userEarning as $ue) {
+//                    TODO: Get all accounts at once then filter programmatically
                     $acc = SubAccount::type('CURRENT')->whereAccountId($ue['account_id'])->first();
+                    $acc2 = SubAccount::type('SAVINGS')->whereAccountId($ue['account_id'])->first();
 
-                    $acc->in += $userEarnings;
+                    $acc->in += .2 * $userEarnings;
+                    $acc2->in += .8 * $userEarnings;
+
                     $acc->save();
+                    $acc2->save();
                 }
 
             }

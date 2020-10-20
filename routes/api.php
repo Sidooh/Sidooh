@@ -21,6 +21,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::get('accounts/{account}/referrer', 'AccountController@referrer')->name('accounts.referrer');
     Route::get('accounts/{account}/referrals', 'AccountController@referrals')->name('accounts.referrals');
     Route::get('accounts/{account}/subscriptions', 'AccountController@subscriptions')->name('accounts.subscriptions');
+    Route::get('accounts/{account}/vouchers', 'AccountController@vouchers')->name('accounts.vouchers');
     Route::get('accounts/{account}/earnings', 'AccountController@earnings')->name('accounts.earnings');
     Route::get('accounts/{account}/reports/earnings', 'AccountController@earningsReport')->name('accounts.reports.earnings');
 
@@ -32,6 +33,8 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::get('referrals/{phone}', 'ReferralController@byPhone')->name('referrals.byPhone');
 
     Route::apiResource('subscriptions', 'SubscriptionController', ['only' => ['index', 'store', 'show']]);
+    Route::apiResource('vouchers', 'VoucherController', ['only' => ['index', 'store', 'show']]);
+    Route::apiResource('merchants', 'MerchantController', ['only' => ['index', 'store', 'show']]);
 
 
     Route::post('ussd2', 'UssdController@index')->name('ussd');

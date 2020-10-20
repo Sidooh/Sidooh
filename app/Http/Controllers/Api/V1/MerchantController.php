@@ -3,19 +3,34 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\SubAccount;
+use App\Http\Resources\MerchantResource;
+use App\Models\Merchant;
+use App\Repositories\MerchantRepository;
 use Illuminate\Http\Request;
 
-class SubAccountController extends Controller
+class MerchantController extends Controller
 {
+    protected $merchant;
+
+    /**
+     * SubscriptionController constructor.
+     *
+     * @param MerchantRepository $merchant
+     */
+    public function __construct(MerchantRepository $merchant)
+    {
+        $this->merchant = $merchant;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return MerchantResource
      */
     public function index()
     {
         //
+        return new MerchantResource($this->merchant->with(['account'])->get());
     }
 
     /**
@@ -42,10 +57,10 @@ class SubAccountController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\SubAccount $SubAccount
+     * @param \App\Models\Merchant $merchant
      * @return \Illuminate\Http\Response
      */
-    public function show(SubAccount $SubAccount)
+    public function show(Merchant $merchant)
     {
         //
     }
@@ -53,10 +68,10 @@ class SubAccountController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\SubAccount $SubAccount
+     * @param \App\Models\Merchant $merchant
      * @return \Illuminate\Http\Response
      */
-    public function edit(SubAccount $SubAccount)
+    public function edit(Merchant $merchant)
     {
         //
     }
@@ -65,10 +80,10 @@ class SubAccountController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\SubAccount $SubAccount
+     * @param \App\Models\Merchant $merchant
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SubAccount $SubAccount)
+    public function update(Request $request, Merchant $merchant)
     {
         //
     }
@@ -76,10 +91,10 @@ class SubAccountController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\SubAccount $SubAccount
+     * @param \App\Models\Merchant $merchant
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SubAccount $SubAccount)
+    public function destroy(Merchant $merchant)
     {
         //
     }

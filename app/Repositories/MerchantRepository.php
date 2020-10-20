@@ -3,11 +3,11 @@
 
 namespace App\Repositories;
 
-use App\Models\Subscription;
+use App\Models\Merchant;
 use Illuminate\Database\Eloquent\Model;
 use MrAtiebatie\Repository;
 
-class SubscriptionRepository extends Model
+class MerchantRepository extends Model
 {
     use Repository;
 
@@ -23,7 +23,7 @@ class SubscriptionRepository extends Model
      */
     public function __construct()
     {
-        $this->model = app(Subscription::class);
+        $this->model = app(Merchant::class);
     }
 
 }

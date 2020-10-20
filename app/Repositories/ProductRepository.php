@@ -145,4 +145,41 @@ class ProductRepository
 
         return $sub;
     }
+
+
+    public function voucher(Transaction $transaction, array $array): Voucher
+    {
+//        Log::info($transaction);
+//        Log::info($transaction->amount);
+//        Log::info((int)$transaction->amount);
+
+//        DB::transaction(function () use ($sub, $amount, $transaction) {
+
+        $voucher = (new VoucherRepository())->findByPhone($array['phone']);
+
+        if ($voucher) {
+
+        }
+
+        $voucher = [
+            'in' => $amount,
+            'active' => true,
+            'account_id' => $transaction->account->id,
+        ];
+
+        $sub = Voucher::create($subscription);
+
+        $transaction->status = 'success';
+        $transaction->save();
+
+        $sub->save();
+
+//        });
+
+        Log::info($sub);
+
+        event(new SubscriptionPurchaseEvent($sub, $transaction));
+
+        return $sub;
+    }
 }

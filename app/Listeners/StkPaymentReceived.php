@@ -67,6 +67,21 @@ class StkPaymentReceived
                 (new ProductRepository())->subscription($p->payable, $stk->Amount);
                 break;
 
+            case '003.2-VOUCHER':
+                if (count($other_phone) > 1)
+                    $voucherDetails = [
+                        'phone' => $other_phone[1],
+                        'amount' => $stk->Amount
+                    ];
+                else
+                    $voucherDetails = [
+                        'phone' => $stk->PhoneNumber,
+                        'amount' => $stk->Amount
+                    ];
+
+                (new ProductRepository())->voucher($p->payable, $voucherDetails);
+                break;
+
             case '008-PRE_SUBS':
 
                 (new ProductRepository())->subscription($p->payable, $stk->Amount);

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVouchersTable extends Migration
+class CreateMerchantsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,13 @@ class CreateVouchersTable extends Migration
      */
     public function up()
     {
-        Schema::create('vouchers', function (Blueprint $table) {
+        Schema::create('merchants', function (Blueprint $table) {
             $table->bigIncrements('id');
 
+            $table->string('name');
+            $table->string('code', 15);
+            $table->string('contact_name', 32);
+            $table->string('contact_number', 15);
             $table->decimal('in', $total = 10, $places = 4)->default(0);
             $table->decimal('out', $total = 10, $places = 4)->default(0);
 
@@ -30,6 +34,6 @@ class CreateVouchersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vouchers');
+        Schema::dropIfExists('merchants');
     }
 }

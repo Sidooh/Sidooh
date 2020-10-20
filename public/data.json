@@ -103,6 +103,39 @@
             }
         }
     },
+    "voucher": {
+        "key": "voucher",
+        "title": "Buy Voucher",
+        "options": {
+            "1": {
+                "title": "Self {$my_number}",
+                "type": "int",
+                "value": "1",
+                "next": "voucher_amount"
+            },
+            "2": {
+                "title": "Other",
+                "type": "int",
+                "value": "2",
+                "next": "voucher_other_number"
+            }
+        }
+    },
+    "voucher_amount": {
+        "key": "voucher_amount",
+        "title": "Enter voucher amount",
+        "next": "payment_method",
+        "options": {},
+        "option_type": "AMOUNT"
+    },
+    "voucher_other_number": {
+        "key": "voucher_other_number",
+        "title": "Enter other number",
+        "type": "OPEN",
+        "next": "voucher_amount",
+        "options": {},
+        "option_type": "NUMBER"
+    },
     "merchant": {
         "key": "merchant",
         "title": "Enter merchant code:",

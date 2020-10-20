@@ -52,6 +52,7 @@ class AccountRepository extends Model
         }
 
         (new SubAccountRepository)->store($acc, 'CURRENT');
+        (new SubAccountRepository)->store($acc, 'SAVINGS');
 
         return $acc;
 
@@ -90,6 +91,7 @@ class AccountRepository extends Model
         }
 
         (new SubAccountRepository)->store($acc, 'CURRENT');
+        (new SubAccountRepository)->store($acc, 'SAVINGS');
 
         return $acc;
     }

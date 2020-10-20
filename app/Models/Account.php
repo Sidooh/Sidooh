@@ -47,14 +47,24 @@ class Account extends Model
         return $this->hasMany(SubAccount::class);
     }
 
-    public function sub_account()
+    public function current_account()
     {
         return $this->hasOne(SubAccount::class)->type('CURRENT');
+    }
+
+    public function savings_account()
+    {
+        return $this->hasOne(SubAccount::class)->type('SAVINGS');
     }
 
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
+    }
+
+    public function vouchers()
+    {
+        return $this->hasOne(Voucher::class);
     }
 
     public function active_subscription()

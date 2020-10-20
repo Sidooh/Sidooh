@@ -7,14 +7,27 @@ use Illuminate\Http\Request;
 
 class VoucherController extends Controller
 {
+    protected $voucher;
+
+    /**
+     * SubscriptionController constructor.
+     *
+     * @param VoucherRepository $voucher
+     */
+    public function __construct(VoucherRepository $voucher)
+    {
+        $this->voucher = $voucher;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return VoucherResource
      */
     public function index()
     {
         //
+        return new VoucherResource($this->voucher->with(['account'])->get());
     }
 
     /**
@@ -41,7 +54,7 @@ class VoucherController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Voucher $voucher
+     * @param \App\Models\Models\Voucher $voucher
      * @return \Illuminate\Http\Response
      */
     public function show(Voucher $voucher)
@@ -52,7 +65,7 @@ class VoucherController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Voucher $voucher
+     * @param \App\Models\Models\Voucher $voucher
      * @return \Illuminate\Http\Response
      */
     public function edit(Voucher $voucher)
@@ -64,7 +77,7 @@ class VoucherController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Voucher $voucher
+     * @param \App\Models\Models\Voucher $voucher
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Voucher $voucher)
@@ -75,7 +88,7 @@ class VoucherController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Voucher $voucher
+     * @param \App\Models\Models\Voucher $voucher
      * @return \Illuminate\Http\Response
      */
     public function destroy(Voucher $voucher)

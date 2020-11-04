@@ -9,11 +9,13 @@ use App\Helpers\Sidooh\USSD\Entities\Screen;
 use App\Helpers\Sidooh\USSD\Processors\Account;
 use App\Helpers\Sidooh\USSD\Processors\Agent;
 use App\Helpers\Sidooh\USSD\Processors\Airtime;
+use App\Helpers\Sidooh\USSD\Processors\Merchant;
 use App\Helpers\Sidooh\USSD\Processors\Pay;
 use App\Helpers\Sidooh\USSD\Processors\Pre_Agent;
 use App\Helpers\Sidooh\USSD\Processors\Product;
 use App\Helpers\Sidooh\USSD\Processors\Referral;
 use App\Helpers\Sidooh\USSD\Processors\Subscription;
+use App\Helpers\Sidooh\USSD\Processors\Voucher;
 use App\Models\UssdUser;
 use Error;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -102,6 +104,11 @@ class USSD
 
     private function setProduct($value)
     {
+        error_log("---------------- Setting Product");
+        error_log($value);
+        error_log(ProductTypes::PAY_VOUCHER);
+        error_log($value == ProductTypes::PAY_VOUCHER);
+        error_log("---------------- ");
         switch ($value) {
             case ProductTypes::AIRTIME:
                 $this->product = new Airtime($this->user, $this->sessionId);
@@ -135,7 +142,7 @@ class USSD
 
     private function setScreen(Screen $screen, bool $keep_state = true)
     {
-        error_log("setScreen: " . $screen->key . " - " . $screen->type ?? "No type!");
+//        error_log("setScreen: " . $screen->key . " - " . $screen->type ?? "No type!");
 
         if ($keep_state && "GENESIS" !== ($screen->type ?? false)) {
             $prev = $this->screen ?? null;
@@ -152,11 +159,6 @@ class USSD
 
     private function saveState()
     {
-//        error_log('#############');
-//        error_log($this->screen->key);
-//        error_log((string)$this->getProduct(true));
-//        error_log('#############');
-
         error_log("saveState");
         $contents = json_encode([$this->getProduct(true), $this->screen]);
         Storage::put($this->sessionId . '_state.txt', $contents);
@@ -168,6 +170,11 @@ class USSD
 
         if (!$as_enum)
             return $this->product;
+
+//        error_log("---------------- Getting Product");
+//        error_log($this->product instanceof Pay);
+//        error_log($this->product instanceof Voucher);
+//        error_log("---------------- ");
 
         if ($this->product instanceof Airtime)
             return ProductTypes::AIRTIME;
@@ -241,7 +248,7 @@ class USSD
         return $message;
     }
 
-    public function process(UssdUser $user, $value)
+    public function processUssd(UssdUser $user, $value)
     {
 //        print_r('processing...');
         error_log("Chosen: " . $value . ' ' . $this->screen->type);
@@ -259,6 +266,9 @@ class USSD
         if ($this->screen->type === "GENESIS")
             $this->setProduct($value);
 
+//        if ($this->screen->super_product)
+//            $this->setProduct(3 . $value);
+
         try {
             if ($this->screen->type !== "OPEN") {
                 error_log("USSD:process - if not open");
@@ -269,11 +279,23 @@ class USSD
                     $this->screen->option = $option;
                     $screen = $this->findScreen($option->next);
 
-                    if (isset($screen->super_product))
-                        $this->product = $this->product->getSubProduct($user, $this->sessionId, $this->screen->option->value);
+
+//                    error_log("---------------- Super Product Option?");
+//                    error_log(isset($screen->super_product));
+//                    error_log(isset($this->screen->super_product));
+//                    error_log(get_class($this->product));
+//                    error_log(is_subclass_of($this->product, Product::class));
+//                    error_log("----------------");
+                    if (isset($this->screen->super_product))
+                        $this->setProduct(3 . '.' . $value);
+//                        $this->product = $this->product->getSubProduct($user, $this->sessionId, $this->screen->option->value);
 
 //                  TODO: Before setting screen, pass to product e.g. Airtime(screen) to get back relevant vars.
-                    if ($screen && is_subclass_of($this->product, Product::class, false)) {
+                    if ($screen && is_subclass_of($this->product, Product::class, false) && !isset($screen->super_product)) {
+//                        error_log("---------------- Product Subclass 2?");
+//                        error_log(get_class($this->product));
+//                        error_log("----------------");
+
                         $screen = $this->product ? $this->product->process($user, $this->screen, $screen) : $screen;
                     }
 
@@ -352,6 +374,8 @@ class USSD
                 return $this->validate_name($value);
             case "AMOUNT":
                 return $this->validate_amount($value);
+            case "MIN":
+                return $this->validate_amount_min($value, 100);
             case "PIN":
                 return $this->validate_PIN($value);
             case "NUMBER":
@@ -383,6 +407,11 @@ class USSD
     private function validate_amount(string $amount)
     {
         return is_numeric($amount);
+    }
+
+    private function validate_amount_min(string $amount, int $min)
+    {
+        return is_numeric($amount) && (int)$amount >= $min;
     }
 
     private function validate_PIN(string $pin)

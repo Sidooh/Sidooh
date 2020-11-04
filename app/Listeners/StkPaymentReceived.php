@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Model\Payment;
+use App\Models\Payment;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Log;
 use Samerior\MobileMoney\Mpesa\Events\StkPushPaymentSuccessEvent;

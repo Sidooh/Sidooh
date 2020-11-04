@@ -6,6 +6,7 @@ namespace App\Helpers\Sidooh\USSD\Processors;
 use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
 use App\Models\UssdUser;
+use App\Repositories\AccountRepository;
 
 class Airtime extends Product
 {
@@ -69,10 +70,46 @@ class Airtime extends Product
     {
         $method = $this->methods($previousScreen->option->value);
         $this->vars['{$payment_method}'] = $method;
+        $method_text = $method;
+
+        error_log($method);
+        error_log($method === PaymentMethods::MPESA);
+        error_log($method === PaymentMethods::VOUCHER);
 
         if ($method === PaymentMethods::MPESA) {
             $this->vars['{$method_instruction}'] = 'PLEASE ENTER MPESA PIN when prompted';
+            $method_text .= ' ' . $this->vars['{$mpesa_number}'];
         }
+
+        if ($method === PaymentMethods::VOUCHER) {
+
+            $acc = (new AccountRepository)->findByPhone($this->phone);
+
+            if ($acc)
+                if ($acc->voucher) {
+                    $bal = $acc->voucher->balance;
+
+                    if ($bal == 0 || $bal < (int)$this->vars['{$amount}']) {
+                        $this->screen->title = "Sorry but your Voucher Balance is insufficient";
+                        $this->screen->type = 'END';
+                    }
+
+                } else {
+                    $this->screen->title = "Sorry, but you have not purchased a voucher before. Please do so in order to be able to proceed.";
+                    $this->screen->type = 'END';
+                }
+
+            else {
+                $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to proceed.";
+                $this->screen->type = 'END';
+            }
+
+            $method_text .= ' (KSh' . number_format($bal) . ')';
+            $this->vars['{$method_instruction}'] = "Your Voucher (KSh$bal) will be debited automatically";
+            array_pop($this->screen->options);
+        }
+
+        $this->vars['{$payment_method_text}'] = $method_text;
     }
 
     private function set_payment_confirmation(Screen $previousScreen, Screen $screen)
@@ -94,12 +131,13 @@ class Airtime extends Product
         $phoneNumber = $this->vars['{$my_number}'];
         $target = $this->vars['{other_number}'];
         $mpesa = $this->vars['{$mpesa_number}'];
+        $method = $this->vars['{$payment_method}'];
 
 //        error_log([$amount, $phoneNumber, $target, $mpesa]);
 
         if (!isset($amount) || !isset($phoneNumber))
             $this->screen->next = "error";
         else
-            (new \App\Helpers\Sidooh\Airtime($amount, $phoneNumber))->purchase($target, $mpesa);
+            (new \App\Helpers\Sidooh\Airtime($amount, $phoneNumber, $method))->purchase($target, $mpesa);
     }
 }

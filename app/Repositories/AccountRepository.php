@@ -5,7 +5,7 @@ namespace App\Repositories;
 
 use App\Events\ReferralJoinedEvent;
 use App\Helpers\Sidooh\Report;
-use App\Model\Account;
+use App\Models\Account;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use MrAtiebatie\Repository;

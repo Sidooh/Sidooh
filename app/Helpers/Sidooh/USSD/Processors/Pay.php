@@ -3,14 +3,40 @@
 namespace App\Helpers\Sidooh\USSD\Processors;
 
 
+use App\Helpers\Sidooh\USSD\Entities\Screen;
+use App\Models\UssdUser;
+
 class Pay extends Product
 {
+    /**
+     * @param UssdUser $user
+     * @param Screen $previousScreen
+     * @param Screen $screen
+     * @return Screen
+     */
+    public function process(UssdUser $user, Screen $previousScreen, Screen $screen)
+    {
+        return parent::process($user, $previousScreen, $screen);
+    }
+
     public function getSubProduct($user, $sessionId, string $option)
     {
+        error_log("----------------");
+        error_log($option);
+        error_log("----------------");
+
         switch ($option) {
-            case 1 || "1":
-                error_log("Getting sub product");
+            case "1":
+                error_log("Getting sub product 1");
                 return new Subscription($user, $sessionId);
+            case "2":
+                error_log("Getting sub product 2");
+                return new Voucher($user, $sessionId);
+            case "3":
+                error_log("Getting sub product 3");
+                return new Merchant($user, $sessionId);
+            default:
+                return $this;
         }
     }
 

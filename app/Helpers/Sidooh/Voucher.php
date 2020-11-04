@@ -1,14 +1,13 @@
 <?php
 
 
-namespace App\Models\Helpers\Sidooh;
+namespace App\Helpers\Sidooh;
 
 
-use App\Models\Model\Payment;
-use App\Models\Model\SubscriptionType;
-use App\Models\Model\Transaction;
-use App\Models\Repositories\AccountRepository;
-use App\Models\Repositories\ProductRepository;
+use App\Models\Payment;
+use App\Models\Transaction;
+use App\Repositories\AccountRepository;
+use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Log;
 
 class Voucher
@@ -47,9 +46,7 @@ class Voucher
         $description = $targetNumber ? "Voucher Purchase - $targetNumber" : "Voucher Purchase";
         $number = $mpesaNumber ?? $this->phone;
 
-
-        $stkResponse = mpesa_request($number, $this->amount, '003.2-VOUCHER', $description);
-
+        $stkResponse = mpesa_request($number, 10 ?? $this->amount, '003.2-VOUCHER', $description);
 
         $accountRep = new AccountRepository();
 //        $account = $accountRep->create([

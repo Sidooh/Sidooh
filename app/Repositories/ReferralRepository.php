@@ -3,7 +3,7 @@
 
 namespace App\Repositories;
 
-use App\Model\Referral;
+use App\Models\Referral;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;

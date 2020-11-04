@@ -33,4 +33,16 @@ class Screen
 
         return count($neededObject) > 0 ? reset($neededObject) : null;
     }
+
+//    TODO: To be continued...
+    public function __toString()
+    {
+        $str = "{$this->key}\n";
+        $str .= "{$this->title}\n";
+//        $str .= "{$this->type}\n";
+//        $str .= "{$this->super_product}\n";
+//        $str .= "{$this->next}\n";
+
+        return $str;
+    }
 }

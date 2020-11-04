@@ -98,7 +98,7 @@
             "3": {
                 "title": "Merchant",
                 "type": "int",
-                "value": "2",
+                "value": "3",
                 "next": "merchant"
             }
         }
@@ -124,9 +124,10 @@
     "voucher_amount": {
         "key": "voucher_amount",
         "title": "Enter voucher amount",
+        "type": "OPEN",
         "next": "payment_method",
         "options": {},
-        "option_type": "AMOUNT"
+        "option_type": "MIN"
     },
     "voucher_other_number": {
         "key": "voucher_other_number",
@@ -196,7 +197,6 @@
     "subscription": {
         "key": "subscription",
         "title": "Please select option:",
-        "super_product": true,
         "options": {
             "1": {
                 "title": "{$subscription_type_1} @Ksh{$subscription_amount_1}/{$period}",
@@ -689,12 +689,18 @@
                 "type": "int",
                 "value": "1",
                 "next": "payment_confirmation"
+            },
+            "2": {
+                "title": "VOUCHER",
+                "type": "int",
+                "value": "2",
+                "next": "payment_confirmation"
             }
         }
     },
     "payment_confirmation": {
         "key": "payment_confirmation",
-        "title": "Ksh{$amount} {$product} for {$number} will be deducted from {$payment_method} {$mpesa_number}:",
+        "title": "Ksh{$amount} {$product} for {$number} will be deducted from {$payment_method_text}:",
         "options": {
             "1": {
                 "title": "Accept",

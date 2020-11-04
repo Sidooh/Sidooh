@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
-use App\Models\SubAccount;
-use App\Models\Subscription;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
@@ -62,7 +60,7 @@ class Account extends Model
         return $this->hasMany(Subscription::class);
     }
 
-    public function vouchers()
+    public function voucher()
     {
         return $this->hasOne(Voucher::class);
     }

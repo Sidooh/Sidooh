@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Model\Account;
-use App\Model\SubscriptionType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 

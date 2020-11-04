@@ -1,15 +1,10 @@
 <?php
 
 
-namespace App\Models\Repositories;
+namespace App\Repositories;
 
-use App\Models\Events\ReferralJoinedEvent;
-use App\Models\Helpers\Sidooh\Report;
-use App\Models\Model\Account;
-use App\Models\Models\Voucher;
-use Facade\FlareClient\Http\Exceptions\NotFound;
+use App\Models\Voucher;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use MrAtiebatie\Repository;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
@@ -33,7 +28,7 @@ class VoucherRepository extends Model
         $this->model = app(Voucher::class);
     }
 
-    public function store(Request $request): Voucher
+    public function storeOrCreate(array $request): Voucher
     {
         $phone = ltrim(PhoneNumber::make($request['phone'], 'KE')->formatE164(), '+');
 

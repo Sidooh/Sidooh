@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\Models\Helpers\Sidooh\USSD\Processors;
+namespace App\Helpers\Sidooh\USSD\Processors;
 
 
-use App\Models\Helpers\Sidooh\USSD\Entities\PaymentMethods;
-use App\Models\Helpers\Sidooh\USSD\Entities\Screen;
-use App\Models\Model\SubscriptionType;
-use App\Models\Models\UssdUser;
+use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
+use App\Helpers\Sidooh\USSD\Entities\Screen;
+use App\Model\SubscriptionType;
+use App\Models\UssdUser;
 
 class Merchant extends Pay
 {

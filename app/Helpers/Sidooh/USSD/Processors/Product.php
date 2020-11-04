@@ -133,14 +133,16 @@ class Product
      * @param $value
      * @return mixed
      */
-    protected function methods($value)
+    protected function methods(int $value)
     {
         switch ($value) {
-            case 1 || "1":
+            case 1:
                 return PaymentMethods::MPESA;
-            case 2 || "2":
+            case 2:
+                return PaymentMethods::VOUCHER;
+            case 3:
                 return PaymentMethods::SIDOOH_POINTS;
-            case 3 || "3":
+            case 4:
                 return PaymentMethods::SIDOOH_BONUS;
             default:
                 return null;

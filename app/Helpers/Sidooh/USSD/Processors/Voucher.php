@@ -1,13 +1,12 @@
 <?php
 
 
-namespace App\Models\Helpers\Sidooh\USSD\Processors;
+namespace App\Helpers\Sidooh\USSD\Processors;
 
 
-use App\Models\Helpers\Sidooh\USSD\Entities\PaymentMethods;
-use App\Models\Helpers\Sidooh\USSD\Entities\Screen;
-use App\Models\Model\SubscriptionType;
-use App\Models\Models\UssdUser;
+use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
+use App\Helpers\Sidooh\USSD\Entities\Screen;
+use App\Models\UssdUser;
 
 class Voucher extends Pay
 {
@@ -24,6 +23,10 @@ class Voucher extends Pay
 
     protected function process_previous(Screen $previousScreen, Screen $screen)
     {
+        error_log("---------------- Voucher process previous");
+        error_log($previousScreen->key);
+        error_log($screen->key);
+        error_log("---------------- ");
         switch ($previousScreen->key) {
             case "pay":
                 $this->set_init();
@@ -62,8 +65,8 @@ class Voucher extends Pay
 
     private function set_amount(Screen $previousScreen)
     {
-//        $this->vars['{$selected}'] = $this->vars['{$subscription_type_' . $previousScreen->option->value . '}'];
-        $this->vars['{$amount}'] = $this->vars['{$subscription_amount_' . $previousScreen->option->value . '}'];
+        error_log("Setting amount...");
+        $this->vars['{$amount}'] = $previousScreen->option_string;
     }
 
     private function set_payment_method(Screen $previousScreen)
@@ -90,6 +93,6 @@ class Voucher extends Pay
         $phone = $this->vars['{$number}'];
         $amount = $this->vars['{$amount}'];
 
-        (new \App\Models\Helpers\Sidooh\Voucher($phone, $amount))->purchase();
+        (new \App\Helpers\Sidooh\Voucher($phone, $amount))->purchase();
     }
 }

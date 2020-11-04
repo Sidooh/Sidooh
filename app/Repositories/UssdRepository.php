@@ -63,7 +63,7 @@ class UssdRepository
             //reset user
             self::resetUser($user);
 
-            echo $ussd->process($user, $text);
+            echo $ussd->processUssd($user, $text);
             exit;
         }
 
@@ -80,7 +80,7 @@ class UssdRepository
             self::resetUser($user);
 
         error_log($message);
-        echo $ussd->process($user, $message);
+        echo $ussd->processUssd($user, $message);
 
 //        exit;
     }

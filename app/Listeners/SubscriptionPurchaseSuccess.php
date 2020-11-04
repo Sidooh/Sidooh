@@ -22,7 +22,7 @@ class SubscriptionPurchaseSuccess
     /**
      * Handle the event.
      *
-     * @param SubscriptionPurchaseEvent $event
+     * @param VoucherPurchaseEvent $event
      * @return void
      */
     public function handle(SubscriptionPurchaseEvent $event)

@@ -7,14 +7,15 @@ namespace App\Repositories;
 use App\Events\AirtimePurchaseEvent;
 use App\Events\AirtimePurchaseFailedEvent;
 use App\Events\AirtimePurchaseSuccessEvent;
-use App\Events\SubscriptionPurchaseEvent;
+use App\Events\VoucherPurchaseEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
-use App\Model\Product;
-use App\Model\SubscriptionType;
-use App\Model\Transaction;
 use App\Models\AirtimeRequest;
 use App\Models\AirtimeResponse;
+use App\Models\Product;
 use App\Models\Subscription;
+use App\Models\SubscriptionType;
+use App\Models\Transaction;
+use App\Models\Voucher;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -141,7 +142,7 @@ class ProductRepository
 
         Log::info($sub);
 
-        event(new SubscriptionPurchaseEvent($sub, $transaction));
+        event(new VoucherPurchaseEvent($sub, $transaction));
 
         return $sub;
     }
@@ -155,31 +156,21 @@ class ProductRepository
 
 //        DB::transaction(function () use ($sub, $amount, $transaction) {
 
-        $voucher = (new VoucherRepository())->findByPhone($array['phone']);
+        $voucher = (new VoucherRepository())->storeOrCreate($array);
 
-        if ($voucher) {
-
-        }
-
-        $voucher = [
-            'in' => $amount,
-            'active' => true,
-            'account_id' => $transaction->account->id,
-        ];
-
-        $sub = Voucher::create($subscription);
+        $voucher->in += $transaction->amount;
+        $voucher->save();
 
         $transaction->status = 'success';
         $transaction->save();
 
-        $sub->save();
 
 //        });
 
-        Log::info($sub);
+        Log::info($voucher);
 
-        event(new SubscriptionPurchaseEvent($sub, $transaction));
+        event(new VoucherPurchaseEvent($voucher, $transaction));
 
-        return $sub;
+        return $voucher;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-use App\Model\Telco;
+use App\Models\Telco;
 use Illuminate\Database\Seeder;
 
 class TelcoSeeder extends Seeder

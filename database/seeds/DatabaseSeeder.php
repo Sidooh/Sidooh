@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ReferralSeeder::class);
         $this->call(SubAccountSeeder::class);
 
-        $this->call(UssdMenuSeeder::class);
-        $this->call(UssdMenuItemSeeder::class);
+//        $this->call(UssdMenuSeeder::class);
+//        $this->call(UssdMenuItemSeeder::class);
     }
 }

@@ -72,10 +72,6 @@ class Airtime extends Product
         $this->vars['{$payment_method}'] = $method;
         $method_text = $method;
 
-        error_log($method);
-        error_log($method === PaymentMethods::MPESA);
-        error_log($method === PaymentMethods::VOUCHER);
-
         if ($method === PaymentMethods::MPESA) {
             $this->vars['{$method_instruction}'] = 'PLEASE ENTER MPESA PIN when prompted';
             $method_text .= ' ' . $this->vars['{$mpesa_number}'];

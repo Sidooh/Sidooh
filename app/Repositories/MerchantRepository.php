@@ -26,4 +26,10 @@ class MerchantRepository extends Model
         $this->model = app(Merchant::class);
     }
 
+    public function findByCode($code)
+    {
+        return $this->whereCode($code)
+                ->first();
+    }
+
 }

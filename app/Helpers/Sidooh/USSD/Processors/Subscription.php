@@ -6,7 +6,7 @@ namespace App\Helpers\Sidooh\USSD\Processors;
 
 use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
-use App\Model\SubscriptionType;
+use App\Models\SubscriptionType;
 use App\Models\UssdUser;
 
 class Subscription extends Pay

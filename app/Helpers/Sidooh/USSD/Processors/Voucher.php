@@ -67,6 +67,8 @@ class Voucher extends Pay
     {
         error_log("Setting amount...");
         $this->vars['{$amount}'] = $previousScreen->option_string;
+
+        array_pop($this->screen->options);
     }
 
     private function set_payment_method(Screen $previousScreen)

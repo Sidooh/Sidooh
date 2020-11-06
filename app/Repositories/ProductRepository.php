@@ -173,4 +173,30 @@ class ProductRepository
 
         return $voucher;
     }
+
+    public function merchant(Transaction $transaction, array $array): Transaction
+    {
+        $response = (new AfricasTalkingApi())->sms($array['phone'], $array['amount']);
+
+        $response = $this->object_to_array($response);
+
+        $req = AirtimeRequest::create($response['data']);
+
+        $req->transaction()->associate($transaction);
+
+        DB::transaction(function () use ($req, $response) {
+            $req->save();
+
+            $req->responses()->createMany($response['data']['responses']);
+
+////            TODO:: Remove from here and await callback
+//            event(new AirtimePurchaseSuccessEvent($req->responses()->first()));
+
+        });
+
+        event(new AirtimePurchaseEvent($req));
+
+        return $req;
+
+    }
 }

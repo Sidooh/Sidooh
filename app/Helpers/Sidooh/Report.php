@@ -5,9 +5,9 @@ namespace App\Helpers\Sidooh;
 
 
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
-use App\Model\Account;
-use App\Model\Payment;
-use App\Model\Transaction;
+use App\Models\Account;
+use App\Models\Payment;
+use App\Models\Transaction;
 use App\Repositories\AccountRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\TransactionRepository;

@@ -132,8 +132,8 @@ class Airtime
         $payment = new Payment([
             'amount' => $this->amount,
             'status' => 'Pending',
-            'type' => 'VOUCHER',
-            'subtype' => '',
+            'type' => 'SIDOOH',
+            'subtype' => 'VOUCHER',
             'payment_id' => $voucher->id
         ]);
 

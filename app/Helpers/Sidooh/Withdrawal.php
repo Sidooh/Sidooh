@@ -4,8 +4,8 @@
 namespace App\Helpers\Sidooh;
 
 
-use App\Model\SubscriptionType;
-use App\Model\Transaction;
+use App\Models\SubscriptionType;
+use App\Models\Transaction;
 use App\Repositories\AccountRepository;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Log;

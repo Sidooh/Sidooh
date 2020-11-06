@@ -6,8 +6,9 @@ namespace App\Helpers\Sidooh\USSD\Processors;
 
 use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
-use App\Model\SubscriptionType;
 use App\Models\UssdUser;
+use App\Repositories\AccountRepository;
+use App\Repositories\MerchantRepository;
 
 class Merchant extends Pay
 {
@@ -24,14 +25,21 @@ class Merchant extends Pay
 
     protected function process_previous(Screen $previousScreen, Screen $screen)
     {
+//        error_log("---------------- Merchant process previous");
+//        error_log($previousScreen->key);
+//        error_log($screen->key);
+//        error_log("---------------- ");
         switch ($previousScreen->key) {
             case "pay":
                 $this->set_init();
                 break;
-            case "subscription":
+            case "merchant":
+                $this->set_merchant_code($previousScreen);
+                break;
+            case "merchant_payment":
                 $this->set_amount($previousScreen);
                 break;
-            case "payment_method":
+            case "merchant_payment_method":
                 $this->set_payment_method($previousScreen);
                 break;
             case "other_number_mpesa":
@@ -43,24 +51,68 @@ class Merchant extends Pay
 //    TODO: Can we move this to the parent class? as well as all the set methods below?
     private function set_init()
     {
-//        $this->get_class_name(get_parent_class()) . '|' .
         $this->vars['{$product}'] = $this->get_class_name();
-        $this->vars['{$subscription_type_1}'] = "Sidooh Ambitious Agent";
-        $this->vars['{$subscription_amount_1}'] = 475;
-
-        $this->vars['{$subscription_type_2}'] = "Sidooh Thriving Agent";
-        $this->vars['{$subscription_amount_2}'] = 975;
-
-        $this->vars['{$period}'] = "month";
-
         $this->vars['{$number}'] = $this->phone;
         $this->vars['{$mpesa_number}'] = $this->phone;
+        $this->vars['{$payment_method}'] = PaymentMethods::VOUCHER;
+    }
+
+
+    private function set_merchant_code(Screen $previousScreen)
+    {
+        $merchant = (new MerchantRepository)->findByCode($previousScreen->option_string);
+
+        if ($merchant) {
+
+            $this->vars['{$merchant_code}'] = $merchant->code;
+            $this->vars['{$merchant_name}'] = $merchant->name;
+
+            if ($merchant->userPoints) {
+                $this->vars['{$merchant_points}'] = $merchant->userPoints;
+                $this->vars['{$merchant_points_value}'] = $merchant->userPointsValue;
+            } else {
+                $this->screen->next = 'merchant_payment_confirmation';
+            }
+
+        } else {
+            $this->screen->title = "Sorry, but this merchant does not exist. Please try again.";
+            $this->screen->type = 'END';
+        }
+
+        error_log("---------------- Merchant set_merchant_code");
+        error_log(json_encode($this->screen));
+        error_log("----------------");
+
     }
 
     private function set_amount(Screen $previousScreen)
     {
-//        $this->vars['{$selected}'] = $this->vars['{$subscription_type_' . $previousScreen->option->value . '}'];
-        $this->vars['{$amount}'] = $this->vars['{$subscription_amount_' . $previousScreen->option->value . '}'];
+        $this->vars['{$amount}'] = $previousScreen->option_string;
+
+        $acc = (new AccountRepository)->findByPhone($this->phone);
+
+        if ($acc)
+            if ($acc->voucher) {
+                $bal = $acc->voucher->balance;
+
+                if ($bal == 0 || $bal < (int)$this->vars['{$amount}']) {
+                    $this->screen->title = "Sorry but your Voucher Balance is insufficient";
+                    $this->screen->type = 'END';
+                }
+
+            } else {
+                $this->screen->title = "Sorry, but you have not purchased a voucher before. Please do so in order to be able to proceed.";
+                $this->screen->type = 'END';
+            }
+
+        else {
+            $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to proceed.";
+            $this->screen->type = 'END';
+        }
+
+        error_log("---------------- Merchant set_amount");
+        error_log(json_encode($this->screen));
+        error_log("----------------");
     }
 
     private function set_payment_method(Screen $previousScreen)
@@ -80,15 +132,15 @@ class Merchant extends Pay
 
     protected function finalize()
     {
-
 //        TODO: Finalize transaction
-        error_log("Subscription: finalize");
-
-        $type = SubscriptionType::whereAmount($this->vars['{$amount}'])->firstOrFail();
+        error_log("Merchant: finalize");
 
         $phoneNumber = substr($this->vars['{$my_number}'], 1);
-        $phone = $this->vars['{$number}'];
+        $merchant = (new MerchantRepository)->findByCode($this->vars['{$merchant_code}']);
 
-        (new \App\Models\Helpers\Sidooh\Subscription($type, $phoneNumber))->purchase($phone);
+        if ($merchant && $this->screen->key !== 'merchant_payment_confirmation')
+            (new \App\Helpers\Sidooh\Merchant($merchant, $phoneNumber))->purchase($amount);
+
     }
+
 }

@@ -385,6 +385,8 @@ class USSD
                     return true;
                 }
                 return false;
+            case "MERCHANT_CODE":
+                return $this->validate_merchant_code($value);
             default:
                 return false;
         }
@@ -412,6 +414,15 @@ class USSD
     private function validate_amount_min(string $amount, int $min)
     {
         return is_numeric($amount) && (int)$amount >= $min;
+    }
+
+    private function validate_merchant_code(string $code)
+    {
+//        TODO: Should we check if merchant exists here? That will be an extra db call...
+        return is_numeric($code);
+
+
+//        return false;
     }
 
     private function validate_PIN(string $pin)

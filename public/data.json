@@ -178,7 +178,7 @@
     },
     "merchant_payment_confirmation": {
         "key": "merchant_payment_confirmation",
-        "title": "Ksh{$amount} to {$merchant_name} will be deducted from {$payment_method}:",
+        "title": "Ksh{$amount} to {$merchant_name} will be deducted from {$payment_method_text}:",
         "options": {
             "1": {
                 "title": "Accept",

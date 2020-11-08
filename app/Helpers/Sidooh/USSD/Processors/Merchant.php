@@ -103,6 +103,7 @@ class Merchant extends Pay
                 $method_text = $this->vars['{$payment_method}'];
                 $method_text .= ' (KSh' . number_format($bal) . ')';
                 $this->vars['{$method_instruction}'] = "Your $method_text will be debited automatically";
+                $this->vars['{$payment_method_text}'] = $method_text;
 
             } else {
                 $this->screen->title = "Sorry, but you have not purchased a voucher before. Please do so in order to be able to proceed.";

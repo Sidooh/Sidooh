@@ -4,7 +4,7 @@
 namespace App\Helpers\Sidooh\USSD\Processors;
 
 use App\Helpers\Sidooh\USSD\Entities\Screen;
-use App\Model\User;
+use App\Models\User;
 use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
 use Illuminate\Support\Facades\Hash;

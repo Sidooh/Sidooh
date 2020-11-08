@@ -75,10 +75,14 @@ class Voucher extends Pay
     {
         $method = $this->methods($previousScreen->option->value);
         $this->vars['{$payment_method}'] = $method;
+        $method_text = $method;
 
         if ($method === PaymentMethods::MPESA) {
             $this->vars['{$method_instruction}'] = 'PLEASE ENTER MPESA PIN when prompted';
+            $method_text .= ' ' . $this->vars['{$mpesa_number}'];
         }
+
+        $this->vars['{$payment_method_text}'] = $method_text;
     }
 
     private function set_payment_number(Screen $previousScreen)

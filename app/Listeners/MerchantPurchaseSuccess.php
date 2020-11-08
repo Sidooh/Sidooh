@@ -33,8 +33,8 @@ class MerchantPurchaseSuccess
         Log::info('------------------------ Merchant Purchase Success ' . now() . ' ---------------------- ');
 
         $amount = $event->transaction->amount;
-        $account = $event->transaction->account->refresh();
-        $merchant = $event->merchant->refresh();
+        $account = $event->transaction->account;
+        $merchant = $event->merchant;
 
         $phone = ltrim($account->phone, '+');
         $mPhone = ltrim($merchant->contact_number, '+');

@@ -79,6 +79,7 @@ class Merchant
         ]);
 
         $transaction->payment()->save($payment);
+        $voucher->save();
 
         (new ProductRepository())->merchant($transaction, $this->merchant);
     }

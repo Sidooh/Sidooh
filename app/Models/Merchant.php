@@ -13,6 +13,9 @@ class Merchant extends Model
         return $this->belongsTo(Account::class);
     }
 
-
+    public function getBalanceAttribute()
+    {
+        return $this->in - $this->out;
+    }
 
 }

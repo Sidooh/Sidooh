@@ -4,8 +4,8 @@
 namespace App\Events;
 
 
-use App\Model\Transaction;
 use App\Models\Subscription;
+use App\Models\Transaction;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;

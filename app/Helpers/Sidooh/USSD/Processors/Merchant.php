@@ -78,10 +78,10 @@ class Merchant extends Pay
             $this->screen->title = "Sorry, but this merchant does not exist. Please try again.";
             $this->screen->type = 'END';
         }
-
-        error_log("---------------- Merchant set_merchant_code");
-        error_log(json_encode($this->screen));
-        error_log("----------------");
+//
+//        error_log("---------------- Merchant set_merchant_code");
+//        error_log(json_encode($this->screen));
+//        error_log("----------------");
 
     }
 
@@ -100,6 +100,10 @@ class Merchant extends Pay
                     $this->screen->type = 'END';
                 }
 
+                $method_text = $this->vars['{$payment_method}'];
+                $method_text .= ' (KSh' . number_format($bal) . ')';
+                $this->vars['{$method_instruction}'] = "Your $method_text will be debited automatically";
+
             } else {
                 $this->screen->title = "Sorry, but you have not purchased a voucher before. Please do so in order to be able to proceed.";
                 $this->screen->type = 'END';
@@ -109,10 +113,11 @@ class Merchant extends Pay
             $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to proceed.";
             $this->screen->type = 'END';
         }
+//
+//        error_log("---------------- Merchant set_amount");
+//        error_log(json_encode($this->screen));
+//        error_log("----------------");
 
-        error_log("---------------- Merchant set_amount");
-        error_log(json_encode($this->screen));
-        error_log("----------------");
     }
 
     private function set_payment_method(Screen $previousScreen)
@@ -137,6 +142,7 @@ class Merchant extends Pay
 
         $phoneNumber = substr($this->vars['{$my_number}'], 1);
         $merchant = (new MerchantRepository)->findByCode($this->vars['{$merchant_code}']);
+        $amount = $this->vars['{$amount}'];
 
         if ($merchant && $this->screen->key !== 'merchant_payment_confirmation')
             (new \App\Helpers\Sidooh\Merchant($merchant, $phoneNumber))->purchase($amount);

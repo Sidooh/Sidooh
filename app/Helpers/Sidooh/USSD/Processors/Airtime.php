@@ -101,7 +101,7 @@ class Airtime extends Product
             }
 
             $method_text .= ' (KSh' . number_format($bal) . ')';
-            $this->vars['{$method_instruction}'] = "Your Voucher (KSh$bal) will be debited automatically";
+            $this->vars['{$method_instruction}'] = "Your $method_text will be debited automatically";
             array_pop($this->screen->options);
         }
 

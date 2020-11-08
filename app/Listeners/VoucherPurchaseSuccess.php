@@ -41,8 +41,7 @@ class VoucherPurchaseSuccess
 
         $message = "Congratulations! You have successfully purchased a voucher ";
         $message .= "worth Ksh{$amount} on {$date}.\n\n";
-        $message .= "Sidooh, Earns you money on every purchase";
-
+        $message .= "Sidooh, Earns you money on every purchase.";
 
         (new AfricasTalkingApi())->sms($phone, $message);
     }

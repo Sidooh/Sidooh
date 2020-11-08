@@ -7,10 +7,13 @@ namespace App\Repositories;
 use App\Events\AirtimePurchaseEvent;
 use App\Events\AirtimePurchaseFailedEvent;
 use App\Events\AirtimePurchaseSuccessEvent;
+use App\Events\MerchantPurchaseEvent;
+use App\Events\SubscriptionPurchaseEvent;
 use App\Events\VoucherPurchaseEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Models\AirtimeRequest;
 use App\Models\AirtimeResponse;
+use App\Models\Merchant;
 use App\Models\Product;
 use App\Models\Subscription;
 use App\Models\SubscriptionType;
@@ -119,6 +122,11 @@ class ProductRepository
 //        Log::info((int)$transaction->amount);
 
 //        DB::transaction(function () use ($sub, $amount, $transaction) {
+
+        error_log('-------------------');
+        error_log($transaction->amount);
+        error_log('-------------------');
+
         $type = SubscriptionType::whereAmount($transaction->amount)->firstOrFail();
 
         $subscription = [
@@ -142,7 +150,7 @@ class ProductRepository
 
         Log::info($sub);
 
-        event(new VoucherPurchaseEvent($sub, $transaction));
+        event(new SubscriptionPurchaseEvent($sub, $transaction));
 
         return $sub;
     }
@@ -174,29 +182,17 @@ class ProductRepository
         return $voucher;
     }
 
-    public function merchant(Transaction $transaction, array $array): Transaction
+    public function merchant(Transaction $transaction, Merchant $merchant): Transaction
     {
-        $response = (new AfricasTalkingApi())->sms($array['phone'], $array['amount']);
+        $merchant->in += $transaction->amount;
+        $payment = $transaction->payment;
+        $payment->status = "Success";
 
-        $response = $this->object_to_array($response);
+        $merchant->save();
+        $payment->save();
 
-        $req = AirtimeRequest::create($response['data']);
+        event(new MerchantPurchaseEvent($merchant, $transaction));
 
-        $req->transaction()->associate($transaction);
-
-        DB::transaction(function () use ($req, $response) {
-            $req->save();
-
-            $req->responses()->createMany($response['data']['responses']);
-
-////            TODO:: Remove from here and await callback
-//            event(new AirtimePurchaseSuccessEvent($req->responses()->first()));
-
-        });
-
-        event(new AirtimePurchaseEvent($req));
-
-        return $req;
-
+        return $transaction;
     }
 }

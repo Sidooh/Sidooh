@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Model\Referral;
+use App\Models\Referral;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;

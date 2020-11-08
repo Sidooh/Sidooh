@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\AirtimePurchaseFailedEvent;
 use App\Events\AirtimePurchaseSuccessEvent;
+use App\Events\MerchantPurchaseEvent;
 use App\Events\ReferralJoinedEvent;
 use App\Events\TransactionSuccessEvent;
 use App\Events\VoucherPurchaseEvent;
@@ -11,6 +12,7 @@ use App\Listeners\AirtimePurchaseFailed;
 use App\Listeners\AirtimePurchaseSuccess;
 use App\Listeners\B2CPaymentFailed;
 use App\Listeners\B2CPaymentSent;
+use App\Listeners\MerchantPurchaseSuccess;
 use App\Listeners\QueueTimeoutListener;
 use App\Listeners\ReferralJoined;
 use App\Listeners\StkPaymentFailed;
@@ -76,6 +78,10 @@ class EventServiceProvider extends ServiceProvider
 
         VoucherPurchaseEvent::class => [
             VoucherPurchaseSuccess::class
+        ],
+
+        MerchantPurchaseEvent::class => [
+            MerchantPurchaseSuccess::class
         ],
     ];
 

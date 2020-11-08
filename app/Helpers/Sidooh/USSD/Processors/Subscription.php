@@ -8,6 +8,7 @@ use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
 use App\Models\SubscriptionType;
 use App\Models\UssdUser;
+use App\Repositories\AccountRepository;
 
 class Subscription extends Pay
 {
@@ -43,7 +44,6 @@ class Subscription extends Pay
 //    TODO: Can we move this to the parent class? as well as all the set methods below?
     private function set_init()
     {
-//        $this->get_class_name(get_parent_class()) . '|' .
         $this->vars['{$product}'] = $this->get_class_name();
         $this->vars['{$subscription_type_1}'] = "Sidooh Ambitious Agent";
         $this->vars['{$subscription_amount_1}'] = 475;
@@ -59,7 +59,6 @@ class Subscription extends Pay
 
     private function set_amount(Screen $previousScreen)
     {
-//        $this->vars['{$selected}'] = $this->vars['{$subscription_type_' . $previousScreen->option->value . '}'];
         $this->vars['{$amount}'] = $this->vars['{$subscription_amount_' . $previousScreen->option->value . '}'];
     }
 
@@ -67,10 +66,42 @@ class Subscription extends Pay
     {
         $method = $this->methods($previousScreen->option->value);
         $this->vars['{$payment_method}'] = $method;
+        $method_text = $method;
 
         if ($method === PaymentMethods::MPESA) {
             $this->vars['{$method_instruction}'] = 'PLEASE ENTER MPESA PIN when prompted';
+            $method_text .= ' ' . $this->vars['{$mpesa_number}'];
         }
+
+        if ($method === PaymentMethods::VOUCHER) {
+
+            $acc = (new AccountRepository)->findByPhone($this->phone);
+
+            if ($acc)
+                if ($acc->voucher) {
+                    $bal = $acc->voucher->balance;
+
+                    if ($bal == 0 || $bal < (int)$this->vars['{$amount}']) {
+                        $this->screen->title = "Sorry but your Voucher Balance is insufficient";
+                        $this->screen->type = 'END';
+                    }
+
+                } else {
+                    $this->screen->title = "Sorry, but you have not purchased a voucher before. Please do so in order to be able to proceed.";
+                    $this->screen->type = 'END';
+                }
+
+            else {
+                $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to proceed.";
+                $this->screen->type = 'END';
+            }
+
+            $method_text .= ' (KSh' . number_format($bal) . ')';
+            $this->vars['{$method_instruction}'] = "Your $method_text will be debited automatically";
+            array_pop($this->screen->options);
+        }
+
+        $this->vars['{$payment_method_text}'] = $method_text;
     }
 
     private function set_payment_number(Screen $previousScreen)
@@ -80,15 +111,15 @@ class Subscription extends Pay
 
     protected function finalize()
     {
-
 //        TODO: Finalize transaction
         error_log("Subscription: finalize");
 
         $type = SubscriptionType::whereAmount($this->vars['{$amount}'])->firstOrFail();
 
-        $phoneNumber = substr($this->vars['{$my_number}'], 1);
+        $phoneNumber = ltrim($this->vars['{$my_number}'], '+');
         $phone = $this->vars['{$number}'];
+        $method = $this->vars['{$payment_method}'];
 
-        (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber))->purchase($phone);
+        (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber, $method))->purchase($phone);
     }
 }

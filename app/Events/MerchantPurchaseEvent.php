@@ -4,20 +4,20 @@
 namespace App\Events;
 
 
+use App\Models\Merchant;
 use App\Models\Transaction;
-use App\Models\Voucher;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class VoucherPurchaseEvent
+class MerchantPurchaseEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var Voucher
+     * @var Merchant
      */
-    public Voucher $voucher;
+    public Merchant $merchant;
 
     /**
      * @var Transaction
@@ -27,13 +27,13 @@ class VoucherPurchaseEvent
     /**
      * Create a new event instance.
      *
-     * @param Voucher $voucher
+     * @param Merchant $merchant
      * @param Transaction $transaction
      */
-    public function __construct(Voucher $voucher, Transaction $transaction)
+    public function __construct(Merchant $merchant, Transaction $transaction)
     {
         //
-        $this->voucher = $voucher;
+        $this->merchant = $merchant;
         $this->transaction = $transaction;
     }
 }

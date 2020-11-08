@@ -55,7 +55,7 @@ class Merchant
         $account = $accountRep->findByPhone($this->phone);
 
         $voucher = $account->voucher;
-        $voucher->out += $amount;
+        $voucher->out -= $amount;
 
         $productRep = new ProductRepository();
         $product = $productRep->store(['name' => 'Merchant']);
@@ -80,6 +80,6 @@ class Merchant
 
         $transaction->payment()->save($payment);
 
-        (new ProductRepository())->merchant($transaction, $airtime);
+        (new ProductRepository())->merchant($transaction, $this->merchant);
     }
 }

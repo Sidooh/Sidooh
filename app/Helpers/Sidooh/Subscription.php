@@ -4,6 +4,7 @@
 namespace App\Helpers\Sidooh;
 
 
+use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Models\Payment;
 use App\Models\SubscriptionType;
 use App\Models\Transaction;
@@ -35,6 +36,13 @@ class Subscription
     protected $method;
 
     /**
+     * Purchase amount.
+     *
+     * @var int
+     */
+    protected $amount;
+
+    /**
      * Make the initializations required to purchase airtime
      * @param SubscriptionType $type
      * @param $phone
@@ -45,6 +53,11 @@ class Subscription
         $this->type = $type;
         $this->phone = $phone;
         $this->method = $method;
+
+        if ($this->type->amount > 1000)
+            $this->amount = ceil($this->type->amount / 500);
+        else
+            $this->amount = ceil($this->type->amount / 50);
     }
 
 //    TODO: Add Assert checks
@@ -52,28 +65,31 @@ class Subscription
     {
         Log::info('====== Subscription Purchase ======');
 
-        if ($this->type->amount > 1000)
-            $amount = ceil($this->type->amount / 500);
-        else
-            $amount = ceil($this->type->amount / 50);
-        error_log($amount);
+        switch ($this->method) {
+            case PaymentMethods::MPESA:
+                $this->mpesa($targetNumber, $mpesaNumber);
+                break;
+            case PaymentMethods::VOUCHER:
+                $this->voucher($targetNumber);
+                break;
+        }
+    }
 
+    public function mpesa($targetNumber = null, $mpesaNumber = null)
+    {
         $description = $targetNumber ? "Subscription Purchase - $targetNumber" : "Subscription Purchase";
         $number = $mpesaNumber ?? $this->phone;
 
         switch ($this->type->amount) {
             case 4975 || 9975:
-                $stkResponse = mpesa_request($number, $amount, '008-PRE_SUBS', $description);
+                $stkResponse = mpesa_request($number, $this->amount, '008-PRE_SUBS', $description);
                 break;
             default:
-                $stkResponse = mpesa_request($number, $amount, '002-SUBS', $description);
+                $stkResponse = mpesa_request($number, $this->amount, '002-SUBS', $description);
         }
 
 
         $accountRep = new AccountRepository();
-//        $account = $accountRep->create([
-//            'phone' => $this->phone
-//        ]);
         $account = $accountRep->findByPhone($this->phone);
 
         $productRep = new ProductRepository();
@@ -98,5 +114,42 @@ class Subscription
         ]);
 
         $transaction->payment()->save($payment);
+    }
+
+    public function voucher($targetNumber = null, $mpesaNumber = null)
+    {
+        $accountRep = new AccountRepository();
+        $account = $accountRep->create([
+            'phone' => $this->phone
+        ]);
+
+        $voucher = $account->voucher;
+        $voucher->out += $this->amount;
+
+        $productRep = new ProductRepository();
+        $product = $productRep->store(['name' => 'Airtime']);
+
+        $transaction = new Transaction();
+
+        $transaction->amount = $this->type->amount;
+        $transaction->type = 'PAYMENT';
+        $transaction->description = $targetNumber ? "Airtime Purchase - $targetNumber" : "Airtime Purchase";
+        $transaction->account_id = $account->id;
+        $transaction->product_id = $product->id;
+
+        $transaction->save();
+
+        $payment = new Payment([
+            'amount' => $this->type->amount,
+            'status' => 'Pending',
+            'type' => 'SIDOOH',
+            'subtype' => 'VOUCHER',
+            'payment_id' => $voucher->id
+        ]);
+
+        $transaction->payment()->save($payment);
+        $voucher->save();
+
+        (new ProductRepository())->subscription($transaction, $this->type->amount);
     }
 }

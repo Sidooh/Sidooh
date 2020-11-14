@@ -36,6 +36,8 @@ class Account extends Product
             case "account":
                 if ($screen->key == 'redeem_amount') {
                     $this->check_earnings($previousScreen);
+                } elseif ($screen->key == 'referrals') {
+                    $this->check_referrals($previousScreen);
                 } else {
                     $this->set_kyc_details();
                 }
@@ -70,10 +72,6 @@ class Account extends Product
             case 'redeem_account_select':
                 $this->set_number($previousScreen);
                 break;
-            case "other_number_mpesa":
-                $this->set_mpesa_number($previousScreen);
-                break;
-
         }
     }
 
@@ -163,13 +161,15 @@ class Account extends Product
         $acc = $this->check_current_pin($previousScreen);
 
         if ($acc) {
-            $bal = $acc->sub_account->balance;
+            $cbal = $acc->current_account->balance;
+            $sbal = $acc->savings_account->balance;
 
-            $this->vars['{$sp}'] = $bal;
-            $this->vars['{$ab}'] = round(.2 * $bal, 4);
-            $this->vars['{$sni}'] = round(.8 * $bal, 4);
+            $this->vars['{$sp}'] = $cbal + $sbal;
+            $this->vars['{$ab}'] = $cbal;
+            $this->vars['{$sni}'] = $sbal;
             $this->vars['{$sb}'] = 0;
-            $this->vars['{$wb}'] = $bal > 30 ? $bal - 30 : 0;
+            $this->vars['{$wb}'] = $cbal > 30 ? $cbal - 30 : 0;
+            $this->vars['{$vb}'] = number_format($acc->voucher->balance);
 
         }
 
@@ -181,7 +181,38 @@ class Account extends Product
 
         if ($acc)
             if ($acc->pin) {
-                $bal = $acc->sub_account->balance;
+                $bal = $acc->current_account->balance;
+
+                $this->vars['{$spb}'] = $bal;
+                $this->vars['{$sbb}'] = 0;
+                $this->vars['{$wb}'] = $bal > 30 ? $bal - 30 : 0;
+
+                if ($this->vars['{$wb}'] == 0) {
+                    $this->screen->title = "Sorry but your Withdrawable Balance is 0";
+                    $this->screen->type = 'END';
+                }
+
+            } else {
+                $this->screen->title = "Sorry, but you have not set a pin. Please do so in order to be able to proceed.";
+                $this->screen->type = 'END';
+            }
+
+        else {
+            $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to access your account.";
+            $this->screen->type = 'END';
+        }
+
+    }
+
+    private function check_referrals(Screen $previousScreen)
+    {
+        $acc = (new AccountRepository())->nth_level_referrers((new AccountRepository())->findByPhone($this->phone), 5, false);
+
+        return $acc;
+
+        if ($acc)
+            if ($acc->nth_level_referrers) {
+                $bal = $acc->current_account->balance;
 
                 $this->vars['{$spb}'] = $bal;
                 $this->vars['{$sbb}'] = 0;

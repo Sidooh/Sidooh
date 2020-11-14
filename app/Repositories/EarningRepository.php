@@ -3,8 +3,8 @@
 
 namespace App\Repositories;
 
-use App\Model\Earning;
-use App\Model\Transaction;
+use App\Models\Earning;
+use App\Models\Transaction;
 use App\Models\SubAccount;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -32,7 +32,7 @@ class EarningRepository extends Model
 
     public function calcEarnings(Transaction $transaction, float $earnings)
     {
-        Log::info('----------------- Calc Earnings ----------------- ');
+        Log::info("----------------- Calc Earnings ($earnings) ----------------- ");
 
         $acc = $transaction->account;
 

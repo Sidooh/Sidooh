@@ -67,9 +67,9 @@ class Merchant extends Pay
             $this->vars['{$merchant_code}'] = $merchant->code;
             $this->vars['{$merchant_name}'] = $merchant->name;
 
-            if ($merchant->userPoints) {
-                $this->vars['{$merchant_points}'] = $merchant->userPoints;
-                $this->vars['{$merchant_points_value}'] = $merchant->userPointsValue;
+            if ($merchant->user_points) {
+                $this->vars['{$merchant_points}'] = $merchant->user_points;
+                $this->vars['{$merchant_points_value}'] = $merchant->user_points_value;
             } else {
                 $this->screen->next = 'merchant_payment_confirmation';
             }

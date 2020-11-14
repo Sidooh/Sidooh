@@ -122,7 +122,6 @@ class AccountRepository extends Model
 
         $level = $level > $max_level ? $max_level : $level;
 
-
 //        TODO: try get specific depth then use path to get user ids for earnings module possibly
         if (!$withAccount)
             return $account->ancestors()->whereDepth('>=', -$level)->get();

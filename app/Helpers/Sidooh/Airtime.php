@@ -50,7 +50,7 @@ class Airtime
 
     public function purchase($targetNumber = null, $mpesaNumber = null)
     {
-        Log::info('====== Airtime Purchase ======');
+        Log::info("====== Airtime Purchase ($this->method) ======");
 
         switch ($this->method) {
             case PaymentMethods::MPESA:
@@ -60,7 +60,6 @@ class Airtime
                 $this->voucher($targetNumber);
                 break;
         }
-
 
     }
 
@@ -107,7 +106,6 @@ class Airtime
 
     public function voucher($targetNumber = null, $mpesaNumber = null)
     {
-
         $accountRep = new AccountRepository();
         $account = $accountRep->create([
             'phone' => $this->phone

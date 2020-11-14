@@ -4,8 +4,8 @@
 namespace App\Repositories;
 
 use App\Events\TransactionSuccessEvent;
-use App\Model\Account;
-use App\Model\Transaction;
+use App\Models\Account;
+use App\Models\Transaction;
 use App\Models\AirtimeResponse;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;

@@ -184,7 +184,7 @@
                 "title": "Accept",
                 "type": "int",
                 "value": "1",
-                "next": "payment_end"
+                "next": "payment_confirm_pin"
             },
             "2": {
                 "title": "Cancel",
@@ -193,6 +193,14 @@
                 "next": "cancel"
             }
         }
+    },
+    "payment_confirm_pin": {
+        "key": "merchant_confirm_pin",
+        "title": "Please enter your Sidooh PIN",
+        "type": "OPEN",
+        "next": "payment_end",
+        "options": {},
+        "option_type": "PIN"
     },
     "subscription": {
         "key": "subscription",
@@ -267,8 +275,19 @@
                 "type": "int",
                 "value": "4",
                 "next": "biz"
+            },
+            "5": {
+                "title": "Referrals",
+                "type": "int",
+                "value": "2",
+                "next": "referrals"
             }
         }
+    },
+    "referrals": {
+        "key": "referrals",
+        "title": "Here is a breakdown of your referrals:\n\n1. Sidooh Points: {$sp}\n\t   - Available Balance: {$ab}\n\t   - Savings & Investments: {$sni}\n2. Voucher Balance: {$vb}\n3. Sidooh Bonus: {$sb}\n4. Withdrawable Amount: {$wb}\n",
+        "type": "END"
     },
     "biz": {
         "key": "biz",
@@ -429,7 +448,7 @@
     },
     "earnings": {
         "key": "earnings",
-        "title": "Here is a breakdown of your earnings:\n\n1. Sidooh Points: {$sp}\n\t   - Available Balance: {$ab}\n\t   - Savings & Investments: {$sni}\n2. Sidooh Bonus: {$sb}\n3. Withdrawable Amount: {$wb}\n",
+        "title": "Here is a breakdown of your earnings:\n\n1. Sidooh Points: {$sp}\n\t   - Available Balance: {$ab}\n\t   - Savings & Investments: {$sni}\n2. Voucher Balance: {$vb}\n3. Sidooh Bonus: {$sb}\n4. Withdrawable Amount: {$wb}\n",
         "type": "END"
     },
     "pre_agent": {

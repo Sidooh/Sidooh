@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\MerchantPurchaseEvent;
+use App\Events\TransactionSuccessEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use Illuminate\Support\Facades\Log;
 
@@ -52,5 +53,7 @@ class MerchantPurchaseSuccess
         $message .= "Sidooh, Earns you money on every purchase.";
 
         (new AfricasTalkingApi())->sms($mPhone, $message);
+
+        event(new TransactionSuccessEvent($event->transaction, $event->transaction->amount * .025));
     }
 }

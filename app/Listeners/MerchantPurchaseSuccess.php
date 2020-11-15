@@ -31,7 +31,7 @@ class MerchantPurchaseSuccess
         //
 //        TODO:: Send sms notification
 
-        Log::info('------------------------ Merchant Purchase Success ' . now() . ' ---------------------- ');
+        Log::info('----------------- Merchant Purchase Success');
 
         $amount = $event->transaction->amount;
         $account = $event->transaction->account;

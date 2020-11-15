@@ -1,7 +1,7 @@
 {
     "main_menu": {
         "key": "main_menu",
-        "title": "Hi, Welcome to Sidooh. What would you like to do?",
+        "title": "Hi {$name}, Welcome to Sidooh. What would you like to do?",
         "type": "GENESIS",
         "options": {
             "1": {
@@ -242,7 +242,7 @@
     },
     "agent_onboarding_name": {
         "key": "agent_onboarding_name",
-        "title": "Please enter your Full Name\n\nFormat:\nFirstname Middlename Lastname",
+        "title": "Please enter your Full Name\n\nFormat:\nFirstname Lastname",
         "type": "OPEN",
         "next": "agent_onboarding_category",
         "options": {},
@@ -465,7 +465,7 @@
     },
     "pre_agent_onboarding_name": {
         "key": "pre_agent_onboarding_name",
-        "title": "Please enter your Full Name\n\nFormat:\nFirstname Middlename Lastname",
+        "title": "Please enter your Full Name\n\nFormat:\nFirstname Lastname",
         "type": "OPEN",
         "next": "pre_agent_onboarding_category",
         "options": {},

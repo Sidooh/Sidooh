@@ -75,8 +75,19 @@ class USSD
 
         if ($screen instanceof Screen && !$home)
             $this->setScreen($screen, false);
-        else
-            $this->setScreen($this->screens['main_menu'], false);
+        else {
+            $acc = \App\Models\Account::wherePhone(ltrim($this->user->phone, '+'))->first();
+            if ($acc->user) {
+                $vars['{$name}'] = explode(' ', $acc->user->name)[0];
+
+                $this->setScreen($this->screens['main_menu'], false);
+
+                $this->screen->title = strtr($this->screen->title, $vars);
+            } else {
+                $this->setScreen($this->screens['main_menu'], false);
+            }
+
+        }
 
         return self::sendResponse($this->buildResponse());
     }
@@ -104,11 +115,11 @@ class USSD
 
     private function setProduct($value)
     {
-        error_log("---------------- Setting Product");
-        error_log($value);
-        error_log(ProductTypes::PAY_VOUCHER);
-        error_log($value == ProductTypes::PAY_VOUCHER);
-        error_log("---------------- ");
+//        error_log("---------------- Setting Product");
+//        error_log($value);
+//        error_log(ProductTypes::PAY_VOUCHER);
+//        error_log($value == ProductTypes::PAY_VOUCHER);
+//        error_log("---------------- ");
         switch ($value) {
             case ProductTypes::AIRTIME:
                 $this->product = new Airtime($this->user, $this->sessionId);
@@ -299,7 +310,7 @@ class USSD
                         $screen = $this->product ? $this->product->process($user, $this->screen, $screen) : $screen;
                     }
 
-                    error_log($screen);
+//                    error_log($screen);
 
                     if ($screen)
                         $this->setScreen($screen);

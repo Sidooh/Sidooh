@@ -30,7 +30,7 @@ class VoucherPurchaseSuccess
         //
 //        TODO:: Send sms notification
 
-        Log::info('---------------- Voucher Purchase Success ');
+        Log::info('----------------- Voucher Purchase Success ');
 
         $amount = $event->transaction->amount;
         $account = $event->voucher->account;

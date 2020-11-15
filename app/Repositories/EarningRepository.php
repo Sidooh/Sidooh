@@ -4,8 +4,8 @@
 namespace App\Repositories;
 
 use App\Models\Earning;
-use App\Models\Transaction;
 use App\Models\SubAccount;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
@@ -32,7 +32,7 @@ class EarningRepository extends Model
 
     public function calcEarnings(Transaction $transaction, float $earnings)
     {
-        Log::info("----------------- Calc Earnings ($earnings) ----------------- ");
+        Log::info("----------------- Calc Earnings ($earnings)");
 
         $acc = $transaction->account;
 
@@ -42,7 +42,7 @@ class EarningRepository extends Model
 
         $totalLeftOverEarnings = $groupEarnings;
 
-        if ($transaction->amount >= 20) {
+        if ($transaction->amount >= 20 || $transaction->product_id == 4) {
 
             if ($acc->isRoot()) {
                 $e = Earning::create([
@@ -103,6 +103,9 @@ class EarningRepository extends Model
 //                    TODO: Get all accounts at once then filter programmatically
                     $acc = SubAccount::type('CURRENT')->whereAccountId($ue['account_id'])->first();
                     $acc2 = SubAccount::type('SAVINGS')->whereAccountId($ue['account_id'])->first();
+
+//                    Log::info($acc);
+//                    Log::info($acc2);
 
                     $acc->in += .2 * $userEarnings;
                     $acc2->in += .8 * $userEarnings;

@@ -259,7 +259,7 @@
                 "next": "kyc_details"
             },
             "2": {
-                "title": "Earnings",
+                "title": "Check Balance",
                 "type": "int",
                 "value": "2",
                 "next": "confirm_pin"

@@ -31,7 +31,10 @@ class StkPaymentReceived
         Log::info('----------------- STK Payment Received ');
 
         $stk = $event->stk_callback; //an instance of mpesa callback model
-        $mpesa_response = $event->mpesa_response;// mpesa response as array
+//        $mpesa_response = $event->mpesa_response;// mpesa response as array
+
+//        Log::info($stk);
+//        Log::info($mpesa_response);
 
         $other_phone = explode(" - ", $stk->request->description);
 //
@@ -54,7 +57,7 @@ class StkPaymentReceived
                     ];
                 else
                     $airtime = [
-                        'phone' => $stk->PhoneNumber,
+                        'phone' => $stk->PhoneNumber ?? $stk->request->phone,
                         'amount' => $stk->Amount
                     ];
 
@@ -75,7 +78,7 @@ class StkPaymentReceived
                     ];
                 else
                     $voucherDetails = [
-                        'phone' => $stk->PhoneNumber,
+                        'phone' => $stk->PhoneNumber ?? $stk->request->phone,
                         'amount' => $stk->Amount
                     ];
 

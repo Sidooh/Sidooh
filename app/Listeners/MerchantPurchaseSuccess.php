@@ -54,6 +54,8 @@ class MerchantPurchaseSuccess
 
         (new AfricasTalkingApi())->sms($mPhone, $message);
 
-        event(new TransactionSuccessEvent($event->transaction, $event->transaction->amount * .025));
+        $amount = $event->transaction->amount * .025 <= 250 ? $event->transaction->amount * .025 : 250;
+
+        event(new TransactionSuccessEvent($event->transaction, $amount));
     }
 }

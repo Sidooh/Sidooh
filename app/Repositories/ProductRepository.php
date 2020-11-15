@@ -175,7 +175,7 @@ class ProductRepository
 
 //        });
 
-        Log::info($voucher);
+//        Log::info($voucher);
 
         event(new VoucherPurchaseEvent($voucher, $transaction));
 

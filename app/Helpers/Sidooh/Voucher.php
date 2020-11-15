@@ -49,9 +49,6 @@ class Voucher
         $stkResponse = mpesa_request($number, 10 ?? $this->amount, '003.2-VOUCHER', $description);
 
         $accountRep = new AccountRepository();
-//        $account = $accountRep->create([
-//            'phone' => $this->phone
-//        ]);
         $account = $accountRep->findByPhone($this->phone);
 
         $productRep = new ProductRepository();

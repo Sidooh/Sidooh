@@ -88,6 +88,7 @@ class Voucher extends Pay
     private function set_payment_number(Screen $previousScreen)
     {
         $this->vars['{$mpesa_number}'] = $previousScreen->option_string;
+        $this->vars['{$payment_method_text}'] = $this->vars['{$payment_method}'] . ' ' . $this->vars['{$mpesa_number}'];
     }
 
     protected function finalize()
@@ -95,10 +96,12 @@ class Voucher extends Pay
 //        TODO: Finalize transaction
         error_log("Voucher: finalize");
 
-        $phoneNumber = substr($this->vars['{$my_number}'], 1);
+//        $phoneNumber = substr($this->vars['{$my_number}'], 1);
         $phone = $this->vars['{$number}'];
         $amount = $this->vars['{$amount}'];
+        $target = $this->vars['{$other_number}'];
+        $mpesa = $this->vars['{$mpesa_number}'];
 
-        (new \App\Helpers\Sidooh\Voucher($phone, $amount))->purchase();
+        (new \App\Helpers\Sidooh\Voucher($phone, $amount))->purchase($target, $mpesa);
     }
 }

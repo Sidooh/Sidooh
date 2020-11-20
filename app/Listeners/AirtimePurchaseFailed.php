@@ -29,7 +29,7 @@ class AirtimePurchaseFailed
         //
 //        TODO:: Send sms notification
 
-        Log::info('------------------------ Airtime Purchase Failed ' . now() . ' ---------------------- ');
+        Log::info('----------------- Airtime Purchase Failed');
 
 
     }

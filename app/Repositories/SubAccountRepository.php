@@ -3,7 +3,7 @@
 
 namespace App\Repositories;
 
-use App\Model\Account;
+use App\Models\Account;
 use App\Models\SubAccount;
 use Illuminate\Database\Eloquent\Model;
 use MrAtiebatie\Repository;

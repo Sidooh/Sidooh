@@ -80,12 +80,13 @@ class USSD
             if ($acc->user) {
                 $vars['{$name}'] = explode(' ', $acc->user->name)[0];
 
-                $this->setScreen($this->screens['main_menu'], false);
-
-                $this->screen->title = strtr($this->screen->title, $vars);
             } else {
-                $this->setScreen($this->screens['main_menu'], false);
+                $vars['{$name}'] = '';
             }
+
+            $this->setScreen($this->screens['main_menu'], false);
+
+            $this->screen->title = strtr($this->screen->title, $vars);
 
         }
 
@@ -253,7 +254,7 @@ class USSD
     private static function addResponseFooter($message)
     {
         $message .= PHP_EOL;
-//        $message .= "0. Back" . PHP_EOL;
+        $message .= "0. Back" . PHP_EOL;
         $message .= "00. Home" . PHP_EOL;
 
         return $message;
@@ -265,10 +266,10 @@ class USSD
         error_log("Chosen: " . $value . ' ' . $this->screen->type);
 
         if ($this->screen->type !== "GENESIS") {
-//            if ($value === "0") {
-////                Solve issues with going back first
-////                $this->back();
-//            }
+            if ($value === "0") {
+//                Solve issues with going back first
+                $this->back();
+            }
             if ($value === "00")
                 $this->home();
 
@@ -396,6 +397,8 @@ class USSD
                     return true;
                 }
                 return false;
+            case "BUSINESS_NUMBER":
+                return $this->validate_number($this->product->phone);
             case "MERCHANT_CODE":
                 return $this->validate_merchant_code($value);
             default:
@@ -414,7 +417,7 @@ class USSD
 
     private function validate_name(string $name)
     {
-        return preg_match("/^[A-z ,.'-]{3,}$/", $name);
+        return preg_match("/^[A-z ,.&'-]{3,}$/", $name);
     }
 
     private function validate_amount(string $amount)

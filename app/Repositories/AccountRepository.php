@@ -90,6 +90,8 @@ class AccountRepository extends Model
             event(new ReferralJoinedEvent($referral));
         }
 
+        (new VoucherRepository)->storeOrCreate($arr);
+
         (new SubAccountRepository)->store($acc, 'CURRENT');
         (new SubAccountRepository)->store($acc, 'SAVINGS');
 

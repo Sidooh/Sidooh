@@ -35,6 +35,9 @@ class Subscription extends Pay
             case "payment_method":
                 $this->set_payment_method($previousScreen);
                 break;
+            case "payment_pin_confirmation":
+                $this->check_current_pin($previousScreen);
+                break;
             case "other_number_mpesa":
                 $this->set_payment_number($previousScreen);
                 break;
@@ -104,6 +107,31 @@ class Subscription extends Pay
         $this->vars['{$payment_method_text}'] = $method_text;
     }
 
+    private function check_current_pin(Screen $previousScreen)
+    {
+        $acc = (new AccountRepository)->findByPhone($this->phone);
+
+        if ($acc)
+            if ($acc->pin) {
+//                if (!Hash::check($previousScreen->option_string, $res->pin)) {
+                if ($previousScreen->option_string !== $acc->pin) {
+                    $this->screen->title = "Sorry, but the pin does not match. Please call us if you have forgotten your PIN";
+                    $this->screen->type = 'END';
+                } else {
+                    return $acc;
+                }
+            } else {
+                $this->screen->title = "Sorry, but you have not set a pin. Please do so in order to be able to proceed.";
+                $this->screen->type = 'END';
+            }
+        else {
+            $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to access your account.";
+            $this->screen->type = 'END';
+        }
+
+        return null;
+    }
+
     private function set_payment_number(Screen $previousScreen)
     {
         $this->vars['{$mpesa_number}'] = $previousScreen->option_string;
@@ -112,6 +140,7 @@ class Subscription extends Pay
     protected function finalize()
     {
 //        TODO: Finalize transaction
+//        TODO: For all Pin flows, use bool 'confirm pin' to check if pin confirmed
         error_log("Subscription: finalize");
 
         $type = SubscriptionType::whereAmount($this->vars['{$amount}'])->firstOrFail();

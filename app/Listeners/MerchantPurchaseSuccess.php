@@ -48,7 +48,7 @@ class MerchantPurchaseSuccess
 
         (new AfricasTalkingApi())->sms($phone, $message);
 
-        $message = "SIDOOH transaction confirmed. Ksh{$amount} paid to {$merchant->name}";
+        $message = "SIDOOH transaction confirmed. You have received Ksh{$amount} from {$account->user->name} {$phone}";
         $message .= " on {$date}. New Account balance is {$merchant->balance}.\n\n";
         $message .= "Sidooh, Earns you money on every purchase.";
 

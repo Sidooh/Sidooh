@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
 use Illuminate\Support\Facades\Hash;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class Account extends Product
 {
@@ -72,6 +73,39 @@ class Account extends Product
             case 'redeem_account_select':
                 $this->set_number($previousScreen);
                 break;
+
+            case 'biz_pin':
+                $this->set_biz($previousScreen);
+                break;
+
+            case 'biz_kyc_details_name':
+                $this->set_biz_name($previousScreen);
+                break;
+
+            case 'biz_kyc_details_code':
+                $this->set_biz_code($previousScreen);
+                break;
+
+            case 'biz_kyc_details_contact_person_name':
+                $this->set_contact_name($previousScreen);
+                break;
+
+            case 'biz_kyc_details_contact_person_number':
+                $this->set_contact_number($previousScreen);
+                break;
+
+            case "biz":
+                if ($screen->key == 'biz_balance') {
+                    $this->biz_check_balance($previousScreen);
+                }
+//                elseif ($screen->key == 'biz_withdraw') {
+////                    $this->check_referrals($previousScreen);
+//                } else {
+//                    $this->set_kyc_details();
+//                }
+                break;
+
+
         }
     }
 
@@ -80,7 +114,6 @@ class Account extends Product
         $this->vars['{$product}'] = $this->get_class_name();
         $this->vars['{$my_number}'] = $this->phone;
     }
-
 
     private function set_kyc_details()
     {
@@ -258,6 +291,68 @@ class Account extends Product
         $this->vars['{$mpesa_number}'] = $previousScreen->option_string;
     }
 
+
+    private function set_biz(Screen $previousScreen)
+    {
+        $acc = $this->check_current_pin($previousScreen);
+
+        if ($acc) {
+            if ($acc->merchant) {
+                $this->vars['{$biz_name}'] = $acc->merchant->name;
+                $this->vars['{$biz_code}'] = $acc->merchant->code;
+                $this->vars['{$biz_contact_name}'] = $acc->merchant->contact_name;
+                $this->vars['{$biz_contact_number}'] = $acc->merchant->contact_number;
+
+                unset($this->screen->options[0]);
+            } else {
+                $this->vars['{$biz_name}'] = $acc->user->name;
+            }
+        }
+
+    }
+
+    private function set_biz_name(Screen $previousScreen)
+    {
+        $this->vars['{$biz_name}'] = $previousScreen->option_string;
+    }
+
+    private function set_biz_code(Screen $previousScreen)
+    {
+        $this->vars['{$biz_code}'] = $previousScreen->option_string;
+    }
+
+    private function set_contact_name(Screen $previousScreen)
+    {
+        $this->vars['{$biz_contact_name}'] = $previousScreen->option_string;
+    }
+
+    private function set_contact_number(Screen $previousScreen)
+    {
+        $this->vars['{$biz_contact_number}'] = $previousScreen->option_string;
+    }
+
+    private function biz_check_balance(Screen $previousScreen)
+    {
+        $acc = (new AccountRepository)->findByPhone($this->phone);
+
+        if ($acc)
+            if ($acc->pin) {
+                $bal = $acc->merchant->balance;
+
+                $this->vars['{$mb}'] = $bal;
+
+            } else {
+                $this->screen->title = "Sorry, but you have not set a pin. Please do so in order to be able to proceed.";
+                $this->screen->type = 'END';
+            }
+
+        else {
+            $this->screen->title = "Sorry, but you have not created a Merchant account. Please do so in order to access your balance.";
+            $this->screen->type = 'END';
+        }
+
+    }
+
     protected function finalize()
     {
 //        TODO: Finalize transaction
@@ -267,12 +362,16 @@ class Account extends Product
             return;
 
         if ($this->screen->key == 'kyc_details_pin_end') {
-            $this->set_pin_and_user();
+            $this->setPinAndUser();
+        }
+
+        if ($this->screen->key == 'biz_kyc_details_end') {
+            $this->createMerchant();
         }
 
     }
 
-    private function set_pin_and_user()
+    private function setPinAndUser()
     {
         $phone = $this->vars['{$my_number}'];
 //
@@ -303,6 +402,30 @@ class Account extends Product
 
         $acc->user()->associate($user);
         $acc->save();
+    }
+
+    private function createMerchant()
+    {
+        $phone = $this->vars['{$my_number}'];
+//
+        $bizName = $this->vars['{$biz_name}'];
+        $bizCode = $this->vars['{$biz_code}'];
+        $bizContactName = $this->vars['{$biz_contact_name}'];
+        $bizContactNumber = ltrim(PhoneNumber::make($this->vars['{$biz_contact_number}'], 'KE')->formatE164());
+
+        $acc = (new AccountRepository)->findByPhone($this->phone);
+
+        if (!$acc->merchant)
+            $merchant = \App\Models\Merchant::firstOrCreate(
+                [
+                    'code' => $bizCode,
+                    'account_id' => $acc->id,
+                ],
+                [
+                    'name' => $bizName,
+                    'contact_name' => $bizContactName,
+                    'contact_number' => $bizContactNumber,
+                ]);
     }
 
 }

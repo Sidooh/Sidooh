@@ -22,7 +22,7 @@ class SubscriptionPurchaseSuccess
     /**
      * Handle the event.
      *
-     * @param VoucherPurchaseEvent $event
+     * @param SubscriptionPurchaseEvent $event
      * @return void
      */
     public function handle(SubscriptionPurchaseEvent $event)
@@ -30,7 +30,7 @@ class SubscriptionPurchaseSuccess
         //
 //        TODO:: Send sms notification
 
-        Log::info('------------------------ Subscription Purchase Success ' . now() . ' ---------------------- ');
+        Log::info('----------------- Subscription Purchase Success');
 
         $type = $event->subscription->subscription_type;
         $account = $event->subscription->account;
@@ -40,7 +40,8 @@ class SubscriptionPurchaseSuccess
         $date = $event->subscription->created_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
 
         switch ($type->amount) {
-            case 4975 || 9975:
+            case 4975:
+            case 9975:
                 $level_duration = $type->amount == 9975 ? "24 MONTHS" : "18 MONTHS";
                 $message = "Congratulations! You have successfully been pre-registered as a {$type->title} ";
                 $message .= "on {$date}. ";

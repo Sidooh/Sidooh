@@ -63,7 +63,7 @@ class Subscription
 //    TODO: Add Assert checks
     public function purchase($targetNumber = null, $mpesaNumber = null)
     {
-        Log::info('====== Subscription Purchase ======');
+        Log::info("====== Subscription Purchase ($this->method) ======");
 
         switch ($this->method) {
             case PaymentMethods::MPESA:
@@ -88,7 +88,7 @@ class Subscription
                 $stkResponse = mpesa_request($number, $this->amount, '002-SUBS', $description);
         }
 
-
+//        TODO: Refactor this into the constructor?
         $accountRep = new AccountRepository();
         $account = $accountRep->findByPhone($this->phone);
 
@@ -102,6 +102,8 @@ class Subscription
         $transaction->description = 'Subscription Purchase';
         $transaction->account_id = $account->id;
         $transaction->product_id = $product->id;
+
+//        TODO: Refactor end
 
         $transaction->save();
 
@@ -127,13 +129,13 @@ class Subscription
         $voucher->out += $this->amount;
 
         $productRep = new ProductRepository();
-        $product = $productRep->store(['name' => 'Airtime']);
+        $product = $productRep->store(['name' => 'Subscription']);
 
         $transaction = new Transaction();
 
         $transaction->amount = $this->type->amount;
         $transaction->type = 'PAYMENT';
-        $transaction->description = $targetNumber ? "Airtime Purchase - $targetNumber" : "Airtime Purchase";
+        $transaction->description = 'Subscription Purchase';
         $transaction->account_id = $account->id;
         $transaction->product_id = $product->id;
 

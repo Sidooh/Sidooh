@@ -90,6 +90,11 @@ class Account extends Model
         return $this->hasMany(Earning::class);
     }
 
+    public function merchant()
+    {
+        return $this->hasOne(Merchant::class);
+    }
+
     /**
      * Scope a query to only include active subscriptions.
      *

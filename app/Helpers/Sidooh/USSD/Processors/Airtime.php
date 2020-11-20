@@ -38,6 +38,9 @@ class Airtime extends Product
             case "payment_method":
                 $this->set_payment_method($previousScreen);
                 break;
+            case "payment_pin_confirmation":
+                $this->check_current_pin($previousScreen);
+                break;
             case "payment_confirmation":
                 $this->set_payment_confirmation($previousScreen, $screen);
                 break;
@@ -64,6 +67,31 @@ class Airtime extends Product
     private function set_amount(Screen $previousScreen)
     {
         $this->vars['{$amount}'] = $previousScreen->option->value;
+    }
+
+    private function check_current_pin(Screen $previousScreen)
+    {
+        $acc = (new AccountRepository)->findByPhone($this->phone);
+
+        if ($acc)
+            if ($acc->pin) {
+//                if (!Hash::check($previousScreen->option_string, $res->pin)) {
+                if ($previousScreen->option_string !== $acc->pin) {
+                    $this->screen->title = "Sorry, but the pin does not match. Please call us if you have forgotten your PIN";
+                    $this->screen->type = 'END';
+                } else {
+                    return $acc;
+                }
+            } else {
+                $this->screen->title = "Sorry, but you have not set a pin. Please do so in order to be able to proceed.";
+                $this->screen->type = 'END';
+            }
+        else {
+            $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to access your account.";
+            $this->screen->type = 'END';
+        }
+
+        return null;
     }
 
     private function set_payment_method(Screen $previousScreen)
@@ -116,20 +144,20 @@ class Airtime extends Product
     private function set_payment_number(Screen $previousScreen)
     {
         $this->vars['{$mpesa_number}'] = $previousScreen->option_string;
+        $this->vars['{$payment_method_text}'] = $this->vars['{$payment_method}'] . ' ' . $this->vars['{$mpesa_number}'];
     }
 
     protected function finalize()
     {
 //        TODO: Finalize transaction
+//        TODO: Check pin and voucher first
         error_log("Airtime: finalize");
 
         $amount = $this->vars['{$amount}'];
         $phoneNumber = $this->vars['{$my_number}'];
-        $target = $this->vars['{other_number}'];
+        $target = $this->vars['{$other_number}'];
         $mpesa = $this->vars['{$mpesa_number}'];
         $method = $this->vars['{$payment_method}'];
-
-//        error_log([$amount, $phoneNumber, $target, $mpesa]);
 
         if (!isset($amount) || !isset($phoneNumber))
             $this->screen->next = "error";

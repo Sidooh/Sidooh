@@ -30,7 +30,7 @@ class StkPaymentFailed
         $stk = $event->stk_callback; //an instance of mpesa callback model
 //        $mpesa_response = $event->mpesa_response;// mpesa response as array
 
-        Log::info('----------------- STK Payment Failed (' . $stk->ResultDesc . ') ----------------- ');
+        Log::info('----------------- STK Payment Failed (' . $stk->ResultDesc . ')');
 
         $message = "We failed to carry out your transaction. No amount was debited from your account.\nSorry for the inconvenience, please try again...\n\nSidooh, Makes You Money!";
 

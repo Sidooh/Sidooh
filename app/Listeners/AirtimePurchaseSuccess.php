@@ -33,6 +33,9 @@ class AirtimePurchaseSuccess
 
         Log::info('----------------- Airtime Purchase Success ');
 
+//        Log::info($event->airtime_response);
+//        Log::info($event->airtime_response->request->transaction);
+
         $phone = ltrim($event->airtime_response->phoneNumber, '+');
         $sender = $event->airtime_response->request->transaction->account->phone;
 
@@ -42,6 +45,12 @@ class AirtimePurchaseSuccess
         $message = "You have received {$amount} airtime from Sidooh account {$sender} on {$date}. Dial *144# to check your balance. \n\nSidooh, Makes You Money!";
 
         (new AfricasTalkingApi())->sms($phone, $message);
+
+        if ($phone != $sender) {
+            $message = "You have bought {$amount} airtime for {$phone} from your Sidooh account on {$date}. Dial *144# to check your balance. \n\nSidooh, Makes You Money!";
+
+            (new AfricasTalkingApi())->sms($sender, $message);
+        }
 
         (new TransactionRepository())->statusUpdate($event->airtime_response);
     }

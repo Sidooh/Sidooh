@@ -6,6 +6,7 @@ use App\Events\AirtimePurchaseFailedEvent;
 use App\Events\AirtimePurchaseSuccessEvent;
 use App\Events\MerchantPurchaseEvent;
 use App\Events\ReferralJoinedEvent;
+use App\Events\SubscriptionPurchaseEvent;
 use App\Events\TransactionSuccessEvent;
 use App\Events\VoucherPurchaseEvent;
 use App\Listeners\AirtimePurchaseFailed;
@@ -17,6 +18,7 @@ use App\Listeners\QueueTimeoutListener;
 use App\Listeners\ReferralJoined;
 use App\Listeners\StkPaymentFailed;
 use App\Listeners\StkPaymentReceived;
+use App\Listeners\SubscriptionPurchaseSuccess;
 use App\Listeners\TransactionSuccess;
 use App\Listeners\VoucherPurchaseSuccess;
 use Illuminate\Auth\Events\Registered;
@@ -82,6 +84,10 @@ class EventServiceProvider extends ServiceProvider
 
         MerchantPurchaseEvent::class => [
             MerchantPurchaseSuccess::class
+        ],
+
+        SubscriptionPurchaseEvent::class => [
+            SubscriptionPurchaseSuccess::class
         ],
     ];
 

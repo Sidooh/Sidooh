@@ -43,7 +43,7 @@ class Voucher
     {
         Log::info('====== Voucher Purchase ======');
 
-        $description = $targetNumber ? "Voucher Purchase - $targetNumber" : "Voucher Purchase";
+        $description = $targetNumber ? "Voucher Purchase - $targetNumber" : "Voucher Purchase - $this->phone";
         $number = $mpesaNumber ?? $this->phone;
 
         $stkResponse = mpesa_request($number, 10 ?? $this->amount, '003.2-VOUCHER', $description);

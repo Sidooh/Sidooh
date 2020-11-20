@@ -21,7 +21,6 @@ use App\Models\Transaction;
 use App\Models\Voucher;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 
 class ProductRepository
@@ -65,9 +64,6 @@ class ProductRepository
             $req->save();
 
             $req->responses()->createMany($response['data']['responses']);
-
-////            TODO:: Remove from here and await callback
-//            event(new AirtimePurchaseSuccessEvent($req->responses()->first()));
 
         });
 
@@ -148,7 +144,7 @@ class ProductRepository
 
 //        });
 
-        Log::info($sub);
+//        Log::info($sub);
 
         event(new SubscriptionPurchaseEvent($sub, $transaction));
 

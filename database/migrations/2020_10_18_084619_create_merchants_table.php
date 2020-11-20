@@ -17,7 +17,7 @@ class CreateMerchantsTable extends Migration
             $table->bigIncrements('id');
 
             $table->string('name');
-            $table->string('code', 15);
+            $table->string('code', 15)->unique();
             $table->string('contact_name', 32);
             $table->string('contact_number', 15);
             $table->decimal('in', $total = 10, $places = 4)->default(0);

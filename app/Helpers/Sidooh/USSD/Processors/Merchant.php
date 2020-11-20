@@ -42,6 +42,9 @@ class Merchant extends Pay
             case "merchant_payment_method":
                 $this->set_payment_method($previousScreen);
                 break;
+            case "merchant_confirm_pin":
+                $this->check_current_pin($previousScreen);
+                break;
             case "other_number_mpesa":
                 $this->set_payment_number($previousScreen);
                 break;
@@ -121,6 +124,31 @@ class Merchant extends Pay
 
     }
 
+    private function check_current_pin(Screen $previousScreen)
+    {
+        $acc = (new AccountRepository)->findByPhone($this->phone);
+
+        if ($acc)
+            if ($acc->pin) {
+//                if (!Hash::check($previousScreen->option_string, $res->pin)) {
+                if ($previousScreen->option_string !== $acc->pin) {
+                    $this->screen->title = "Sorry, but the pin does not match. Please call us if you have forgotten your PIN";
+                    $this->screen->type = 'END';
+                } else {
+                    return $acc;
+                }
+            } else {
+                $this->screen->title = "Sorry, but you have not set a pin. Please do so in order to be able to proceed.";
+                $this->screen->type = 'END';
+            }
+        else {
+            $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to access your account.";
+            $this->screen->type = 'END';
+        }
+
+        return null;
+    }
+
     private function set_payment_method(Screen $previousScreen)
     {
         $method = $this->methods($previousScreen->option->value);
@@ -139,6 +167,7 @@ class Merchant extends Pay
     protected function finalize()
     {
 //        TODO: Finalize transaction
+//        TODO: Check pin matches first.
         error_log("Merchant: finalize");
 
         $phoneNumber = substr($this->vars['{$my_number}'], 1);

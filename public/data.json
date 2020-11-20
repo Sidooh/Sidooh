@@ -184,7 +184,7 @@
                 "title": "Accept",
                 "type": "int",
                 "value": "1",
-                "next": "payment_confirm_pin"
+                "next": "merchant_confirm_pin"
             },
             "2": {
                 "title": "Cancel",
@@ -194,7 +194,7 @@
             }
         }
     },
-    "payment_confirm_pin": {
+    "merchant_confirm_pin": {
         "key": "merchant_confirm_pin",
         "title": "Please enter your Sidooh PIN",
         "type": "OPEN",
@@ -274,12 +274,12 @@
                 "title": "Biz",
                 "type": "int",
                 "value": "4",
-                "next": "biz"
+                "next": "biz_pin"
             },
             "5": {
                 "title": "Referrals",
                 "type": "int",
-                "value": "2",
+                "value": "5",
                 "next": "referrals"
             }
         }
@@ -291,7 +291,7 @@
     },
     "biz": {
         "key": "biz",
-        "title": "What would you like to do?",
+        "title": "Welcome {$biz_name}. What would you like to do?",
         "options": {
             "1": {
                 "title": "Create Merchant Acc.",
@@ -303,13 +303,13 @@
                 "title": "Check Balance",
                 "type": "int",
                 "value": "2",
-                "next": "confirm_pin"
+                "next": "biz_balance"
             },
             "3": {
                 "title": "Withdraw",
                 "type": "int",
                 "value": "3",
-                "next": "redeem_amount"
+                "next": "biz_withdraw"
             },
             "4": {
                 "title": "Send",
@@ -325,6 +325,23 @@
             }
         }
     },
+    "biz_profile": {
+        "key": "biz_profile",
+        "title": "Your merchant details are as follows:\n\nMerchant Name: {$biz_name}\nMerchant Code: {$biz_code}\nMerchant Contact: {$biz_contact_name}\nMerchant Number: {$biz_contact_number}\n",
+        "options": {
+            "1": {
+                "title": "Update Details",
+                "type": "int",
+                "value": "1",
+                "next": "coming_soon"
+            }
+        }
+    },
+    "biz_balance": {
+        "key": "biz_balance",
+        "title": "Your merchant balance is:\n {$mb}",
+        "type": "OPEN"
+    },
     "biz_kyc_details_name": {
         "key": "biz_kyc_details_name",
         "title": "Please enter Business Name:",
@@ -339,11 +356,11 @@
         "type": "OPEN",
         "next": "biz_kyc_details_contact_person_name",
         "options": {},
-        "option_type": "NUMBER"
+        "option_type": "MERCHANT_CODE"
     },
     "biz_kyc_details_contact_person_name": {
         "key": "biz_kyc_details_contact_person_name",
-        "title": "Please enter Contact Person Name:",
+        "title": "Please enter Contact Person Name\n\nFormat:\nFirstname Lastname",
         "type": "OPEN",
         "next": "biz_kyc_details_contact_person_number",
         "options": {},
@@ -353,15 +370,20 @@
         "key": "biz_kyc_details_contact_person_number",
         "title": "Please enter Contact Person Number:",
         "type": "OPEN",
-        "next": "biz_kyc_details_pin",
+        "next": "biz_kyc_details_end",
         "options": {},
-        "option_type": "NUMBER"
+        "option_type": "BUSINESS_NUMBER"
     },
-    "biz_kyc_details_pin": {
-        "key": "biz_kyc_details_pin",
+    "biz_kyc_details_end": {
+        "key": "biz_kyc_details_end",
+        "title": "Your account will be created with the following details:\n\nMerchant Name: {$biz_name}\nMerchant Code: {$biz_code}\nMerchant Contact: {$biz_contact_name}\nMerchant Number: {$biz_contact_number}\n",
+        "type": "OPEN"
+    },
+    "biz_pin": {
+        "key": "biz_pin",
         "title": "Enter Sidooh PIN:",
         "type": "OPEN",
-        "next": "kyc_details_new_pin_confirm",
+        "next": "biz",
         "options": {},
         "option_type": "PIN"
     },
@@ -442,14 +464,37 @@
         "key": "confirm_pin",
         "title": "Please enter your Sidooh PIN",
         "type": "OPEN",
-        "next": "earnings",
+        "next": "check_balance",
         "options": {},
         "option_type": "PIN"
     },
+    "check_balance": {
+        "key": "check_balance",
+        "title": "Select an option below:",
+        "options": {
+            "1": {
+                "title": "Voucher",
+                "type": "int",
+                "value": "1",
+                "next": "voucher_balance"
+            },
+            "2": {
+                "title": "Earnings",
+                "type": "int",
+                "value": "2",
+                "next": "earnings"
+            }
+        }
+    },
     "earnings": {
         "key": "earnings",
-        "title": "Here is a breakdown of your earnings:\n\n1. Sidooh Points: {$sp}\n\t   - Available Balance: {$ab}\n\t   - Savings & Investments: {$sni}\n2. Voucher Balance: {$vb}\n3. Sidooh Bonus: {$sb}\n4. Withdrawable Amount: {$wb}\n",
-        "type": "END"
+        "title": "Here is a breakdown of your earnings:\n\n1. Sidooh Points: {$sp}\n\t   - Available Balance: {$ab}\n\t   - Savings & Investments: {$sni}\n2. Sidooh Bonus: {$sb}\n3. Withdrawable Amount: {$wb}\n",
+        "type": "OPEN"
+    },
+    "voucher_balance": {
+        "key": "voucher_balance",
+        "title": "Your voucher balance is:\n {$vb}",
+        "type": "OPEN"
     },
     "pre_agent": {
         "key": "pre_agent",
@@ -563,7 +608,7 @@
     },
     "kyc_details_name": {
         "key": "kyc_details_name",
-        "title": "Please enter your Full Name\n\nFormat:\nFirstname Middlename Lastname",
+        "title": "Please enter your Full Name\n\nFormat:\nFirstname Lastname",
         "type": "OPEN",
         "next": "kyc_details_new_pin",
         "options": {},
@@ -713,9 +758,17 @@
                 "title": "VOUCHER",
                 "type": "int",
                 "value": "2",
-                "next": "payment_confirmation"
+                "next": "payment_pin_confirmation"
             }
         }
+    },
+    "payment_pin_confirmation": {
+        "key": "payment_pin_confirmation",
+        "title": "Please enter your Sidooh PIN",
+        "type": "OPEN",
+        "next": "payment_confirmation",
+        "options": {},
+        "option_type": "PIN"
     },
     "payment_confirmation": {
         "key": "payment_confirmation",

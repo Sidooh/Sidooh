@@ -44,13 +44,16 @@ class Airtime
     public function __construct($amount, $phone, $method = PaymentMethods::MPESA)
     {
         $this->amount = $amount;
-        $this->phone = PhoneNumber::make($phone, 'KE')->formatE164();
+        $this->phone = ltrim(PhoneNumber::make($phone, 'KE')->formatE164());
         $this->method = $method;
     }
 
     public function purchase($targetNumber = null, $mpesaNumber = null)
     {
         Log::info("====== Airtime Purchase ($this->method) ======");
+        $targetNumber = $targetNumber ? ltrim(PhoneNumber::make($targetNumber, 'KE')->formatE164(), '+') : '';
+        $mpesaNumber = $mpesaNumber ? ltrim(PhoneNumber::make($mpesaNumber, 'KE')->formatE164(), '+') : '';
+        Log::info("$targetNumber - $mpesaNumber");
 
         switch ($this->method) {
             case PaymentMethods::MPESA:
@@ -65,10 +68,7 @@ class Airtime
 
     public function mpesa($targetNumber = null, $mpesaNumber = null)
     {
-        $targetNumber = $targetNumber ? PhoneNumber::make($targetNumber, 'KE')->formatE164() : null;
-        $mpesaNumber = $mpesaNumber ? PhoneNumber::make($mpesaNumber, 'KE')->formatE164() : null;
-
-        $description = ($targetNumber ? "Airtime Purchase - $targetNumber" : $mpesaNumber) ? "Airtime Purchase - $this->phone" : "Airtime Purchase";
+        $description = $targetNumber ? "Airtime Purchase - $targetNumber" : "Airtime Purchase";
         $number = $mpesaNumber ?? $this->phone;
 
         $stkResponse = mpesa_request($number, $this->amount, '001-AIRTIME', $description);
@@ -112,6 +112,14 @@ class Airtime
         ]);
 
         $voucher = $account->voucher;
+
+        if ($account->voucher) {
+            $bal = $account->voucher->balance;
+            if ($bal == 0 || $bal < (int)$this->amount) {
+                return;
+            }
+        }
+
         $voucher->out += $this->amount;
 
         $productRep = new ProductRepository();

@@ -56,6 +56,7 @@ class Account extends Product
                 $this->set_pin_confirm($previousScreen);
                 break;
 
+            case "kyc_update_confirm_pin":
             case "kyc_details_current_pin":
                 $this->check_current_pin($previousScreen);
                 break;
@@ -105,6 +106,9 @@ class Account extends Product
 //                }
                 break;
 
+            case "kyc_update_name":
+                $this->update_name($previousScreen);
+                break;
 
         }
     }
@@ -119,17 +123,24 @@ class Account extends Product
     {
         $res = (new AccountRepository)->findByPhone($this->phone);
 
-        if ($res)
+        if ($res) {
             if ($res->user_id) {
                 $user = $res->user;
 
                 $this->vars['{$name}'] = $user->name;
                 $this->vars['{$email}'] = $user->email;
+
             } else {
                 $this->vars['{$name}'] = "";
                 $this->vars['{$email}'] = "";
             }
-        else {
+
+            if ($res->active_subscription)
+                $this->vars['{$subscription}'] = $res->active_subscription->subscription_type->title;
+            else
+                $this->vars['{$subscription}'] = "None";
+
+        } else {
             $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to access your account.";
             $this->screen->type = 'END';
         }
@@ -353,6 +364,12 @@ class Account extends Product
 
     }
 
+    private function update_name(Screen $previousScreen)
+    {
+        $this->vars['{$name}'] = $previousScreen->option_string;
+
+    }
+
     protected function finalize()
     {
 //        TODO: Finalize transaction
@@ -367,6 +384,10 @@ class Account extends Product
 
         if ($this->screen->key == 'biz_kyc_details_end') {
             $this->createMerchant();
+        }
+
+        if ($this->screen->key == 'kyc_update_end') {
+            $this->updateProfile();
         }
 
     }
@@ -402,6 +423,21 @@ class Account extends Product
 
         $acc->user()->associate($user);
         $acc->save();
+    }
+
+    private function updateProfile()
+    {
+        $phone = $this->vars['{$my_number}'];
+//
+        $name = $this->vars['{$name}'];
+
+        $acc = (new AccountRepository)->findByPhone($phone);
+
+        $user = $acc->user;
+
+        $user->name = $name;
+
+        $user->save();
     }
 
     private function createMerchant()

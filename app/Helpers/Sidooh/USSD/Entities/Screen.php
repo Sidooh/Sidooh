@@ -9,7 +9,7 @@ class Screen
     public string $title;
 //    TODO: Does type need instantiation?
     public ?string $type = null;
-    public bool $super_product;
+    public int $super_product;
     public Option $option;
     public ?string $next;
     public string $option_string;

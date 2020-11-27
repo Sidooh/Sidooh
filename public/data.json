@@ -38,19 +38,13 @@
                 "title": "Become an Agent",
                 "type": "int",
                 "value": "6",
-                "next": "agent_onboarding_name"
+                "next": "agent"
             },
             "7": {
                 "title": "Check My Account",
                 "type": "int",
                 "value": "7",
                 "next": "account"
-            },
-            "8": {
-                "title": "Pre-register as an Agent ",
-                "type": "int",
-                "value": "8",
-                "next": "pre_agent"
             }
         }
     },
@@ -81,7 +75,7 @@
     "pay": {
         "key": "pay",
         "title": "What would you like to pay for?",
-        "super_product": true,
+        "super_product": 3,
         "options": {
             "1": {
                 "title": "Sidooh Agent Subscription",
@@ -240,6 +234,25 @@
         "options": {},
         "option_type": "NUMBER"
     },
+    "agent": {
+        "key": "agent",
+        "title": "What would you like to do?",
+        "super_product": 6,
+        "options": {
+            "1": {
+                "title": "Pre-register as an agent",
+                "type": "int",
+                "value": "1",
+                "next": "pre_agent"
+            },
+            "2": {
+                "title": "Register as an agent",
+                "type": "int",
+                "value": "2",
+                "next": "agent_onboarding_name"
+            }
+        }
+    },
     "agent_onboarding_name": {
         "key": "agent_onboarding_name",
         "title": "Please enter your Full Name\n\nFormat:\nFirstname Lastname",
@@ -312,10 +325,10 @@
                 "next": "biz_withdraw"
             },
             "4": {
-                "title": "Send",
+                "title": "Pay",
                 "type": "int",
                 "value": "4",
-                "next": "send_merchant"
+                "next": "pay_merchant"
             },
             "5": {
                 "title": "Profile",
@@ -562,7 +575,7 @@
     },
     "kyc_details": {
         "key": "kyc_details",
-        "title": "Your details are as follows\n\nName: {$name}\nNumber: {$my_number}\n",
+        "title": "Your details are as follows\n\nName: {$name}\nNumber: {$my_number}\n\nSubscription: {$subscription}\n",
         "type": "OPENs",
         "options": {
             "1": {
@@ -575,9 +588,30 @@
                 "title": "Update Details",
                 "type": "int",
                 "value": "2",
-                "next": "coming_soon"
+                "next": "kyc_update_name"
             }
         }
+    },
+    "kyc_update_name": {
+        "key": "kyc_update_name",
+        "title": "Please enter your Full Name\n\nFormat:\nFirstname Lastname",
+        "type": "OPEN",
+        "next": "kyc_update_confirm_pin",
+        "options": {},
+        "option_type": "NAME"
+    },
+    "kyc_update_confirm_pin": {
+        "key": "kyc_update_confirm_pin",
+        "title": "Please enter your Sidooh PIN",
+        "type": "OPEN",
+        "next": "kyc_update_end",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "kyc_update_end": {
+        "key": "kyc_update_end",
+        "title": "Congratulations, You have updated your profile. New details are as follows\n\nName: {$name}",
+        "type": "END"
     },
     "kyc_details_pin": {
         "key": "kyc_details_pin",

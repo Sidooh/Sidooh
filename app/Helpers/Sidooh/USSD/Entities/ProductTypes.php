@@ -14,7 +14,8 @@ abstract class ProductTypes extends BasicEnum
     const SAVE = 4;
     const REFER = 5;
     const AGENT = 6;
+    const PRE_AGENT_REGISTER = 6.1;
+    const AGENT_REGISTER = 6.2;
     const ACCOUNT = 7;
-    const PRE_AGENT = 8;
 }
 

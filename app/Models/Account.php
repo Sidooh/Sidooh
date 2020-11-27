@@ -67,7 +67,8 @@ class Account extends Model
 
     public function active_subscription()
     {
-        return $this->hasMany(Subscription::class)->active();
+//        TODO: Has One does not work here???
+        return $this->hasOne(Subscription::class)->active();
     }
 
     public function pending_referrals()

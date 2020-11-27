@@ -5,13 +5,13 @@ namespace App\Helpers\Sidooh\USSD\Processors;
 
 use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
-use App\Model\SubscriptionType;
-use App\Model\User;
+use App\Models\SubscriptionType;
+use App\Models\User;
 use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
 use Illuminate\Support\Facades\Hash;
 
-class Agent extends Product
+class Agent extends AgentMain
 {
 
     /**
@@ -29,7 +29,7 @@ class Agent extends Product
     protected function process_previous(Screen $previousScreen, Screen $screen)
     {
         switch ($previousScreen->key) {
-            case "main_menu":
+            case "agent":
                 $this->set_user_number();
                 break;
             case "agent_onboarding_name":
@@ -87,17 +87,51 @@ class Agent extends Product
 
     private function set_amount(Screen $previousScreen)
     {
+        $this->vars['{$subscription_type}'] = $this->vars['{$subscription_type_' . $previousScreen->option->value . '}'];
         $this->vars['{$amount}'] = $this->vars['{$subscription_amount_' . $previousScreen->option->value . '}'];
+        $this->vars['{$product}'] = $this->vars['{$subscription_type}'];
     }
 
     private function set_payment_method(Screen $previousScreen)
     {
         $method = $this->methods($previousScreen->option->value);
         $this->vars['{$payment_method}'] = $method;
+        $method_text = $method;
 
         if ($method === PaymentMethods::MPESA) {
             $this->vars['{$method_instruction}'] = 'PLEASE ENTER MPESA PIN when prompted';
+            $method_text .= ' ' . $this->vars['{$mpesa_number}'];
         }
+
+        if ($method === PaymentMethods::VOUCHER) {
+
+            $acc = (new AccountRepository)->findByPhone($this->phone);
+
+            if ($acc)
+                if ($acc->voucher) {
+                    $bal = $acc->voucher->balance;
+
+                    if ($bal == 0 || $bal < (int)$this->vars['{$amount}']) {
+                        $this->screen->title = "Sorry but your Voucher Balance is insufficient";
+                        $this->screen->type = 'END';
+                    }
+
+                } else {
+                    $this->screen->title = "Sorry, but you have not purchased a voucher before. Please do so in order to be able to proceed.";
+                    $this->screen->type = 'END';
+                }
+
+            else {
+                $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to proceed.";
+                $this->screen->type = 'END';
+            }
+
+            $method_text .= ' (KSh' . number_format($bal) . ')';
+            $this->vars['{$method_instruction}'] = "Your $method_text will be debited automatically";
+            array_pop($this->screen->options);
+        }
+
+        $this->vars['{$payment_method_text}'] = $method_text;
     }
 
     private function set_payment_confirmation(Screen $previousScreen, Screen $screen)
@@ -108,6 +142,7 @@ class Agent extends Product
     private function set_payment_number(Screen $previousScreen)
     {
         $this->vars['{$mpesa_number}'] = $previousScreen->option_string;
+        $this->vars['{$payment_method_text}'] = $this->vars['{$payment_method}'] . ' ' . $this->vars['{$mpesa_number}'];
     }
 
     protected function finalize()
@@ -123,6 +158,7 @@ class Agent extends Product
         $name = $this->vars['{$name}'];
         $email = $this->vars['{$email}'];
         $pass = $this->vars['{$email}'] . '5!D00h';
+        $method = $this->vars['{$payment_method}'];
 
         $acc = (new AccountRepository())->create(['phone' => $phoneNumber]);
 
@@ -145,6 +181,6 @@ class Agent extends Product
         $acc->user()->associate($user);
         $acc->save();
 
-        (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber))->purchase($phone);
+        (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber, $method))->purchase($phone);
     }
 }

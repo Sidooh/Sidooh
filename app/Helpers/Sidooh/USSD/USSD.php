@@ -8,6 +8,7 @@ use App\Helpers\Sidooh\USSD\Entities\ProductTypes;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
 use App\Helpers\Sidooh\USSD\Processors\Account;
 use App\Helpers\Sidooh\USSD\Processors\Agent;
+use App\Helpers\Sidooh\USSD\Processors\AgentMain;
 use App\Helpers\Sidooh\USSD\Processors\Airtime;
 use App\Helpers\Sidooh\USSD\Processors\Merchant;
 use App\Helpers\Sidooh\USSD\Processors\Pay;
@@ -141,14 +142,18 @@ class USSD
                 $this->product = new Referral($this->user, $this->sessionId);
                 break;
             case ProductTypes::AGENT:
+                $this->product = new AgentMain($this->user, $this->sessionId);
+                break;
+            case ProductTypes::PRE_AGENT_REGISTER:
+                $this->product = new Pre_Agent($this->user, $this->sessionId);
+                break;
+            case ProductTypes::AGENT_REGISTER:
                 $this->product = new Agent($this->user, $this->sessionId);
                 break;
             case ProductTypes::ACCOUNT:
                 $this->product = new Account($this->user, $this->sessionId);
                 break;
-            case ProductTypes::PRE_AGENT:
-                $this->product = new Pre_Agent($this->user, $this->sessionId);
-                break;
+
         }
     }
 
@@ -200,12 +205,14 @@ class USSD
             return ProductTypes::PAY;
         } else if ($this->product instanceof Referral)
             return ProductTypes::REFER;
-        else if ($this->product instanceof Agent)
+        else if ($this->product instanceof AgentMain) {
+            if ($this->product instanceof Pre_Agent)
+                return ProductTypes::PRE_AGENT_REGISTER;
+            else if ($this->product instanceof Agent)
+                return ProductTypes::AGENT_REGISTER;
             return ProductTypes::AGENT;
-        else if ($this->product instanceof Account)
+        } else if ($this->product instanceof Account)
             return ProductTypes::ACCOUNT;
-        else if ($this->product instanceof Pre_Agent)
-            return ProductTypes::PRE_AGENT;
 
         return ProductTypes::DEFAULT;
     }
@@ -299,7 +306,7 @@ class USSD
 //                    error_log(is_subclass_of($this->product, Product::class));
 //                    error_log("----------------");
                     if (isset($this->screen->super_product))
-                        $this->setProduct(3 . '.' . $value);
+                        $this->setProduct($this->screen->super_product . '.' . $value);
 //                        $this->product = $this->product->getSubProduct($user, $this->sessionId, $this->screen->option->value);
 
 //                  TODO: Before setting screen, pass to product e.g. Airtime(screen) to get back relevant vars.

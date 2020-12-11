@@ -7,6 +7,7 @@ use App\Helpers\Sidooh\USSD\Entities\Screen;
 use App\Models\User;
 use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
+use App\Repositories\MerchantRepository;
 use Illuminate\Support\Facades\Hash;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
@@ -29,6 +30,7 @@ class Account extends Product
     {
         error_log('PROCESS_PREVIOUS');
         error_log($previousScreen->key);
+        error_log($screen->key);
 
         switch ($previousScreen->key) {
             case "main_menu":
@@ -98,16 +100,20 @@ class Account extends Product
             case "biz":
                 if ($screen->key == 'biz_balance') {
                     $this->biz_check_balance($previousScreen);
+                } else if ($screen->key == 'biz_withdraw') {
+                    $this->biz_check_balance($previousScreen);
                 }
-//                elseif ($screen->key == 'biz_withdraw') {
-////                    $this->check_referrals($previousScreen);
-//                } else {
-//                    $this->set_kyc_details();
-//                }
                 break;
 
             case "kyc_update_name":
                 $this->update_name($previousScreen);
+                break;
+
+            case "pay_merchant":
+                $this->set_merchant_code($previousScreen);
+                break;
+            case "pay_merchant_amount":
+                $this->set_amount($previousScreen);
                 break;
 
         }
@@ -351,6 +357,12 @@ class Account extends Product
                 $bal = $acc->merchant->balance;
 
                 $this->vars['{$mb}'] = $bal;
+                $this->vars['{$wb}'] = $bal > 30 ? $bal - 30 : 0;
+
+                if ($this->vars['{$wb}'] == 0) {
+                    $this->screen->title = "Sorry but your Withdrawable Balance is 0";
+                    $this->screen->type = 'END';
+                }
 
             } else {
                 $this->screen->title = "Sorry, but you have not set a pin. Please do so in order to be able to proceed.";
@@ -367,6 +379,69 @@ class Account extends Product
     private function update_name(Screen $previousScreen)
     {
         $this->vars['{$name}'] = $previousScreen->option_string;
+
+    }
+
+    private function set_merchant_code(Screen $previousScreen)
+    {
+        $merchant = (new MerchantRepository)->findByCode($previousScreen->option_string);
+
+        if ($merchant) {
+
+            $this->vars['{$merchant_code}'] = $merchant->code;
+            $this->vars['{$merchant_name}'] = $merchant->name;
+
+            if ($merchant->user_points) {
+                $this->vars['{$merchant_points}'] = $merchant->user_points;
+                $this->vars['{$merchant_points_value}'] = $merchant->user_points_value;
+            } else {
+                $this->screen->next = 'merchant_payment_confirmation';
+            }
+
+        } else {
+            $this->screen->title = "Sorry, but this merchant does not exist. Please try again.";
+            $this->screen->type = 'END';
+        }
+//
+//        error_log("---------------- Merchant set_merchant_code");
+//        error_log(json_encode($this->screen));
+//        error_log("----------------");
+
+    }
+
+    private function set_amount(Screen $previousScreen)
+    {
+        $this->vars['{$amount}'] = $previousScreen->option_string;
+
+        $acc = (new AccountRepository)->findByPhone($this->phone);
+
+        if ($acc)
+            if ($acc->merchant) {
+                $bal = $acc->merchant->balance;
+
+                if ($bal == 0 || $bal < (int)$this->vars['{$amount}']) {
+                    $this->screen->title = "Sorry but your Merchant Account Balance is insufficient";
+                    $this->screen->type = 'END';
+                }
+
+                $method_text = $this->vars['{$payment_method}'];
+                $method_text .= ' Merchant Account(KSh' . number_format($bal) . ')';
+                $this->vars['{$method_instruction}'] = "Your $method_text will be debited automatically";
+                $this->vars['{$payment_method_text}'] = $method_text;
+
+            } else {
+                $this->screen->title = "Sorry, but you have not purchased a voucher before. Please do so in order to be able to proceed.";
+                $this->screen->type = 'END';
+            }
+
+        else {
+            $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to proceed.";
+            $this->screen->type = 'END';
+        }
+//
+//        error_log("---------------- Merchant set_amount");
+//        error_log(json_encode($this->screen));
+//        error_log("----------------");
 
     }
 
@@ -388,6 +463,10 @@ class Account extends Product
 
         if ($this->screen->key == 'kyc_update_end') {
             $this->updateProfile();
+        }
+
+        if ($this->screen->key == 'payment_end') {
+            $this->payMerchant();
         }
 
     }
@@ -462,6 +541,26 @@ class Account extends Product
                     'contact_name' => $bizContactName,
                     'contact_number' => $bizContactNumber,
                 ]);
+    }
+
+    private function payMerchant()
+    {
+        $bizCode = $this->vars['{$biz_code}'];
+        $merchantCode = $this->vars['{$merchant_code}'];
+        $amount = $this->vars['{$amount}'];
+
+//        TODO: extract all this into own file and add transaction and events
+        $merch1 = (new MerchantRepository)->findByCode($bizCode);
+        $merch2 = (new MerchantRepository)->findByCode($merchantCode);
+
+        if ($merch1 && $merch2) {
+            $merch1->out += $amount;
+            $merch2->in += $amount;
+
+            $merch1->save();
+            $merch2->save();
+        }
+
     }
 
 }

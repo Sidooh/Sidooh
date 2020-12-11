@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class Agent extends AgentMain
 {
@@ -69,6 +70,39 @@ class Agent extends AgentMain
         $this->vars['{$period}'] = "month";
 
         $this->vars['{$email}'] = $this->vars['{$my_number}'] . "@sid.ooh";
+
+        $res = (new AccountRepository)->findByPhone($this->phone);
+
+        if ($res) {
+            $name = "Customer";
+            $subscription = $res->active_subscription->subscription_type->title;
+            $subdate = $res->active_subscription->created_at->addMonth();
+
+            if ($res->user_id) {
+                $user = $res->user;
+
+                $name = $user->name;
+            }
+
+//            TODO: Add screen to handle existing subscription and option to upgrade
+            if ($res->active_subscription) {
+                $this->screen->title = "Dear {$name}, you are already subscribed to $subscription valid until $subdate.";
+                $this->screen->options = [
+                    "1" => [
+                        "title" => "Upgrade to " . $this->vars['{$subscription_type_2}'] . "@" .$this->vars['{$subscription_amount_2}'] .'/'.$this->vars['{$period}'],
+                        "type" => "int",
+                        "value" => "1",
+                        "next" => "agent_upgrade"
+                    ]
+                ];
+
+                Log::info($this->screen);
+            }
+
+        } else {
+            $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to access your account.";
+            $this->screen->type = 'END';
+        }
 
     }
 

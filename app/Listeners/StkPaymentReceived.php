@@ -66,6 +66,8 @@ class StkPaymentReceived
                 break;
 
             case '002-SUBS':
+            case '006.1-PRE_SUBS':
+            case '006.2-SUBS':
 
                 (new ProductRepository())->subscription($p->payable, $stk->Amount);
                 break;
@@ -85,9 +87,6 @@ class StkPaymentReceived
                 (new ProductRepository())->voucher($p->payable, $voucherDetails);
                 break;
 
-            case '008-PRE_SUBS':
-
-                (new ProductRepository())->subscription($p->payable, $stk->Amount);
         }
 
 

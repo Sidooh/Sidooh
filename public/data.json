@@ -249,6 +249,18 @@
                 "title": "Register as an agent",
                 "type": "int",
                 "value": "2",
+                "next": "agent_intro"
+            }
+        }
+    },
+    "agent_intro": {
+        "key": "agent_intro",
+        "title": "By registering as a Sidooh Agent through a monthly subscription fee, you will earn sales commission on every airtime purchased from the platform by your referred customers and sub agents.",
+        "options": {
+            "1": {
+                "title": "Proceed to register as an Agent",
+                "type": "int",
+                "value": "1",
                 "next": "agent_onboarding_name"
             }
         }
@@ -337,6 +349,30 @@
                 "next": "biz_profile"
             }
         }
+    },
+    "biz_withdraw": {
+        "key": "biz_withdraw",
+        "title": "Enter amount you wish to withdraw:\n\n- Merchant Account Balance: {$mb}\n- Withdrawable Balance: {$wb}",
+        "type": "OPEN",
+        "next": "redeem_account",
+        "options": {},
+        "option_type": "AMOUNT"
+    },
+    "pay_merchant": {
+        "key": "pay_merchant",
+        "title": "Enter merchant code:",
+        "type": "OPEN",
+        "next": "pay_merchant_amount",
+        "options": {},
+        "option_type": "MERCHANT_CODE"
+    },
+    "pay_merchant_amount": {
+        "key": "pay_merchant_amount",
+        "title": "Please enter amount:",
+        "type": "OPEN",
+        "next": "merchant_payment_confirmation",
+        "options": {},
+        "option_type": "AMOUNT"
     },
     "biz_profile": {
         "key": "biz_profile",

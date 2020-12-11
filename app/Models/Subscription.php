@@ -27,7 +27,7 @@ class Subscription extends Model
      */
     public function scopeActive($query)
     {
-        return $query->whereActive(true);
+        return $query->latest()->whereActive(true);
     }
 
     public function account()

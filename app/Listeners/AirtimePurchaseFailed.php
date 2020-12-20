@@ -31,6 +31,5 @@ class AirtimePurchaseFailed
 
         Log::info('----------------- Airtime Purchase Failed');
 
-
     }
 }

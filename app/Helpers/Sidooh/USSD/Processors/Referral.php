@@ -51,9 +51,10 @@ class Referral extends Product
         error_log("set_other_number");
         $number = $previousScreen->option_string;
 
-        $phone = $this->validate_number($number);
+        $phone = ltrim($this->validate_number($number), '+');
+        $my_phone = ltrim($this->validate_number($this->phone), '+');
 
-        if ($phone != false && $phone != $this->validate_number($this->phone)) {
+        if ($phone != false && $phone != $my_phone) {
             $refRep = new ReferralRepository();
             $refRep->removeExpiredReferrals();
             $ref = $refRep->findByPhone($phone, true);
@@ -64,17 +65,22 @@ class Referral extends Product
                 $this->vars['{$number}'] = $phone;
             } else {
 
-                error_log('----------------');
-                error_log("Invalid number");
-                error_log($this->screen->key);
-                error_log($this->previousScreen->key);
-                error_log('----------------');
+//                error_log('----------------');
+//                error_log("Invalid number");
+//                error_log($this->screen->key);
+//                error_log($this->previousScreen->key);
+//                error_log('----------------');
 
                 if ($this->screen->key == 'refer_end') {
                     $this->screen = $this->previousScreen;
-                    $this->screen->title = "Sorry the number you entered is not eligible for referral";
+                    $this->screen->title = "Sorry the number you entered is not eligible for referral.";
                 }
 
+                if ($acc) {
+                    $this->screen->title .= "The number is already registered by an existing user.";
+                } else if ($ref) {
+                    $this->screen->title .= "The number has been referred within the last 48 hrs. Please try again later.";
+                }
             }
         }
     }
@@ -86,8 +92,6 @@ class Referral extends Product
 
         $phone = $this->vars['{$number}'];
         $phoneNumber = $this->vars['{$my_number}'];
-
-        error_log($this->vars['{$number}']);
 
         $acc = (new AccountRepository())->create(['phone' => $phoneNumber]);
         $ref = (new ReferralRepository())->store([

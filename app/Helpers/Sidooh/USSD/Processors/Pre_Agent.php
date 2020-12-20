@@ -88,7 +88,7 @@ class Pre_Agent extends AgentMain
     {
         $this->vars['{$subscription_type}'] = $this->vars['{$subscription_type_' . $previousScreen->option->value . '}'];
         $this->vars['{$amount}'] = $this->vars['{$subscription_amount_' . $previousScreen->option->value . '}'];
-        $this->vars['{$product}'] = $this->vars['{$subscription_type}'];
+        $this->vars['{$product}'] = 'for Pre-Registration of ' . $this->vars['{$subscription_type}'];
     }
 
     private function set_payment_method(Screen $previousScreen)
@@ -142,7 +142,6 @@ class Pre_Agent extends AgentMain
     {
         $this->vars['{$mpesa_number}'] = $previousScreen->option_string;
         $this->vars['{$payment_method_text}'] = $this->vars['{$payment_method}'] . ' ' . $this->vars['{$mpesa_number}'];
-
     }
 
     protected function finalize()
@@ -154,6 +153,7 @@ class Pre_Agent extends AgentMain
 
         $phoneNumber = $this->vars['{$my_number}'];
         $phone = $this->vars['{$number}'];
+        $mpesa = $this->vars['{$mpesa_number}'];
 
         $name = $this->vars['{$name}'];
         $email = $this->vars['{$email}'];
@@ -181,6 +181,6 @@ class Pre_Agent extends AgentMain
         $acc->user()->associate($user);
         $acc->save();
 
-        (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber, $method))->purchase($phone);
+        (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber, $method))->purchase($phone, $mpesa);
     }
 }

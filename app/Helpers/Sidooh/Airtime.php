@@ -44,14 +44,14 @@ class Airtime
     public function __construct($amount, $phone, $method = PaymentMethods::MPESA)
     {
         $this->amount = $amount;
-        $this->phone = ltrim(PhoneNumber::make($phone, 'KE')->formatE164());
+        $this->phone = ltrim(PhoneNumber::make($phone, 'KE')->formatE164(), '+');
         $this->method = $method;
     }
 
     public function purchase($targetNumber = null, $mpesaNumber = null)
     {
         Log::info("====== Airtime Purchase ($this->method) ======");
-        $targetNumber = $targetNumber ? ltrim(PhoneNumber::make($targetNumber, 'KE')->formatE164(), '+') : '';
+        $targetNumber = $targetNumber ? ltrim(PhoneNumber::make($targetNumber, 'KE')->formatE164(), '+') : $this->phone;
         $mpesaNumber = $mpesaNumber ? ltrim(PhoneNumber::make($mpesaNumber, 'KE')->formatE164(), '+') : '';
         Log::info("$targetNumber - $mpesaNumber");
 
@@ -104,7 +104,7 @@ class Airtime
         $transaction->payment()->save($payment);
     }
 
-    public function voucher($targetNumber = null, $mpesaNumber = null)
+    public function voucher($targetNumber = null)
     {
         $accountRep = new AccountRepository();
         $account = $accountRep->create([

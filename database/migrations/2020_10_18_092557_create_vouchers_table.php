@@ -16,8 +16,8 @@ class CreateVouchersTable extends Migration
         Schema::create('vouchers', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->decimal('in', $total = 10, $places = 4)->default(0);
-            $table->decimal('out', $total = 10, $places = 4)->default(0);
+            $table->decimal('in', $total = 10, $places = 2)->default(0);
+            $table->decimal('out', $total = 10, $places = 2)->default(0);
 
             $table->timestamps();
         });

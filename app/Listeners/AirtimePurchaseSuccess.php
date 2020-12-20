@@ -39,19 +39,32 @@ class AirtimePurchaseSuccess
         $phone = ltrim($event->airtime_response->phoneNumber, '+');
         $sender = $event->airtime_response->request->transaction->account->phone;
 
-        $amount = explode(".", $event->airtime_response->amount)[0];
+        $amount = str_replace(' ', '', explode(".", $event->airtime_response->amount)[0]);
         $date = $event->airtime_response->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
 
-        $message = "You have received {$amount} airtime from Sidooh account {$sender} on {$date}. Dial *144# to check your balance. \n\nSidooh, Makes You Money!";
-
-        (new AfricasTalkingApi())->sms($phone, $message);
+        $points_earned = $this->getPointsEarned(explode(' ', $event->airtime_response->discount)[1]);
 
         if ($phone != $sender) {
-            $message = "You have bought {$amount} airtime for {$phone} from your Sidooh account on {$date}. Dial *144# to check your balance. \n\nSidooh, Makes You Money!";
+            $message = "Congratulations! You have bought {$amount} airtime for {$phone} from your Sidooh account on {$date}. You have received {$points_earned} cashback.";
 
             (new AfricasTalkingApi())->sms($sender, $message);
+
+            $message = "Congratulations! You have received {$amount} airtime from Sidooh account {$sender} on {$date}.";
+
+            (new AfricasTalkingApi())->sms($phone, $message);
+        } else {
+
+            $message = "Congratulations! You have bought {$amount} airtime from your Sidooh account on {$date}. You have received {$points_earned} cashback.";
+
+            (new AfricasTalkingApi())->sms($phone, $message);
         }
 
         (new TransactionRepository())->statusUpdate($event->airtime_response);
+    }
+
+    public function getPointsEarned(float $discount)
+    {
+        $e = $discount * .75;
+        return 'KES' . $e / 6;
     }
 }

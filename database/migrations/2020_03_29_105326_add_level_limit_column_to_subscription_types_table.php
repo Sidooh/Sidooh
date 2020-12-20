@@ -15,7 +15,8 @@ class AddLevelLimitColumnToSubscriptionTypesTable extends Migration
     {
         Schema::table('subscription_types', function (Blueprint $table) {
             //
-            $table->integer('level_limit')->default(2);
+            $table->integer('level_limit')->default(3);
+            $table->integer('duration')->default(1);
         });
     }
 
@@ -28,6 +29,7 @@ class AddLevelLimitColumnToSubscriptionTypesTable extends Migration
     {
         Schema::table('subscription_types', function (Blueprint $table) {
             //
+            $table->dropColumn('duration');
             $table->dropColumn('level_limit');
         });
     }

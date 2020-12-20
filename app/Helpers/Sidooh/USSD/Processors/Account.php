@@ -9,6 +9,7 @@ use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
 use App\Repositories\MerchantRepository;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 class Account extends Product
@@ -76,6 +77,9 @@ class Account extends Product
             case 'redeem_account_select':
                 $this->set_number($previousScreen);
                 break;
+            case 'redeem_other_number_mpesa':
+                $this->set_mpesa_number($previousScreen);
+                break;
 
             case 'biz_pin':
                 $this->set_biz($previousScreen);
@@ -123,6 +127,9 @@ class Account extends Product
     {
         $this->vars['{$product}'] = $this->get_class_name();
         $this->vars['{$my_number}'] = $this->phone;
+
+        unset($this->screen->options[3]);
+        unset($this->screen->options[4]);
     }
 
     private function set_kyc_details()
@@ -218,7 +225,7 @@ class Account extends Product
             $this->vars['{$ab}'] = $cbal;
             $this->vars['{$sni}'] = $sbal;
             $this->vars['{$sb}'] = 0;
-            $this->vars['{$wb}'] = $cbal > 30 ? $cbal - 30 : 0;
+            $this->vars['{$wb}'] = $cbal > 50 ? $cbal - 50 : 0;
             $this->vars['{$vb}'] = number_format($acc->voucher->balance);
 
         }
@@ -235,7 +242,7 @@ class Account extends Product
 
                 $this->vars['{$spb}'] = $bal;
                 $this->vars['{$sbb}'] = 0;
-                $this->vars['{$wb}'] = $bal > 30 ? $bal - 30 : 0;
+                $this->vars['{$wb}'] = $bal > 50 ? $bal - 50 : 0;
 
                 if ($this->vars['{$wb}'] == 0) {
                     $this->screen->title = "Sorry but your Withdrawable Balance is 0";
@@ -266,7 +273,7 @@ class Account extends Product
 
                 $this->vars['{$spb}'] = $bal;
                 $this->vars['{$sbb}'] = 0;
-                $this->vars['{$wb}'] = $bal > 30 ? $bal - 30 : 0;
+                $this->vars['{$wb}'] = $bal > 50 ? $bal - 50 : 0;
 
                 if ($this->vars['{$wb}'] == 0) {
                     $this->screen->title = "Sorry but your Withdrawable Balance is 0";
@@ -305,7 +312,7 @@ class Account extends Product
 
     private function set_mpesa_number(Screen $previousScreen)
     {
-        $this->vars['{$mpesa_number}'] = $previousScreen->option_string;
+        $this->vars['{$to_number}'] = ltrim(PhoneNumber::make($previousScreen->option_string, 'KE')->formatE164(), '+');
     }
 
 
@@ -357,10 +364,10 @@ class Account extends Product
                 $bal = $acc->merchant->balance;
 
                 $this->vars['{$mb}'] = $bal;
-                $this->vars['{$wb}'] = $bal > 30 ? $bal - 30 : 0;
+                $this->vars['{$wb}'] = $bal > 50 ? $bal - 50 : 0;
 
                 if ($this->vars['{$wb}'] == 0) {
-                    $this->screen->title = "Sorry but your Withdrawable Balance is 0";
+                    $this->screen->title = "Sorry, your Withdrawable Balance is 0. The minimum account balance required to withdraw is 50. ";
                     $this->screen->type = 'END';
                 }
 
@@ -469,6 +476,10 @@ class Account extends Product
             $this->payMerchant();
         }
 
+        if ($this->screen->key == 'redeem_end') {
+            $this->redeem();
+        }
+
     }
 
     private function setPinAndUser()
@@ -553,14 +564,26 @@ class Account extends Product
         $merch1 = (new MerchantRepository)->findByCode($bizCode);
         $merch2 = (new MerchantRepository)->findByCode($merchantCode);
 
-        if ($merch1 && $merch2) {
-            $merch1->out += $amount;
-            $merch2->in += $amount;
+//            TODO: Check that merchant is not themselves
+        if ($merch1 != $merch2)
 
-            $merch1->save();
-            $merch2->save();
-        }
+            if ($merch1 && $merch2) {
+                $merch1->out += $amount;
+                $merch2->in += $amount;
 
+                $merch1->save();
+                $merch2->save();
+            }
+
+//        else {
+
+//        }
+
+    }
+
+    private function redeem()
+    {
+        Log::info($this->vars);
     }
 
 }

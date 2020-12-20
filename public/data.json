@@ -51,7 +51,7 @@
     "about": {
         "key": "about",
         "type": "ENDs",
-        "title": "Thank you for your interest in Sidooh.\n\nSidooh is a digital platform that enables you to earn cash refunds on every airtime you purchase from the platform, which is then automatically saved and invested to generate passive income for you to increase your income and improve your financial life.",
+        "title": "Thank you for your interest in Sidooh.\n\nSidooh is a digital platform that enables you to earn cash refunds on every airtime you purchase from the platform, which 80% is then automatically saved and invested to generate extra income for you so as to increase your income and improve your financial life.",
         "options": {}
     },
     "airtime": {
@@ -149,7 +149,7 @@
     },
     "merchant_points": {
         "key": "merchant_points",
-        "title": "You have ${merchant_points} points worth ${merchant_points_value}. Enter amount to redeem.",
+        "title": "You have ${merchant_points} points worth ${merchant_points_value}. Enter amount to withdraw.",
         "type": "OPEN",
         "next": "merchant_payment_confirmation",
         "options": {},
@@ -219,10 +219,16 @@
         "title": "Save",
         "options": {
             "1": {
-                "title": "Sidooh Agent Subscription",
+                "title": "Personal",
                 "type": "int",
                 "value": "1",
-                "next": "agent_subscription"
+                "next": "personal_savings"
+            },
+            "2": {
+                "title": "Group",
+                "type": "int",
+                "value": "2",
+                "next": "group_savings"
             }
         }
     },
@@ -290,7 +296,7 @@
                 "next": "confirm_pin"
             },
             "3": {
-                "title": "Redeem",
+                "title": "Withdraw",
                 "type": "int",
                 "value": "3",
                 "next": "redeem_amount"
@@ -312,7 +318,7 @@
     "referrals": {
         "key": "referrals",
         "title": "Here is a breakdown of your referrals:\n\n1. Sidooh Points: {$sp}\n\t   - Available Balance: {$ab}\n\t   - Savings & Investments: {$sni}\n2. Voucher Balance: {$vb}\n3. Sidooh Bonus: {$sb}\n4. Withdrawable Amount: {$wb}\n",
-        "type": "END"
+        "type": "OPEN"
     },
     "biz": {
         "key": "biz",
@@ -438,7 +444,7 @@
     },
     "redeem_amount": {
         "key": "redeem_amount",
-        "title": "Enter points you wish to redeem:\n\n- Sidooh Points Balance: {$spb}\n- Sidooh Bonus Balance: {$sbb}\n- Withdrawable Balance: {$wb}",
+        "title": "Enter points you wish to withdraw:\n\n- Sidooh Points Balance: {$spb}\n- Sidooh Bonus Balance: {$sbb}\n- Withdrawable Balance: {$wb}",
         "type": "OPEN",
         "next": "redeem_account",
         "options": {},
@@ -476,19 +482,27 @@
                 "title": "Other MPESA number",
                 "type": "int",
                 "value": "2",
-                "next": "other_number_mpesa"
+                "next": "redeem_other_number_mpesa"
             }
         }
     },
+    "redeem_other_number_mpesa": {
+        "key": "redeem_other_number_mpesa",
+        "title": "Enter MPESA number",
+        "type": "OPEN",
+        "next": "redeem_confirm",
+        "options": {},
+        "option_type": "NUMBER"
+    },
     "redeem_confirm": {
         "key": "redeem_confirm",
-        "title": "Please confirm redemption details.\n\nWithdraw: {$points} Sidooh Points\nFor: KSH {$amount}\nTo Account: {$to_number}\n",
+        "title": "Please confirm details.\n\nWithdraw: {$points} Sidooh Points\nFor: KSH {$amount}\nTo {$acc_type}: {$to_number}\n",
         "options": {
             "1": {
                 "title": "Accept",
                 "type": "int",
                 "value": "1",
-                "next": "confirm_pin"
+                "next": "redeem_confirm_pin"
             },
             "2": {
                 "title": "Decline",
@@ -504,10 +518,18 @@
             }
         }
     },
+    "redeem_confirm_pin": {
+        "key": "confirm_pin",
+        "title": "Please enter your Sidooh PIN",
+        "type": "OPEN",
+        "next": "redeem_end",
+        "options": {},
+        "option_type": "PIN"
+    },
     "redeem_end": {
         "key": "redeem_end",
         "title": "Your request has been received and is being processed. You will receive a confirmation SMS shortly. Thank you.",
-        "type": "END"
+        "type": "OPEN"
     },
     "confirm_pin": {
         "key": "confirm_pin",
@@ -647,7 +669,7 @@
     "kyc_update_end": {
         "key": "kyc_update_end",
         "title": "Congratulations, You have updated your profile. New details are as follows\n\nName: {$name}",
-        "type": "END"
+        "type": "OPEN"
     },
     "kyc_details_pin": {
         "key": "kyc_details_pin",
@@ -711,7 +733,7 @@
     "kyc_details_pin_end": {
         "key": "kyc_details_pin_end",
         "title": "Your new Sidooh PIN is {$confirm_pin}. Please keep your PIN number safe. Do not share it with anyone.",
-        "type": "END"
+        "type": "OPEN"
     },
     "agent_onboarding_mail": {
         "key": "agent_onboarding_mail",
@@ -750,7 +772,7 @@
     "refer_end": {
         "key": "refer_end",
         "title": "Thank you for referring Sidooh. Your friend will receive a referral SMS. Once they register and purchase airtime within {$enrollment_time}hrs, you will start earning on every purchase they & their referral group make from Sidooh.",
-        "type": "END"
+        "type": "OPEN"
     },
     "agent_subscription": {
         "key": "Please select option:",
@@ -780,7 +802,7 @@
     },
     "airtime_amount": {
         "key": "airtime_amount",
-        "title": "Select option",
+        "title": "Select airtime amount",
         "options": {
             "1": {
                 "title": "Ksh100 earns you 0.5 points",
@@ -816,7 +838,7 @@
     },
     "payment_method": {
         "key": "payment_method",
-        "title": "Buy Ksh{$amount} {$product} for {$number} using:",
+        "title": "Pay Ksh{$amount} {$product} for {$number} using:",
         "options": {
             "1": {
                 "title": "MPESA",
@@ -880,11 +902,11 @@
     "coming_soon": {
         "key": "coming_soon",
         "title": "COMING SOON. We shall inform you once the service is available.",
-        "type": "END"
+        "type": "OPEN"
     },
     "cancel": {
         "key": "cancel",
         "title": "Thank you for using Sidooh. Sidooh, makes you money.",
-        "type": "END"
+        "type": "OPEN"
     }
 }

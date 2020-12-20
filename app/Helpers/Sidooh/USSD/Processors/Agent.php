@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
 class Agent extends AgentMain
 {
@@ -75,8 +74,6 @@ class Agent extends AgentMain
 
         if ($res) {
             $name = "Customer";
-            $subscription = $res->active_subscription->subscription_type->title;
-            $subdate = $res->active_subscription->created_at->addMonth();
 
             if ($res->user_id) {
                 $user = $res->user;
@@ -86,17 +83,19 @@ class Agent extends AgentMain
 
 //            TODO: Add screen to handle existing subscription and option to upgrade
             if ($res->active_subscription) {
+                $subscription = $res->active_subscription->subscription_type->title;
+                $subdate = $res->active_subscription->created_at->addMonths($res->active_subscription->subscription_type->duration);
+
                 $this->screen->title = "Dear {$name}, you are already subscribed to $subscription valid until $subdate.";
                 $this->screen->options = [
                     "1" => [
-                        "title" => "Upgrade to " . $this->vars['{$subscription_type_2}'] . "@" .$this->vars['{$subscription_amount_2}'] .'/'.$this->vars['{$period}'],
+                        "title" => "Upgrade to " . $this->vars['{$subscription_type_2}'] . "@" . $this->vars['{$subscription_amount_2}'] . '/' . $this->vars['{$period}'],
                         "type" => "int",
                         "value" => "1",
                         "next" => "agent_upgrade"
                     ]
                 ];
 
-                Log::info($this->screen);
             }
 
         } else {

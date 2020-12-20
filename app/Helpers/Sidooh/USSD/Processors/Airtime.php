@@ -7,6 +7,7 @@ use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
 use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class Airtime extends Product
 {
@@ -143,7 +144,7 @@ class Airtime extends Product
 
     private function set_payment_number(Screen $previousScreen)
     {
-        $this->vars['{$mpesa_number}'] = $previousScreen->option_string;
+        $this->vars['{$mpesa_number}'] = ltrim(PhoneNumber::make($previousScreen->option_string, 'KE')->formatE164(), '+');
         $this->vars['{$payment_method_text}'] = $this->vars['{$payment_method}'] . ' ' . $this->vars['{$mpesa_number}'];
     }
 

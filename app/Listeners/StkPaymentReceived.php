@@ -37,16 +37,11 @@ class StkPaymentReceived
 //        Log::info($mpesa_response);
 
         $other_phone = explode(" - ", $stk->request->description);
-//
-//        Log::info($stk);
-//        Log::info($mpesa_response);
 
         $p = Payment::wherePaymentId($stk->request->id)->firstOrFail();
         $p->status = 'Complete';
 
         $p->save();
-
-//        Log::info($p);
 
         switch ($stk->request->reference) {
             case '001-AIRTIME':

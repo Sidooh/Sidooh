@@ -772,7 +772,7 @@
     "refer_end": {
         "key": "refer_end",
         "title": "Thank you for referring Sidooh. Your friend will receive a referral SMS. Once they register and purchase airtime within {$enrollment_time}hrs, you will start earning on every purchase they & their referral group make from Sidooh.",
-        "type": "OPEN"
+        "type": "END"
     },
     "agent_subscription": {
         "key": "Please select option:",

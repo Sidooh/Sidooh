@@ -60,9 +60,9 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
 
 //    TODO: Refactor into own service controller?
 //    TEST SERVICES
-    Route::post('services/test/sms', 'UssdController@sms')->name('sms');
-    Route::post('services/test/airtime', 'UssdController@airtime')->name('airtime');
-    Route::post('services/test/stk', 'UssdController@stk')->name('stk');
+    Route::post('services/test/sms', 'UssdController@sms')->name('services.test.sms');
+    Route::post('services/test/airtime', 'UssdController@airtime')->name('services.test.airtime');
+    Route::post('services/test/stk', 'UssdController@stk')->name('services.test.stk');
 
 });
 

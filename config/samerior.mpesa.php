@@ -10,7 +10,7 @@ return [
      | Production base url: https://api.safaricom.co.ke
      |
      */
-    'sandbox' => true,
+    'sandbox' => env('MPESA_SANDBOX', true),
     /*
    |--------------------------------------------------------------------------
    | Cache credentials

@@ -34,7 +34,16 @@ return [
         'key' => env('AT_API_KEY'),
         'username' => env('AT_USERNAME'),
         'phone' => env('AT_PHONE'),
-        'env' => env('AT_ENV', 'local')
+        'env' => env('AT_ENV', 'local'),
+
+        'sms' => [
+            'key' => env('AT_SMS_API_KEY'),
+            'username' => env('AT_SMS_USERNAME'),
+        ],
+        'airtime' => [
+            'key' => env('AT_AIRTIME_API_KEY'),
+            'username' => env('AT_AIRTIME_USERNAME'),
+        ],
     ],
 
 ];

@@ -16,6 +16,13 @@ class AfricasTalkingApi
     protected $AT;
 
     /**
+     * AfricasTalking APIs application mode.
+     *
+     * @var string
+     */
+    protected $mode;
+
+    /**
      * AfricasTalking APIs application username.
      *
      * @var string
@@ -36,16 +43,26 @@ class AfricasTalkingApi
      */
     public function __construct()
     {
-        $mode = config('services.at.env');
+        $this->mode = config('services.at.env');
+    }
 
-        $this->username = config('services.at.username');
-        $this->apiKey = config('services.at.key');
+    private function initialize_app(string $app)
+    {
+//        TODO: Can this be done better in constructor instead of reinitializing?
+        if ($this->mode == 'production') {
+            $this->username = config("services.at.$app.username");
+            $this->apiKey = config("services.at.$app.key");
+        } else {
+            $this->username = config('services.at.username');
+            $this->apiKey = config('services.at.key');
+        }
 
         $this->AT = new AfricasTalking($this->username, $this->apiKey);
     }
 
     public function sms($to, $message, $enqueue = false)
     {
+        $this->initialize_app('sms');
         // Get sms service
         $sms = $this->AT->sms();
 
@@ -59,6 +76,8 @@ class AfricasTalkingApi
 
     public function airtime(string $to, string $amount, string $currency = 'KES')
     {
+        $this->initialize_app('airtime');
+
         // Get airtime service
         $airtime = $this->AT->airtime();
 

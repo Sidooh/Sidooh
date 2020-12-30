@@ -73,7 +73,7 @@ class Airtime
 
         $stkResponse = mpesa_request($number, $this->amount, '001-AIRTIME', $description);
 
-        error_log(json_encode($stkResponse));
+//        error_log(json_encode($stkResponse));
 
         $accountRep = new AccountRepository();
         $account = $accountRep->create([

@@ -58,6 +58,12 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
 
     Route::post('b2b/test', 'PaymentController@b2b')->name('b2b.test');
 
+//    TODO: Refactor into own service controller?
+//    TEST SERVICES
+    Route::post('services/test/sms', 'UssdController@sms')->name('sms');
+    Route::post('services/test/airtime', 'UssdController@airtime')->name('airtime');
+    Route::post('services/test/stk', 'UssdController@stk')->name('stk');
+
 });
 
 

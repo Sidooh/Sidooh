@@ -733,7 +733,7 @@
     "kyc_details_pin_end": {
         "key": "kyc_details_pin_end",
         "title": "Your new Sidooh PIN is {$confirm_pin}. Please keep your PIN number safe. Do not share it with anyone.",
-        "type": "OPEN"
+        "type": "END"
     },
     "agent_onboarding_mail": {
         "key": "agent_onboarding_mail",

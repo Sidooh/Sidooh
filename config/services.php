@@ -39,6 +39,7 @@ return [
         'sms' => [
             'key' => env('AT_SMS_API_KEY'),
             'username' => env('AT_SMS_USERNAME'),
+            'from' => env('AT_SMS_FROM'),
         ],
         'airtime' => [
             'key' => env('AT_AIRTIME_API_KEY'),

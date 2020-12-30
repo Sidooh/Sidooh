@@ -68,6 +68,7 @@ class AfricasTalkingApi
 
         // Use the service
         return $sms->send([
+            'from' => config('services.at.sms.from'),
             'to' => $to,
             'message' => $message,
             'enqueue' => $enqueue

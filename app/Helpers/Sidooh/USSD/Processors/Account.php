@@ -65,6 +65,7 @@ class Account extends Product
                 break;
 
             case "confirm_pin":
+//            case "check_balance":
                 $this->set_earnings($previousScreen);
                 break;
 

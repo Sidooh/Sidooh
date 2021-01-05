@@ -74,6 +74,18 @@ class UssdController extends Controller
     }
 
     /**
+     * Test status of transaction
+     *
+     * @return string
+     */
+    public function transaction()
+    {
+
+        return json_encode((new AfricasTalkingApi())->transactionStatus('ATQid_da73e457651f560e415b36f17a61817d'));
+
+    }
+
+    /**
      * Test stk push
      *
      * @return string

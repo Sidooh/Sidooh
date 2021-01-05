@@ -4,14 +4,12 @@
 namespace App\Helpers\AfricasTalking;
 
 
-use AfricasTalking\SDK\AfricasTalking;
-
 class AfricasTalkingApi
 {
     /**
      * Guzzle client initialization.
      *
-     * @var AfricasTalking
+     * @var AfricasTalkingSubClass
      */
     protected $AT;
 
@@ -57,7 +55,7 @@ class AfricasTalkingApi
             $this->apiKey = config('services.at.key');
         }
 
-        $this->AT = new AfricasTalking($this->username, $this->apiKey);
+        $this->AT = new AfricasTalkingSubClass($this->username, $this->apiKey);
     }
 
     public function sms($to, $message, $enqueue = false)
@@ -91,6 +89,20 @@ class AfricasTalkingApi
                     'amount' => $amount
                 ],
             ]
+        ]);
+
+    }
+
+    public function transactionStatus(string $transactionId)
+    {
+        $this->initialize_app('airtime');
+
+        // Get transaction service
+        $transaction = $this->AT->transaction();
+
+        // Use the service
+        return $transaction->check([
+            'transactionId' => $transactionId,
         ]);
 
     }

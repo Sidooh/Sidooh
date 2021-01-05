@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         //
 //        Commands\GenerateMpesaToken::class
+//        Commands\QueryAirtimeStatus::class
     ];
 
     /**
@@ -30,6 +31,13 @@ class Kernel extends ConsoleKernel
 //        $schedule->command('mpesa:generateToken')
 //            ->cron('55 * * * *')->withoutOverlapping();
         $schedule->command('mpesa:query_status')
+            ->everyMinute()
+            ->withoutOverlapping(5)
+            ->sendOutputTo('storage/logs/command.log')
+//            ->emailOutputOnFailure('sidserviceske@gmail.com')
+            ->runInBackground();
+
+        $schedule->command('airtime:status')
             ->everyMinute()
             ->withoutOverlapping(5)
             ->sendOutputTo('storage/logs/command.log')

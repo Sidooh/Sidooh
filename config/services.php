@@ -45,6 +45,9 @@ return [
             'key' => env('AT_AIRTIME_API_KEY'),
             'username' => env('AT_AIRTIME_USERNAME'),
         ],
+        'ussd' => [
+            'code' => env('USSD_CODE'),
+        ],
     ],
 
 ];

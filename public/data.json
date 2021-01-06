@@ -51,7 +51,7 @@
     "about": {
         "key": "about",
         "type": "ENDs",
-        "title": "Thank you for your interest in Sidooh.\n\nSidooh is a digital platform that enables you to earn cash refunds on every airtime you purchase from the platform, which 80% is then automatically saved and invested to generate extra income for you so as to increase your income and improve your financial life.",
+        "title": "Sidooh is a digital platform that enables you to earn cash refunds on every airtime you purchase from the platform, after which 80% is then automatically saved and invested to generate extra income for you so as to improve your financial life.",
         "options": {}
     },
     "airtime": {
@@ -234,7 +234,7 @@
     },
     "refer": {
         "key": "refer",
-        "title": "Refer your friends to use Sidooh & start earning from every airtime they purchase from the platform once they enroll within {$enrollment_time}hrs.\n\n Enter friend's no:",
+        "title": "Refer your friends to use Sidooh and start earning from every airtime they purchase from the platform once they enroll within {$enrollment_time}hrs. Enter friend's no:",
         "type": "OPEN",
         "next": "refer_end",
         "options": {},
@@ -261,7 +261,7 @@
     },
     "agent_intro": {
         "key": "agent_intro",
-        "title": "By registering as a Sidooh Agent through a monthly subscription fee, you will earn sales commission on every airtime purchased from the platform by your referred customers and sub agents.",
+        "title": "By registering as a Sidooh Agent through paying a monthly subscription fee, you will earn sales commissions on every airtime purchased from the platform by your referred customers and subagents.",
         "options": {
             "1": {
                 "title": "Proceed to register as an Agent",
@@ -569,7 +569,7 @@
     },
     "pre_agent": {
         "key": "pre_agent",
-        "title": "Thank you for your interest in Sidooh. By Pre-registering to be a Sidooh Agent you will earn recurring income (commissions) on every airtime purchased from the platform by your referred customers and sub agents for up to 2 years, WITHOUT PAYING MONTHLY SUBSCRIPTION FEES.",
+        "title": "By Preregistering as a Sidooh Agent, you will earn sales commissions on every airtime purchased from the platform by your referred customers and subagents for up to 2 years, WITHOUT PAYING MONTHLY SUBSCRIPTION FEES.",
         "options": {
             "1": {
                 "title": "Proceed to Pre-register as an Agent",
@@ -600,13 +600,13 @@
         "title": "Please select your preferred agent category:",
         "options": {
             "1": {
-                "title": "Pre-register as a {$subscription_type_1} for only Ksh{$subscription_amount_1} and earn commissions on every airtime purchased by your referred customers and sub agents UP TO YOUR {$level_limit_1}rd RIPPLE FOR {$period_1} WITHOUT PAYING THE MONTHLY FEES.",
+                "title": "{$subscription_type_1} for only KES{$subscription_amount_1} earns you commissions up to your {$level_limit_1}rd ripple for {$period_1} without paying monthly fees.",
                 "type": "int",
                 "value": "1",
                 "next": "pre_agent_onboarding_confirm"
             },
             "2": {
-                "title": "Pre-register as a {$subscription_type_2} for only Ksh{$subscription_amount_2} and earn commissions on every airtime purchased by your referred customers and sub agents UP TO YOUR {$level_limit_2}th RIPPLE FOR {$period_2} WITHOUT PAYING THE MONTHLY FEES.",
+                "title": "{$subscription_type_2} for only KES{$subscription_amount_2} earns you commissions up to your {$level_limit_2}th ripple for {$period_2} without paying monthly fees.",
                 "type": "int",
                 "value": "2",
                 "next": "pre_agent_onboarding_confirm"
@@ -748,13 +748,13 @@
         "title": "Please select your preferred agent category:",
         "options": {
             "1": {
-                "title": "{$subscription_type_1} @Ksh{$subscription_amount_1}/{$period} earns you commissions on every purchase by your referred customers and sub agents up to your {$level_limit_1}rd Ripple",
+                "title": "{$subscription_type_1} for KES{$subscription_amount_1} {$period}ly earns you commissions up to your {$level_limit_1}rd ripple",
                 "type": "int",
                 "value": "1",
                 "next": "payment_method"
             },
             "2": {
-                "title": "{$subscription_type_2} @Ksh{$subscription_amount_2}/{$period} earns you commissions on every purchase by your referred customers and sub agents up to your {$level_limit_2}th Ripple",
+                "title": "{$subscription_type_2} for KES{$subscription_amount_2} {$period}ly earns you commissions up to your {$level_limit_2}th ripple",
                 "type": "int",
                 "value": "2",
                 "next": "payment_method"

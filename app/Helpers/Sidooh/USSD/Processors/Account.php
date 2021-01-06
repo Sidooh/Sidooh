@@ -46,6 +46,9 @@ class Account extends Product
                     $this->set_kyc_details();
                 }
                 break;
+//            case "kyc_details_pin":
+//                $this->set_pin_title($previousScreen);
+//                break;
             case "kyc_details_name":
                 $this->set_name($previousScreen);
                 break;

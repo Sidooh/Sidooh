@@ -101,7 +101,7 @@ class Referral extends Product
         ]);
         $code = config('services.at.ussd.code');
 
-        $message = "Hi, {$phoneNumber} has referred you to Sidooh, a digital platform that enables you to earn cash
+        $message = "Hi, {$acc->phone} has referred you to Sidooh, a digital platform that enables you to earn cash
          refunds on every airtime purchased from the platform, allowing you to generate extra income to grow your
          finances. Dial $code for FREE to start earning.";
 

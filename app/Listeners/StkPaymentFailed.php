@@ -32,7 +32,7 @@ class StkPaymentFailed
 
         Log::info('----------------- STK Payment Failed (' . $stk->ResultDesc . ')');
 
-        $message = "We failed to carry out your transaction. No amount was debited from your account.\nSorry for the inconvenience, please try again...\n\nSidooh, Makes You Money!";
+        $message = "Sorry! We failed to complete your transaction. No amount was deducted from your account. We apologize for the inconvenience. Please try again.";
 
         (new AfricasTalkingApi())->sms($stk->request->phone, $message);
     }

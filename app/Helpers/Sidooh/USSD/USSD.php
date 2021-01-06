@@ -261,8 +261,8 @@ class USSD
     private static function addResponseFooter($message)
     {
         $message .= PHP_EOL;
-        $message .= "0. Back" . PHP_EOL;
-        $message .= "00. Home" . PHP_EOL;
+        $message .= "0.Back" . PHP_EOL;
+        $message .= "00.Home" . PHP_EOL;
 
         return $message;
     }

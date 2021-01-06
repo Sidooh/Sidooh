@@ -52,7 +52,8 @@
         "key": "about",
         "type": "ENDs",
         "title": "Sidooh is a digital platform that enables you to earn cash refunds on every airtime you purchase from the platform, after which 80% is then automatically saved and invested to generate extra income for you so as to improve your financial life.",
-        "options": {}
+        "options": {},
+        "paginated": true
     },
     "airtime": {
         "key": "airtime",
@@ -234,7 +235,7 @@
     },
     "refer": {
         "key": "refer",
-        "title": "Refer your friends to use Sidooh and start earning from every airtime they purchase from the platform once they enroll within {$enrollment_time}hrs. Enter friend's no:",
+        "title": "Refer your friends to use Sidooh and start earning from every airtime they purchase from the platform once they enroll within {$enrollment_time}hrs. Enter no:",
         "type": "OPEN",
         "next": "refer_end",
         "options": {},
@@ -269,7 +270,8 @@
                 "value": "1",
                 "next": "agent_onboarding_name"
             }
-        }
+        },
+        "paginated": true
     },
     "agent_onboarding_name": {
         "key": "agent_onboarding_name",
@@ -611,7 +613,8 @@
                 "value": "2",
                 "next": "pre_agent_onboarding_confirm"
             }
-        }
+        },
+        "paginated": true
     },
     "pre_agent_onboarding_confirm": {
         "key": "pre_agent_onboarding_confirm",
@@ -759,7 +762,8 @@
                 "value": "2",
                 "next": "payment_method"
             }
-        }
+        },
+        "paginated": true
     },
     "refer_fail": {
         "key": "refer_fail",
@@ -767,7 +771,8 @@
         "type": "OPEN",
         "next": "refer_end",
         "options": {},
-        "option_type": "NUMBER"
+        "option_type": "NUMBER",
+        "paginated": true
     },
     "refer_end": {
         "key": "refer_end",

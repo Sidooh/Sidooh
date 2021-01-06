@@ -602,13 +602,13 @@
         "title": "Select preferred agent category:",
         "options": {
             "1": {
-                "title": "{$subscription_type_1} for KES{$subscription_amount_1_f} earns you commissions up to your {$level_limit_1}rd ripple for {$period_1} without monthly fees.",
+                "title": "{$subscription_type_1} for KES{$subscription_amount_1_f} earns you commissions up to your {$level_limit_1}rd ripple for {$period_1} without monthly fees",
                 "type": "int",
                 "value": "1",
                 "next": "pre_agent_onboarding_confirm"
             },
             "2": {
-                "title": "{$subscription_type_2} for KES{$subscription_amount_2_f} earns you commissions up to your {$level_limit_2}th ripple for {$period_2}.",
+                "title": "{$subscription_type_2} for KES{$subscription_amount_2_f} earns you commissions up to your {$level_limit_2}th ripple for {$period_2}",
                 "type": "int",
                 "value": "2",
                 "next": "pre_agent_onboarding_confirm"

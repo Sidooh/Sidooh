@@ -263,7 +263,7 @@ class USSD
         $message .= PHP_EOL;
         if (!isset($this->screen->paginated))
             $message .= "0.Back ";
-        $message .= "00.Home" . PHP_EOL;
+        $message .= "00.Home";
 
         return $message;
     }

@@ -45,7 +45,7 @@ class AirtimePurchaseSuccess
         $points_earned = $this->getPointsEarned(explode(' ', $event->airtime_response->discount)[1]);
 
         if ($phone != $sender) {
-            $message = "Well done! You have bought {$amount} airtime for {$phone} from your Sidooh account on {$date}. You have received {$points_earned} cashback.";
+            $message = "Well done! You have purchased {$amount} airtime for {$phone} from your Sidooh account on {$date}. You have received {$points_earned} cashback.";
 
             (new AfricasTalkingApi())->sms($sender, $message);
 

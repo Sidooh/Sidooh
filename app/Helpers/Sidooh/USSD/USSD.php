@@ -261,10 +261,9 @@ class USSD
     private function addResponseFooter($message)
     {
         $message .= PHP_EOL;
-        $message .= "00.Home" . PHP_EOL;
-
         if (!isset($this->screen->paginated))
-            $message .= "0.Back" . PHP_EOL;
+            $message .= "0.Back ";
+        $message .= "00.Home" . PHP_EOL;
 
         return $message;
     }

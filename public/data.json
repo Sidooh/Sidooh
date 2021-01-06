@@ -1,7 +1,7 @@
 {
     "main_menu": {
         "key": "main_menu",
-        "title": "Hi {$name}, Welcome to Sidooh. What would you like to do?",
+        "title": "Hi{$name}, Welcome to Sidooh. What would you like to do?",
         "type": "GENESIS",
         "options": {
             "1": {

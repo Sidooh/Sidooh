@@ -79,7 +79,7 @@ class USSD
         else {
             $acc = \App\Models\Account::wherePhone(ltrim($this->user->phone, '+'))->first();
             if ($acc->user) {
-                $vars['{$name}'] = explode(' ', $acc->user->name)[0];
+                $vars['{$name}'] = ' ' . explode(' ', $acc->user->name)[0];
 
             } else {
                 $vars['{$name}'] = '';
@@ -261,8 +261,8 @@ class USSD
     private static function addResponseFooter($message)
     {
         $message .= PHP_EOL;
-        $message .= "0.Back" . PHP_EOL;
         $message .= "00.Home" . PHP_EOL;
+        $message .= "0.Back" . PHP_EOL;
 
         return $message;
     }

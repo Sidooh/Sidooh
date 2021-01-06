@@ -16,6 +16,7 @@ class Screen
     public array $options;
     public ?Screen $previous = null;
     public ?string $option_type;
+    public bool $paginated;
 
     public function findOption(string $option): ?Option
     {

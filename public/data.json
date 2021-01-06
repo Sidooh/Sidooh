@@ -834,7 +834,8 @@
                 "value": "20",
                 "next": "payment_method"
             }
-        }
+        },
+        "paginated": true
     },
     "payment_method": {
         "key": "payment_method",

@@ -244,7 +244,7 @@ class USSD
                 }
 
             if ($this->screen->previous && $this->screen->type !== "END") {
-                $message = self::addResponseFooter($message);
+                $message = $this->addResponseFooter($message);
             }
         }
 
@@ -258,11 +258,13 @@ class USSD
 //        Storage::delete($this->sessionId . '_vars.txt');
     }
 
-    private static function addResponseFooter($message)
+    private function addResponseFooter($message)
     {
         $message .= PHP_EOL;
         $message .= "00.Home" . PHP_EOL;
-        $message .= "0.Back" . PHP_EOL;
+
+        if (!isset($this->screen->paginated))
+            $message .= "0.Back" . PHP_EOL;
 
         return $message;
     }

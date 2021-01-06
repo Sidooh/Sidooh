@@ -131,7 +131,27 @@ class Account extends Product
 
         unset($this->screen->options[3]);
         unset($this->screen->options[4]);
+
+        $res = (new AccountRepository)->findByPhone($this->phone);
+
+        if ($res) {
+            if (!$res->pin) {
+                if ($this->screen->key == 'account') {
+                    $this->screen->options[1]->next = 'kyc_details_pin';
+                    $this->screen->title = 'Please set a pin in order to proceed';
+                }
+            }
+        }
     }
+
+    private function set_pin_title(Screen $previousScreen)
+    {
+        if ($this->screen->key == 'account') {
+            $this->screen->options[1]->next = 'kyc_details_pin';
+            $this->screen->title = 'Please set a pin in order to proceed';
+        }
+    }
+
 
     private function set_kyc_details()
     {
@@ -157,6 +177,10 @@ class Account extends Product
         } else {
             $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to access your account.";
             $this->screen->type = 'END';
+        }
+
+        if ($this->screen->key == 'kyc_details_pin') {
+            $this->screen->title = 'Please set a pin in order to proceed';
         }
 
     }

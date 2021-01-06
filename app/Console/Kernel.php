@@ -39,9 +39,9 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('airtime:status')
             ->everyMinute()
-            ->withoutOverlapping(5)
+            ->withoutOverlapping()
             ->sendOutputTo('storage/logs/command.log')
-//            ->emailOutputOnFailure('sidserviceske@gmail.com')
+            ->emailOutputOnFailure('sidserviceske@gmail.com')
             ->runInBackground();
     }
 

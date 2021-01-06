@@ -47,7 +47,8 @@ class QueryAirtimeStatus extends Command
     public function handle()
     {
         //
-        $transactions = AirtimeResponse::whereStatus(['Sent', 'Queued'])->get();
+//        TODO: Will we need both statuses? ['Sent', 'Queued']
+        $transactions = AirtimeResponse::whereStatus('Sent')->get();
         $success = $errors = [];
 
         foreach ($transactions as $transaction) {

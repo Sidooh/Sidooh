@@ -61,8 +61,8 @@ class StkPaymentReceived
                 break;
 
             case '002-SUBS':
-            case '006.1-PRE_SUBS':
-            case '006.2-SUBS':
+            case '006.1-PRE-AGENT':
+            case '006.2-AGENT':
 
                 (new ProductRepository())->subscription($p->payable, $stk->Amount);
                 break;

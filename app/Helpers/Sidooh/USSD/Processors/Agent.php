@@ -3,6 +3,7 @@
 
 namespace App\Helpers\Sidooh\USSD\Processors;
 
+use App\Helpers\Sidooh\USSD\Entities\Option;
 use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
 use App\Models\SubscriptionType;
@@ -84,17 +85,24 @@ class Agent extends AgentMain
 //            TODO: Add screen to handle existing subscription and option to upgrade
             if ($res->active_subscription) {
                 $subscription = $res->active_subscription->subscription_type->title;
-                $subdate = $res->active_subscription->created_at->addMonths($res->active_subscription->subscription_type->duration);
+                $subdate = $res->active_subscription->created_at->addMonths($res->active_subscription->subscription_type->duration)->toFormattedDateString();
 
                 $this->screen->title = "Dear {$name}, you are already subscribed to $subscription valid until $subdate.";
-                $this->screen->options = [
-                    "1" => [
-                        "title" => "Upgrade to " . $this->vars['{$subscription_type_2}'] . "@" . $this->vars['{$subscription_amount_2}'] . '/' . $this->vars['{$period}'],
-                        "type" => "int",
-                        "value" => "1",
-                        "next" => "agent_upgrade"
-                    ]
-                ];
+
+                if ($res->active_subscription->subscription_type->duration == 1) {
+
+                    $option = new Option();
+                    $option->title = "Upgrade to " . $this->vars['{$subscription_type_2}'] . "@" . $this->vars['{$subscription_amount_2}'] . '/' . $this->vars['{$period}'];
+                    $option->type = "int";
+                    $option->value = "1";
+                    $option->next = "agent_upgrade";
+
+                    $this->screen->options = [
+                        "1" => $option
+                    ];
+                } else {
+                    $this->screen->options = [];
+                }
 
             }
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddDescriptionColumnToTransactionssTable extends Migration
+class AddDescriptionColumnToTransactionsTable extends Migration
 {
     /**
      * Run the migrations.

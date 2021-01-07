@@ -51,7 +51,7 @@
     "about": {
         "key": "about",
         "type": "ENDs",
-        "title": "Sidooh is a digital platform that gives you cash refunds on every airtime you purchase from the platform, of which 80% is then automatically saved and invested to generate extra income for you so as to improve your financial life.",
+        "title": "Sidooh is a digital platform that gives you cash refunds on every airtime you purchase from the platform, out of which 80% is then automatically saved and invested to generate extra income for you, so as to improve your financial life.",
         "options": {},
         "paginated": true
     },
@@ -235,7 +235,7 @@
     },
     "refer": {
         "key": "refer",
-        "title": "Refer your friends to use Sidooh and start earning from every airtime they purchase from the platform once they enroll within {$enrollment_time}hrs.\nEnter no:",
+        "title": "Refer your friends to use Sidooh and start earning from every airtime they purchase from the platform once they enroll within {$enrollment_time}hrs. Enter friend's no:",
         "type": "OPEN",
         "next": "refer_end",
         "options": {},
@@ -280,6 +280,51 @@
         "next": "agent_onboarding_category",
         "options": {},
         "option_type": "NAME"
+    },
+    "agent_onboarding_mail": {
+        "key": "agent_onboarding_mail",
+        "title": "Please enter your email address.\nEnter 0000 if you have no email",
+        "type": "OPEN",
+        "next": "agent_onboarding_category",
+        "options": {},
+        "option_type": "EMAIL"
+    },
+    "agent_onboarding_category": {
+        "key": "agent_onboarding_category",
+        "title": "Select preferred agent category:",
+        "options": {
+            "1": {
+                "title": "{$subscription_type_1} for KES{$subscription_amount_1} {$period}ly earns you commissions up to your {$level_limit_1}rd ripple",
+                "type": "int",
+                "value": "1",
+                "next": "payment_method"
+            },
+            "2": {
+                "title": "{$subscription_type_2} for KES{$subscription_amount_2} {$period}ly earns you commissions up to your {$level_limit_2}th ripple",
+                "type": "int",
+                "value": "2",
+                "next": "payment_method"
+            }
+        },
+        "paginated": true
+    },
+    "agent_upgrade": {
+        "key": "agent_upgrade",
+        "title": "Upgrading from {} to {}",
+        "options": {
+            "1": {
+                "title": "Accept",
+                "type": "int",
+                "value": "1",
+                "next": "payment_method"
+            },
+            "2": {
+                "title": "Cancel",
+                "type": "int",
+                "value": "2",
+                "next": "cancel"
+            }
+        }
     },
     "account": {
         "key": "account",
@@ -738,33 +783,6 @@
         "title": "Your new Sidooh PIN is {$confirm_pin}. Please keep your PIN number safe. Do not share it with anyone.",
         "type": "END"
     },
-    "agent_onboarding_mail": {
-        "key": "agent_onboarding_mail",
-        "title": "Please enter your email address.\nEnter 0000 if you have no email",
-        "type": "OPEN",
-        "next": "agent_onboarding_category",
-        "options": {},
-        "option_type": "EMAIL"
-    },
-    "agent_onboarding_category": {
-        "key": "agent_onboarding_category",
-        "title": "Select preferred agent category:",
-        "options": {
-            "1": {
-                "title": "{$subscription_type_1} for KES{$subscription_amount_1} {$period}ly earns you commissions up to your {$level_limit_1}rd ripple",
-                "type": "int",
-                "value": "1",
-                "next": "payment_method"
-            },
-            "2": {
-                "title": "{$subscription_type_2} for KES{$subscription_amount_2} {$period}ly earns you commissions up to your {$level_limit_2}th ripple",
-                "type": "int",
-                "value": "2",
-                "next": "payment_method"
-            }
-        },
-        "paginated": true
-    },
     "refer_fail": {
         "key": "refer_fail",
         "title": "Sorry, the number is not eligible for a referral. Try a different number to start earning from all their purchases from the platform once they enroll within {$enrollment_time}hrs.\n\n Enter friend's no:",
@@ -776,7 +794,7 @@
     },
     "refer_end": {
         "key": "refer_end",
-        "title": "Thank you for referring Sidooh. Your friend will receive a referral SMS. Once they register and purchase airtime within {$enrollment_time}hrs, you will start earning on every purchase they & their referral group make from Sidooh.",
+        "title": "Thank you for referring Sidooh. Your friend will receive a referral SMS. Once they register and purchase airtime within {$enrollment_time}hrs, you will start earning on every airtime purchase they make from Sidooh.",
         "type": "END"
     },
     "agent_subscription": {

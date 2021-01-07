@@ -3,6 +3,7 @@
 
 namespace App\Helpers\Sidooh\USSD\Processors;
 
+use App\Helpers\Sidooh\USSD\Entities\Option;
 use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
 use App\Models\SubscriptionType;
@@ -69,6 +70,59 @@ class Pre_Agent extends AgentMain
         $this->vars['{$subscription_amount_2_f}'] = '9,975';
         $this->vars['{$level_limit_2}'] = 5;
         $this->vars['{$period_2}'] = "24 MONTHS";
+
+        $res = (new AccountRepository)->findByPhone($this->phone);
+
+        if ($res) {
+            $name = "Customer";
+
+            if ($res->user_id) {
+                $user = $res->user;
+
+                $name = $user->name;
+            }
+
+//            TODO: Add screen to handle existing subscription and option to upgrade
+            if ($res->active_subscription) {
+                $subscription = $res->active_subscription->subscription_type->title;
+                $subdate = $res->active_subscription->created_at->addMonths($res->active_subscription->subscription_type->duration)->toFormattedDateString();
+
+                $this->screen->title = "Dear {$name}, you are already subscribed to $subscription valid until $subdate.";
+
+                if ($res->active_subscription->subscription_type->duration < 24) {
+
+                    $option = new Option();
+                    $option->title = "Upgrade to " . $this->vars['{$subscription_type_2}'] . "@" . $this->vars['{$subscription_amount_2}'] . '/' . $this->vars['{$period}'];
+                    $option->type = "int";
+                    $option->value = "2";
+                    $option->next = "agent_upgrade";
+
+                    if ($res->active_subscription->subscription_type->duration == 18) {
+                        $this->screen->options = [
+                            "2" => $option,
+                        ];
+                    } else {
+                        $option2 = new Option();
+                        $option2->title = "Upgrade to " . $this->vars['{$subscription_type_1}'] . "@" . $this->vars['{$subscription_amount_1}'] . '/' . $this->vars['{$period}'];
+                        $option2->type = "int";
+                        $option2->value = "1";
+                        $option2->next = "agent_upgrade";
+
+                        $this->screen->options = [
+                            "1" => $option2,
+                            "2" => $option
+                        ];
+                    }
+                } else {
+                    $this->screen->options = [];
+                }
+
+            }
+
+        } else {
+            $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to access your account.";
+            $this->screen->type = 'END';
+        }
     }
 
     private function set_name(Screen $previousScreen)

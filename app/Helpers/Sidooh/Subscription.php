@@ -82,10 +82,10 @@ class Subscription
 
         switch ($this->type->amount) {
             case 4975 || 9975:
-                $stkResponse = mpesa_request($number, $this->amount, '006.1-PRE_SUBS', $description);
+                $stkResponse = mpesa_request($number, $this->amount, '006.1-PRE-AGENT', $description);
                 break;
             default:
-                $stkResponse = mpesa_request($number, $this->amount, '006.2-SUBS', $description);
+                $stkResponse = mpesa_request($number, $this->amount, '006.2-AGENT', $description);
         }
 
 //        TODO: Refactor this into the constructor?

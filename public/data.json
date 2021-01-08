@@ -235,7 +235,7 @@
     },
     "refer": {
         "key": "refer",
-        "title": "Refer your friends to use Sidooh and start earning from every airtime they purchase from the platform once they enroll within {$enrollment_time}hrs. Enter friend's no:",
+        "title": "Refer your friends to use Sidooh and start earning from every airtime they purchase from the platform once they enroll within {$enrollment_time}hrs. Enter no:",
         "type": "OPEN",
         "next": "refer_end",
         "options": {},
@@ -794,7 +794,7 @@
     },
     "refer_end": {
         "key": "refer_end",
-        "title": "Thank you for referring Sidooh. Your friend will receive a referral SMS. Once they register and purchase airtime within {$enrollment_time}hrs, you will start earning on every airtime purchase they make from Sidooh.",
+        "title": "Thank you for referring Sidooh. Your friend will receive a referral SMS. Once they register and purchase airtime within {$enrollment_time}hrs, you will start earning on every airtime they purchase from Sidooh.",
         "type": "END"
     },
     "agent_subscription": {

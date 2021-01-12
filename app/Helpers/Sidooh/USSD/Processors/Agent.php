@@ -62,10 +62,10 @@ class Agent extends AgentMain
         $this->vars['{$number}'] = $this->phone;
         $this->vars['{$mpesa_number}'] = $this->phone;
 
-        $this->vars['{$subscription_type_1}'] = "Sidooh Ambitious Agent";
+        $this->vars['{$subscription_type_1}'] = "Sidooh Aspiring Agent";
         $this->vars['{$subscription_amount_1}'] = 475;
         $this->vars['{$level_limit_1}'] = 3;
-        $this->vars['{$subscription_type_2}'] = "Sidooh Booming Agent";
+        $this->vars['{$subscription_type_2}'] = "Sidooh Thriving Agent";
         $this->vars['{$subscription_amount_2}'] = 975;
         $this->vars['{$level_limit_2}'] = 5;
         $this->vars['{$period}'] = "month";

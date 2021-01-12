@@ -86,13 +86,13 @@ class Subscription
                 $reference = MpesaReferences::PRE_AGENT_REGISTER_ASPIRING;
                 break;
             case 4975:
-                $reference = MpesaReferences::PRE_AGENT_REGISTER_BOOMING;
+                $reference = MpesaReferences::PRE_AGENT_REGISTER_THRIVING;
                 break;
             case 975:
                 $reference = MpesaReferences::AGENT_REGISTER_ASPIRING;
                 break;
             case 475:
-                $reference = MpesaReferences::AGENT_REGISTER_BOOMING;
+                $reference = MpesaReferences::AGENT_REGISTER_THRIVING;
                 break;
         }
 

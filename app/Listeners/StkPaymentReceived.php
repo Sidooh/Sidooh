@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Helpers\Sidooh\USSD\Entities\MpesaReferences;
 use App\Models\Payment;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Log;
@@ -44,7 +45,7 @@ class StkPaymentReceived
         $p->save();
 
         switch ($stk->request->reference) {
-            case '001-AIRTIME':
+            case MpesaReferences::AIRTIME:
                 if (count($other_phone) > 1)
                     $airtime = [
                         'phone' => $other_phone[1],
@@ -60,14 +61,16 @@ class StkPaymentReceived
 
                 break;
 
-            case '002-SUBS':
-            case '006.1-PRE-AGENT':
-            case '006.2-AGENT':
+            case MpesaReferences::PAY_SUBSCRIPTION:
+            case MpesaReferences::PRE_AGENT_REGISTER_ASPIRING:
+            case MpesaReferences::PRE_AGENT_REGISTER_THRIVING:
+            case MpesaReferences::AGENT_REGISTER_ASPIRING:
+            case MpesaReferences::AGENT_REGISTER_THRIVING:
 
                 (new ProductRepository())->subscription($p->payable, $stk->Amount);
                 break;
 
-            case '003.2-VOUCHER':
+            case MpesaReferences::PAY_VOUCHER:
                 if (count($other_phone) > 1)
                     $voucherDetails = [
                         'phone' => $other_phone[1],

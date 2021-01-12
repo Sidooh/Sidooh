@@ -310,7 +310,7 @@
     },
     "agent_upgrade": {
         "key": "agent_upgrade",
-        "title": "Upgrading from {} to {}",
+        "title": "Upgrade to {$subscription_upgrade}?",
         "options": {
             "1": {
                 "title": "Accept",

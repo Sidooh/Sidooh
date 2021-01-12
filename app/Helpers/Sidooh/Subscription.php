@@ -4,6 +4,7 @@
 namespace App\Helpers\Sidooh;
 
 
+use App\Helpers\Sidooh\USSD\Entities\MpesaReferences;
 use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Models\Payment;
 use App\Models\SubscriptionType;
@@ -81,12 +82,21 @@ class Subscription
         $number = $mpesaNumber ?? $this->phone;
 
         switch ($this->type->amount) {
-            case 4975 || 9975:
-                $stkResponse = mpesa_request($number, $this->amount, '006.1-PRE-AGENT', $description);
+            case 9975:
+                $reference = MpesaReferences::PRE_AGENT_REGISTER_ASPIRING;
                 break;
-            default:
-                $stkResponse = mpesa_request($number, $this->amount, '006.2-AGENT', $description);
+            case 4975:
+                $reference = MpesaReferences::PRE_AGENT_REGISTER_BOOMING;
+                break;
+            case 975:
+                $reference = MpesaReferences::AGENT_REGISTER_ASPIRING;
+                break;
+            case 475:
+                $reference = MpesaReferences::AGENT_REGISTER_BOOMING;
+                break;
         }
+
+        $stkResponse = mpesa_request($number, $this->amount, $reference, $description);
 
 //        TODO: Refactor this into the constructor?
         $accountRep = new AccountRepository();

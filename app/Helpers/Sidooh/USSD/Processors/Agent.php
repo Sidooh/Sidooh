@@ -40,6 +40,7 @@ class Agent extends AgentMain
                 $this->set_email($previousScreen);
                 break;
             case "agent_onboarding_category":
+            case "agent_upgrade":
                 $this->set_amount($previousScreen);
                 break;
             case "payment_method":
@@ -94,12 +95,17 @@ class Agent extends AgentMain
                     $option = new Option();
                     $option->title = "Upgrade to " . $this->vars['{$subscription_type_2}'] . "@" . $this->vars['{$subscription_amount_2}'] . '/' . $this->vars['{$period}'];
                     $option->type = "int";
-                    $option->value = "1";
-                    $option->next = "agent_upgrade";
+                    $option->value = "2";
+                    $option->next = "payment_method";
 
                     $this->screen->options = [
-                        "1" => $option
+                        "2" => $option
                     ];
+
+                    $this->vars['{$subscription_upgrade}'] = $this->vars['{$subscription_type_2}'];
+                    $this->vars['{$subscription_type}'] = $this->vars['{$subscription_type_2}'];
+                    $this->vars['{$amount}'] = $this->vars['{$subscription_amount_2}'];
+                    $this->vars['{$product}'] = $this->vars['{$subscription_type}'];
                 } else {
                     $this->screen->options = [];
                 }

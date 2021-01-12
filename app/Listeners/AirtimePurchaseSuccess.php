@@ -44,12 +44,14 @@ class AirtimePurchaseSuccess
 
         $points_earned = $this->getPointsEarned(explode(' ', $event->airtime_response->discount)[1]);
 
+        $code = config('services.at.ussd.code');
+
         if ($phone != $sender) {
             $message = "Well done! You have purchased {$amount} airtime for {$phone} from your Sidooh account on {$date}. You have received {$points_earned} cashback.";
 
             (new AfricasTalkingApi())->sms($sender, $message);
 
-            $message = "Congratulations! You have received {$amount} airtime from Sidooh account {$sender} on {$date}.";
+            $message = "Congratulations! You have received {$amount} airtime from Sidooh account {$sender} on {$date}. Sidooh Makes You Money with Every Purchase.\n\n Dial $code NOW for FREE on your Safaricom line to BUY AIRTIME & START EARNING from your purchases.";
 
             (new AfricasTalkingApi())->sms($phone, $message);
         } else {

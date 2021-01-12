@@ -4,6 +4,7 @@
 namespace App\Helpers\Sidooh;
 
 
+use App\Helpers\Sidooh\USSD\Entities\MpesaReferences;
 use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Models\Payment;
 use App\Models\Transaction;
@@ -71,7 +72,7 @@ class Airtime
         $description = $targetNumber ? "Airtime Purchase - $targetNumber" : "Airtime Purchase";
         $number = $mpesaNumber ?? $this->phone;
 
-        $stkResponse = mpesa_request($number, $this->amount, '001-AIRTIME', $description);
+        $stkResponse = mpesa_request($number, $this->amount, MpesaReferences::AIRTIME, $description);
 
 //        error_log(json_encode($stkResponse));
 

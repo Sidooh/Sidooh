@@ -4,6 +4,7 @@
 namespace App\Helpers\Sidooh;
 
 
+use App\Helpers\Sidooh\USSD\Entities\MpesaReferences;
 use App\Models\Payment;
 use App\Models\Transaction;
 use App\Repositories\AccountRepository;
@@ -46,7 +47,7 @@ class Voucher
         $description = $targetNumber ? "Voucher Purchase - $targetNumber" : "Voucher Purchase - $this->phone";
         $number = $mpesaNumber ?? $this->phone;
 
-        $stkResponse = mpesa_request($number, 10 ?? $this->amount, '003.2-VOUCHER', $description);
+        $stkResponse = mpesa_request($number, 10 ?? $this->amount, MpesaReferences::PAY_VOUCHER, $description);
 
         $accountRep = new AccountRepository();
         $account = $accountRep->findByPhone($this->phone);

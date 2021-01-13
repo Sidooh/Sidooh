@@ -6,6 +6,7 @@ namespace App\Repositories;
 use App\Events\ReferralJoinedEvent;
 use App\Helpers\Sidooh\Report;
 use App\Models\Account;
+use App\Models\CollectiveInvestment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use MrAtiebatie\Repository;
@@ -53,6 +54,7 @@ class AccountRepository extends Model
 
         (new SubAccountRepository)->store($acc, 'CURRENT');
         (new SubAccountRepository)->store($acc, 'SAVINGS');
+        (new SubAccountRepository)->store($acc, 'INTEREST');
 
         return $acc;
 
@@ -94,6 +96,7 @@ class AccountRepository extends Model
 
         (new SubAccountRepository)->store($acc, 'CURRENT');
         (new SubAccountRepository)->store($acc, 'SAVINGS');
+        (new SubAccountRepository)->store($acc, 'INTEREST');
 
         return $acc;
     }
@@ -269,6 +272,40 @@ class AccountRepository extends Model
     public function earningsReport($phoneNumber)
     {
         return (new Report($phoneNumber))->generateJson();
+    }
+
+    public function invest()
+    {
+        $accounts = $this->model->with(['sub_accounts' => function ($q) {
+            $q->where('in', '>', 'out')->whereIn('type', ['CURRENT', 'SAVINGS']);
+        }])->get();
+
+        $accounts = $accounts->map(function ($item, $key) {
+            $item->balance = $item->sub_accounts->reduce(function ($carry, $item) {
+                return $carry + $item->balance;
+            });
+            return $item;
+        })->filter(function ($item, $key) {
+            return $item->balance > 0;
+        });
+
+        $totalAmount = $accounts->reduce(function ($carry, $item) {
+            return $carry + $item->balance;
+        });
+
+        $cI = CollectiveInvestment::create([
+            'amount' => $totalAmount,
+            'interest_rate' => 10,
+        ]);
+
+        foreach ($accounts as $account) {
+            $cI->subInvestments()->create([
+                'amount' => $account->balance,
+                'account_id' => $account->id,
+            ]);
+        }
+
+        return $cI->subInvestments;
     }
 
 }

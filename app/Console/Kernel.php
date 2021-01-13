@@ -43,6 +43,13 @@ class Kernel extends ConsoleKernel
             ->sendOutputTo('storage/logs/command.log')
             ->emailOutputOnFailure('sidserviceske@gmail.com')
             ->runInBackground();
+
+        $schedule->command('sidooh:invest')
+            ->daily()
+            ->sendOutputTo('storage/logs/command.log')
+            ->emailOutputOnFailure('sidserviceske@gmail.com')
+            ->emailOutputTo('sidserviceske@gmail.com')
+            ->runInBackground();
     }
 
     /**

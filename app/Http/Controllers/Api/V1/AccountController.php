@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AccountStoreRequest;
 use App\Http\Resources\AccountResource;
-use App\Model\Account;
+use App\Models\Account;
 use App\Repositories\AccountRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -190,5 +190,18 @@ class AccountController extends Controller
         return $this->account->earningsReport($account->phone);
         return new AccountResource($this->account->earningsReport($account->phone));
     }
+
+//    /**
+//     * Display the specified resource.
+//     *
+//     * @param Account $account
+//     * @return AccountResource
+//     */
+//    public function subAccounts(Account $account)
+//    {
+//        //
+//        return $this->account->invest();
+//        return new AccountResource($this->account->earningsReport($account->phone));
+//    }
 
 }

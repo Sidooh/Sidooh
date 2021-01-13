@@ -122,4 +122,15 @@ class Account extends Model
         })->whereDepth('>=', -$level);
     }
 
+    /**
+     * Scope a query to only include account with balance in sub accounts.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function subAccountBalance($query)
+    {
+        return $query->whereHas('active_subscription');
+    }
+
 }

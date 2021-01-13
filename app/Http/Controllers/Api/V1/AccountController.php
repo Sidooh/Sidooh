@@ -197,11 +197,10 @@ class AccountController extends Controller
 //     * @param Account $account
 //     * @return AccountResource
 //     */
-//    public function subAccounts(Account $account)
-//    {
-//        //
-//        return $this->account->invest();
-//        return new AccountResource($this->account->earningsReport($account->phone));
-//    }
+    public function subAccounts(Account $account)
+    {
+        //
+        return new AccountResource($this->account->invest());
+    }
 
 }

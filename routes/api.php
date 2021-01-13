@@ -24,7 +24,6 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::get('accounts/{account}/vouchers', 'AccountController@vouchers')->name('accounts.vouchers');
     Route::get('accounts/{account}/earnings', 'AccountController@earnings')->name('accounts.earnings');
     Route::get('accounts/{account}/reports/earnings', 'AccountController@earningsReport')->name('accounts.reports.earnings');
-    Route::get('accounts/{account}/balances', 'AccountController@subAccounts')->name('accounts.reports.subAccounts');
 
     Route::apiResource('transactions', 'TransactionController', ['only' => ['index', 'store', 'show']]);
 
@@ -58,6 +57,10 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::post('sms/callback', 'ProductController@smsCallback')->name('sms.callback');
 
     Route::post('b2b/test', 'PaymentController@b2b')->name('b2b.test');
+
+    Route::get('investment/balances', 'AccountController@subAccounts')->name('investments.balances');
+    Route::get('interest', 'CollectiveInvestmentController@storeRate')->name('investments.rate.store');
+
 
 //    TODO: Refactor into own service controller?
 //    TEST SERVICES

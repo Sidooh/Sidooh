@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\CollectiveInvestment;
+use App\Http\Controllers\Controller;
+use App\Models\CollectiveInvestment;
+use App\Repositories\AccountRepository;
 use Illuminate\Http\Request;
 
 class CollectiveInvestmentController extends Controller
@@ -41,7 +43,7 @@ class CollectiveInvestmentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\CollectiveInvestment $collectiveInvestment
+     * @param CollectiveInvestment $collectiveInvestment
      * @return \Illuminate\Http\Response
      */
     public function show(CollectiveInvestment $collectiveInvestment)
@@ -52,7 +54,7 @@ class CollectiveInvestmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\CollectiveInvestment $collectiveInvestment
+     * @param CollectiveInvestment $collectiveInvestment
      * @return \Illuminate\Http\Response
      */
     public function edit(CollectiveInvestment $collectiveInvestment)
@@ -64,7 +66,7 @@ class CollectiveInvestmentController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\CollectiveInvestment $collectiveInvestment
+     * @param CollectiveInvestment $collectiveInvestment
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, CollectiveInvestment $collectiveInvestment)
@@ -81,5 +83,20 @@ class CollectiveInvestmentController extends Controller
     public function destroy(CollectiveInvestment $collectiveInvestment)
     {
         //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return float|\Illuminate\Http\Response|int
+     */
+    public function storeRate(Request $request)
+    {
+        //
+        if ($request->has('rate'))
+            return (new AccountRepository())->calculateInterest($request->rate);
+
+        return "Failed to calculate Interest";
     }
 }

@@ -274,6 +274,7 @@ class AccountRepository extends Model
         return (new Report($phoneNumber))->generateJson();
     }
 
+//    TODO: All these should move to the Investment repository
     public function invest()
     {
         $accounts = $this->model->with(['sub_accounts' => function ($q) {
@@ -295,7 +296,6 @@ class AccountRepository extends Model
 
         $cI = CollectiveInvestment::create([
             'amount' => $totalAmount,
-            'interest_rate' => 10,
         ]);
 
         foreach ($accounts as $account) {
@@ -306,6 +306,51 @@ class AccountRepository extends Model
         }
 
         return $cI->subInvestments;
+    }
+
+    public function calculateInterest(float $rate)
+    {
+        $dayRate = $this->getDailyRate($rate);
+
+//       TODO: Should this be in a transaction(db)
+        $cInvestment = CollectiveInvestment::whereInterestRate(null)->latest()->first();
+
+        if (!$cInvestment) {
+            return 'No Pending Investment';
+        }
+
+        $cInvestment->interest_rate = $rate;
+        $cInvestment->interest = $cInvestment->amount * ($dayRate / 100);
+
+//        TODO: Will the following be calculated on manual input or should it be automatically 30days?
+//        $cInvestment->maturity_date = Carbon::now()->addMonth();
+
+        foreach ($cInvestment->subInvestments as $investment) {
+            $investment->interest = $investment->amount * ($dayRate / 100);
+            $investment->save();
+        }
+
+        $cInvestment->save();
+
+        return $cInvestment;
+    }
+
+    public function allocateInterest()
+    {
+//        TODO: Will be done everyday for those investments that have matured...
+    }
+
+    public function getDailyRate(float $rate)
+    {
+//        First, divide the APY by 100 to convert to a decimal.
+//        Second, add 1.
+//        Third, raise the result to the 1/365th power.
+//        Fourth, subtract 1.
+//        Fifth, multiply by 100 to find the daily interest rate.
+
+        $rate = (((($rate / 100) + 1) ** (1 / 365)) - 1) * 100;
+
+        return $rate;
     }
 
 }

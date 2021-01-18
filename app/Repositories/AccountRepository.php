@@ -328,6 +328,11 @@ class AccountRepository extends Model
         foreach ($cInvestment->subInvestments as $investment) {
             $investment->interest = $investment->amount * ($dayRate / 100);
             $investment->save();
+
+//            TODO: Should this be done here?
+            $subAcc = $investment->account->interest_account;
+            $subAcc->in += $investment->interest;
+            $subAcc->save();
         }
 
         $cInvestment->save();

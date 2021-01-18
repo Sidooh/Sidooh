@@ -83,16 +83,16 @@ class Subscription
 
         switch ($this->type->amount) {
             case 9975:
-                $reference = MpesaReferences::PRE_AGENT_REGISTER_ASPIRING;
-                break;
-            case 4975:
                 $reference = MpesaReferences::PRE_AGENT_REGISTER_THRIVING;
                 break;
+            case 4975:
+                $reference = MpesaReferences::PRE_AGENT_REGISTER_ASPIRING;
+                break;
             case 975:
-                $reference = MpesaReferences::AGENT_REGISTER_ASPIRING;
+                $reference = MpesaReferences::AGENT_REGISTER_THRIVING;
                 break;
             case 475:
-                $reference = MpesaReferences::AGENT_REGISTER_THRIVING;
+                $reference = MpesaReferences::AGENT_REGISTER_ASPIRING;
                 break;
         }
 

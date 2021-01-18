@@ -90,7 +90,7 @@ class Agent extends AgentMain
 
                 $this->screen->title = "Dear {$name}, you are already subscribed to $subscription valid until $subdate.";
 
-                if ($res->active_subscription->subscription_type->duration == 1) {
+                if ($res->active_subscription->subscription_type->duration == 1 && $res->active_subscription->subscription_type->level_limit == 3) {
 
                     $option = new Option();
                     $option->title = "Upgrade to " . $this->vars['{$subscription_type_2}'] . "@" . $this->vars['{$subscription_amount_2}'] . '/' . $this->vars['{$period}'];

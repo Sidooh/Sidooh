@@ -89,32 +89,46 @@ class Pre_Agent extends AgentMain
 
                 $this->screen->title = "Dear {$name}, you are already subscribed to $subscription valid until $subdate.";
 
-                if ($res->active_subscription->subscription_type->duration < 24) {
+                if ($res->active_subscription->subscription_type->duration == 1) {
+                    $option = $this->screen->options[0];
+                    $option->next = "pre_agent_onboarding_category";
 
-                    $option = new Option();
-                    $option->title = "Upgrade to " . $this->vars['{$subscription_type_2}'] . "@" . $this->vars['{$subscription_amount_2}'] . '/' . $this->vars['{$period}'];
-                    $option->type = "int";
-                    $option->value = "2";
-                    $option->next = "agent_upgrade";
+                    $this->vars['{$name}'] = $name;
 
-                    if ($res->active_subscription->subscription_type->duration == 18) {
-                        $this->screen->options = [
-                            "2" => $option,
-                        ];
-                    } else {
-                        $option2 = new Option();
-                        $option2->title = "Upgrade to " . $this->vars['{$subscription_type_1}'] . "@" . $this->vars['{$subscription_amount_1}'] . '/' . $this->vars['{$period}'];
-                        $option2->type = "int";
-                        $option2->value = "1";
-                        $option2->next = "agent_upgrade";
-
-                        $this->screen->options = [
-                            "1" => $option2,
-                            "2" => $option
-                        ];
-                    }
                 } else {
-                    $this->screen->options = [];
+                    if ($res->active_subscription->subscription_type->duration < 24) {
+
+                        $option = new Option();
+                        $option->title = "Upgrade to " . $this->vars['{$subscription_type_2}'] . "@" . $this->vars['{$subscription_amount_2}'] . '/' . $this->vars['{$period}'];
+                        $option->type = "int";
+                        $option->value = "2";
+                        $option->next = "payment_method";
+
+                        if ($res->active_subscription->subscription_type->duration == 18) {
+                            $this->screen->options = [
+                                "2" => $option,
+                            ];
+                        } else {
+                            $option2 = new Option();
+                            $option2->title = "Upgrade to " . $this->vars['{$subscription_type_1}'] . "@" . $this->vars['{$subscription_amount_1}'] . '/' . $this->vars['{$period}'];
+                            $option2->type = "int";
+                            $option2->value = "1";
+                            $option2->next = "payment_method";
+
+                            $this->screen->options = [
+                                "1" => $option2,
+                                "2" => $option
+                            ];
+                        }
+
+//                        $this->vars['{$subscription_upgrade}'] = $this->vars['{$subscription_type_2}'];
+                        $this->vars['{$subscription_type}'] = $this->vars['{$subscription_type_2}'];
+                        $this->vars['{$amount}'] = $this->vars['{$subscription_amount_2}'];
+                        $this->vars['{$product}'] = $this->vars['{$subscription_type}'];
+                    } else {
+                        $this->screen->options = [];
+                    }
+
                 }
 
             }

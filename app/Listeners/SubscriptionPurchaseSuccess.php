@@ -41,23 +41,24 @@ class SubscriptionPurchaseSuccess
         $end_date = $event->subscription->created_at->addMonths($event->subscription->subscription_type->duration)->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
 
 
-        switch ($type->amount) {
-            case 4975:
-            case 9975:
-                $level_duration = $type->amount == 9975 ? "24 MONTHS" : "18 MONTHS";
-                $message = "Congratulations! You have successfully preregistered as a {$type->title} on {$date}, valid until {$end_date}. ";
-                $message .= "You will earn commissions on every airtime purchased by your referred customers and subagents up to your ";
-                $message .= "{$type->level_limit}, for {$level_duration} WITHOUT PAYING MONTHLY SUBSCRIPTION FEES. ";
+        switch ($type->duration) {
+            case 1:
+                $message = "Congratulations! You have successfully registered as a {$type->title} on {$date}, valid until {$end_date}. ";
+                $message .= "You will earn commissions on every airtime purchased by your referred customers and subagents up to your {$type->level_limit}. ";
                 $message .= "Please note, 80% of your commissions will be automatically saved and invested to generate extra income for you.\n";
                 $message .= "Sidooh, Earns you money on every purchase";
 
                 break;
 
             default:
-                $message = "Congratulations! You have successfully registered as a {$type->title} on {$date}, valid until {$end_date}. ";
-                $message .= "You will earn commissions on every airtime purchased by your referred customers and subagents up to your {$type->level_limit}. ";
+
+                $level_duration = $type->duration . " MONTHS";
+                $message = "Congratulations! You have successfully preregistered as a {$type->title} on {$date}, valid until {$end_date}. ";
+                $message .= "You will earn commissions on every airtime purchased by your referred customers and subagents up to your ";
+                $message .= "{$type->level_limit}, for {$level_duration} WITHOUT PAYING MONTHLY SUBSCRIPTION FEES. ";
                 $message .= "Please note, 80% of your commissions will be automatically saved and invested to generate extra income for you.\n";
                 $message .= "Sidooh, Earns you money on every purchase";
+
         }
 
         (new AfricasTalkingApi())->sms($phone, $message);

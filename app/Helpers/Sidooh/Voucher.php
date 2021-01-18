@@ -47,7 +47,7 @@ class Voucher
         $description = $targetNumber ? "Voucher Purchase - $targetNumber" : "Voucher Purchase - $this->phone";
         $number = $mpesaNumber ?? $this->phone;
 
-        $stkResponse = mpesa_request($number, 10 ?? $this->amount, MpesaReferences::PAY_VOUCHER, $description);
+        $stkResponse = mpesa_request($number, $this->amount, MpesaReferences::PAY_VOUCHER, $description);
 
         $accountRep = new AccountRepository();
         $account = $accountRep->findByPhone($this->phone);

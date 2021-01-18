@@ -4,7 +4,6 @@
 namespace App\Repositories;
 
 
-use App\Events\AirtimePurchaseEvent;
 use App\Events\AirtimePurchaseFailedEvent;
 use App\Events\AirtimePurchaseSuccessEvent;
 use App\Events\MerchantPurchaseEvent;
@@ -67,7 +66,26 @@ class ProductRepository
 
         });
 
-        event(new AirtimePurchaseEvent($req));
+        if ($response['data']['errorMessage'] != "None") {
+//            TODO: Modify event to accept request instead of response
+//            event(new AirtimePurchaseFailedEvent($response));
+
+//            TODO: Once above is modified, the following code won't be needed.
+            $account = $req->transaction->account;
+            $amount = $req->transaction->amount;
+            $phone = $account->phone;
+            $date = $req->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
+
+            $voucher = $account->voucher;
+            $voucher->in += $amount;
+            $voucher->save();
+
+//        TODO:: Send sms notification
+            $message = "Sorry! We could not complete your airtime purchase for {$phone} worth {$amount} on {$date}. We have credited your voucher {$amount} and your balance is now {$voucher->balance}.";
+
+            (new AfricasTalkingApi())->sms($phone, $message);
+        }
+
 
         return $req;
 

@@ -36,6 +36,9 @@ class Airtime extends Product
             case "airtime_amount":
                 $this->set_amount($previousScreen);
                 break;
+            case "airtime_amount_v2":
+                $this->set_amount($previousScreen, $version = 2);
+                break;
             case "payment_method":
                 $this->set_payment_method($previousScreen);
                 break;
@@ -65,9 +68,12 @@ class Airtime extends Product
         $this->vars['{$number}'] = $previousScreen->option_string;
     }
 
-    private function set_amount(Screen $previousScreen)
+    private function set_amount(Screen $previousScreen, $version = 1)
     {
-        $this->vars['{$amount}'] = $previousScreen->option->value;
+        if ($version == 2)
+            $this->vars['{$amount}'] = $previousScreen->option_string;
+        else
+            $this->vars['{$amount}'] = $previousScreen->option->value;
     }
 
     private function check_current_pin(Screen $previousScreen)

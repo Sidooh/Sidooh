@@ -396,6 +396,8 @@ class USSD
                 return $this->validate_amount($value);
             case "MIN":
                 return $this->validate_amount_min($value, 100);
+            case "MIN|AIRTIME":
+                return $this->validate_amount_min($value, 20);
             case "PIN":
                 return $this->validate_PIN($value);
             case "NUMBER":

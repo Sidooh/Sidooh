@@ -63,7 +63,7 @@
                 "title": "Self {$my_number}",
                 "type": "int",
                 "value": "1",
-                "next": "airtime_amount"
+                "next": "airtime_amount_v2"
             },
             "2": {
                 "title": "Other",
@@ -819,7 +819,7 @@
         "key": "other_number",
         "title": "Enter other number",
         "type": "OPEN",
-        "next": "airtime_amount",
+        "next": "airtime_amount_v2",
         "options": {},
         "option_type": "NUMBER"
     },
@@ -859,6 +859,14 @@
             }
         },
         "paginated": true
+    },
+    "airtime_amount_v2": {
+        "key": "airtime_amount_v2",
+        "title": "Please input airtime amount (MIN: KES20)",
+        "type": "OPEN",
+        "next": "payment_method",
+        "options": {},
+        "option_type": "MIN|AIRTIME"
     },
     "payment_method": {
         "key": "payment_method",

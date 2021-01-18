@@ -269,13 +269,19 @@ class Account extends Product
 
         if ($acc)
             if ($acc->pin) {
-                $bal = $acc->current_account->balance;
+                $cbal = $acc->current_account->balance;
+                $sbal = $acc->savings_account->balance;
+                $ibal = $acc->interest_account->balance;
 
-                $this->vars['{$spb}'] = $bal;
-                $this->vars['{$sbb}'] = 0;
-                $this->vars['{$wb}'] = $bal > 50 ? $bal - 50 : 0;
+                $this->vars['{$sp}'] = $cbal + $sbal;
+                $this->vars['{$ap}'] = $cbal;
+                $this->vars['{$snip}'] = $sbal;
+                $this->vars['{$spi}'] = $ibal;
+                $this->vars['{$sb}'] = 0;
+                $this->vars['{$sbi}'] = 0;
+                $this->vars['{$wp}'] = $cbal > 50 ? $cbal - 50 : 0;
 
-                if ($this->vars['{$wb}'] == 0) {
+                if ($this->vars['{$wp}'] == 0) {
                     $this->screen->title = "Sorry but your Withdrawable Balance is 0";
                     $this->screen->type = 'END';
                 }

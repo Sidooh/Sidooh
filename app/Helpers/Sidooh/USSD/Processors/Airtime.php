@@ -74,6 +74,9 @@ class Airtime extends Product
             $this->vars['{$amount}'] = $previousScreen->option_string;
         else
             $this->vars['{$amount}'] = $previousScreen->option->value;
+
+//        TODO: How can this computation be made dynamic to include ATs variable discount?
+        $this->vars['{$product}'] = $this->vars['{$product}'] . ' (which will earn you ' . $previousScreen->option->value / 200 . ')';
     }
 
     private function check_current_pin(Screen $previousScreen)

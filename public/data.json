@@ -606,7 +606,7 @@
     },
     "earnings": {
         "key": "earnings",
-        "title": "Here is a breakdown of your earnings\n\n1. Sidooh Points {$sp}\n  a. Available Balance: {$ab}\n  b. Savings n Investments: {$sni}\n2. Sidooh Bonus: {$sb}\n3. Withdrawable Amount: {$wb}\n",
+        "title": "Here is a breakdown of your earnings\n\n1. Sidooh Points {$sp}\n  a. Available Points: {$ap}\n  b. Saved n Invested Points: {$snip}\n  c. Interest Earned: {$spi}\n\n2. Sidooh Bonus: {$sb}\n  a. Interest Earned: {$sbi}\n\n3. Withdrawable Points: {$wp}",
         "type": "OPEN"
     },
     "voucher_balance": {

@@ -48,7 +48,7 @@ class Subscription extends Pay
     private function set_init()
     {
         $this->vars['{$product}'] = $this->get_class_name();
-        $this->vars['{$subscription_type_1}'] = "Sidooh Ambitious Agent";
+        $this->vars['{$subscription_type_1}'] = "Sidooh Aspiring Agent";
         $this->vars['{$subscription_amount_1}'] = 475;
 
         $this->vars['{$subscription_type_2}'] = "Sidooh Thriving Agent";

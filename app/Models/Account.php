@@ -55,6 +55,11 @@ class Account extends Model
         return $this->hasOne(SubAccount::class)->type('SAVINGS');
     }
 
+    public function interest_account()
+    {
+        return $this->hasOne(SubAccount::class)->type('INTEREST');
+    }
+
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);

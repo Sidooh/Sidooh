@@ -248,12 +248,15 @@ class Account extends Product
         if ($acc) {
             $cbal = $acc->current_account->balance;
             $sbal = $acc->savings_account->balance;
+            $ibal = $acc->interest_account->balance;
 
             $this->vars['{$sp}'] = $cbal + $sbal;
-            $this->vars['{$ab}'] = $cbal;
-            $this->vars['{$sni}'] = $sbal;
+            $this->vars['{$ap}'] = $cbal;
+            $this->vars['{$snip}'] = $sbal;
+            $this->vars['{$spi}'] = $ibal;
             $this->vars['{$sb}'] = 0;
-            $this->vars['{$wb}'] = $cbal > 50 ? $cbal - 50 : 0;
+            $this->vars['{$sbi}'] = 0;
+            $this->vars['{$wp}'] = $cbal > 50 ? $cbal - 50 : 0;
             $this->vars['{$vb}'] = number_format($acc->voucher->balance);
 
         }

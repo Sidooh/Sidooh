@@ -278,7 +278,7 @@ class AccountRepository extends Model
     public function invest()
     {
         $accounts = $this->model->with(['sub_accounts' => function ($q) {
-            $q->where('in', '>', 'out')->whereIn('type', ['CURRENT', 'SAVINGS']);
+            $q->where('in', '>', 'out')->whereIn('type', ['CURRENT', 'SAVINGS', 'INTEREST']);
         }])->get();
 
         $accounts = $accounts->map(function ($item, $key) {

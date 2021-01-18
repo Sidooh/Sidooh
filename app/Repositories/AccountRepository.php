@@ -154,7 +154,7 @@ class AccountRepository extends Model
 
             $account = $account_refs->map(function ($item) {
                 $depth = abs((int)$item->depth);
-                $sub = $item->active_subscription->last();
+                $sub = $item->active_subscription;
 
                 if ($depth == 1)
                     return $item->withoutRelations();
@@ -191,7 +191,7 @@ class AccountRepository extends Model
 
             $account['level_referrers'] = $account_refs->level_referrers->map(function ($item) {
                 $depth = abs((int)$item->depth);
-                $sub = $item->active_subscription->last();
+                $sub = $item->active_subscription;
 
                 if ($depth == 1)
                     return $item->withoutRelations();

@@ -360,10 +360,19 @@ class USSD
     {
         error_log('back');
 
+        error_log("---------------- Going back?");
+        error_log(isset($this->screen->previous));
+        error_log(isset($this->screen));
+        error_log("----------------");
+
         if (isset($this->screen->previous))
-            $this->setScreen($this->screen->previous);
+            if ($this->screen->previous->type == "GENESIS")
+                $this->reset(true);
+            else
+                $this->setScreen($this->screen->previous, false);
         else
-            $this->setScreen($this->screens['main_menu'], false);
+            $this->reset();
+
 
         return self::sendResponse($this->buildResponse());
     }

@@ -360,14 +360,16 @@ class USSD
     {
         error_log('back');
 
-        error_log("---------------- Going back?");
-        error_log(isset($this->screen->previous));
-        error_log(isset($this->screen));
-        error_log("----------------");
+//        error_log("---------------- Going back?");
+//        error_log($this->screen->previous->key);
+//        error_log($this->screen->key);
+//        error_log("----------------");
 
         if (isset($this->screen->previous))
             if ($this->screen->previous->type == "GENESIS")
                 $this->reset(true);
+            elseif (isset($this->screen->previous->option_type) && $this->screen->previous->option_type == "PIN")
+                $this->setScreen($this->screen->previous->previous, false);
             else
                 $this->setScreen($this->screen->previous, false);
         else

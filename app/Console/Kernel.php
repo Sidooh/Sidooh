@@ -41,7 +41,7 @@ class Kernel extends ConsoleKernel
 //            ->everyMinute()
 //            ->withoutOverlapping()
             ->sendOutputTo('storage/logs/command.log')
-            ->emailOutputOnFailure('sidserviceske@gmail.com')
+//            ->emailOutputOnFailure('sidserviceske@gmail.com')
             ->runInBackground();
 
         $schedule->command('sidooh:invest')

@@ -48,7 +48,7 @@ class Kernel extends ConsoleKernel
             ->daily()
             ->sendOutputTo('storage/logs/command.log')
             ->emailOutputOnFailure('sidserviceske@gmail.com')
-            ->emailOutputTo('sidserviceske@gmail.com')
+//            ->emailOutputTo('sidserviceske@gmail.com')
             ->runInBackground();
     }
 

@@ -19,7 +19,7 @@ class CreateCollectiveInvestmentsTable extends Migration
             $table->decimal('amount', $total = 10, $places = 4);
             $table->decimal('interest_rate')->nullable();
             $table->decimal('interest', $total = 10, $places = 4)->nullable();
-            $table->timestamp('investment_date')->default(now());
+            $table->timestamp('investment_date')->useCurrent();
             $table->timestamp('maturity_date')->nullable();
 
             $table->timestamps();

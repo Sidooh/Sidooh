@@ -7,6 +7,7 @@ use App\Events\ReferralJoinedEvent;
 use App\Helpers\Sidooh\Report;
 use App\Models\Account;
 use App\Models\CollectiveInvestment;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use MrAtiebatie\Repository;
@@ -277,6 +278,13 @@ class AccountRepository extends Model
 //    TODO: All these should move to the Investment repository
     public function invest()
     {
+//        TODO: Should we use created_at ama invested_at?
+        $cInvestment = CollectiveInvestment::whereDate('created_at', Carbon::today())->first();
+
+        if ($cInvestment) {
+            return 'There is already a Pending Investment';
+        }
+
         $accounts = $this->model->with(['sub_accounts' => function ($q) {
             $q->where('in', '>', 'out')->whereIn('type', ['CURRENT', 'SAVINGS', 'INTEREST']);
         }])->get();

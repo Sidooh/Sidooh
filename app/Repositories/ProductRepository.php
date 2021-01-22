@@ -51,6 +51,9 @@ class ProductRepository
 
     public function airtime(Transaction $transaction, array $array): AirtimeRequest
     {
+        if ($transaction->airtime)
+            exit;
+
         $response = (new AfricasTalkingApi())->airtime($array['phone'], $array['amount']);
 
         $response = $this->object_to_array($response);

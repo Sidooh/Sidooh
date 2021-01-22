@@ -89,7 +89,6 @@ class ProductRepository
             (new AfricasTalkingApi())->sms($phone, $message);
         }
 
-
         return $req;
 
     }

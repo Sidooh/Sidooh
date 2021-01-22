@@ -35,10 +35,20 @@ class UssdRepository
         $phoneNumber = $_REQUEST["phoneNumber"];
         $text = $_REQUEST["text"];   //
 
-        $data = ['phone' => $phoneNumber, 'text' => $text, 'service_code' => $serviceCode, 'session_id' => $sessionId];
+//        $data = ['phone' => $phoneNumber, 'text' => $text, 'service_code' => $serviceCode, 'session_id' => $phoneNumber];
 
         //log USSD request
-        UssdLog::create($data);
+//        UssdLog::create($data);
+        UssdLog::updateOrCreate(
+            [
+                'phone' => $phoneNumber,
+                'session_id' => $phoneNumber,
+            ],
+            [
+                'text' => $text,
+                'service_code' => $serviceCode,
+            ]
+        );
 
         $user = UssdUser::wherePhone($phoneNumber)->first();
 

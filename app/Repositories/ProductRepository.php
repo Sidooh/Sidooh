@@ -94,11 +94,13 @@ class ProductRepository
     public function airtimeCallback(array $all)
     {
         $res = AirtimeResponse::where('requestID', '=', $all['requestId'])->firstOrFail();
-        $res->status = $all['status'];
-        $res->save();
+        if ($res->status != 'Success') {
+            $res->status = $all['status'];
+            $res->save();
 
-        $this->fireAirtimePurchaseEvent($res, $all);
+            $this->fireAirtimePurchaseEvent($res, $all);
 
+        }
     }
 
     private function fireAirtimePurchaseEvent(AirtimeResponse $response, array $request)

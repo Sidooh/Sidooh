@@ -282,7 +282,7 @@ class AccountRepository extends Model
         $cInvestment = CollectiveInvestment::whereDate('created_at', Carbon::today())->first();
 
         if ($cInvestment) {
-            return 'There is already a Pending Investment';
+            return $cInvestment;
         }
 
         $accounts = $this->model->with(['sub_accounts' => function ($q) {

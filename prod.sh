@@ -9,3 +9,6 @@ sudo supervisorctl reread
 sudo supervisorctl update
 
 sudo supervisorctl start laravel-worker:*
+
+#TODO: Should I use the following in the cron tab instead?
+#* * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1

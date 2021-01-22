@@ -46,6 +46,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('sidooh:invest')
             ->daily()
+            ->withoutOverlapping()
             ->sendOutputTo('storage/logs/command.log')
             ->emailOutputOnFailure('sidserviceske@gmail.com')
 //            ->emailOutputTo('sidserviceske@gmail.com')

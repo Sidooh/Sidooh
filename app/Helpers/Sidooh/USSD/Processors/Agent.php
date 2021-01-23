@@ -158,7 +158,7 @@ class Agent extends AgentMain
                 if ($acc->voucher) {
                     $bal = $acc->voucher->balance;
 
-                    if ($bal == 0 || $bal < (int)$this->vars['{$amount}']) {
+                    if ($bal < (int)$this->vars['{$amount}']) {
                         $this->screen->title = "Sorry but your Voucher Balance is insufficient";
                         $this->screen->type = 'END';
                     }
@@ -228,6 +228,7 @@ class Agent extends AgentMain
         $acc->user()->associate($user);
         $acc->save();
 
-        (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber, $method))->purchase($phone);
+        if ($acc->voucher->balance > $type->amount)
+            (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber, $method))->purchase($phone);
     }
 }

@@ -136,7 +136,7 @@ class Subscription
         ]);
 
         $voucher = $account->voucher;
-        $voucher->out += $this->amount;
+        $voucher->out += $this->type->amount;
 
         $productRep = new ProductRepository();
         $product = $productRep->store(['name' => 'Subscription']);

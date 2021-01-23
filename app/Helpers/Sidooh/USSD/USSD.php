@@ -398,6 +398,9 @@ class USSD
     {
         error_log("Validating option");
 
+        if (!isset($this->screen->option_type))
+            return false;
+
         switch ($this->screen->option_type) {
             case "EMAIL":
                 return $this->validate_email($value);

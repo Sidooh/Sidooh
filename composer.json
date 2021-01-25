@@ -20,7 +20,8 @@
         "mratiebatie/laravel-repositories": "^1.0",
         "propaganistas/laravel-phone": "^4.2",
         "samerior/mobile-money": "^2.1",
-        "staudenmeir/laravel-adjacency-list": "^1.0"
+        "staudenmeir/laravel-adjacency-list": "^1.0",
+        "ext-intl": "*"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

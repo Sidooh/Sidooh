@@ -50,4 +50,8 @@ return [
         ],
     ],
 
+    'sidooh' => [
+        'tagline' => env('SIDOOH_TAGLINE'),
+    ]
+
 ];

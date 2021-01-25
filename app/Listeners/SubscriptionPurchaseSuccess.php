@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\SubscriptionPurchaseEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use Illuminate\Support\Facades\Log;
+use NumberFormatter;
 
 class SubscriptionPurchaseSuccess
 {
@@ -40,13 +41,14 @@ class SubscriptionPurchaseSuccess
         $date = $event->subscription->created_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
         $end_date = $event->subscription->created_at->addMonths($event->subscription->subscription_type->duration)->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
 
+        $nf = new NumberFormatter('en', NumberFormatter::ORDINAL);
+        $limit = $nf->format($type->level_limit);
 
         switch ($type->duration) {
             case 1:
                 $message = "Congratulations! You have successfully registered as a {$type->title} on {$date}, valid until {$end_date}. ";
-                $message .= "You will earn commissions on every airtime purchased by your referred customers and subagents up to your {$type->level_limit}. ";
+                $message .= "You will earn commissions on every airtime purchased by your referred customers and subagents up to your {$limit} ripple. ";
                 $message .= "Please note, 80% of your commissions will be automatically saved and invested to generate extra income for you.\n";
-                $message .= "Sidooh, Earns you money on every purchase";
 
                 break;
 
@@ -55,11 +57,12 @@ class SubscriptionPurchaseSuccess
                 $level_duration = $type->duration . " MONTHS";
                 $message = "Congratulations! You have successfully preregistered as a {$type->title} on {$date}, valid until {$end_date}. ";
                 $message .= "You will earn commissions on every airtime purchased by your referred customers and subagents up to your ";
-                $message .= "{$type->level_limit}, for {$level_duration} WITHOUT PAYING MONTHLY SUBSCRIPTION FEES. ";
+                $message .= "{$limit} ripple, for {$level_duration} WITHOUT PAYING MONTHLY SUBSCRIPTION FEES. ";
                 $message .= "Please note, 80% of your commissions will be automatically saved and invested to generate extra income for you.\n";
-                $message .= "Sidooh, Earns you money on every purchase";
 
         }
+
+        $message .= config('services.sidooh.tagline');
 
         (new AfricasTalkingApi())->sms($phone, $message);
     }

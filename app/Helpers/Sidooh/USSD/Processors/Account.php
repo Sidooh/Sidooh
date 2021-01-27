@@ -9,7 +9,6 @@ use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
 use App\Repositories\MerchantRepository;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 class Account extends Product
@@ -141,7 +140,7 @@ class Account extends Product
             if (!$res->pin) {
                 if ($this->screen->key == 'account') {
                     $this->screen->options[1]->next = 'kyc_details_pin';
-                    $this->screen->title = 'Please set a pin in order to proceed';
+//                    $this->screen->title = 'Please set a pin in order to proceed';
                 }
             }
         }
@@ -620,7 +619,14 @@ class Account extends Product
 
     private function redeem()
     {
-        Log::info($this->vars);
+        error_log("-- Redeem");
+
+        $amount = $this->vars['{$amount}'];
+        $phoneNumber = $this->vars['{$my_number}'];
+        $target = $this->vars['{$to_number}'];
+        $method = $this->vars['{$acc_type}'];
+
+        (new \App\Helpers\Sidooh\Withdrawal($target, $method))->withdraw($amount);
     }
 
 }

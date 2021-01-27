@@ -53,7 +53,7 @@ class Withdrawal
         $description = $mpesaNumber ? "Withdrawal - $mpesaNumber" : "Withdrawal";
         $number = $mpesaNumber ?? $this->phone;
 
-        $b2c = mpesa_send('254708374149', $amount, $description);
+        $b2c = mpesa_send($number, $amount, $description);
 
         Log::info($b2c);
 

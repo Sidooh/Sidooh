@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Helpers\Sidooh\B2B\B2B;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PaymentResource;
-use App\Model\Payment;
+use App\Models\Payment;
 use App\Repositories\PaymentRepository;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;

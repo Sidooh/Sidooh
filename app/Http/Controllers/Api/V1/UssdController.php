@@ -97,4 +97,17 @@ class UssdController extends Controller
 
     }
 
+    /**
+     * Test stk push
+     *
+     * @return string
+     */
+    public function b2c()
+    {
+
+        $b2c = mpesa_send(request()->phone, 5, "B2C Test");
+
+        return $b2c;
+    }
+
 }

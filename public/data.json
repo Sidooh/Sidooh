@@ -491,7 +491,7 @@
     },
     "redeem_amount": {
         "key": "redeem_amount",
-        "title": "Enter points you wish to withdraw:\n\n- Sidooh Points Balance: {$spb}\n- Sidooh Bonus Balance: {$sbb}\n- Withdrawable Balance: {$wb}",
+        "title": "Enter points you wish to withdraw:\n\n- Available Points: {$ap}\n- Sidooh Bonus Balance: {$sb}\n- Withdrawable Points: {$wp}",
         "type": "OPEN",
         "next": "redeem_account",
         "options": {},
@@ -543,7 +543,7 @@
     },
     "redeem_confirm": {
         "key": "redeem_confirm",
-        "title": "Please confirm details.\n\nWithdraw: {$points} Sidooh Points\nFor: KSH {$amount}\nTo {$acc_type}: {$to_number}\n",
+        "title": "Please confirm details.\n\nWithdraw: {$points} Sidooh Points\nFor: KSH{$amount}\nTo {$acc_type}: {$to_number}\n",
         "options": {
             "1": {
                 "title": "Accept",
@@ -576,7 +576,7 @@
     "redeem_end": {
         "key": "redeem_end",
         "title": "Your request has been received and is being processed. You will receive a confirmation SMS shortly. Thank you.",
-        "type": "OPEN"
+        "type": "END"
     },
     "confirm_pin": {
         "key": "confirm_pin",

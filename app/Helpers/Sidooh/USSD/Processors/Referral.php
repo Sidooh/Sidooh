@@ -44,6 +44,19 @@ class Referral extends Product
     {
         $this->vars['{$product}'] = $this->get_class_name();
         $this->vars['{$enrollment_time}'] = 48;
+
+        $res = (new AccountRepository)->findByPhone($this->phone);
+
+        if ($res) {
+            if (!$res->pin) {
+                if ($this->screen->key == 'refer') {
+                    $this->screen->title = 'Please set a pin under account > profile in order to proceed';
+                }
+            }
+        } else {
+            $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to refer friends.";
+            $this->screen->type = 'OPEN';
+        }
     }
 
     private function set_other_number(Screen $previousScreen)

@@ -113,7 +113,7 @@ class Agent extends AgentMain
             }
 
         } else {
-            $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to access your account.";
+            $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to access your account.";
             $this->screen->type = 'END';
         }
 
@@ -169,7 +169,7 @@ class Agent extends AgentMain
                 }
 
             else {
-                $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to proceed.";
+                $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to access your account.";
                 $this->screen->type = 'END';
             }
 

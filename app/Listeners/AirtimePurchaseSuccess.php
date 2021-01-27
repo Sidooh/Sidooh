@@ -38,6 +38,7 @@ class AirtimePurchaseSuccess
 
         $phone = ltrim($event->airtime_response->phoneNumber, '+');
         $sender = $event->airtime_response->request->transaction->account->phone;
+        $method = $event->airtime_response->request->transaction->payment->subtype;
 
         $amount = str_replace(' ', '', explode(".", $event->airtime_response->amount)[0]);
         $date = $event->airtime_response->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
@@ -46,8 +47,15 @@ class AirtimePurchaseSuccess
 
         $code = config('services.at.ussd.code');
 
+        if ($method == 'VOUCHER') {
+            $bal = $event->airtime_response->request->transaction->account->voucher->balance;
+            $vtext = " New Voucher balance is KES$bal.";
+        } else {
+            $vtext = '';
+        }
+
         if ($phone != $sender) {
-            $message = "Well done! You have purchased {$amount} airtime for {$phone} from your Sidooh account on {$date}. You have received {$points_earned} cashback.";
+            $message = "Well done! You have purchased {$amount} airtime for {$phone} from your Sidooh account on {$date} using $method. You have received {$points_earned} cashback.$vtext";
 
             (new AfricasTalkingApi())->sms($sender, $message);
 
@@ -56,7 +64,7 @@ class AirtimePurchaseSuccess
             (new AfricasTalkingApi())->sms($phone, $message);
         } else {
 
-            $message = "Awesome! You have purchased {$amount} airtime from your Sidooh account on {$date}. You have received {$points_earned} cashback.";
+            $message = "Awesome! You have purchased {$amount} airtime from your Sidooh account on {$date} using $method. You have received {$points_earned} cashback.$vtext";
 
             (new AfricasTalkingApi())->sms($phone, $message);
         }

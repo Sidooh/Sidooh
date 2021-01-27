@@ -52,7 +52,7 @@ class AirtimePurchaseFailed
         $voucher->save();
 
 //        TODO:: Send sms notification
-        $message = "Sorry! We could not complete your airtime purchase for {$phone} worth {$amount} on {$date}. We have credited your voucher {$amount} and your balance is now {$voucher->balance}.";
+        $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$phone} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
 
         (new AfricasTalkingApi())->sms($phone, $message);
 

@@ -51,11 +51,12 @@ class AirtimePurchaseSuccess
             $bal = $event->airtime_response->request->transaction->account->voucher->balance;
             $vtext = " New Voucher balance is KES$bal.";
         } else {
+            $method = 'MPESA';
             $vtext = '';
         }
 
         if ($phone != $sender) {
-            $message = "Well done! You have purchased {$amount} airtime for {$phone} from your Sidooh account on {$date} using $method. You have received {$points_earned} cashback.$vtext";
+            $message = "You have purchased {$amount} airtime for {$phone} from your Sidooh account on {$date} using $method. You have received {$points_earned} cashback.$vtext";
 
             (new AfricasTalkingApi())->sms($sender, $message);
 
@@ -64,7 +65,7 @@ class AirtimePurchaseSuccess
             (new AfricasTalkingApi())->sms($phone, $message);
         } else {
 
-            $message = "Awesome! You have purchased {$amount} airtime from your Sidooh account on {$date} using $method. You have received {$points_earned} cashback.$vtext";
+            $message = "You have purchased {$amount} airtime from your Sidooh account on {$date} using $method. You have received {$points_earned} cashback.$vtext";
 
             (new AfricasTalkingApi())->sms($phone, $message);
         }

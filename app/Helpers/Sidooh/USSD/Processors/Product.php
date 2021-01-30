@@ -32,6 +32,7 @@ class Product
         $this->phone = $user->phone;
         $this->vars['{$product}'] = $this->get_class_name();
         $this->vars['{$my_number}'] = $user->phone;
+        $this->vars['{$pin_tries}'] = 3;
 
         $this->retrieveState();
 

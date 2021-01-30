@@ -4,10 +4,13 @@ namespace App\Helpers\Sidooh\USSD\Processors;
 
 
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Helpers\Sidooh\USSD\Entities\Option;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
+use App\Models\User;
 use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
 use App\Repositories\ReferralRepository;
+use Illuminate\Support\Facades\Hash;
 
 class Referral extends Product
 {
@@ -31,9 +34,24 @@ class Referral extends Product
             case "main_menu":
                 $this->set_init();
                 break;
+            case "refer_pin":
+                $this->check_current_pin($previousScreen);
+                break;
             case "refer_fail":
             case "refer":
                 $this->set_other_number($previousScreen);
+                break;
+            case "kyc_details_name":
+                $this->set_name($previousScreen);
+                break;
+            case "kyc_details_mail":
+                $this->set_email($previousScreen);
+                break;
+            case "kyc_details_new_pin":
+                $this->set_pin($previousScreen);
+                break;
+            case "kyc_details_new_pin_confirm":
+                $this->set_pin_confirm($previousScreen);
                 break;
         }
     }
@@ -49,14 +67,61 @@ class Referral extends Product
 
         if ($res) {
             if (!$res->pin) {
-                if ($this->screen->key == 'refer') {
-                    $this->screen->title = 'Please set a pin under account > profile in order to proceed';
+//                if ($this->screen->key == 'refer') {
+//                    $this->screen->title = 'Please set a pin under account > profile in order to proceed';
+//                }
+                if ($this->screen->key == 'refer_pin') {
+
+                    unset($this->screen->option_type, $this->screen->next);
+                    $this->screen->type = null;
+
+                    $option = new Option();
+                    $option->title = "Set Pin";
+                    $option->type = "int";
+                    $option->value = "1";
+                    $option->next = "kyc_details_name";
+
+                    $this->screen->options = [
+                        "1" => $option
+                    ];
+//                    $this->screen->title = 'Please set a pin in order to proceed';
                 }
             }
         } else {
-            $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to refer friends.";
+            $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to access your account.";
             $this->screen->type = 'OPEN';
         }
+    }
+
+    private function check_current_pin(Screen $previousScreen)
+    {
+        $acc = (new AccountRepository)->findByPhone($this->phone);
+        $this->vars['{$pin_tries}'] -= 1;
+
+        if ($acc)
+            if ($acc->pin) {
+//                if (!Hash::check($previousScreen->option_string, $res->pin)) {
+                if ($previousScreen->option_string !== $acc->pin) {
+//                    if ($this->vars['{$pin_tries}'] == 0) {
+                    $this->screen->type = 'END';
+                    $this->screen->title = "Sorry, but the pin does not match. Please call us if you have forgotten your PIN.";
+//                    }
+
+//                    $this->screen->title = "Sorry, but the pin does not match. You have " . $this->vars['{$pin_tries}'] . " more tries.";
+//
+                } else {
+                    return $acc;
+                }
+            } else {
+                $this->screen->title = "Sorry, but you have not set a pin. Please do so in order to be able to proceed.";
+                $this->screen->type = 'END';
+            }
+        else {
+            $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to access your account.";
+            $this->screen->type = 'END';
+        }
+
+        return null;
     }
 
     private function set_other_number(Screen $previousScreen)
@@ -98,11 +163,84 @@ class Referral extends Product
         }
     }
 
+    private function set_name(Screen $previousScreen)
+    {
+        $this->vars['{$name}'] = $previousScreen->option_string;
+        $this->vars['{$email}'] = $this->vars['{$my_number}'] . "@sid.ooh";
+    }
+
+    private function set_email(Screen $previousScreen)
+    {
+        if ($previousScreen->option_string == "0000")
+            $this->vars['{$email}'] = $this->vars['{$my_number}'] . "@sid.ooh";
+        else
+            $this->vars['{$email}'] = $previousScreen->option_string;
+    }
+
+    private function set_pin(Screen $previousScreen)
+    {
+        $this->vars['{$pin}'] = $previousScreen->option_string;
+    }
+
+    private function set_pin_confirm(Screen $previousScreen)
+    {
+        if ($previousScreen->option_string === $this->vars['{$pin}']) {
+            $this->vars['{$confirm_pin}'] = $previousScreen->option_string;
+        } else {
+            $this->screen->title = "PINs don't match\n Please try again.";
+        }
+    }
+
     protected function finalize()
     {
 //        TODO: Finalize transaction
         error_log("Referral: finalize");
 
+        if ($this->screen->key == 'kyc_details_pin_end') {
+            $this->setPinAndUser();
+        }
+
+        if ($this->screen->key == 'refer_end') {
+            $this->refer();
+        }
+
+    }
+
+    private function setPinAndUser()
+    {
+        $phone = $this->vars['{$my_number}'];
+//
+        $name = $this->vars['{$name}'];
+        $email = $this->vars['{$email}'];
+        $pass = $this->vars['{$email}'] . '5!D00h';
+        $pin = $this->vars['{$confirm_pin}'];
+
+        $acc = (new AccountRepository)->findByPhone($this->phone);
+
+//        $acc->pin = Hash::make($pin);
+        $acc->pin = $pin;
+
+        $user = $acc->user;
+
+        if (!$acc->user)
+            $user = User::firstOrCreate(
+                [
+                    'username' => $phone,
+                ],
+                [
+                    'name' => $name,
+                    'username' => $phone,
+                    'id_number' => $phone,
+                    'email' => $email,
+                    'password' => Hash::make($pass)
+                ]);
+
+        $acc->user()->associate($user);
+        $acc->save();
+    }
+
+    private function refer()
+    {
         $phone = $this->vars['{$number}'];
         $phoneNumber = $this->vars['{$my_number}'];
 

@@ -32,7 +32,7 @@
                 "title": "Refer",
                 "type": "int",
                 "value": "5",
-                "next": "refer"
+                "next": "refer_pin"
             },
             "6": {
                 "title": "Become an Agent",
@@ -232,6 +232,14 @@
                 "next": "group_savings"
             }
         }
+    },
+    "refer_pin": {
+        "key": "refer_pin",
+        "title": "Please enter your Sidooh PIN",
+        "type": "OPEN",
+        "next": "refer",
+        "options": {},
+        "option_type": "PIN"
     },
     "refer": {
         "key": "refer",

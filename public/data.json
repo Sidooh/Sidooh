@@ -625,7 +625,7 @@
     },
     "pre_agent": {
         "key": "pre_agent",
-        "title": "By Preregistering as a Sidooh Agent, you will earn sales commissions on every airtime purchased from the platform by your referred customers and subagents for up to 2 years, WITHOUT PAYING MONTHLY SUBSCRIPTION FEES.",
+        "title": "By Preregistering as a Sidooh Agent, you will earn sales commissions on every airtime purchased from the platform by your referred customers and subagents for 1 year, WITHOUT PAYING MONTHLY SUBSCRIPTION FEES.",
         "options": {
             "1": {
                 "title": "Proceed to Pre-register as an Agent",
@@ -662,7 +662,7 @@
                 "next": "pre_agent_onboarding_confirm"
             },
             "2": {
-                "title": "{$subscription_type_2} for KES{$subscription_amount_2_f} earns you commissions up to your {$level_limit_2}th ripple for {$period_2}",
+                "title": "{$subscription_type_2} for KES{$subscription_amount_2_f} earns you commissions up to your {$level_limit_2}th ripple for {$period_2} without monthly fees",
                 "type": "int",
                 "value": "2",
                 "next": "pre_agent_onboarding_confirm"

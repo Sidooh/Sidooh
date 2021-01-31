@@ -134,7 +134,7 @@ class Pre_Agent extends AgentMain
             }
 
         } else {
-            $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to access your account.";
+            $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to proceed.";
             $this->screen->type = 'END';
         }
     }
@@ -191,7 +191,7 @@ class Pre_Agent extends AgentMain
                 }
 
             else {
-                $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to proceed.";
+                $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to proceed.";
                 $this->screen->type = 'END';
             }
 
@@ -251,6 +251,7 @@ class Pre_Agent extends AgentMain
         $acc->user()->associate($user);
         $acc->save();
 
-        (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber, $method))->purchase($phone, $mpesa);
+        if ($acc->voucher->balance > $type->amount)
+            (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber, $method))->purchase($phone, $mpesa);
     }
 }

@@ -45,7 +45,10 @@ class Invest extends Command
 //        TODO: To be removed after testing auto assignment
         $x = (new AccountRepository())->calculateInterest(9);
 
-        dd($results);
+
+        $this->info($x);
+
+        return;
 
     }
 }

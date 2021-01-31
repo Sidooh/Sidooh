@@ -331,7 +331,7 @@ class AccountRepository extends Model
         $cInvestment->interest = $cInvestment->amount * ($dayRate / 100);
 
 //        TODO: Will the following be calculated on manual input or should it be automatically 30days?
-//        $cInvestment->maturity_date = Carbon::now()->addMonth();
+        $cInvestment->maturity_date = Carbon::now()->addMonth();
 
         foreach ($cInvestment->subInvestments as $investment) {
             $investment->interest = $investment->amount * ($dayRate / 100);
@@ -351,6 +351,8 @@ class AccountRepository extends Model
     public function allocateInterest()
     {
 //        TODO: Will be done everyday for those investments that have matured...
+
+
     }
 
     public function getDailyRate(float $rate)

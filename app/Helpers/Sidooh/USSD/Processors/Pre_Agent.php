@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class Pre_Agent extends AgentMain
 {
@@ -72,6 +73,7 @@ class Pre_Agent extends AgentMain
         $this->vars['{$period_2}'] = "1 YEAR";
 
         $res = (new AccountRepository)->findByPhone($this->phone);
+        Log::info($res);
 
         if ($res) {
             $name = "Customer";
@@ -135,7 +137,8 @@ class Pre_Agent extends AgentMain
 
         } else {
             $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to proceed.";
-            $this->screen->type = 'END';
+            $this->screen->type = 'OPEN';
+            unset($this->screen->option_type, $this->screen->next, $this->screen->options);
         }
     }
 

@@ -140,8 +140,13 @@ class Account extends Product
             if (!$res->pin) {
                 if ($this->screen->key == 'account') {
                     $this->screen->options[1]->next = 'kyc_details_pin';
+//                    $this->screen->options[2]->next = 'kyc_details_pin';
 //                    $this->screen->title = 'Please set a pin in order to proceed';
                 }
+            }
+        } else {
+            if ($this->screen->key == 'account') {
+                $this->screen->options[1]->next = 'not_purchased';
             }
         }
     }

@@ -56,7 +56,7 @@ class Subscription
         $this->phone = $phone;
         $this->method = $method;
 
-        $this->amount = $this->type->amount;
+        $this->amount = ceil($this->type->amount);
 
 //        if ($this->type->amount > 1000)
 //            $this->amount = ceil($this->type->amount / 500);
@@ -104,6 +104,7 @@ class Subscription
         } catch (MpesaException $e) {
             Log::error($e->getMessage());
 //            (new AfricasTalkingApi())->sms($number, "Sorry there was an issue with processing the request.");
+            return;
         }
 
 //        TODO: Refactor this into the constructor?

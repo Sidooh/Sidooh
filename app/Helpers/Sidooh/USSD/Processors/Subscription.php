@@ -86,17 +86,18 @@ class Subscription extends Pay
 
                     if ($bal == 0 || $bal < (int)$this->vars['{$amount}']) {
                         $this->screen->title = "Sorry but your Voucher Balance is insufficient";
-                        $this->screen->type = 'END';
+                        $this->screen->type = 'OPEN';
                     }
 
                 } else {
                     $this->screen->title = "Sorry, but you have not purchased a voucher before. Please do so in order to be able to proceed.";
-                    $this->screen->type = 'END';
+                    $this->screen->type = 'OPEN';
                 }
 
             else {
-                $this->screen->title = "Sorry, but you have not transacted on Sidooh previously. Please do so in order to proceed.";
-                $this->screen->type = 'END';
+                $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to proceed.";
+                $this->screen->type = 'OPEN';
+                unset($this->screen->option_type, $this->screen->next, $this->screen->options);
             }
 
             $method_text .= ' (KSh' . number_format($bal) . ')';

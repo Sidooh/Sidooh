@@ -185,7 +185,7 @@ class Pre_Agent extends AgentMain
 
                     if ($bal == 0 || $bal < (int)$this->vars['{$amount}']) {
                         $this->screen->title = "Sorry but your Voucher Balance is insufficient";
-                        $this->screen->type = 'END';
+                        $this->screen->type = 'OPEN';
                     }
 
                 } else {

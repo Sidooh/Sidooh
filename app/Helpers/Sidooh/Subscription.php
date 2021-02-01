@@ -98,6 +98,9 @@ class Subscription
                 break;
         }
 
+        Log::info($this->amount);
+        Log::info($this->type->amount);
+
         $stkResponse = mpesa_request($number, $this->amount, $reference, $description);
 
 //        TODO: Refactor this into the constructor?

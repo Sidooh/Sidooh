@@ -82,7 +82,7 @@
                 "title": "Sidooh Agent Subscription",
                 "type": "int",
                 "value": "1",
-                "next": "coming_soon"
+                "next": "subscription"
             },
             "2": {
                 "title": "Voucher",

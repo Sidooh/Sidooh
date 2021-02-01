@@ -67,9 +67,8 @@ class Referral extends Product
 
         if ($res) {
             if (!$res->pin) {
-//                if ($this->screen->key == 'refer') {
-//                    $this->screen->title = 'Please set a pin under account > profile in order to proceed';
-//                }
+                $this->vars['{$has_pin}'] = false;
+
                 if ($this->screen->key == 'refer_pin') {
 
                     unset($this->screen->option_type, $this->screen->next);
@@ -96,7 +95,7 @@ class Referral extends Product
     private function check_current_pin(Screen $previousScreen)
     {
         $acc = (new AccountRepository)->findByPhone($this->phone);
-        $this->vars['{$pin_tries}'] -= 1;
+//        $this->vars['{$pin_tries}'] -= 1;
 
         if ($acc)
             if ($acc->pin) {
@@ -113,8 +112,16 @@ class Referral extends Product
                     return $acc;
                 }
             } else {
-                $this->screen->title = "Sorry, but you have not set a pin. Please do so in order to be able to proceed.";
-                $this->screen->type = 'END';
+//                $this->screen->title = "Sorry, but you have not set a pin. Please do so in order to be able to proceed.";
+//                $this->screen->type = 'END';
+                $screen = new Screen();
+                $screen->key = 'kyc_details_name';
+                $screen->title = "Please enter your Full Name\n\nFormat:\nFirstname Lastname";
+                $screen->type = "OPEN";
+                $screen->next = "kyc_details_new_pin";
+                $screen->option_type = "NAME";
+
+                $this->screen = $screen;
             }
         else {
             $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to access your account.";

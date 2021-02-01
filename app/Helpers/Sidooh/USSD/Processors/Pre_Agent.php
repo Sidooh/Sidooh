@@ -251,7 +251,9 @@ class Pre_Agent extends AgentMain
         $acc->user()->associate($user);
         $acc->save();
 
-        if ($acc->voucher->balance > $type->amount)
+        if ($method === PaymentMethods::MPESA)
+            (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber, $method))->purchase($phone, $mpesa);
+        elseif ($acc->voucher->balance > $type->amount)
             (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber, $method))->purchase($phone, $mpesa);
     }
 }

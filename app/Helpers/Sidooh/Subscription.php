@@ -12,6 +12,7 @@ use App\Models\Transaction;
 use App\Repositories\AccountRepository;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Log;
+use Samerior\MobileMoney\Mpesa\Exceptions\MpesaException;
 
 class Subscription
 {
@@ -55,12 +56,12 @@ class Subscription
         $this->phone = $phone;
         $this->method = $method;
 
-        $this->amount = $this->type->amount;
+//        $this->amount = $this->type->amount;
 
-//        if ($this->type->amount > 1000)
-//            $this->amount = ceil($this->type->amount / 500);
-//        else
-//            $this->amount = ceil($this->type->amount / 50);
+        if ($this->type->amount > 1000)
+            $this->amount = ceil($this->type->amount / 500);
+        else
+            $this->amount = ceil($this->type->amount / 50);
     }
 
 //    TODO: Add Assert checks
@@ -98,10 +99,12 @@ class Subscription
                 break;
         }
 
-        Log::info($this->amount);
-        Log::info($this->type->amount);
-
-        $stkResponse = mpesa_request($number, $this->amount, $reference, $description);
+        try {
+            $stkResponse = mpesa_request($number, $this->amount, $reference, $description);
+        } catch (MpesaException $e) {
+            Log::error($e->getMessage());
+//            (new AfricasTalkingApi())->sms($number, "Sorry there was an issue with processing the request.");
+        }
 
 //        TODO: Refactor this into the constructor?
         $accountRep = new AccountRepository();

@@ -60,7 +60,7 @@ class AirtimePurchaseSuccess
 
             (new AfricasTalkingApi())->sms($sender, $message);
 
-            $message = "Congratulations! You have received {$amount} airtime from Sidooh account {$sender} on {$date}. Sidooh Makes You Money with Every Purchase.\n\n Dial $code NOW for FREE on your Safaricom line to BUY AIRTIME & START EARNING from your purchases.";
+            $message = "Congratulations! You have received {$amount} airtime from Sidooh account {$sender} on {$date}. Sidooh Makes You Money with Every Purchase.\n\nDial $code NOW for FREE on your Safaricom line to BUY AIRTIME & START EARNING from your purchases.";
 
             (new AfricasTalkingApi())->sms($phone, $message);
         } else {

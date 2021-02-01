@@ -608,7 +608,7 @@
     },
     "earnings": {
         "key": "earnings",
-        "title": "Here is a breakdown of your earnings\n\n1. Sidooh Points {$sp}\n  a. Available Points: {$ap}\n  b. Saved n Invested Points: {$snip}\n  c. Interest Earned: {$spi}\n\n2. Sidooh Bonus: {$sb}\n  a. Interest Earned: {$sbi}\n\n3. Withdrawable Points: {$wp}",
+        "title": "Your earnings breakdown\n\n1. Sidooh Points {$sp}\n  a. Available Points: {$ap}\n  b. Saved n Invested Points: {$snip}\n  c. Interest Earned: {$spi}\n\n2. Sidooh Bonus: {$sb}\n  a. Interest Earned: {$sbi}\n\n3. Withdrawable Points: {$wp}",
         "type": "OPEN",
         "paginated": true
     },

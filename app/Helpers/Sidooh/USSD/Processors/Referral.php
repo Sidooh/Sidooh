@@ -264,10 +264,10 @@ class Referral extends Product
         if ($acc->user)
             $user .= ' - ' . ucwords($acc->user->name);
 
-        $message = "Hi, {$user} has referred you to Sidooh,
-        a digital platform that gives you cash refunds on every airtime you purchase from the platform,
-        out of which 80% is then automatically saved and invested to generate extra income for you.
-        Dial $code NOW for FREE on your Safaricom line to BUY AIRTIME & START EARNING.";
+        $message = "Hi, {$user} has referred you to Sidooh, ";
+        $message .= "a digital platform that gives you cash refunds on every airtime you purchase from the platform, "
+        $message .= "out of which 80% is then automatically saved and invested to generate extra income for you. "
+        $message .= "Dial $code NOW for FREE on your Safaricom line to BUY AIRTIME & START EARNING.";
 
         (new AfricasTalkingApi())->sms($phone, $message);
     }

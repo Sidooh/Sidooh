@@ -14,10 +14,10 @@ class SubscriptionTypeSeeder extends Seeder
     {
         //
         $types = [
-            ['title' => 'Sidooh Ambitious Agent', 'amount' => 475, 'active' => 1, 'level_limit' => 3],
+            ['title' => 'Sidooh Aspiring Agent', 'amount' => 475, 'active' => 1, 'level_limit' => 3],
             ['title' => 'Sidooh Thriving Agent', 'amount' => 975, 'active' => 1, 'level_limit' => 5],
-            ['title' => 'Sidooh Ambitious Agent', 'amount' => 4975, 'active' => 1, 'level_limit' => 3],
-            ['title' => 'Sidooh Thriving Agent', 'amount' => 9975, 'active' => 1, 'level_limit' => 5],
+            ['title' => 'Sidooh Aspiring Agent', 'amount' => 4275, 'active' => 1, 'level_limit' => 3, 'duration' => 12],
+            ['title' => 'Sidooh Thriving Agent', 'amount' => 8775, 'active' => 1, 'level_limit' => 5, 'duration' => 12],
         ];
 
 

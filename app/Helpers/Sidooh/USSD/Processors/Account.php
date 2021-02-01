@@ -177,8 +177,10 @@ class Account extends Product
                 $this->vars['{$subscription}'] = "None";
 
         } else {
-            $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to access your account.";
-            $this->screen->type = 'END';
+//            $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to access your account.";
+//            $this->screen->type = 'END';
+            $this->vars['{$name}'] = "";
+            $this->vars['{$subscription}'] = "None";
         }
 
         if ($this->screen->key == 'kyc_details_pin') {
@@ -234,7 +236,7 @@ class Account extends Product
             }
         else {
             $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to access your account.";
-            $this->screen->type = 'END';
+            $this->screen->type = 'OPEN';
         }
 
         return null;
@@ -292,7 +294,7 @@ class Account extends Product
 
         else {
             $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to access your account.";
-            $this->screen->type = 'END';
+            $this->screen->type = 'OPEN';
         }
 
     }
@@ -323,7 +325,7 @@ class Account extends Product
 
         else {
             $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to access your account.";
-            $this->screen->type = 'END';
+            $this->screen->type = 'OPEN';
         }
 
     }
@@ -474,12 +476,12 @@ class Account extends Product
 
             } else {
                 $this->screen->title = "Sorry, but you have not purchased a voucher before. Please do so in order to be able to proceed.";
-                $this->screen->type = 'END';
+                $this->screen->type = 'OPEN';
             }
 
         else {
             $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to access your account.";
-            $this->screen->type = 'END';
+            $this->screen->type = 'OPEN';
         }
 //
 //        error_log("---------------- Merchant set_amount");

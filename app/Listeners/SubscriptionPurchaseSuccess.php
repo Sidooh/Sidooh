@@ -47,8 +47,7 @@ class SubscriptionPurchaseSuccess
         switch ($type->duration) {
             case 1:
                 $message = "Congratulations! You have successfully registered as a {$type->title} on {$date}, valid until {$end_date}. ";
-                $message .= "You will earn commissions on every airtime purchased by your referred customers and subagents up to your {$limit} ripple. ";
-                $message .= "Please note, 80% of your commissions will be automatically saved and invested to generate extra income for you.\n";
+                $message .= "You will earn commissions on every airtime purchased by your referred customers and subagents up to your {$limit} ripple.\n";
 
                 break;
 
@@ -57,8 +56,7 @@ class SubscriptionPurchaseSuccess
                 $level_duration = $type->duration . " MONTHS";
                 $message = "Congratulations! You have successfully preregistered as a {$type->title} on {$date}, valid until {$end_date}. ";
                 $message .= "You will earn commissions on every airtime purchased by your referred customers and subagents up to your ";
-                $message .= "{$limit} ripple, for {$level_duration} WITHOUT PAYING MONTHLY SUBSCRIPTION FEES. ";
-                $message .= "Please note, 80% of your commissions will be automatically saved and invested to generate extra income for you.\n";
+                $message .= "{$limit} ripple, for {$level_duration} WITHOUT PAYING MONTHLY SUBSCRIPTION FEES.\n";
 
         }
 

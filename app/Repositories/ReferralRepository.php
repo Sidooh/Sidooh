@@ -90,6 +90,6 @@ class ReferralRepository extends Model
     {
         $refs = $this->expired()->delete();
 
-        Log::info($refs);
+//        Log::info($refs);
     }
 }

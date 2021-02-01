@@ -83,7 +83,7 @@ class Referral extends Product
                     $this->screen->options = [
                         "1" => $option
                     ];
-//                    $this->screen->title = 'Please set a pin in order to proceed';
+                    $this->screen->title = 'Please set a pin in order to proceed';
                 }
             }
         } else {

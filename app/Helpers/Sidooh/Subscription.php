@@ -56,12 +56,12 @@ class Subscription
         $this->phone = $phone;
         $this->method = $method;
 
-//        $this->amount = $this->type->amount;
+        $this->amount = $this->type->amount;
 
-        if ($this->type->amount > 1000)
-            $this->amount = ceil($this->type->amount / 500);
-        else
-            $this->amount = ceil($this->type->amount / 50);
+//        if ($this->type->amount > 1000)
+//            $this->amount = ceil($this->type->amount / 500);
+//        else
+//            $this->amount = ceil($this->type->amount / 50);
     }
 
 //    TODO: Add Assert checks

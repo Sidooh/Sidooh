@@ -40,6 +40,10 @@ class StkPaymentReceived
         $other_phone = explode(" - ", $stk->request->description);
 
         $p = Payment::wherePaymentId($stk->request->id)->firstOrFail();
+
+        if ($p->status == 'Complete')
+            return;
+
         $p->status = 'Complete';
 
         $p->save();

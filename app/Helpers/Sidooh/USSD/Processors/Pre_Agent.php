@@ -11,7 +11,6 @@ use App\Models\User;
 use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
 class Pre_Agent extends AgentMain
 {
@@ -73,7 +72,7 @@ class Pre_Agent extends AgentMain
         $this->vars['{$period_2}'] = "1 YEAR";
 
         $res = (new AccountRepository)->findByPhone($this->phone);
-        Log::info($res);
+//        Log::info($res);
 
         if ($res) {
             $name = "Customer";
@@ -98,7 +97,7 @@ class Pre_Agent extends AgentMain
                     $this->vars['{$name}'] = $name;
 
                 } else {
-                    if ($res->active_subscription->subscription_type->duration < 24) {
+                    if ($res->active_subscription->subscription_type->level_limit == 3) {
 
                         $option = new Option();
                         $option->title = "Upgrade to " . $this->vars['{$subscription_type_2}'] . "@" . $this->vars['{$subscription_amount_2}'] . '/' . $this->vars['{$period}'];
@@ -106,22 +105,22 @@ class Pre_Agent extends AgentMain
                         $option->value = "2";
                         $option->next = "payment_method";
 
-                        if ($res->active_subscription->subscription_type->duration == 18) {
-                            $this->screen->options = [
-                                "2" => $option,
-                            ];
-                        } else {
-                            $option2 = new Option();
-                            $option2->title = "Upgrade to " . $this->vars['{$subscription_type_1}'] . "@" . $this->vars['{$subscription_amount_1}'] . '/' . $this->vars['{$period}'];
-                            $option2->type = "int";
-                            $option2->value = "1";
-                            $option2->next = "payment_method";
-
-                            $this->screen->options = [
-                                "1" => $option2,
-                                "2" => $option
-                            ];
-                        }
+//                        if ($res->active_subscription->subscription_type->level_limit == 3) {
+                        $this->screen->options = [
+                            "2" => $option,
+                        ];
+//                        } else {
+//                            $option2 = new Option();
+//                            $option2->title = "Upgrade to " . $this->vars['{$subscription_type_1}'] . "@" . $this->vars['{$subscription_amount_1}'] . '/' . $this->vars['{$period}'];
+//                            $option2->type = "int";
+//                            $option2->value = "1";
+//                            $option2->next = "payment_method";
+//
+//                            $this->screen->options = [
+//                                "1" => $option2,
+//                                "2" => $option
+//                            ];
+//                        }
 
 //                        $this->vars['{$subscription_upgrade}'] = $this->vars['{$subscription_type_2}'];
                         $this->vars['{$subscription_type}'] = $this->vars['{$subscription_type_2}'];

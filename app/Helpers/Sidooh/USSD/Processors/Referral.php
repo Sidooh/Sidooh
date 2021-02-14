@@ -41,9 +41,9 @@ class Referral extends Product
             case "refer":
                 $this->set_other_number($previousScreen);
                 break;
-            case "refer_end":
-                $this->refer();
-                break;
+//            case "refer_end":
+//                $this->refer();
+//                break;
             case "kyc_details_name":
                 $this->set_name($previousScreen);
                 break;
@@ -151,6 +151,7 @@ class Referral extends Product
 //
             if (!$acc && !$ref) {
                 $this->vars['{$number}'] = $phone;
+                $this->refer();
             } else {
 
 //                error_log('----------------');

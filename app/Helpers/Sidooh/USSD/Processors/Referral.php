@@ -41,6 +41,9 @@ class Referral extends Product
             case "refer":
                 $this->set_other_number($previousScreen);
                 break;
+            case "refer_end":
+                $this->refer();
+                break;
             case "kyc_details_name":
                 $this->set_name($previousScreen);
                 break;
@@ -264,10 +267,10 @@ class Referral extends Product
         if ($acc->user)
             $user .= ' - ' . ucwords($acc->user->name);
 
-        $message = "Hi, {$user} has referred you to Sidooh, ";
+        $message = "Hi, {$user} has invited you to try out Sidooh, ";
         $message .= "a digital platform that gives you cash refunds on every airtime you purchase from the platform, ";
         $message .= "out of which 80% is then automatically saved and invested to generate extra income for you. ";
-        $message .= "Dial $code NOW for FREE on your Safaricom line to BUY AIRTIME & START EARNING.";
+        $message .= "Dial $code NOW for FREE on your Safaricom line to buy airtime & start earning from your purchases.";
 
         (new AfricasTalkingApi())->sms($phone, $message);
     }

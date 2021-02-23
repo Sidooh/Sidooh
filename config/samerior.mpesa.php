@@ -95,13 +95,13 @@ return [
         /*
          * Shortcode sending funds
          */
-        'short_code' => 600643,
+        'short_code' => env('MPESA_B2C_SHORTCODE'),
         /*
         * This is the user initiating the transaction, usually from the Mpesa organization portal
         * Make sure this was the user who was used to 'GO LIVE'
         * https://org.ke.m-pesa.com/
         */
-        'initiator' => 'TestInit643',
+        'initiator' => 'Ngethe Sidney',
         /*
          * The user security credential.
          * Go to https://developer.safaricom.co.ke/test_credentials and paste your initiator password to generate

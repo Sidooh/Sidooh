@@ -230,8 +230,10 @@ class Account extends Product
             if ($acc->pin) {
 //                if (!Hash::check($previousScreen->option_string, $res->pin)) {
                 if ($previousScreen->option_string !== $acc->pin) {
-                    $this->screen->title = "Sorry, but the pin does not match. Please call us if you have forgotten your PIN";
-                    $this->screen->type = 'END';
+//                    $this->screen->title = "Sorry, but the pin does not match. Please call us if you have forgotten your PIN";
+//                    $this->screen->type = 'END';
+                    $this->screen = $this->previousScreen;
+                    $this->screen->title = "Woiii";
                 } else {
                     return $acc;
                 }

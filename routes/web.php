@@ -11,6 +11,16 @@
 |
 */
 
+use App\Http\Controllers\Admin\DashboardController;
+
 Route::get('/', function () {
     return view('welcome');
+});
+//middleware(['auth', 'verified'])->
+Route::group(function () {
+//    'middleware' => 'role:admin',
+    Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    });
+
 });

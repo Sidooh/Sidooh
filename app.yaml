@@ -18,6 +18,8 @@ env_variables:
   APP_STORAGE: /tmp
   VIEW_COMPILED_PATH: /tmp
   APP_TIMEZONE: Africa/Nairobi
+  APP_URL: https://sidooh2.ew.r.appspot.com
+
 
   CACHE_DRIVER: file
   SESSION_DRIVER: file
@@ -27,6 +29,7 @@ env_variables:
   DB_USERNAME: root
   DB_PASSWORD: root
   DB_SOCKET: "/cloudsql/sidooh2:europe-west3:sidooh"
+
 
   MAIL_MAILER: smtp
   MAIL_HOST: smtp.gmail.com

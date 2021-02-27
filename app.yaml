@@ -19,7 +19,7 @@ env_variables:
   VIEW_COMPILED_PATH: /tmp
   APP_TIMEZONE: Africa/Nairobi
 
-  CACHE_DRIVER: database
+  CACHE_DRIVER: file
   SESSION_DRIVER: file
 
   DB_HOST: localhost

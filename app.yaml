@@ -20,7 +20,7 @@ env_variables:
   APP_TIMEZONE: Africa/Nairobi
 
   CACHE_DRIVER: database
-  SESSION_DRIVER: database
+  SESSION_DRIVER: file
 
   DB_HOST: localhost
   DB_DATABASE: sidooh

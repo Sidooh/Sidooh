@@ -1,0 +1,77 @@
+runtime: custom
+env: flex
+
+# Ensure we skip ".env", which is only for local development
+skip_files:
+  - .env
+
+runtime_config:
+  document_root: public
+  enable_stackdriver_integration: true
+
+env_variables:
+  APP_NAME: Sidooh
+  APP_KEY: base64:sAXxBMFFf2a4rlCKyJfsQdg/ks/AW4eGSVGpxDzY5A0=
+  APP_ENV: production
+  APP_LOG: errorlog
+  APP_DEBUG: true
+  APP_STORAGE: /tmp
+  VIEW_COMPILED_PATH: /tmp
+  APP_TIMEZONE: Africa/Nairobi
+
+  CACHE_DRIVER: database
+  SESSION_DRIVER: database
+
+  DB_HOST: localhost
+  DB_DATABASE: sidooh
+  DB_USERNAME: root
+  DB_PASSWORD: root
+  DB_SOCKET: "/cloudsql/sidooh:us-central1:sidooh"
+
+  MAIL_MAILER: smtp
+  MAIL_HOST: smtp.gmail.com
+  MAIL_PORT: 465
+  MAIL_USERNAME: sidserviceske@gmail.com
+  MAIL_PASSWORD: dcmytgkrbgowqsiv
+  MAIL_ENCRYPTION: ssl
+  MAIL_FROM_ADDRESS: sidserviceske@gmail.com
+  MAIL_FROM_NAME: "${APP_NAME}"
+
+  MPESA_BASE_URL: https://sandbox.safaricom.co.ke/
+  MPESA_KEY: uIeJwZwAWTbrNxQ8GypnDWSPtKXRbGql
+  MPESA_SECRET: 6084w7ANkYErHipt
+  MPESA_INITIATOR_SHORTCODE: 174379
+  MPESA_STK_SHORTCODE: 174379
+  MPESA_STK_PASS_KEY: bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919
+  MPESA_B2C_SHORTCODE: 3015319
+
+  AT_API_KEY: 24f8a51e90338e4d2a6ebb81899fb4dc66099df456338be9da55cd8b5ce196f7
+  AT_USERNAME: sandbox
+
+  AT_SMS_API_KEY: a53e86bcf72ff0e103130e5442504410fdd6d0ef32827fd2794e3caefb92c191
+  AT_SMS_USERNAME: sidooh_sms
+  AT_SMS_FROM: Sidooh
+  AT_AIRTIME_API_KEY: 89770c2faea7f33dce6ca5605a0cd7b9e810a999af8ea0c051a5e504d2380928
+  AT_AIRTIME_USERNAME: sidooh_airtime
+
+  AT_ENV: production
+
+  TIMEZONE: Africa/Nairobi
+
+  USSD_CODE: "*384*99#"
+
+  SIDOOH_TAGLINE: "Sidooh, Makes You Money on Every Purchase."
+
+
+# Use the connection name obtained when configuring your Cloud SQL instance.
+beta_settings:
+  cloud_sql_instances: "sidooh:us-central1:sidooh"
+
+# App engine resources
+manual_scaling:
+  instances: 1
+#resources:
+#  cpu: 1
+#  memory_gb: 2
+#  disk_size_gb: 10
+

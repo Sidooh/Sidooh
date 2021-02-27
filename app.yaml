@@ -26,7 +26,7 @@ env_variables:
   DB_DATABASE: sidooh
   DB_USERNAME: root
   DB_PASSWORD: root
-  DB_SOCKET: "/cloudsql/sidooh:us-central1:sidooh"
+  DB_SOCKET: "/cloudsql/sidooh2:europe-west3:sidooh"
 
   MAIL_MAILER: smtp
   MAIL_HOST: smtp.gmail.com
@@ -65,7 +65,7 @@ env_variables:
 
 # Use the connection name obtained when configuring your Cloud SQL instance.
 beta_settings:
-  cloud_sql_instances: "sidooh:us-central1:sidooh"
+  cloud_sql_instances: "sidooh2:europe-west3:sidooh"
 
 # App engine resources
 manual_scaling:

@@ -40,6 +40,7 @@ env_variables:
   MAIL_FROM_ADDRESS: sidserviceske@gmail.com
   MAIL_FROM_NAME: "${APP_NAME}"
 
+  MPESA_SANDBOX: false
   MPESA_BASE_URL: https://api.safaricom.co.ke/
   MPESA_KEY: wNhBKlqLR92dNwZjiSADOVnyZ98T29FS
   MPESA_SECRET: cta3bt2GYUCSuqGm

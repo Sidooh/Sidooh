@@ -259,12 +259,6 @@
                 "type": "int",
                 "value": "1",
                 "next": "pre_agent"
-            },
-            "2": {
-                "title": "Register as an agent",
-                "type": "int",
-                "value": "2",
-                "next": "agent_intro"
             }
         }
     },

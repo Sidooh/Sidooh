@@ -36,13 +36,6 @@ class Agent extends AgentMain
             case "agent_onboarding_name":
                 $this->set_name($previousScreen);
                 break;
-            case "agent_onboarding_mail":
-                $this->set_email($previousScreen);
-                break;
-            case "agent_onboarding_category":
-            case "agent_upgrade":
-                $this->set_amount($previousScreen);
-                break;
             case "payment_method":
                 $this->set_payment_method($previousScreen);
                 break;
@@ -62,12 +55,9 @@ class Agent extends AgentMain
         $this->vars['{$number}'] = $this->phone;
         $this->vars['{$mpesa_number}'] = $this->phone;
 
-        $this->vars['{$subscription_type_1}'] = "Sidooh Aspiring Agent";
-        $this->vars['{$subscription_amount_1}'] = 475;
-        $this->vars['{$level_limit_1}'] = 3;
-        $this->vars['{$subscription_type_2}'] = "Sidooh Thriving Agent";
-        $this->vars['{$subscription_amount_2}'] = 975;
-        $this->vars['{$level_limit_2}'] = 5;
+        $this->vars['{$subscription_type}'] = "Sidooh Agent";
+        $this->vars['{$subscription_amount}'] = 975;
+        $this->vars['{$level_limit}'] = 5;
         $this->vars['{$period}'] = "month";
 
         $this->vars['{$email}'] = $this->vars['{$my_number}'] . "@sid.ooh";
@@ -122,21 +112,8 @@ class Agent extends AgentMain
     private function set_name(Screen $previousScreen)
     {
         $this->vars['{$name}'] = $previousScreen->option_string;
-    }
 
-    private function set_email(Screen $previousScreen)
-    {
-        if ($previousScreen->option_string == "0000")
-            $this->vars['{$email}'] = $this->vars['{$my_number}'] . "@sid.ooh";
-        else
-            $this->vars['{$email}'] = $previousScreen->option_string;
-    }
-
-    private function set_amount(Screen $previousScreen)
-    {
-        $this->vars['{$subscription_type}'] = $this->vars['{$subscription_type_' . $previousScreen->option->value . '}'];
-        $this->vars['{$amount}'] = $this->vars['{$subscription_amount_' . $previousScreen->option->value . '}'];
-        $this->vars['{$product}'] = $this->vars['{$subscription_type}'];
+        $this->vars['{$amount}'] = $this->vars['{$subscription_amount}'];
     }
 
     private function set_payment_method(Screen $previousScreen)

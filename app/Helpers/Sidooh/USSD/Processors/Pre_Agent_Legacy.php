@@ -12,7 +12,7 @@ use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
 use Illuminate\Support\Facades\Hash;
 
-class Pre_Agent extends AgentMain
+class Pre_Agent_Legacy extends AgentMain
 {
     /**
      * @param UssdUser $user
@@ -35,6 +35,12 @@ class Pre_Agent extends AgentMain
             case "pre_agent_onboarding_name":
                 $this->set_name($previousScreen);
                 break;
+            case "pre_agent_onboarding_mail":
+                $this->set_email($previousScreen);
+                break;
+            case "pre_agent_onboarding_category":
+                $this->set_amount($previousScreen);
+                break;
             case "payment_method":
                 $this->set_payment_method($previousScreen);
                 break;
@@ -54,12 +60,16 @@ class Pre_Agent extends AgentMain
         $this->vars['{$number}'] = $this->phone;
         $this->vars['{$mpesa_number}'] = $this->phone;
 
-        $this->vars['{$subscription_type}'] = "Sidooh Agent";
-        $this->vars['{$subscription_amount}'] = 8775;
-        $this->vars['{$subscription_amount_f}'] = '8,775';
-        $this->vars['{$level_limit}'] = 5;
-        $this->vars['{$period}'] = "1 YEAR";
-
+        $this->vars['{$subscription_type_1}'] = "Sidooh Aspiring Agent";
+        $this->vars['{$subscription_amount_1}'] = 4275;
+        $this->vars['{$subscription_amount_1_f}'] = '4,275';
+        $this->vars['{$level_limit_1}'] = 3;
+        $this->vars['{$period_1}'] = "1 YEAR";
+        $this->vars['{$subscription_type_2}'] = "Sidooh Thriving Agent";
+        $this->vars['{$subscription_amount_2}'] = 8775;
+        $this->vars['{$subscription_amount_2_f}'] = '8,775';
+        $this->vars['{$level_limit_2}'] = 5;
+        $this->vars['{$period_2}'] = "1 YEAR";
 
         $res = (new AccountRepository)->findByPhone($this->phone);
 //        Log::info($res);
@@ -134,8 +144,23 @@ class Pre_Agent extends AgentMain
     private function set_name(Screen $previousScreen)
     {
         $this->vars['{$name}'] = $previousScreen->option_string;
+
         $this->vars['{$email}'] = $this->vars['{$my_number}'] . "@sid.ooh";
-        $this->vars['{$amount}'] = $this->vars['{$subscription_amount}'];
+    }
+
+    private function set_email(Screen $previousScreen)
+    {
+        if ($previousScreen->option_string == "0000")
+            $this->vars['{$email}'] = $this->vars['{$my_number}'] . "@sid.ooh";
+        else
+            $this->vars['{$email}'] = $previousScreen->option_string;
+    }
+
+    private function set_amount(Screen $previousScreen)
+    {
+        $this->vars['{$subscription_type}'] = $this->vars['{$subscription_type_' . $previousScreen->option->value . '}'];
+        $this->vars['{$amount}'] = $this->vars['{$subscription_amount_' . $previousScreen->option->value . '}'];
+        $this->vars['{$product}'] = 'for Pre-Registration of ' . $this->vars['{$subscription_type}'];
     }
 
     private function set_payment_method(Screen $previousScreen)

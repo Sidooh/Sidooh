@@ -259,6 +259,12 @@
                 "type": "int",
                 "value": "1",
                 "next": "pre_agent"
+            },
+            "2": {
+                "title": "Register as an agent",
+                "type": "int",
+                "value": "2",
+                "next": "agent_intro"
             }
         }
     },
@@ -279,7 +285,7 @@
         "key": "agent_onboarding_name",
         "title": "Please enter your Full Name\n\nFormat:\nFirstname Lastname",
         "type": "OPEN",
-        "next": "agent_onboarding_category",
+        "next": "payment_method",
         "options": {},
         "option_type": "NAME"
     },
@@ -633,7 +639,7 @@
         "key": "pre_agent_onboarding_name",
         "title": "Please enter your Full Name\n\nFormat:\nFirstname Lastname",
         "type": "OPEN",
-        "next": "pre_agent_onboarding_category",
+        "next": "pre_agent_onboarding_confirm",
         "options": {},
         "option_type": "NAME"
     },

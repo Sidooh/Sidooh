@@ -12,8 +12,9 @@ use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
 use Illuminate\Support\Facades\Hash;
 
-class Pre_Agent extends AgentMain
+class Agent_Legacy extends AgentMain
 {
+
     /**
      * @param UssdUser $user
      * @param Screen $previousScreen
@@ -32,8 +33,15 @@ class Pre_Agent extends AgentMain
             case "agent":
                 $this->set_user_number();
                 break;
-            case "pre_agent_onboarding_name":
+            case "agent_onboarding_name":
                 $this->set_name($previousScreen);
+                break;
+            case "agent_onboarding_mail":
+                $this->set_email($previousScreen);
+                break;
+            case "agent_onboarding_category":
+            case "agent_upgrade":
+                $this->set_amount($previousScreen);
                 break;
             case "payment_method":
                 $this->set_payment_method($previousScreen);
@@ -54,15 +62,17 @@ class Pre_Agent extends AgentMain
         $this->vars['{$number}'] = $this->phone;
         $this->vars['{$mpesa_number}'] = $this->phone;
 
-        $this->vars['{$subscription_type}'] = "Sidooh Agent";
-        $this->vars['{$subscription_amount}'] = 8775;
-        $this->vars['{$subscription_amount_f}'] = '8,775';
-        $this->vars['{$level_limit}'] = 5;
-        $this->vars['{$period}'] = "1 YEAR";
+        $this->vars['{$subscription_type_1}'] = "Sidooh Aspiring Agent";
+        $this->vars['{$subscription_amount_1}'] = 475;
+        $this->vars['{$level_limit_1}'] = 3;
+        $this->vars['{$subscription_type_2}'] = "Sidooh Thriving Agent";
+        $this->vars['{$subscription_amount_2}'] = 975;
+        $this->vars['{$level_limit_2}'] = 5;
+        $this->vars['{$period}'] = "month";
 
+        $this->vars['{$email}'] = $this->vars['{$my_number}'] . "@sid.ooh";
 
         $res = (new AccountRepository)->findByPhone($this->phone);
-//        Log::info($res);
 
         if ($res) {
             $name = "Customer";
@@ -80,62 +90,53 @@ class Pre_Agent extends AgentMain
 
                 $this->screen->title = "Dear {$name}, you are already subscribed to $subscription valid until $subdate.";
 
-                if ($res->active_subscription->subscription_type->duration == 1) {
-                    $option = $this->screen->options[0];
-                    $option->next = "pre_agent_onboarding_category";
+                if ($res->active_subscription->subscription_type->duration == 1 && $res->active_subscription->subscription_type->level_limit == 3) {
 
-                    $this->vars['{$name}'] = $name;
+                    $option = new Option();
+                    $option->title = "Upgrade to " . $this->vars['{$subscription_type_2}'] . "@" . $this->vars['{$subscription_amount_2}'] . '/' . $this->vars['{$period}'];
+                    $option->type = "int";
+                    $option->value = "2";
+                    $option->next = "payment_method";
 
+                    $this->screen->options = [
+                        "2" => $option
+                    ];
+
+                    $this->vars['{$subscription_upgrade}'] = $this->vars['{$subscription_type_2}'];
+                    $this->vars['{$subscription_type}'] = $this->vars['{$subscription_type_2}'];
+                    $this->vars['{$amount}'] = $this->vars['{$subscription_amount_2}'];
+                    $this->vars['{$product}'] = $this->vars['{$subscription_type}'];
                 } else {
-                    if ($res->active_subscription->subscription_type->level_limit == 3) {
-
-                        $option = new Option();
-                        $option->title = "Upgrade to " . $this->vars['{$subscription_type_2}'] . "@" . $this->vars['{$subscription_amount_2}'] . '/' . $this->vars['{$period}'];
-                        $option->type = "int";
-                        $option->value = "2";
-                        $option->next = "payment_method";
-
-//                        if ($res->active_subscription->subscription_type->level_limit == 3) {
-                        $this->screen->options = [
-                            "2" => $option,
-                        ];
-//                        } else {
-//                            $option2 = new Option();
-//                            $option2->title = "Upgrade to " . $this->vars['{$subscription_type_1}'] . "@" . $this->vars['{$subscription_amount_1}'] . '/' . $this->vars['{$period}'];
-//                            $option2->type = "int";
-//                            $option2->value = "1";
-//                            $option2->next = "payment_method";
-//
-//                            $this->screen->options = [
-//                                "1" => $option2,
-//                                "2" => $option
-//                            ];
-//                        }
-
-//                        $this->vars['{$subscription_upgrade}'] = $this->vars['{$subscription_type_2}'];
-                        $this->vars['{$subscription_type}'] = $this->vars['{$subscription_type_2}'];
-                        $this->vars['{$amount}'] = $this->vars['{$subscription_amount_2}'];
-                        $this->vars['{$product}'] = $this->vars['{$subscription_type}'];
-                    } else {
-                        $this->screen->options = [];
-                    }
-
+                    $this->screen->options = [];
                 }
 
             }
 
         } else {
             $this->screen->title = "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to proceed.";
-            $this->screen->type = 'OPEN';
-            unset($this->screen->option_type, $this->screen->next, $this->screen->options);
+            $this->screen->type = 'END';
         }
+
     }
 
     private function set_name(Screen $previousScreen)
     {
         $this->vars['{$name}'] = $previousScreen->option_string;
-        $this->vars['{$email}'] = $this->vars['{$my_number}'] . "@sid.ooh";
-        $this->vars['{$amount}'] = $this->vars['{$subscription_amount}'];
+    }
+
+    private function set_email(Screen $previousScreen)
+    {
+        if ($previousScreen->option_string == "0000")
+            $this->vars['{$email}'] = $this->vars['{$my_number}'] . "@sid.ooh";
+        else
+            $this->vars['{$email}'] = $previousScreen->option_string;
+    }
+
+    private function set_amount(Screen $previousScreen)
+    {
+        $this->vars['{$subscription_type}'] = $this->vars['{$subscription_type_' . $previousScreen->option->value . '}'];
+        $this->vars['{$amount}'] = $this->vars['{$subscription_amount_' . $previousScreen->option->value . '}'];
+        $this->vars['{$product}'] = $this->vars['{$subscription_type}'];
     }
 
     private function set_payment_method(Screen $previousScreen)
@@ -157,9 +158,9 @@ class Pre_Agent extends AgentMain
                 if ($acc->voucher) {
                     $bal = $acc->voucher->balance;
 
-                    if ($bal == 0 || $bal < (int)$this->vars['{$amount}']) {
+                    if ($bal < (int)$this->vars['{$amount}']) {
                         $this->screen->title = "Sorry but your Voucher Balance is insufficient";
-                        $this->screen->type = 'OPEN';
+                        $this->screen->type = 'END';
                     }
 
                 } else {
@@ -194,13 +195,12 @@ class Pre_Agent extends AgentMain
     protected function finalize()
     {
 //        TODO: Finalize transaction
-        error_log("Pre Agent: finalize");
+        error_log("Agent: finalize");
 
         $type = SubscriptionType::whereAmount($this->vars['{$amount}'])->firstOrFail();
 
         $phoneNumber = $this->vars['{$my_number}'];
         $phone = $this->vars['{$number}'];
-        $mpesa = $this->vars['{$mpesa_number}'];
 
         $name = $this->vars['{$name}'];
         $email = $this->vars['{$email}'];
@@ -229,8 +229,8 @@ class Pre_Agent extends AgentMain
         $acc->save();
 
         if ($method === PaymentMethods::MPESA)
-            (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber, $method))->purchase($phone, $mpesa);
+            (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber, $method))->purchase($phone);
         elseif ($acc->voucher->balance > $type->amount)
-            (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber, $method))->purchase($phone, $mpesa);
+            (new \App\Helpers\Sidooh\Subscription($type, $phoneNumber, $method))->purchase($phone);
     }
 }

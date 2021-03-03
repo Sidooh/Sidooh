@@ -44,6 +44,8 @@ class SubscriptionPurchaseSuccess
         $nf = new NumberFormatter('en', NumberFormatter::ORDINAL);
         $limit = $nf->format($type->level_limit);
 
+        $type->title = "Sidooh Agent";
+
         switch ($type->duration) {
             case 1:
                 $message = "Congratulations! You have successfully registered as a {$type->title} on {$date}, valid until {$end_date}. ";

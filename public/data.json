@@ -633,7 +633,8 @@
                 "value": "1",
                 "next": "pre_agent_onboarding_name"
             }
-        }
+        },
+        "paginated": true
     },
     "pre_agent_onboarding_name": {
         "key": "pre_agent_onboarding_name",

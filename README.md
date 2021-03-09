@@ -12,10 +12,12 @@ Built on Laravel 6. Run on App Engine, Cloud Build, Cloud SQL e.t.c.
 - ext-json
 - ext-openssl
 - ext-intl
+- composer
 
 ### Tools
 
 - lampp
+- cloud_sql_proxy (if you wish to connect to live db)
 - gcloud (if you wish to run gcloud commands straight from dev machine)
 - docker (if you wish to run on docker)
 
@@ -35,6 +37,33 @@ Coming soon
 ## Running on App Engine
 
 Coming soon
+
+## Debugging
+
+### App Engine
+
+- ssh into the instance on cloud console
+
+```shell
+======================
+--- APPENGINE DEBUG---
+======================
+
+---List containers
+
+sudo docker ps
+
+
+---Log a container
+
+sudo docker logs <container-name>
+
+
+---Start shell in container (like a terminal session)
+
+sudo docker exec -it <container-name> /bin/bash
+
+```
 
 ### To Note:
 

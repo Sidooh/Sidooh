@@ -313,6 +313,11 @@ class AccountRepository extends Model
             ]);
         }
 
+
+//        TODO: To be removed after testing auto assignment
+        return $this->calculateInterest(9);
+
+
         return $cI->subInvestments;
     }
 

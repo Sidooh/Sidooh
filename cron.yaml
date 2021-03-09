@@ -1,0 +1,12 @@
+cron:
+  - description: "daily interest calculations"
+    url: /api/v1/investment/balances
+    schedule: every day 00:00
+#  - description: "monday morning mailout"
+#    url: /mail/weekly
+#    schedule: every monday 09:00
+#    timezone: Australia/NSW
+#  - description: "new daily summary job"
+#    url: /tasks/summary
+#    schedule: every 24 hours
+#    target: beta

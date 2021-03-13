@@ -15,7 +15,18 @@
 //    return $request->user();
 //});
 
+use App\Http\Controllers\Api\V1\DashboardController;
+
 Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], function () {
+
+//    DASHBOARD ROUTES
+
+    Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    });
+
+//    END DASHBOARD ROUTES
+
 //    Route::post('change-password', 'ChangePasswordController@changePassword')->name('auth.change_password');
     Route::apiResource('accounts', 'AccountController', ['only' => ['index', 'store', 'show']]);
     Route::get('accounts/{account}/referrer', 'AccountController@referrer')->name('accounts.referrer');

@@ -17,10 +17,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 //middleware(['auth', 'verified'])->
-Route::group(function () {
+Route::group([], function () {
 //    'middleware' => 'role:admin',
     Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     });
 
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

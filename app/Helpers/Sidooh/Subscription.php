@@ -85,7 +85,7 @@ class Subscription
         $number = $mpesaNumber ?? $this->phone;
 
         switch ($this->type->amount) {
-            case 8775:
+            case 4350:
                 $reference = MpesaReferences::PRE_AGENT_REGISTER_THRIVING;
                 break;
             case 4275:

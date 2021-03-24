@@ -55,8 +55,8 @@ class Pre_Agent extends AgentMain
         $this->vars['{$mpesa_number}'] = $this->phone;
 
         $this->vars['{$subscription_type}'] = "Sidooh Agent";
-        $this->vars['{$subscription_amount}'] = 8775;
-        $this->vars['{$subscription_amount_f}'] = '8,775';
+        $this->vars['{$subscription_amount}'] = 4350;
+        $this->vars['{$subscription_amount_f}'] = '4,350';
         $this->vars['{$level_limit}'] = 5;
         $this->vars['{$period}'] = "1 YEAR";
 

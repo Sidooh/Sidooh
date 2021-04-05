@@ -14,3 +14,19 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'as' => 'admin.'], function () {
+
+    Route::get('/', 'DashboardController@index')->name('index');
+
+    Route::apiResource('users', 'UserController');
+    Route::apiResource('accounts', 'AccountController');
+    Route::apiResource('transactions', 'TransactionController');
+
+
+});

@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use MrAtiebatie\Repository;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
-class AccountRepository extends Model
+class AccountRepository
 {
     use Repository;
 

@@ -6,9 +6,9 @@
         <div class="card-body bg-line-chart-gradient">
             <div class="row align-items-center g-0">
                 <div class="col light">
-                    <h4 class="text-white mb-0">Today KES{{ $data['totalToday'] }}</h4>
+                    <h4 class="text-white mb-0">Today {{ format_cur($data['totalToday']) }}</h4>
                     <p class="fs--1 fw-semi-bold text-white">Yesterday <span
-                            class="opacity-50">KES{{ $data['totalYesterday'] }}</span></p>
+                            class="opacity-50">{{ format_cur($data['totalYesterday']) }}</span></p>
                 </div>
                 <div class="col-auto d-none d-sm-block">
                     <select class="form-select form-select-sm mb-3" id="dashboard-chart-select">
@@ -43,7 +43,7 @@
                     <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif text-warning"
                          data-countup='{"endValue":{{ $data['totalAccounts'] }},"decimalPlaces":0,"suffix":""}'>0
                     </div>
-                    <a class="fw-semi-bold fs--1 text-nowrap" href="../e-commerce/customers.html">See all<span
+                    <a class="fw-semi-bold fs--1 text-nowrap" href="{{ route('admin.accounts.index') }}">See all<span
                             class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
                 </div>
             </div>
@@ -60,7 +60,8 @@
                     <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif text-info"
                          data-countup='{"endValue":{{ $data['totalTransactions'] }},"decimalPlaces":0,"suffix":""}'>0
                     </div>
-                    <a class="fw-semi-bold fs--1 text-nowrap" href="../e-commerce/order-list.html">All transactions<span
+                    <a class="fw-semi-bold fs--1 text-nowrap" href="{{ route('admin.transactions.index', ['all']) }}">All
+                        transactions<span
                             class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
                 </div>
             </div>
@@ -75,16 +76,16 @@
                             class="badge badge-soft-success rounded-pill ms-2">{{ $data['totalRevenueToday'] }}</span>
                     </h6>
                     <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif"
-                         data-countup='{"endValue":{{ $data['totalRevenue'] }},"prefix":"KES"}'>0
+                         data-countup='{"endValue":{{ $data['totalRevenue'] }},"prefix":"KES "}'>0
                     </div>
-                    <a class="fw-semi-bold fs--1 text-nowrap" href="../index-2.html">Statistics<span
+                    <a class="fw-semi-bold fs--1 text-nowrap" href="#">Statistics<span
                             class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
                 </div>
             </div>
         </div>
     </div>
     <div class="card mb-3" id="recentPurchaseTable"
-         data-list='{"valueNames":["name","email","product","payment","amount"],"page":8,"pagination":true}'>
+         data-list='{"valueNames":["name","phone","product","amount","payment","status","Date"],"page":8,"pagination":true}'>
         <div class="card-header">
             <div class="row flex-between-center">
                 <div class="col-6 col-sm-auto d-flex align-items-center pe-0">
@@ -138,7 +139,7 @@
                             </div>
                         </th>
                         <th class="sort pe-1 align-middle white-space-nowrap" data-sort="name">Customer</th>
-                        <th class="sort pe-1 align-middle white-space-nowrap" data-sort="email">Phone</th>
+                        <th class="sort pe-1 align-middle white-space-nowrap" data-sort="phone">Phone</th>
                         <th class="sort pe-1 align-middle white-space-nowrap" data-sort="product">Product</th>
                         <th class="sort pe-1 align-middle white-space-nowrap text-end" data-sort="amount">Amount</th>
                         <th class="sort pe-1 align-middle white-space-nowrap text-center" data-sort="payment">Payment
@@ -163,11 +164,13 @@
                             <th class="align-middle white-space-nowrap name">
                                 <a href="{{ $transaction->account->user ? route('admin.users.show', $transaction->account->user ) : route('admin.accounts.show', $transaction->account ) }}">{{ $transaction->account->user ? $transaction->account->user->name : $transaction->account->phone }}</a>
                             </th>
-                            <td class="align-middle white-space-nowrap email">{{ $transaction->account->phone }}</td>
-                            <td class="align-middle white-space-nowrap product">
-                                {{ $transaction->description }}
+                            <td class="align-middle white-space-nowrap phone">
+                                <a href="{{ route('admin.accounts.show', $transaction->account ) }}">{{ $transaction->account->phone }}</a>
                             </td>
-                            <td class="align-middle text-end amount">KES {{ $transaction->amount }}</td>
+                            <td class="align-middle white-space-nowrap product">
+                                <a href="{{ route('admin.transactions.show', $transaction ) }}">{{ $transaction->description }}</a>
+                            </td>
+                            <td class="align-middle text-end amount">{{ format_cur($transaction->amount) }}</td>
 
                             <td class="align-middle text-center fs-0 white-space-nowrap payment">
 
@@ -237,11 +240,17 @@
             <div class="row align-items-center">
                 <div class="pagination d-none"></div>
                 <div class="col">
-                    <p class="mb-0 fs--1"><span class="d-none d-sm-inline-block me-2"
-                                                data-list-info="data-list-info"> </span><span
-                            class="d-none d-sm-inline-block me-2">&mdash;  </span><a class="fw-semi-bold" href="#!"
-                                                                                     data-list-view="*">View all<span
-                                class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a></p>
+                    <p class="mb-0 fs--1">
+                        <span class="d-none d-sm-inline-block me-2"
+                              data-list-info="data-list-info"> </span>
+                        <span
+                            class="d-none d-sm-inline-block me-2">&mdash;  </span>
+                        <a class="fw-semi-bold" href="#!"
+                           data-list-view="*">View all
+                            <span
+                                class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span>
+                        </a>
+                    </p>
                 </div>
                 <div class="col-auto d-flex">
                     <button class="btn btn-sm btn-primary" type="button" data-list-pagination="prev">

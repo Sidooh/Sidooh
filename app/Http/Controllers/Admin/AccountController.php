@@ -32,7 +32,9 @@ class AccountController extends Controller
     public function index()
     {
         //
-        return new AccountResource($this->account->all());
+        $accounts = $this->account->latest()->get();
+
+        return view('admin.crud.accounts.index', compact('accounts'));
     }
 
     /**

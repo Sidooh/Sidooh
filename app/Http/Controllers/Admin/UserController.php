@@ -29,7 +29,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        $users = $this->user->all();
+        $users = $this->user->latest()->get();
 
         return view('admin.crud.users.index', compact('users'));
     }

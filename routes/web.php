@@ -27,6 +27,7 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'as' => 'admin.'], f
     Route::apiResource('users', 'UserController');
     Route::apiResource('accounts', 'AccountController');
     Route::apiResource('transactions', 'TransactionController');
+    Route::post('transactions/status/query', 'TransactionController@queryStatus')->name('transactions.status.query');
 
 
 });

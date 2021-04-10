@@ -9,6 +9,7 @@ use App\Models\Transaction;
 use App\Repositories\TransactionRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Artisan;
 
 class TransactionController extends Controller
 {
@@ -67,20 +68,14 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-//        //
-//        Log::info($transaction->parent);
-////        Log::info($transaction->parentAndSelf);
-//        $transaction['level_' . '1' . '_ancestors'] = $transaction->ancestors()->whereDepth('>=', -1)->get();
-//        Log::info($transaction->ancestors);
-////        Log::info($transaction->ancestorsAndSelf);
-//        Log::info($transaction->siblings);
-////        Log::info($transaction->siblingsAndSelf);
-//        Log::info($transaction->children);
-////        Log::info($transaction->childrenAndSelf);
-//        Log::info($transaction->descendants);
-////        Log::info($transaction->descendantsAndSelf);
+        $transaction->load(['account']);
 
-        return new TransactionResource($transaction);
+        if ($transaction->payment->type == 'MPESA')
+            $transaction->load(['payment.descriptor.response']);
+
+//        return new TransactionResource($transaction);
+
+        return view('admin.crud.transactions.show', compact('transaction'));
     }
 
     /**
@@ -120,89 +115,15 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Transaction $transaction
-     * @return TransactionResource
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function referrals(Transaction $transaction)
-    {
-        //
-        return new TransactionResource($this->transaction->with(['pending_referrals', 'active_referrals'])->find($transaction->id));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Request $request
-     * @param Transaction $transaction
-     * @return TransactionResource
-     */
-    public function referrer(Request $request, Transaction $transaction)
+    public function queryStatus()
     {
         //
 
-        return new TransactionResource($this->transaction->getReferrer($transaction, $request->query('level'), $request->query('subscribed')));
-    }
+        $exitCode = Artisan::call('mpesa:query_status');
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Transaction $transaction
-     * @return TransactionResource
-     */
-    public function subscriptions(Transaction $transaction)
-    {
-        //
-        return new TransactionResource($this->transaction->with(['active_subscription'])->find($transaction->id));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Transaction $transaction
-     * @return TransactionResource
-     */
-    public function vouchers(Transaction $transaction)
-    {
-        //
-        return new TransactionResource($transaction->vouchers());
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Transaction $transaction
-     * @return TransactionResource
-     */
-    public function earnings(Transaction $transaction)
-    {
-        //
-        return new TransactionResource($this->transaction->earningsSummary($transaction->phone));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Transaction $transaction
-     * @return TransactionResource
-     */
-    public function earningsReport(Transaction $transaction)
-    {
-        //
-
-        return $this->transaction->earningsReport($transaction->phone);
-        return new TransactionResource($this->transaction->earningsReport($transaction->phone));
-    }
-
-//    /**
-//     * Display the specified resource.
-//     *
-//     * @param Transaction $transaction
-//     * @return TransactionResource
-//     */
-    public function subTransactions(Transaction $transaction)
-    {
-        //
-        return new TransactionResource($this->transaction->invest());
+        return back();
     }
 
 }

@@ -219,8 +219,10 @@
                                             class="fas fa-ellipsis-h fs--1"></span></button>
                                     <div class="dropdown-menu dropdown-menu-end border py-2"
                                          aria-labelledby="dropdown0"><a
-                                            class="dropdown-item" href="#!">View</a><a class="dropdown-item"
-                                                                                       href="#!">Edit</a><a
+                                            class="dropdown-item"
+                                            href="{{ route('admin.transactions.show', $transaction ) }}">View</a><a
+                                            class="dropdown-item"
+                                            href="#!">Edit</a><a
                                             class="dropdown-item" href="#!">Refund</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item text-warning" href="#!">Archive</a><a
@@ -250,6 +252,12 @@
                             <span
                                 class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span>
                         </a>
+                        {{--                        TODO: Find a way to collapse as well --}}
+                        {{--                        <a class="fw-semi-bold" href="#!"--}}
+                        {{--                           data-list-view="10">--}}
+                        {{--                            <span class="fas fa-angle-left ms-1" data-fa-transform="down-1"></span>--}}
+                        {{--                            Collapse--}}
+                        {{--                        </a>--}}
                     </p>
                 </div>
                 <div class="col-auto d-flex">

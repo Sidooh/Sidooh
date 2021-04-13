@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Log;
 use Samerior\MobileMoney\Mpesa\Events\StkPushPaymentFailedEvent;
 
@@ -31,6 +32,15 @@ class StkPaymentFailed
 //        $mpesa_response = $event->mpesa_response;// mpesa response as array
 
         Log::info('----------------- STK Payment Failed (' . $stk->ResultDesc . ')');
+
+        $p = Payment::wherePaymentId($stk->request->id)->firstOrFail();
+
+        if ($p->status == 'Failed')
+            return;
+
+        $p->status = 'Failed';
+        $p->payable->status = 'Failed';
+        $p->save();
 
         $message = "Sorry! We failed to complete your transaction. No amount was deducted from your account. We apologize for the inconvenience. Please try again.";
 

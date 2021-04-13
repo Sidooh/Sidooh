@@ -570,9 +570,32 @@ class Account extends Product
 
         $user = $acc->user;
 
-        $user->name = $name;
+        if (!$user) {
+            $email = $this->vars['{$email}'];
+            $pass = $this->vars['{$email}'] . '5!D00h';
 
-        $user->save();
+            $user = User::firstOrCreate(
+                [
+                    'username' => $phone,
+                ],
+                [
+                    'name' => $name,
+                    'username' => $phone,
+                    'id_number' => $phone,
+                    'email' => $email,
+                    'password' => Hash::make($pass)
+                ]);
+
+            $acc->user()->associate($user);
+            $acc->save();
+
+        } else {
+
+            $user->name = $name;
+
+            $user->save();
+        }
+
     }
 
     private function createMerchant()

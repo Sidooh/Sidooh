@@ -37,16 +37,24 @@ class Airtime
     protected $method;
 
     /**
+     * Purchase Application.
+     *
+     * @var
+     */
+    protected $app;
+
+    /**
      * Make the initializations required to purchase airtime
      * @param $amount
      * @param $phone
      * @param $method
      */
-    public function __construct($amount, $phone, $method = PaymentMethods::MPESA)
+    public function __construct($amount, $phone, $method = PaymentMethods::MPESA, $app = 'USSD')
     {
         $this->amount = $amount;
         $this->phone = ltrim(PhoneNumber::make($phone, 'KE')->formatE164(), '+');
         $this->method = $method;
+        $this->app = $app;
     }
 
     public function purchase($targetNumber = null, $mpesaNumber = null)
@@ -58,12 +66,15 @@ class Airtime
 
         switch ($this->method) {
             case PaymentMethods::MPESA:
-                $this->mpesa($targetNumber, $mpesaNumber);
+                $res = $this->mpesa($targetNumber, $mpesaNumber);
                 break;
             case PaymentMethods::VOUCHER:
-                $this->voucher($targetNumber);
+                $res = $this->voucher($targetNumber);
                 break;
         }
+
+        if ($this->app == "WEB")
+            return $res;
 
     }
 
@@ -75,6 +86,13 @@ class Airtime
         $stkResponse = mpesa_request($number, $this->amount, MpesaReferences::AIRTIME, $description);
 
 //        error_log(json_encode($stkResponse));
+
+//        TODO: Should we only save the safaricom number?
+        $accountRep = new AccountRepository();
+        $account = $accountRep->create([
+            'phone' => $number
+        ]);
+
 
         $accountRep = new AccountRepository();
         $account = $accountRep->create([
@@ -103,6 +121,8 @@ class Airtime
         ]);
 
         $transaction->payment()->save($payment);
+
+        return $transaction;
     }
 
     public function voucher($targetNumber = null)

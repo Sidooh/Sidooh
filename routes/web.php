@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 
 Route::post('purchase/airtime', [\App\Http\Controllers\WebController::class, 'airtimePurchase'])->name('airtime.purchase');

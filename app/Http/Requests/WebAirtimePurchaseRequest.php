@@ -26,8 +26,9 @@ class WebAirtimePurchaseRequest extends FormRequest
         return [
             //
             'amount' => 'required|numeric|min:10|max:2000',
-            'recipient' => 'required|phone:KE',
+            'recipient' => 'required|phone:KE,UG',
             'mpesa_number' => ['required', 'phone:KE', 'regex:/(^(?:\+?254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$)/u'],
+            'nominee_number' => ['required', 'phone:KE', 'regex:/(^(?:\+?254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$)/u'],
 
         ];
     }

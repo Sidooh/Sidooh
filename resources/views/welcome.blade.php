@@ -172,9 +172,26 @@
                                 @enderror
 
                             </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="nominate">
-                                <label class="form-check-label" for="nominate">Nominate this number</label>
+                            <hr>
+                            <div class="form-group">
+                                <label for="nominee_number"
+                                       title="This number will be used to create an account and will be awarded earnings from the airtime transaction. Only Safaricom numbers are currently supported.">
+                                    Nominee
+                                    Number
+                                    <span class="fa fa-info-circle"
+                                          title="This number will be used to create an account and will be awarded earnings from the airtime transaction. Only Safaricom numbers are currently supported."></span>
+                                </label>
+                                <input type="tel" name="nominee_number" required value="{{ old('nominee_number') }}"
+                                       placeholder="Nominee Number"
+                                       title="254/07/7/01/1 123 12345" id="mpesa_number" class="form-control"
+                                       pattern="^(?:254|\+254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$">
+
+                                @error('nominee_number')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+
                             </div>
 
                             <button type="submit" class="button button-primary">Proceed</button>

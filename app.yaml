@@ -18,7 +18,7 @@ env_variables:
   APP_STORAGE: /tmp
   VIEW_COMPILED_PATH: /tmp
   APP_TIMEZONE: Africa/Nairobi
-  APP_URL: https://sidooh1.ew.r.appspot.com
+  APP_URL: https://master-dot-sidooh1.ew.r.appspot.com
 
 
   CACHE_DRIVER: file

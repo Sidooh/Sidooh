@@ -66,8 +66,8 @@ body {
 }
 
 body {
-    background: #648381;
-    font-family: "muli-regular", sans-serif;
+    background: #DFDFDF;
+    font-family: "avenir", sans-serif;
     font-size: 1.6rem;
     line-height: 1.875;
     color: #767676;
@@ -99,7 +99,7 @@ a:focus {
  * ------------------------------------------------------------------- */
 
 h1, h2, h3, h4, h5, h6, .h01, .h02, .h03, .h04, .h05, .h06 {
-    font-family: "montserrat-regular", sans-serif;
+    font-family: "avenir", sans-serif;
     color: #0F1B4C;
     font-style: normal;
     text-rendering: optimizeLegibility;
@@ -1545,7 +1545,7 @@ h1.intro-header::before {
     content: "";
     width: 2px;
     height: 42px;
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: #648381aa;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 12px;
@@ -1557,7 +1557,7 @@ h1.intro-header::before {
 
 .home-social-list li a,
 .home-social-list li a:visited {
-    color: #FFFFFF;
+    color: #648381;
 }
 
 .home-social-list li a:hover,

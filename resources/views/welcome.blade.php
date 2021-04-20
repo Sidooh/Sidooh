@@ -90,7 +90,7 @@
 
                 <h3 data-aos="fade-up" style="color: #0F1B4C;">Welcome to {{ config('app.name') }}</h3>
 
-                <h1 data-aos="fade-up" style="color: #64FA32;">
+                <h1 data-aos="fade-up" style="color: #648381;">
                     {{ config('services.sidooh.tagline') }}
                 </h1>
 

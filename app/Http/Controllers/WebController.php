@@ -48,6 +48,8 @@ class WebController extends Controller
             if ($transaction->payment) {
                 session(['payment' => true, 'payment_status' => $transaction->payment->status]);
             }
+
+            session(['stk' => null]);
         }
 
         return redirect()->route('home');

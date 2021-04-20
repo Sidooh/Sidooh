@@ -42,6 +42,10 @@
             margin-bottom: 1rem;
         }
 
+        p {
+            color: white;
+        }
+
         .warning {
             line-height: unset;
             color: white;
@@ -55,8 +59,8 @@
 
     <!-- favicons
         ================================================== -->
-    <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
-    <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('img/icon.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/icon.png') }}" type="image/png">
 
 </head>
 <body id="top">
@@ -84,13 +88,13 @@
         <div class="row contents">
             <div class="home-content-left">
 
-                <h3 data-aos="fade-up">Welcome to {{ config('app.name') }}</h3>
+                <h3 data-aos="fade-up" style="color: #0F1B4C;">Welcome to {{ config('app.name') }}</h3>
 
-                <h1 data-aos="fade-up">
+                <h1 data-aos="fade-up" style="color: #64FA32;">
                     {{ config('services.sidooh.tagline') }}
                 </h1>
 
-                <h4 data-aos="fade-up">
+                <h4 data-aos="fade-up" style="color: #648381;">
                     {{ config('services.sidooh.about') }}
                 </h4>
 
@@ -121,15 +125,30 @@
                         @endif
 
 
-                        @if(session('stk'))
+                        @if(session('stk') && !session('payment'))
                             <span class="warning">
                                         The page will refresh in a few seconds.
                             </span>
                             <script>
-                                setTimeout(() => {
-                                    window.location.replace({{ route('home') }})
-                                }, 10000)
+                                // window.onload = function() {
+                                setTimeout(function () {
+                                    window.location.replace("{{ route('airtime.purchase.result') }}")
+                                }, 10000);
+                                // };
                             </script>
+                        @endif
+
+                        @if(session('payment'))
+                            <span class="warning">
+                                {{ session('payment_status') }} Payment
+                            </span>
+
+                            @if(session('payment_status') == 'Failed')
+                                <p>Please try again.</p>
+                            @elseif (session('payment_status') == 'Complete')
+                                <p>Airtime purchase in progress, You will receive a confirmation SMS.</p>
+                            @endif
+                            {{ session(['payment' => null]) }}
                         @endif
 
 
@@ -206,13 +225,13 @@
 
     <ul class="home-social-list">
         <li>
-            <a href="https://www.facebook.com/SidoohApp"><i class="fa fa-facebook-square"></i></a>
+            <a target="_blank" href="https://www.facebook.com/SidoohApp"><i class="fa fa-facebook-square"></i></a>
         </li>
         <li>
-            <a href="https://twitter.com/SidoohApp"><i class="fa fa-twitter"></i></a>
+            <a target="_blank" href="https://twitter.com/SidoohApp"><i class="fa fa-twitter"></i></a>
         </li>
         <li>
-            <a href="https://www.instagram.com/sidoohapp/ "><i class="fa fa-instagram"></i></a>
+            <a target="_blank" href="https://www.instagram.com/sidoohapp/ "><i class="fa fa-instagram"></i></a>
         </li>
 
     </ul>

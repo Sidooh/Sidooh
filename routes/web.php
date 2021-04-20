@@ -17,3 +17,5 @@ Route::get('/', function () {
 
 
 Route::post('purchase/airtime', [\App\Http\Controllers\WebController::class, 'airtimePurchase'])->name('airtime.purchase');
+
+Route::get('airtime/result', [\App\Http\Controllers\WebController::class, 'airtimePurchaseResult'])->name('airtime.purchase.result');

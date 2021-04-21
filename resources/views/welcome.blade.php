@@ -269,7 +269,8 @@
 
 {{--</body>--}}
 
-<body style="background: url('{{ asset('img/banner.png') }}') no-repeat; background-position: center;">
+<body
+    style="background: url('{{ asset('img/banner.png') }}') no-repeat; background-position: center; background-size: contain;">
 
 </body>
 </html>

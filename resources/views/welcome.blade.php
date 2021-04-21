@@ -77,195 +77,199 @@
         gtag('config', 'G-B5Q2DQ8JF2');
     </script>
 </head>
-<body id="top">
+{{--<body id="top">--}}
 
-<!-- header
-================================================== -->
-<header id="header" class="row">
+{{--<!-- header--}}
+{{--================================================== -->--}}
+{{--<header id="header" class="row">--}}
 
-    <div class="header-logo">
-        <a href="/">Sidooh</a>
-    </div>
+{{--    <div class="header-logo">--}}
+{{--        <a href="/">Sidooh</a>--}}
+{{--    </div>--}}
 
-    {{--    <a class="header-menu-toggle" href="#"><span>Menu</span></a>--}}
+{{--    --}}{{--    <a class="header-menu-toggle" href="#"><span>Menu</span></a>--}}
 
-</header> <!-- /header -->
-
-
-<!-- home
-================================================== -->
-<section id="home">
-
-    {{--    <div class="overlay"></div>--}}
-    <div class="home-content">
-
-        <div class="row contents">
-            <div class="home-content-left">
-
-                <h3 data-aos="fade-up" style="color: #0F1B4C;">Welcome to {{ config('app.name') }}</h3>
-
-                <h1 data-aos="fade-up" style="color: #648381;">
-                    {{ config('services.sidooh.tagline') }}
-                </h1>
-
-                <h4 data-aos="fade-up" style="color: #648381;">
-                    {{ config('services.sidooh.about') }}
-                </h4>
-
-            </div>
-
-            <div class="home-image-right mx-auto">
-                <div class="row pt-5 mx-auto" style="background: #F5B700; border-radius: 1%">
-                    <div class="mx-auto">
-
-                        <h2 style="color: rgba(0, 0, 0, 0.8); font-size: 1.6rem;
-                            line-height: 1.5;
-                            text-transform: uppercase;
-                            letter-spacing: .2rem;
-                            margin-bottom: 2.4rem;">Buy Airtime</h2>
-
-                        <hr>
-
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-
-                        @if (session('warning'))
-                            <div class="alert alert-danger">
-                                {{ session('warning') }}
-                            </div>
-                        @endif
+{{--</header> <!-- /header -->--}}
 
 
-                        @if(session('stk') && !session('payment'))
-                            <span class="warning">
-                                        The page will refresh in a few seconds.
-                            </span>
-                            <script>
-                                // window.onload = function() {
-                                setTimeout(function () {
-                                    window.location.replace("{{ route('airtime.purchase.result') }}")
-                                }, 10000);
-                                // };
-                            </script>
-                        @endif
+{{--<!-- home--}}
+{{--================================================== -->--}}
+{{--<section id="home">--}}
 
-                        @if(session('payment'))
-                            <span class="warning">
-                                {{ session('payment_status') }} Payment
-                            </span>
+{{--    --}}{{--    <div class="overlay"></div>--}}
+{{--    <div class="home-content">--}}
 
-                            @if(session('payment_status') == 'Failed')
-                                <p>Please try again.</p>
-                            @elseif (session('payment_status') == 'Complete')
-                                <p>Airtime purchase in progress, You will receive a confirmation SMS.</p>
-                            @endif
-                            {{ session(['payment' => null]) }}
-                        @endif
+{{--        <div class="row contents">--}}
+{{--            <div class="home-content-left">--}}
+
+{{--                <h3 data-aos="fade-up" style="color: #0F1B4C;">Welcome to {{ config('app.name') }}</h3>--}}
+
+{{--                <h1 data-aos="fade-up" style="color: #648381;">--}}
+{{--                    {{ config('services.sidooh.tagline') }}--}}
+{{--                </h1>--}}
+
+{{--                <h4 data-aos="fade-up" style="color: #648381;">--}}
+{{--                    {{ config('services.sidooh.about') }}--}}
+{{--                </h4>--}}
+
+{{--            </div>--}}
+
+{{--            <div class="home-image-right mx-auto">--}}
+{{--                <div class="row pt-5 mx-auto" style="background: #F5B700; border-radius: 1%">--}}
+{{--                    <div class="mx-auto">--}}
+
+{{--                        <h2 style="color: rgba(0, 0, 0, 0.8); font-size: 1.6rem;--}}
+{{--                            line-height: 1.5;--}}
+{{--                            text-transform: uppercase;--}}
+{{--                            letter-spacing: .2rem;--}}
+{{--                            margin-bottom: 2.4rem;">Buy Airtime</h2>--}}
+
+{{--                        <hr>--}}
+
+{{--                        @if (session('success'))--}}
+{{--                            <div class="alert alert-success">--}}
+{{--                                {{ session('success') }}--}}
+{{--                            </div>--}}
+{{--                        @endif--}}
+
+{{--                        @if (session('warning'))--}}
+{{--                            <div class="alert alert-danger">--}}
+{{--                                {{ session('warning') }}--}}
+{{--                            </div>--}}
+{{--                        @endif--}}
 
 
-                        <form method="POST" action="{{ route('airtime.purchase') }}">
-                            @csrf
-                            <div class="form-group">
-                                <label for="recipient">Recipient</label>
-                                <input type="tel" class="form-control" name="recipient" placeholder="Recipient's Number"
-                                       required aria-describedby="recipientHelp" id="recipient"
-                                       value="{{ old('recipient') }}">
-                                @error('recipient')
-                                <span class="warning">
-                                        {{ $message }}
-                                    </span>
-                                @enderror
+{{--                        @if(session('stk') && !session('payment'))--}}
+{{--                            <span class="warning">--}}
+{{--                                        The page will refresh in a few seconds.--}}
+{{--                            </span>--}}
+{{--                            <script>--}}
+{{--                                // window.onload = function() {--}}
+{{--                                setTimeout(function () {--}}
+{{--                                    window.location.replace("{{ route('airtime.purchase.result') }}")--}}
+{{--                                }, 10000);--}}
+{{--                                // };--}}
+{{--                            </script>--}}
+{{--                        @endif--}}
 
-                            </div>
-                            <div class="form-group">
-                                <label for="amount">Amount</label>
+{{--                        @if(session('payment'))--}}
+{{--                            <span class="warning">--}}
+{{--                                {{ session('payment_status') }} Payment--}}
+{{--                            </span>--}}
 
-                                <input type="number" name="amount" placeholder="Amount" required min="10" max="2000"
-                                       id="amount" class="form-control" value="{{ old('amount') }}">
-                                @error('amount')
-                                <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="mpesa_number">Mpesa Number</label>
-                                <input type="tel" name="mpesa_number" required value="{{ old('mpesa_number') }}"
-                                       placeholder="Mpesa Number"
-                                       title="254/07/7/01/1 123 12345" id="mpesa_number" class="form-control"
-                                       pattern="^(?:254|\+254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$">
+{{--                            @if(session('payment_status') == 'Failed')--}}
+{{--                                <p>Please try again.</p>--}}
+{{--                            @elseif (session('payment_status') == 'Complete')--}}
+{{--                                <p>Airtime purchase in progress, You will receive a confirmation SMS.</p>--}}
+{{--                            @endif--}}
+{{--                            {{ session(['payment' => null]) }}--}}
+{{--                        @endif--}}
 
-                                @error('mpesa_number')
-                                <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
 
-                            </div>
-                            <hr>
-                            <div class="form-group">
-                                <label for="nominee_number"
-                                       title="This number will be used to create an account and will be awarded earnings from the airtime transaction. Only Safaricom numbers are currently supported.">
-                                    Nominee
-                                    Number
-                                    <span class="fa fa-info-circle"
-                                          title="This number will be used to create an account and will be awarded earnings from the airtime transaction. Only Safaricom numbers are currently supported."></span>
-                                </label>
-                                <input type="tel" name="nominee_number" required value="{{ old('nominee_number') }}"
-                                       placeholder="Nominee Number"
-                                       title="254/07/7/01/1 123 12345" id="mpesa_number" class="form-control"
-                                       pattern="^(?:254|\+254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$">
+{{--                        <form method="POST" action="{{ route('airtime.purchase') }}">--}}
+{{--                            @csrf--}}
+{{--                            <div class="form-group">--}}
+{{--                                <label for="recipient">Recipient</label>--}}
+{{--                                <input type="tel" class="form-control" name="recipient" placeholder="Recipient's Number"--}}
+{{--                                       required aria-describedby="recipientHelp" id="recipient"--}}
+{{--                                       value="{{ old('recipient') }}">--}}
+{{--                                @error('recipient')--}}
+{{--                                <span class="warning">--}}
+{{--                                        {{ $message }}--}}
+{{--                                    </span>--}}
+{{--                                @enderror--}}
 
-                                @error('nominee_number')
-                                <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+{{--                            </div>--}}
+{{--                            <div class="form-group">--}}
+{{--                                <label for="amount">Amount</label>--}}
 
-                            </div>
+{{--                                <input type="number" name="amount" placeholder="Amount" required min="10" max="2000"--}}
+{{--                                       id="amount" class="form-control" value="{{ old('amount') }}">--}}
+{{--                                @error('amount')--}}
+{{--                                <span class="invalid-feedback" role="alert">--}}
+{{--                                        <strong>{{ $message }}</strong>--}}
+{{--                                    </span>--}}
+{{--                                @enderror--}}
+{{--                            </div>--}}
+{{--                            <div class="form-group">--}}
+{{--                                <label for="mpesa_number">Mpesa Number</label>--}}
+{{--                                <input type="tel" name="mpesa_number" required value="{{ old('mpesa_number') }}"--}}
+{{--                                       placeholder="Mpesa Number"--}}
+{{--                                       title="254/07/7/01/1 123 12345" id="mpesa_number" class="form-control"--}}
+{{--                                       pattern="^(?:254|\+254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$">--}}
 
-                            <button type="submit" class="button button-primary">Proceed</button>
-                        </form>
+{{--                                @error('mpesa_number')--}}
+{{--                                <span class="invalid-feedback" role="alert">--}}
+{{--                                        <strong>{{ $message }}</strong>--}}
+{{--                                    </span>--}}
+{{--                                @enderror--}}
 
-                    </div>
-                </div>
-            </div>
-        </div>
+{{--                            </div>--}}
+{{--                            <hr>--}}
+{{--                            <div class="form-group">--}}
+{{--                                <label for="nominee_number"--}}
+{{--                                       title="This number will be used to create an account and will be awarded earnings from the airtime transaction. Only Safaricom numbers are currently supported.">--}}
+{{--                                    Nominee--}}
+{{--                                    Number--}}
+{{--                                    <span class="fa fa-info-circle"--}}
+{{--                                          title="This number will be used to create an account and will be awarded earnings from the airtime transaction. Only Safaricom numbers are currently supported."></span>--}}
+{{--                                </label>--}}
+{{--                                <input type="tel" name="nominee_number" required value="{{ old('nominee_number') }}"--}}
+{{--                                       placeholder="Nominee Number"--}}
+{{--                                       title="254/07/7/01/1 123 12345" id="mpesa_number" class="form-control"--}}
+{{--                                       pattern="^(?:254|\+254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$">--}}
 
-    </div> <!-- end home-content -->
+{{--                                @error('nominee_number')--}}
+{{--                                <span class="invalid-feedback" role="alert">--}}
+{{--                                        <strong>{{ $message }}</strong>--}}
+{{--                                    </span>--}}
+{{--                                @enderror--}}
 
-    <ul class="home-social-list">
-        <li>
-            <a target="_blank" href="https://www.facebook.com/SidoohApp"><i class="fa fa-facebook-square"></i></a>
-        </li>
-        <li>
-            <a target="_blank" href="https://twitter.com/SidoohApp"><i class="fa fa-twitter"></i></a>
-        </li>
-        <li>
-            <a target="_blank" href="https://www.instagram.com/sidoohapp/ "><i class="fa fa-instagram"></i></a>
-        </li>
+{{--                            </div>--}}
 
-    </ul>
-    <!-- end home-social-list -->
+{{--                            <button type="submit" class="button button-primary">Proceed</button>--}}
+{{--                        </form>--}}
 
-</section> <!-- end home -->
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
 
-<div id="preloader">
-    <div id="loader"></div>
-</div>
+{{--    </div> <!-- end home-content -->--}}
 
-<!-- Java Script
-    ================================================== -->
-<script src="{{ asset('js/jquery-2.1.3.min.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
-        crossorigin="anonymous"></script>
-<script src="{{ asset('js/plugins.js') }}"></script>
-<script src="{{ asset('js/main.js') }}"></script>
+{{--    <ul class="home-social-list">--}}
+{{--        <li>--}}
+{{--            <a target="_blank" href="https://www.facebook.com/SidoohApp"><i class="fa fa-facebook-square"></i></a>--}}
+{{--        </li>--}}
+{{--        <li>--}}
+{{--            <a target="_blank" href="https://twitter.com/SidoohApp"><i class="fa fa-twitter"></i></a>--}}
+{{--        </li>--}}
+{{--        <li>--}}
+{{--            <a target="_blank" href="https://www.instagram.com/sidoohapp/ "><i class="fa fa-instagram"></i></a>--}}
+{{--        </li>--}}
 
+{{--    </ul>--}}
+{{--    <!-- end home-social-list -->--}}
+
+{{--</section> <!-- end home -->--}}
+
+{{--<div id="preloader">--}}
+{{--    <div id="loader"></div>--}}
+{{--</div>--}}
+
+{{--<!-- Java Script--}}
+{{--    ================================================== -->--}}
+{{--<script src="{{ asset('js/jquery-2.1.3.min.js') }}"></script>--}}
+{{--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"--}}
+{{--        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"--}}
+{{--        crossorigin="anonymous"></script>--}}
+{{--<script src="{{ asset('js/plugins.js') }}"></script>--}}
+{{--<script src="{{ asset('js/main.js') }}"></script>--}}
+
+
+{{--</body>--}}
+
+<body style="background: url('{{ asset('img/banner.png') }}') no-repeat; background-position: center;">
 
 </body>
 </html>

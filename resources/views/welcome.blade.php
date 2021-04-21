@@ -12,9 +12,9 @@
    ================================================== -->
     <meta charset="utf-8">
     <meta name="author" content="Sidooh">
-    <meta name="description" content="Sidooh">
+    <meta name="description" content="{{ config('services.sidooh.tagline') }}">
 
-    <title>{{ config('app.name', 'Sidooh') }}</title>
+    <title>{{ config('app.name', 'Sidooh') }} - Welcome!</title>
 
     <!-- mobile specific metas
        ================================================== -->
@@ -63,6 +63,19 @@
     <link rel="shortcut icon" href="{{ asset('img/icon.png') }}" type="image/png">
     <link rel="icon" href="{{ asset('img/icon.png') }}" type="image/png">
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B5Q2DQ8JF2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-B5Q2DQ8JF2');
+    </script>
 </head>
 <body id="top">
 
@@ -105,11 +118,11 @@
                 <div class="row pt-5 mx-auto" style="background: #F5B700; border-radius: 1%">
                     <div class="mx-auto">
 
-                        <h3 style="color: rgba(0, 0, 0, 0.8); font-size: 1.6rem;
+                        <h2 style="color: rgba(0, 0, 0, 0.8); font-size: 1.6rem;
                             line-height: 1.5;
                             text-transform: uppercase;
                             letter-spacing: .2rem;
-                            margin-bottom: 2.4rem;">Buy Airtime</h3>
+                            margin-bottom: 2.4rem;">Buy Airtime</h2>
 
                         <hr>
 

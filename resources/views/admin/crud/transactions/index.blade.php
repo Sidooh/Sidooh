@@ -78,7 +78,7 @@
                                 <a href="{{ route('admin.accounts.show', $transaction->account ) }}">{{ $transaction->account->phone }}</a>
                             </td>
                             <td class="align-middle white-space-nowrap product">
-                                {{ $transaction->description }}
+                                <a href="{{ route('admin.transactions.show', $transaction ) }}">{{ $transaction->description }}</a>
                             </td>
                             <td class="align-middle text-end amount">{{ format_cur($transaction->amount) }}</td>
 

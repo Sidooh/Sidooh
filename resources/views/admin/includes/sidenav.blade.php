@@ -1,5 +1,6 @@
 {{-- SIDE NAV --}}
 {{-- TODO: Fix sidenav Icons --}}
+{{-- TODO: Add Active links --}}
 <nav class="navbar navbar-light navbar-vertical navbar-expand-xl" style="display: none;">
     <script>
         var navbarStyle = localStorage.getItem("navbarStyle");

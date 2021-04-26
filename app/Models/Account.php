@@ -76,6 +76,11 @@ class Account extends Model
         return $this->hasOne(Subscription::class)->active();
     }
 
+    public function referrals()
+    {
+        return $this->hasMany(Referral::class);
+    }
+
     public function pending_referrals()
     {
         return $this->hasMany(Referral::class)->pending();

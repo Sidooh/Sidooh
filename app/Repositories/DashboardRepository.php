@@ -36,7 +36,6 @@ class DashboardRepository
     }
 
     public function statistics()
-
     {
 
 //        1st: Get all payments, split by success or failure (Today) - total and hourly

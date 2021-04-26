@@ -79,8 +79,14 @@ class AccountController extends Controller
 ////        Log::info($account->childrenAndSelf);
 //        Log::info($account->descendants);
 ////        Log::info($account->descendantsAndSelf);
+///
 
-        return new AccountResource($account);
+        $account->load(['user', 'referrer']);
+        $this->account->nth_level_referrals($account, 5);
+
+        $data = $this->account->statistics($account);
+
+        return view('admin.crud.accounts.show', compact('account', 'data'));
     }
 
     /**

@@ -69,7 +69,7 @@
                             </td>
                             <td class="phone align-middle white-space-nowrap py-2">
 
-                                <a href="tel:{{ $account->phone }}">{{ $account->phone }}</a>
+                                <a href="{{ route('admin.accounts.show', $account ) }}">{{ $account->phone }}</a>
 
                             </td>
                             <td class="name align-middle white-space-nowrap py-2">

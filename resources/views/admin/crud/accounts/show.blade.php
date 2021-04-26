@@ -298,21 +298,25 @@
 
                                 <td class="align-middle text-center fs-0 white-space-nowrap payment">
 
-                                    @if($transaction->payment->status === 'Complete')
-                                        <span class="badge badge rounded-pill badge-soft-success">
-                                        <span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span>
+                                    @if($transaction->payment)
+                                        @if($transaction->payment->status === 'Complete')
+                                            <span class="badge badge rounded-pill badge-soft-success">
+                                            <span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span>
 
-                                @elseif($transaction->payment->status === 'Failed')
-                                                <span class="badge badge rounded-pill badge-soft-secondary">
-                                        <span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span>
+                                        @elseif($transaction->payment->status === 'Failed')
+                                                    <span class="badge badge rounded-pill badge-soft-secondary">
+                                                <span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span>
 
-                                @else
-                                                        <span class="badge badge rounded-pill badge-soft-warning">
-                                        <span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span>
+                                        @else
+                                                            <span class="badge badge rounded-pill badge-soft-warning">
+                                                <span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span>
 
-                                @endif
-                                                            {{ $transaction->payment->status }}
-                                </span>
+                                        @endif
+                                                                {{ $transaction->payment->status }}
+                                        </span>
+                                                            @else
+                                                                No payment found
+                                        @endif
                                 </td>
                                 <td class="align-middle text-center fs-0 white-space-nowrap payment">
 

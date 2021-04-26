@@ -403,4 +403,19 @@
             </div>
         </div>
 
+        <div class="row g-0">
+            @foreach($account->sub_accounts as $acc)
+                <div class="col-lg-4 pe-lg-2">
+                    <div class="card h-100 bg-line-chart-gradient">
+                        <div class="card-header bg-transparent light">
+                            <h5 class="text-white">{{ $acc->type }}</h5>
+                            <div class="real-time-user display-2 fw-normal text-white"
+                                 data-countup='{"endValue":{{ $acc->balance }},"prefix":"KES ","decimalPlaces":"2"}'>0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
 @endsection

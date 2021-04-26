@@ -34,7 +34,7 @@ class AirtimePurchaseFailed
         $phone = ltrim($event->airtime_response->phoneNumber, '+');
         $account = $event->airtime_response->request->transaction->account;
 
-        $amount = str_replace(' ', '', explode(".", $event->airtime_response->amount)[0]);
+        $amount = explode(".", explode(" ", $event->airtime_response->amount)[1])[0];
         $date = $event->airtime_response->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
 
 //        $transaction = new Transaction();

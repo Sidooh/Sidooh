@@ -218,11 +218,14 @@
                                             aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span
                                             class="fas fa-ellipsis-h fs--1"></span></button>
                                     <div class="dropdown-menu dropdown-menu-end border py-2"
-                                         aria-labelledby="dropdown0"><a
+                                         aria-labelledby="dropdown0">
+                                        <a
                                             class="dropdown-item"
-                                            href="{{ route('admin.transactions.show', $transaction ) }}">View</a><a
+                                            href="{{ route('admin.transactions.show', $transaction ) }}">View</a>
+                                        <a
                                             class="dropdown-item"
-                                            href="#!">Edit</a><a
+                                            href="#!">Edit</a>
+                                        <a
                                             class="dropdown-item" href="#!">Refund</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item text-warning" href="#!">Archive</a><a

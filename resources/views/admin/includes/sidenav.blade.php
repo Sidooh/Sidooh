@@ -45,17 +45,28 @@
                         <div class="col ps-0">
                             <hr class="mb-0 navbar-vertical-divider"/>
                         </div>
-                    </div><!-- parent pages--><a class="nav-link" href="{{ route('admin.users.index') }}" role="button">
+                    </div>
+                    <!-- parent pages-->
+                    <a class="nav-link" href="{{ route('admin.users.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-users"></span></span><span
                                 class="nav-link-text ps-1">Users</span></div>
-                    </a><!-- parent pages--><a class="nav-link" href="{{ route('admin.accounts.index') }}"
-                                               role="button">
+                    </a>
+                    <!-- parent pages-->
+                    <a class="nav-link" href="{{ route('admin.accounts.index') }}"
+                       role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-mobile-alt"></span></span><span
                                 class="nav-link-text ps-1">Accounts</span>
                         </div>
                     </a>
+                    <!-- parent pages-->
+                    <a class="nav-link" href="{{ route('admin.referrals.index') }}"
+                       role="button">
+                        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                    class="fas fa-send"></span></span><span
+                                class="nav-link-text ps-1">Referrals</span>
+                        </div>
 
                 </li>
                 <li class="nav-item">

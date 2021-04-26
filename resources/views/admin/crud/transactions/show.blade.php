@@ -157,6 +157,60 @@
                                 {{--                    </div>--}}
                             </div>
                         </div>
-    @endif
+                    @endif
 
+                    @if($transaction->airtime)
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="table-responsive fs--1">
+                                    <table class="table table-striped border-bottom">
+                                        <thead class="bg-200 text-900">
+                                        <tr>
+                                            <th class="border-0">Request Message</th>
+                                            <th class="border-0">Amount</th>
+                                            <th class="border-0">Discount</th>
+                                            <th class="border-0">Phone</th>
+                                            <th class="border-0">Response Message</th>
+                                            <th class="border-0 text-center">Status</th>
+                                            <th class="border-0">Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr class="border-200">
+                                            <td class="align-middle">
+                                                {{ $transaction->airtime->errorMessage }}
+                                            </td>
+                                            <td class="align-middle">{{ $transaction->airtime->totalAmount }}</td>
+                                            <td class="align-middle">{{ $transaction->airtime->totalDiscount }}</td>
+
+                                            <td class="align-middle">{{ $transaction->airtime->response ? $transaction->airtime->response->phoneNumber : '' }}</td>
+                                            <td class="align-middle">{{ $transaction->airtime->response ? $transaction->airtime->response->errorMessage : '' }}</td>
+                                            <td class="align-middle text-center">{{ $transaction->airtime->response ? $transaction->airtime->response->status : '' }}</td>
+                                            <td class="align-middle">{{ $transaction->airtime->response ? $transaction->airtime->response->created_at->format('M d, Y, h:m A') : $transaction->airtime->created_at->format('M d, Y, h:m A') }}</td>
+
+                                            <td>
+                                                {{--                                                @if($transaction->airtime->descriptor->status === 'Requested')--}}
+                                                {{--                                                    <form method="POST"--}}
+                                                {{--                                                          action="{{ route('admin.transactions.status.query') }}">--}}
+                                                {{--                                                        @csrf--}}
+                                                {{--                                                        <button class="btn btn-falcon-default rounded-pill me-1 mb-1"--}}
+                                                {{--                                                                type="submit">--}}
+                                                {{--                                                            <span class="fas fa-sync me-1"--}}
+                                                {{--                                                                  data-fa-transform="shrink-3"></span>Query Status--}}
+                                                {{--                                                        </button>--}}
+                                                {{--                                                    </form>--}}
+                                                {{--                                                @endif--}}
+                                            </td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                </div>
+            </div>
 @endsection

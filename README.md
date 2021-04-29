@@ -36,7 +36,59 @@ Coming soon
 
 ## Running on App Engine
 
-Coming soon
+### Requirements
+
+- GCP Project - will hold all required resources
+- App Engine - VM to hold our code/app
+- Cloud SQL - Will deal with our db
+- Cloud Build - For simple CD (Continuous Deployment)
+- Cloud APIs
+
+### Steps
+
+#### 1. Create a GCP Project
+
+- Create a project on GCP and enable billing. Billing will be required for appengine to run on flex environment
+
+
+- Enable APIS
+    - Compute Engine API (App Engine and SQL instances)
+    - Cloud Build API
+    - Cloud SQL Admin API
+    - App Engine Admin API
+    - Google App Engine Flexible Environment
+    - Cloud Deployment Manager V2 API
+
+#### 2. Set up App engine
+
+- Create an App Engine app with flex and other type selected
+- Deploy cron job after the first build with the following command on project directory `gcloud app deploy cron.yaml`
+
+#### 3. Set up Cloud SQL
+
+- Create an instance of mysql 8.0, 1vCPU, 3.75 GB Machine, and 10 GB SSD.
+- Create a database and take note of the connection string
+
+#### 4. Set up Cloud Build
+
+- In settings enable the `App Engine Admin` and `Service Account User` roles
+
+
+- Connect to the repository containing code
+
+
+- Optionally create a sample build trigger and modify as follows:
+    - ```
+      Name: appengine-cd-trigger (or name of branch-trigger)
+      Description: Invokes a build every time code is pushed to appengine-cd branch
+      Event: Push to new branch
+      Source: Repository connected earlier
+      Branch: ^appengine-cd$ (or otherwise)
+      Type: Cloud Build file
+      Location: Repository (__deployment__/cloudbuild.yaml) 
+      ```
+
+- Once all this is done, run the trigger manually for the first time and watch for any errors.
 
 ## Debugging
 

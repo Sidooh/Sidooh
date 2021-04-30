@@ -52,6 +52,9 @@ class TransactionRepository extends Model
 
             $transaction->save();
 
+            $transaction->payment->status = 'Complete';
+            $transaction->payment->save();
+
             $totalEarned = explode(" ", $airtime_request->totalDiscount)[1];
 
             event(new TransactionSuccessEvent($transaction, $totalEarned));

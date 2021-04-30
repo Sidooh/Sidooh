@@ -7,6 +7,7 @@
 //use Domain\Products\States\Order\Refunded;
 //use Domain\Products\States\Order\Rejected;
 //use Domain\Products\States\Order\Shipped;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 //use Illuminate\Support\Facades\Http;
@@ -41,6 +42,28 @@ if (!function_exists('format_cur')) {
         $fmt->setAttribute(NumberFormatter::FRACTION_DIGITS, $decimals);
 
         return numfmt_format_currency($fmt, $value, $currency);
+    }
+}
+
+if (!function_exists('localDate')) {
+    /**
+     * Format a date to the users local timezone with an optional format
+     * @param Carbon|string $date
+     * @param string $format
+     *
+     * @return mixed
+     */
+    function localDate($date, string $format = 'n/j/Y')
+    {
+        if (!$date instanceof Carbon) {
+            $date = new Carbon($date);
+        }
+
+//        if (session('timezone')) {
+        $date->setTimezone(session('timezone') ?? config('app.timezone'));
+//        }
+
+        return $date->format($format);
     }
 }
 

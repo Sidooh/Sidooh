@@ -29,6 +29,7 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'as' => 'admin.'], f
     Route::apiResource('transactions', 'TransactionController');
     Route::post('transactions/status/query', 'TransactionController@queryStatus')->name('transactions.status.query');
     Route::apiResource('referrals', 'ReferralController');
+    Route::apiResource('earnings', 'EarningController');
 
 
 });

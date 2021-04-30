@@ -122,7 +122,10 @@ class AccountRepository
         if (!$withAccount)
             return $account->descendants()->whereDepth('<=', $level)->get();
 
-        $account['level_referrals'] = $account->descendants()->whereDepth('<=', $level)->get()->groupBy('depth');
+        $refs = $account->descendants()->whereDepth('<=', $level)->get();
+        $account['level_referrals'] = $refs->groupBy('depth');
+
+        $account['total_level_referrals'] = count($refs);
 
         return $account;
     }
@@ -538,6 +541,7 @@ class AccountRepository
 //            'activeUsersLastDay' => $usersLastDay
 //        ];
 
+//        5th: Get account voucher
 
         return [
 //            'totalToday' => $totalToday,

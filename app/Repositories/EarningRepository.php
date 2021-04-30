@@ -149,4 +149,31 @@ class EarningRepository extends Model
 
     }
 
+    public function statistics()
+    {
+        $earnings = Earning::all();
+
+//        TODO: Make api call than can modify this to a chart on the dashboard
+
+        $totalSelf = $earnings->filter(fn($item) => $item->type == 'SELF')->sum('earnings');
+        $totalReferral = $earnings->filter(fn($item) => $item->type == 'REFERRAL')->sum('earnings');
+        $totalSystem = $earnings->filter(fn($item) => $item->type == 'SYSTEM')->sum('earnings');
+
+        $todayEarnings = $earnings->filter(fn($item) => $item->created_at->isToday());
+        $totalSelfToday = $todayEarnings->filter(fn($item) => $item->type == 'SELF')->sum('earnings');
+        $totalReferralToday = $todayEarnings->filter(fn($item) => $item->type == 'REFERRAL')->sum('earnings');
+        $totalSystemToday = $todayEarnings->filter(fn($item) => $item->type == 'SYSTEM')->sum('earnings');
+
+        return [
+            'totalSelf' => $totalSelf,
+            'totalReferral' => $totalReferral,
+            'totalSystem' => $totalSystem,
+
+            'totalSelfToday' => $totalSelfToday,
+            'totalReferralToday' => $totalReferralToday,
+            'totalSystemToday' => $totalSystemToday,
+
+            'recentEarnings' => $earnings->take(16)
+        ];
+    }
 }

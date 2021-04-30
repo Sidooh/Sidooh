@@ -81,7 +81,7 @@ class AccountController extends Controller
 ////        Log::info($account->descendantsAndSelf);
 ///
 
-        $account->load(['user', 'referrer', 'sub_accounts']);
+        $account->load(['user', 'referrer', 'sub_accounts', 'voucher']);
         $this->account->nth_level_referrals($account, 5);
 
         $data = $this->account->statistics($account);

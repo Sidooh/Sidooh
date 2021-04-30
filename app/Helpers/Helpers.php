@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Cache;
 
 //use Illuminate\Support\Facades\Http;
 
-//if (! function_exists('convertCurrency')) {
+//if (! function_exists('convert_currency')) {
 //    function convert_currency(string $currency)
 //    {
 //        $response = Cache::remember('currencies_' . $currency, 21600, function () use ($currency) {
@@ -45,7 +45,7 @@ if (!function_exists('format_cur')) {
     }
 }
 
-if (!function_exists('localDate')) {
+if (!function_exists('local_date')) {
     /**
      * Format a date to the users local timezone with an optional format
      * @param Carbon|string $date
@@ -53,7 +53,7 @@ if (!function_exists('localDate')) {
      *
      * @return mixed
      */
-    function localDate($date, string $format = 'n/j/Y')
+    function local_date($date, string $format = 'n/j/Y')
     {
         if (!$date instanceof Carbon) {
             $date = new Carbon($date);

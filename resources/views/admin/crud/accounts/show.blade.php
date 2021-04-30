@@ -8,7 +8,7 @@
         <!--/.bg-holder-->
         <div class="card-body position-relative">
             <h5>Account Details: #{{ $account->id }}</h5>
-            <p class="fs--1">{{ $account->created_at->format('M d, Y, h:m A') }}</p>
+            <p class="fs--1">{{ local_date($account->created_at, 'M d, Y, h:m A') }}</p>
             <div><strong class="me-2">Status: </strong>
                 @if($account->active)
                     <div class="badge rounded-pill badge-soft-success fs--2">
@@ -193,16 +193,20 @@
 
                                         @foreach($referrals as $referral)
                                             <a href="{{ route('admin.accounts.show', $referral) }}">
-                                                <span
-                                                    class="badge badge-soft-primary rounded-pill ms-2 mb-2 fs--1">
-                                                {{ $referral->phone }}
-                                            </span>
+                                                    <span
+                                                        class="badge badge-soft-primary rounded-pill ms-2 mb-2 fs--1">
+                                                    {{ $referral->phone }}
+                                                </span>
                                             </a>
                                         @endforeach
                                     </td>
-
                                 </tr>
                             @endforeach
+
+                            <tr class="border-200 border-top-2">
+                                <td colspan="3" class="align-middle text-center">Total
+                                    Referrals: {{ $account->total_level_referrals }}</td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -336,7 +340,7 @@
                                                             {{ $transaction->status }}
                                 </span>
                                 </td>
-                                <td class="align-middle text-end amount">{{ $transaction->updated_at->format('d/m/Y H:i') }}</td>
+                                <td class="align-middle text-end date">{{ local_date($transaction->updated_at, 'd/m/Y H:i') }}</td>
 
                                 <td class="align-middle white-space-nowrap">
                                     <div class="dropdown font-sans-serif">
@@ -404,12 +408,23 @@
         </div>
 
         <div class="row g-0">
+            <div class="col-md-4 col-lg-3 pe-lg-2">
+                <div class="card h-100 bg-line-chart-gradient">
+                    <div class="card-header bg-transparent light">
+                        <h5 class="text-white">VOUCHER</h5>
+                        <div class="real-time-user display-3 fw-normal text-white"
+                             data-countup='{"endValue":{{ $account->voucher->balance }},"prefix":"KES ","decimalPlaces":"0"}'>
+                            0
+                        </div>
+                    </div>
+                </div>
+            </div>
             @foreach($account->sub_accounts as $acc)
-                <div class="col-lg-4 pe-lg-2">
+                <div class="col-md-4 col-lg-3 pe-lg-2">
                     <div class="card h-100 bg-line-chart-gradient">
                         <div class="card-header bg-transparent light">
                             <h5 class="text-white">{{ $acc->type }}</h5>
-                            <div class="real-time-user display-2 fw-normal text-white"
+                            <div class="real-time-user display-3 fw-normal text-white"
                                  data-countup='{"endValue":{{ $acc->balance }},"prefix":"KES ","decimalPlaces":"2"}'>0
                             </div>
                         </div>

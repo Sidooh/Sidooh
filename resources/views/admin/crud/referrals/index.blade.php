@@ -112,7 +112,7 @@
                                                 {{ $referral->status }}
                                 </span>
                             </td>
-                            <td class="joined align-middle py-2">{{ $referral->created_at->format('d/m/Y H:i') }}</td>
+                            <td class="joined align-middle py-2">{{ local_date($referral->created_at, 'd/m/Y H:i') }}</td>
                             <td class="align-middle white-space-nowrap py-2 text-end">
                                 <div class="dropdown font-sans-serif">
                                     <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal"

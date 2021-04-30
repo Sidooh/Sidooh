@@ -2,12 +2,60 @@
 
 @section('content')
 
+    <div class="row g-3 mb-3">
+        <div class="col-sm-6 col-md-4">
+            <div class="card overflow-hidden" style="min-width: 12rem">
+                <div class="bg-holder bg-card"
+                     style="background-image:url( {{ asset('img/illustrations/corner-1.png') }} );"></div>
+                <!--/.bg-holder-->
+                <div class="card-body position-relative">
+                    <h6>Self Earnings<span
+                            class="badge badge-soft-warning rounded-pill ms-2">{{ $data['totalSelfToday'] }}</span>
+                    </h6>
+                    <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif text-warning"
+                         data-countup='{"endValue":{{ $data['totalSelf'] }},"decimalPlaces":0,"suffix":""}'>0
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="card overflow-hidden" style="min-width: 12rem">
+                <div class="bg-holder bg-card"
+                     style="background-image:url( {{ asset('img/illustrations/corner-2.png') }} );"></div>
+                <!--/.bg-holder-->
+                <div class="card-body position-relative">
+                    <h6>Referral Earnings<span
+                            class="badge badge-soft-info rounded-pill ms-2">{{ $data['totalReferralToday'] }}</span>
+                    </h6>
+                    <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif text-info"
+                         data-countup='{"endValue":{{ $data['totalReferral'] }},"decimalPlaces":0,"suffix":""}'>0
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card overflow-hidden" style="min-width: 12rem">
+                <div class="bg-holder bg-card"
+                     style="background-image:url( {{ asset('img/illustrations/corner-3.png') }} );"></div>
+                <!--/.bg-holder-->
+                <div class="card-body position-relative">
+                    <h6>System Earnings<span
+                            class="badge badge-soft-success rounded-pill ms-2">{{ $data['totalSystemToday'] }}</span>
+                    </h6>
+                    <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif"
+                         data-countup='{"endValue":{{ $data['totalSystem'] }},"prefix":"KES "}'>0
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="card mb-3" id="customersTable"
-         data-list='{"valueNames":["name","email","phone","status","joined"],"page":10,"pagination":true}'>
+         data-list='{"valueNames":["account","transaction","earning","type","date"],"page":10,"pagination":true}'>
         <div class="card-header">
             <div class="row flex-between-center">
                 <div class="col-4 col-sm-auto d-flex align-items-center pe-0">
-                    <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Transactions</h5>
+                    <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Earnings</h5>
                 </div>
                 <div class="col-8 col-sm-auto text-end ps-2">
                     <div class="d-none" id="table-customers-actions">
@@ -47,81 +95,58 @@
                                        data-bulk-select='{"body":"table-customers-body","actions":"table-customers-actions","replacedElement":"table-customers-replace-element"}'/>
                             </div>
                         </th>
-                        <th class="sort pe-1 align-middle white-space-nowrap" data-sort="name">Customer</th>
-                        <th class="sort pe-1 align-middle white-space-nowrap" data-sort="phone">Phone</th>
-                        <th class="sort pe-1 align-middle white-space-nowrap" data-sort="product">Product</th>
-                        <th class="sort pe-1 align-middle white-space-nowrap text-end" data-sort="amount">Amount</th>
-                        <th class="sort pe-1 align-middle white-space-nowrap text-center" data-sort="payment">Payment
-                        </th>
-                        <th class="sort pe-1 align-middle white-space-nowrap text-center" data-sort="status">Status</th>
+                        <th class="sort pe-1 align-middle white-space-nowrap" data-sort="account">Account</th>
+                        <th class="sort pe-1 align-middle white-space-nowrap" data-sort="transaction">Transaction</th>
+                        <th class="sort pe-1 align-middle white-space-nowrap text-end" data-sort="earning">Earning</th>
+                        <th class="sort pe-1 align-middle white-space-nowrap text-center" data-sort="type">Type</th>
                         <th class="sort pe-1 align-middle white-space-nowrap text-center" data-sort="date">Date</th>
                         <th class="no-sort pe-1 align-middle data-table-row-action"></th>
                     </tr>
                     </thead>
                     <tbody class="list" id="table-customers-body">
 
-                    @foreach($transactions as $transaction)
+                    @foreach($data['recentEarnings'] as $earning)
 
                         <tr class="btn-reveal-trigger">
                             <td class="align-middle" style="width: 28px;">
                                 <div class="form-check mb-0 d-flex align-items-center">
                                     <input class="form-check-input"
                                            type="checkbox"
-                                           id="recent-purchase-{{ $transaction->id }}"
+                                           id="recent-purchase-{{ $earning->id }}"
                                            data-bulk-select-row="data-bulk-select-row"/>
                                 </div>
                             </td>
-                            <th class="align-middle white-space-nowrap name">
-                                <a href="{{ $transaction->account->user ? route('admin.users.show', $transaction->account->user ) : route('admin.accounts.show', $transaction->account ) }}">{{ $transaction->account->user ? $transaction->account->user->name : $transaction->account->phone }}</a>
+                            <th class="align-middle white-space-nowrap account">
+                                <a href="{{ $earning->account ? route('admin.accounts.show', $earning->account ) : '' }}">
+                                    {{ $earning->account ? $earning->account->phone : '' }}
+                                </a>
                             </th>
-                            <td class="align-middle white-space-nowrap phone">
-                                <a href="{{ route('admin.accounts.show', $transaction->account ) }}">{{ $transaction->account->phone }}</a>
+                            <td class="align-middle white-space-nowrap transaction">
+                                <a href="{{ route('admin.transactions.show', $earning->transaction ) }}">{{ $earning->transaction->description }}</a>
                             </td>
-                            <td class="align-middle white-space-nowrap product">
-                                <a href="{{ route('admin.transactions.show', $transaction ) }}">{{ $transaction->description }}</a>
-                            </td>
-                            <td class="align-middle text-end amount">{{ format_cur($transaction->amount) }}</td>
+                            <td class="align-middle text-end earning">{{ format_cur($earning->earnings) }}</td>
 
-                            <td class="align-middle text-center fs-0 white-space-nowrap payment">
-                                @if($transaction->payment)
+                            <td class="align-middle text-center fs-0 white-space-nowrap type">
 
-                                    @if($transaction->payment->status === 'Complete')
-                                        <span class="badge badge rounded-pill badge-soft-success">
+                                @if($earning->type === 'SELF')
+                                    <span class="badge badge rounded-pill badge-soft-success">
                                             <span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span>
 
-                                    @elseif($transaction->payment->status === 'Failed')
-                                                <span class="badge badge rounded-pill badge-soft-secondary">
-                                            <span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span>
+                                    @elseif($earning->type === 'REFERRAL')
+                                            <span class="badge badge rounded-pill badge-soft-primary">
+                                            <span class="ms-1 fas fa-redo" data-fa-transform="shrink-2"></span>
 
                                     @else
-                                                        <span class="badge badge rounded-pill badge-soft-warning">
-                                            <span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span>
+                                                    <span class="badge badge rounded-pill badge-soft-secondary">
+                                            <span class="ms-1 fas fa-globe" data-fa-transform="shrink-2"></span>
 
                                     @endif
-                                                            {{ $transaction->payment->status }}
+                                                        {{ $earning->type }}
                                     </span>
 
-                                    @endif
                             </td>
-                            <td class="align-middle text-center fs-0 white-space-nowrap payment">
 
-                                @if($transaction->status === 'completed')
-                                    <span class="badge badge rounded-pill badge-soft-success">
-                                        <span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span>
-
-                                @elseif($transaction->status === 'failed')
-                                            <span class="badge badge rounded-pill badge-soft-secondary">
-                                        <span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span>
-
-                                @else
-                                                    <span class="badge badge rounded-pill badge-soft-warning">
-                                        <span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span>
-
-                                @endif
-                                                        {{ $transaction->status }}
-                                </span>
-                            </td>
-                            <td class="align-middle text-end amount">{{ local_date($transaction->updated_at, 'd/m/Y H:i') }}</td>
+                            <td class="align-middle text-end date">{{ local_date($earning->created_at, 'd/m/Y H:i') }}</td>
 
                             <td class="align-middle white-space-nowrap">
                                 <div class="dropdown font-sans-serif">

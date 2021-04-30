@@ -65,7 +65,7 @@
                     <a class="nav-link" href="{{ route('admin.referrals.index') }}"
                        role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                                    class="fas fa-send"></span></span><span
+                                    class="fas fa-redo"></span></span><span
                                 class="nav-link-text ps-1">Referrals</span>
                         </div>
 
@@ -83,6 +83,12 @@
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-globe"></span></span><span
                                 class="nav-link-text ps-1">All transactions</span>
+                        </div>
+                    </a>
+                    <a class="nav-link" href="{{ route('admin.earnings.index') }}" role="button">
+                        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                    class="fas fa-money-bill-wave"></span></span><span
+                                class="nav-link-text ps-1">Earnings</span>
                         </div>
                     </a>
 

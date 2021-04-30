@@ -97,7 +97,7 @@
                             </td>
 
                             <td class="status align-middle white-space-nowrap ps-5 py-2">{{ $account->active }}</td>
-                            <td class="joined align-middle py-2">{{ $account->created_at->format('d/m/Y H:i') }}</td>
+                            <td class="joined align-middle py-2">{{ local_date($account->created_at, 'd/m/Y H:i') }}</td>
                             <td class="align-middle white-space-nowrap py-2 text-end">
                                 <div class="dropdown font-sans-serif">
                                     <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal"

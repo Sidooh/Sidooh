@@ -208,7 +208,7 @@
                                                         {{ $transaction->status }}
                                 </span>
                             </td>
-                            <td class="align-middle text-end amount">{{ $transaction->updated_at->format('d/m/Y H:i') }}</td>
+                            <td class="align-middle text-end date">{{ local_date($transaction->updated_at, 'd/m/Y H:i') }}</td>
 
                             <td class="align-middle white-space-nowrap">
                                 <div class="dropdown font-sans-serif">

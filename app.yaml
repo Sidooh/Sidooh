@@ -64,7 +64,7 @@ env_variables:
 
   USSD_CODE: "*384*99#"
 
-  SIDOOH_TAGLINE: "Sidooh, Makes You Money on Every Purchase."
+  SIDOOH_TAGLINE: "Sidooh, Makes You Money with Every Purchase."
 
 
 # Use the connection name obtained when configuring your Cloud SQL instance.

@@ -49,13 +49,18 @@ class LoginController extends Controller
 
             $client = new Client();
 
-            $url = $request->ip() !== '127.0.0.1' ? 'http://ip-api.com/json/' . $request->ip() : 'http://ip-api.com/json';
+            Log::info("<=== $user->id Logged In - $request->ip() - " . now());
 
+//            $url = $request->ip() !== '127.0.0.1' ? 'http://ip-api.com/json/' . $request->ip() : 'http://ip-api.com/json';
+
+            $url = 'http://ip-api.com/json';
             $ipInfo = $client->get($url);
 
             $timezone = json_decode($ipInfo->getBody())->timezone ?? 'Africa/Nairobi';
 
             session(['timezone' => $timezone]);
+
+            Log::info($timezone . " ===>");
 
         } catch (\Exception $e) {
             Log::error($e->getMessage());

@@ -60,7 +60,7 @@ if (!function_exists('local_date')) {
         }
 
 //        if (session('timezone')) {
-        $date->setTimezone(session('timezone') ?? config('app.timezone'));
+        $date->setTimezone(session('timezone') ?? 'Africa/Nairobi');
 //        }
 
         return $date->format($format);

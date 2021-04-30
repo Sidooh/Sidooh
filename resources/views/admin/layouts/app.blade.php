@@ -35,7 +35,8 @@
                                 class="d-sm-none"/> 2021 &copy; <a href="{{ route('home') }}">Sidooh</a></p>
                     </div>
                     <div class="col-12 col-sm-auto text-center">
-                        <p class="mb-0 text-600">v1</p>
+                        <p class="mb-0 text-600">v1 <span class="d-none d-sm-inline-block">| </span><br
+                                class="d-sm-none"/> {{ session('timezone') }}</p>
                     </div>
                 </div>
             </footer>

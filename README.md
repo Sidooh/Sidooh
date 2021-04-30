@@ -58,6 +58,7 @@ Coming soon
     - App Engine Admin API
     - Google App Engine Flexible Environment
     - Cloud Deployment Manager V2 API
+    - Cloud Scheduler API (Cron jobs and scheduling)
 
 #### 2. Set up App engine
 
@@ -155,7 +156,7 @@ Run 5 terminals as follows:
       used to ssh into compute engine on GCP
 
 4. cloudsql terminal
-    - `./cloud_sql_proxy -instances=sidooh2:europe-west3:sidooh=tcp:3309`
+    - `./cloud_sql_proxy -instances=sidooh3:us-central1:sidooh=tcp:3309`
       used to connect to cloud sql instance on GCP. Needs gcloud installed
 
 5. Terminal

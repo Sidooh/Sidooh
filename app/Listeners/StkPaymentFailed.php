@@ -33,14 +33,17 @@ class StkPaymentFailed
 
         Log::info('----------------- STK Payment Failed (' . $stk->ResultDesc . ')');
 
+//        TODO: Make into a transaction/try catch?
         $p = Payment::wherePaymentId($stk->request->id)->firstOrFail();
 
         if ($p->status == 'Failed')
             return;
 
         $p->status = 'Failed';
-        $p->payable->status = 'Failed';
         $p->save();
+
+        $p->payable->status = 'Failed';
+        $p->payable->save();
 
         $message = "Sorry! We failed to complete your transaction. No amount was deducted from your account. We apologize for the inconvenience. Please try again.";
 

@@ -64,6 +64,7 @@ class AfricasTalkingApi
         // Get sms service
         $sms = $this->AT->sms();
 
+//        TODO: Should we add a try catch here to ensure message delivery or nah?
         // Use the service
         return $sms->send([
             'from' => config('services.at.sms.from'),

@@ -29,23 +29,19 @@ class AirtimePurchaseFailed
     {
         //
         Log::info('----------------- Airtime Purchase Failed');
+//        Adding failed airtime alert
+        (new AfricasTalkingApi())->sms(['254714611696', '254711414987'], "ERROR:AIRTIME\n{$event->airtime_response->phoneNumber}");
 
 //        TODO: Refund money to voucher
         $phone = ltrim($event->airtime_response->phoneNumber, '+');
         $account = $event->airtime_response->request->transaction->account;
 
         $amount = explode(".", explode(" ", $event->airtime_response->amount)[1])[0];
-        $date = $event->airtime_response->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
+        $date = $event->airtime_response->request->created_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
 
-//        $transaction = new Transaction();
-//
-//        $transaction->amount = $amount;
-//        $transaction->type = 'PAYMENT';
-//        $transaction->description = 'Airtime Refund';
-//        $transaction->account_id = $account->id;
-//        $transaction->product_id = $product->id;
-
-//        $transaction->save();
+        $transaction = new $event->airtime_response->request->transaction;
+        $transaction->status = 'reimbursed';
+        $transaction->save();
 
         $voucher = $account->voucher;
         $voucher->in += $amount;

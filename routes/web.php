@@ -30,6 +30,12 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'as' => 'admin.'], f
     Route::post('transactions/status/query', 'TransactionController@queryStatus')->name('transactions.status.query');
     Route::apiResource('referrals', 'ReferralController');
     Route::apiResource('earnings', 'EarningController');
+    Route::apiResource('vouchers', 'VoucherController');
+    Route::apiResource('sub-accounts', 'SubAccountController');
+    Route::apiResource('collective-investments', 'CollectiveInvestmentController');
+    Route::get('collective-investments/{collectiveInvestment}/sub-investments', 'CollectiveInvestmentController@subInvestments')->name('collective-investments.sub-investments');
+
+    Route::apiResource('sub-investments', 'SubInvestmentController');
 
 
 });

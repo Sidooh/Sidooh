@@ -34,4 +34,9 @@ class SubAccount extends Model
         return $this->in - $this->out;
     }
 
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
+
 }

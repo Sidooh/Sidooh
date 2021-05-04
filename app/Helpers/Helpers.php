@@ -55,6 +55,9 @@ if (!function_exists('local_date')) {
      */
     function local_date($date, string $format = 'n/j/Y')
     {
+        if (!$date)
+            return null;
+
         if (!$date instanceof Carbon) {
             $date = new Carbon($date);
         }

@@ -4,12 +4,14 @@
 namespace App\Repositories;
 
 use App\Events\ReferralJoinedEvent;
+use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Helpers\Sidooh\Report;
 use App\Models\Account;
 use App\Models\CollectiveInvestment;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
@@ -311,6 +313,12 @@ class AccountRepository extends Model
                 'amount' => $account->balance,
                 'account_id' => $account->id,
             ]);
+        }
+
+        try {
+            (new AfricasTalkingApi())->sms(['254714611696', '254711414987'], "STATUS:INTEREST\nPerforming Calculations.");
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
         }
 
 

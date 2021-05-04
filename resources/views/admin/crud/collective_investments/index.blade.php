@@ -72,7 +72,7 @@
                                 {{ format_cur($collectiveInvestment->amount) }}
                             </td>
                             <td class="rate align-middle white-space-nowrap py-2">
-                                {{ $collectiveInvestment->rate ? format_cur($collectiveInvestment->rate, 2, '') : null }}
+                                {{ $collectiveInvestment->interest_rate ? $collectiveInvestment->interest_rate . '%' : null }}
                             </td>
                             <td class="interest align-middle white-space-nowrap py-2">
                                 {{ $collectiveInvestment->interest ? format_cur($collectiveInvestment->interest) : null }}

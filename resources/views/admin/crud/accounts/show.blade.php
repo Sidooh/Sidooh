@@ -425,7 +425,7 @@
                         <div class="card-header bg-transparent light">
                             <h5 class="text-white">{{ $acc->type }}</h5>
                             <div class="real-time-user display-3 fw-normal text-white"
-                                 data-countup='{"endValue":{{ $acc->balance }},"prefix":"KES ","decimalPlaces":"2"}'>0
+                                 data-countup='{"endValue":{{ $acc->balance }},"prefix":"KES ","decimalPlaces":"4"}'>0
                             </div>
                         </div>
                     </div>

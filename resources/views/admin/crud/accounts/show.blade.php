@@ -103,7 +103,7 @@
                                 </div>
                             @else
                                 <p class="mb-0 fs--1">
-                                    <strong>Root level User</strong>
+                                    <strong>Root-level User</strong>
                                 </p>
                             @endif
                         </div>
@@ -176,7 +176,7 @@
                         <table class="table table-striped border-bottom">
                             <thead class="bg-200 text-900">
                             <tr>
-                                <th class="border-0">Level</th>
+                                <th class="border-0">Ripple</th>
                                 <th class="border-0 text-center">Total</th>
                                 <th class="border-0">Accounts</th>
                             </tr>
@@ -412,9 +412,9 @@
                 <div class="card h-100 bg-line-chart-gradient">
                     <div class="card-header bg-transparent light">
                         <h5 class="text-white">VOUCHER</h5>
-                        <div class="real-time-user display-3 fw-normal text-white"
+                        <div class="real-time-user display-4 fw-normal text-white"
                              data-countup='{"endValue":{{ $account->voucher->balance }},"prefix":"KES ","decimalPlaces":"0"}'>
-                            0
+                            0.0
                         </div>
                     </div>
                 </div>
@@ -424,8 +424,8 @@
                     <div class="card h-100 bg-line-chart-gradient">
                         <div class="card-header bg-transparent light">
                             <h5 class="text-white">{{ $acc->type }}</h5>
-                            <div class="real-time-user display-3 fw-normal text-white"
-                                 data-countup='{"endValue":{{ $acc->balance }},"prefix":"KES ","decimalPlaces":"4"}'>0
+                            <div class="real-time-user display-4 fw-normal text-white"
+                                 data-countup='{"endValue":{{ $acc->balance }},"prefix":"KES ","decimalPlaces":"4"}'>0.0
                             </div>
                         </div>
                     </div>

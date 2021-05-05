@@ -66,7 +66,7 @@
                        role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-redo"></span></span><span
-                                class="nav-link-text ps-1">Referrals</span>
+                                class="nav-link-text ps-1">Invites</span>
                         </div>
 
                 </li>

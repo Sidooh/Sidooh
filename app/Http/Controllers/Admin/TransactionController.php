@@ -10,6 +10,7 @@ use App\Repositories\TransactionRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
+use Samerior\MobileMoney\Mpesa\Database\Entities\MpesaBulkPaymentResponse;
 
 class TransactionController extends Controller
 {
@@ -69,9 +70,15 @@ class TransactionController extends Controller
     public function show(Transaction $transaction)
     {
         $transaction->load(['account']);
+//
+        if ($transaction->payment->subtype == 'STK')
+            $transaction->load(['payment.stkRequest.response']);
+        elseif ($transaction->payment->subtype == 'B2C') {
+            $transaction->load(['payment.b2cRequest']);
 
-        if ($transaction->payment->type == 'MPESA')
-            $transaction->load(['payment.descriptor.response']);
+            $transaction->payment->b2cRequest->response = MpesaBulkPaymentResponse::with('data')
+                ->where('ConversationID', $transaction->payment->b2cRequest->conversation_id)->first();
+        }
 
 //        return new TransactionResource($transaction);
 

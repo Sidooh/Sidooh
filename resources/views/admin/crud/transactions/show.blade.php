@@ -117,30 +117,63 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr class="border-200">
-                                            <td class="align-middle">
-                                                <h6 class="mb-0 text-nowrap">{{ $transaction->payment->descriptor->reference }}</h6>
-                                                <p class="mb-0">{{ $transaction->payment->descriptor->phone }}</p>
-                                            </td>
-                                            <td class="align-middle text-center">{{ $transaction->payment->descriptor->status }}</td>
-                                            <td class="align-middle">{{ $transaction->payment->descriptor->response ? $transaction->payment->descriptor->response->ResultDesc : null }}</td>
-                                            <td class="align-middle">{{ format_cur($transaction->payment->descriptor->amount) }}</td>
-                                            <td class="align-middle">{{ local_date($transaction->payment->descriptor->response ? $transaction->payment->descriptor->response->created_at : $transaction->payment->descriptor->created_at, 'M d, Y, h:m A') }}</td>
+                                        @if($transaction->payment->subtype == 'STK')
 
-                                            <td>
-                                                @if($transaction->payment->descriptor->status === 'Requested')
-                                                    <form method="POST"
-                                                          action="{{ route('admin.transactions.status.query') }}">
-                                                        @csrf
-                                                        <button class="btn btn-falcon-default rounded-pill me-1 mb-1"
+                                            <tr class="border-200">
+                                                <td class="align-middle">
+                                                    <h6 class="mb-0 text-nowrap">{{ $transaction->payment->stkRequest->reference }}</h6>
+                                                    <p class="mb-0">{{ $transaction->payment->stkRequest->phone }}</p>
+                                                </td>
+                                                <td class="align-middle text-center">{{ $transaction->payment->stkRequest->status }}</td>
+                                                <td class="align-middle">{{ $transaction->payment->stkRequest->response ? $transaction->payment->stkRequest->response->ResultDesc : null }}</td>
+                                                <td class="align-middle">{{ format_cur($transaction->payment->stkRequest->amount) }}</td>
+                                                <td class="align-middle">{{ local_date($transaction->payment->stkRequest->response ? $transaction->payment->stkRequest->response->created_at : $transaction->payment->stkRequest->created_at, 'M d, Y, h:m A') }}</td>
+
+                                                <td>
+                                                    @if($transaction->payment->stkRequest->status === 'Requested')
+                                                        <form method="POST"
+                                                              action="{{ route('admin.transactions.status.query') }}">
+                                                            @csrf
+                                                            <button
+                                                                class="btn btn-falcon-default rounded-pill me-1 mb-1"
                                                                 type="submit">
                                                             <span class="fas fa-sync me-1"
                                                                   data-fa-transform="shrink-3"></span>Query Status
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                            </td>
-                                        </tr>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </td>
+                                            </tr>
+
+                                        @elseif($transaction->payment->subtype == 'B2C')
+
+                                            <tr class="border-200">
+                                                <td class="align-middle">
+                                                    <h6 class="mb-0 text-nowrap">{{ $transaction->payment->b2cRequest->response ? $transaction->payment->b2cRequest->response->TransactionID : 'Requested' }}</h6>
+                                                    <p class="mb-0">{{ $transaction->payment->b2cRequest->phone }}</p>
+                                                </td>
+                                                <td class="align-middle text-center">{{ $transaction->payment->b2cRequest->response ? $transaction->payment->b2cRequest->response->ResultCode : null }}</td>
+                                                <td class="align-middle">{{ $transaction->payment->b2cRequest->response ? $transaction->payment->b2cRequest->response->ResultDesc : null }}</td>
+                                                <td class="align-middle">{{ format_cur($transaction->payment->b2cRequest->amount) }}</td>
+                                                <td class="align-middle">{{ local_date($transaction->payment->b2cRequest->response ? $transaction->payment->b2cRequest->response->created_at : $transaction->payment->b2cRequest->created_at, 'M d, Y, h:m A') }}</td>
+
+                                                <td>
+                                                    @if($transaction->payment->b2cRequest->status === 'Requested')
+                                                        <form method="POST"
+                                                              action="{{ route('admin.transactions.status.query') }}">
+                                                            @csrf
+                                                            <button
+                                                                class="btn btn-falcon-default rounded-pill me-1 mb-1"
+                                                                type="submit">
+                                                            <span class="fas fa-sync me-1"
+                                                                  data-fa-transform="shrink-3"></span>Query Status
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </td>
+                                            </tr>
+
+                                        @endif
 
                                         </tbody>
                                     </table>
@@ -150,7 +183,7 @@
                                 {{--                            <table class="table table-sm table-borderless fs--1">--}}
                                 {{--                                <tr class="border-top">--}}
                                 {{--                                    <th class="text-900">Total Requested:</th>--}}
-                                {{--                                    <td class="fw-semi-bold">{{ format_cur($transaction->payment->descriptor->response->Amount) }}</td>--}}
+                                {{--                                    <td class="fw-semi-bold">{{ format_cur($transaction->payment->b2cRequest->response->Amount) }}</td>--}}
                                 {{--                                </tr>--}}
                                 {{--                            </table>--}}
                                 {{--                        </div>--}}
@@ -209,6 +242,6 @@
                                 </div>
                             </div>
                         </div>
-                    @endif
+    @endif
 
 @endsection

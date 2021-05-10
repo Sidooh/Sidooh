@@ -151,7 +151,7 @@ class EarningRepository extends Model
 
     public function statistics()
     {
-        $earnings = Earning::all();
+        $earnings = Earning::latest()->get();
 
 //        TODO: Make api call than can modify this to a chart on the dashboard
 
@@ -173,7 +173,7 @@ class EarningRepository extends Model
             'totalReferralToday' => $totalReferralToday,
             'totalSystemToday' => $totalSystemToday,
 
-            'recentEarnings' => $earnings->last()->take(16)
+            'recentEarnings' => $earnings->take(16)
         ];
     }
 }

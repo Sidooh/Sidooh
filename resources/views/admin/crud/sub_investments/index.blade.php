@@ -83,11 +83,11 @@
 
                             </td>
                             <td class="amount align-middle white-space-nowrap py-2">
-                                {{ format_cur($subInvestment->amount) }}
+                                {{ format_cur($subInvestment->amount, 4) }}
                             </td>
 
                             <td class="interest align-middle white-space-nowrap py-2">
-                                {{ $subInvestment->interest ? format_cur($subInvestment->interest) : null }}
+                                {{ $subInvestment->interest ? format_cur($subInvestment->interest, 4) : null }}
                             </td>
 
                             <td class="joined align-middle py-2">{{ local_date($subInvestment->created_at, 'd/m/Y H:i') }}</td>

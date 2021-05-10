@@ -107,13 +107,13 @@
                                 </span>
                             </td>
                             <td class="name align-middle white-space-nowrap py-2">
-                                {{ format_cur($subAccount->in) }}
+                                {{ format_cur($subAccount->in, 4) }}
                             </td>
                             <td class="name align-middle white-space-nowrap py-2">
-                                {{ format_cur($subAccount->out) }}
+                                {{ format_cur($subAccount->out, 4) }}
                             </td>
                             <td class="name align-middle white-space-nowrap py-2">
-                                {{ format_cur($subAccount->balance) }}
+                                {{ format_cur($subAccount->balance, 4) }}
                             </td>
 
                             <td class="joined align-middle py-2">{{ local_date($subAccount->created_at, 'd/m/Y H:i') }}</td>

@@ -69,13 +69,13 @@
                                 </div>
                             </td>
                             <td class="amount align-middle white-space-nowrap py-2">
-                                {{ format_cur($collectiveInvestment->amount) }}
+                                {{ format_cur($collectiveInvestment->amount, 4) }}
                             </td>
                             <td class="rate align-middle white-space-nowrap py-2">
                                 {{ $collectiveInvestment->interest_rate ? $collectiveInvestment->interest_rate . '%' : null }}
                             </td>
                             <td class="interest align-middle white-space-nowrap py-2">
-                                {{ $collectiveInvestment->interest ? format_cur($collectiveInvestment->interest) : null }}
+                                {{ $collectiveInvestment->interest ? format_cur($collectiveInvestment->interest, 4) : null }}
                             </td>
 
                             <td class="joined align-middle py-2">{{ local_date($collectiveInvestment->investment_date, 'd/m/Y H:i') }}</td>

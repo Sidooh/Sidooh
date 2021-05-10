@@ -13,7 +13,8 @@
                             class="badge badge-soft-warning rounded-pill ms-2">{{ $data['totalSelfToday'] }}</span>
                     </h6>
                     <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif text-warning"
-                         data-countup='{"endValue":{{ $data['totalSelf'] }},"decimalPlaces":0,"suffix":""}'>0
+                         data-countup='{"endValue":{{ $data['totalSelf'] }},"decimalPlaces":2,"prefix":"KES ","suffix":""}'>
+                        0
                     </div>
                 </div>
             </div>
@@ -28,7 +29,8 @@
                             class="badge badge-soft-info rounded-pill ms-2">{{ $data['totalReferralToday'] }}</span>
                     </h6>
                     <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif text-info"
-                         data-countup='{"endValue":{{ $data['totalReferral'] }},"decimalPlaces":0,"suffix":""}'>0
+                         data-countup='{"endValue":{{ $data['totalReferral'] }},"decimalPlaces":2,"prefix":"KES ","suffix":""}'>
+                        0
                     </div>
                 </div>
             </div>
@@ -43,7 +45,7 @@
                             class="badge badge-soft-success rounded-pill ms-2">{{ $data['totalSystemToday'] }}</span>
                     </h6>
                     <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif"
-                         data-countup='{"endValue":{{ $data['totalSystem'] }},"prefix":"KES "}'>0
+                         data-countup='{"endValue":{{ $data['totalSystem'] }},"decimalPlaces":2,"prefix":"KES "}'>0
                     </div>
                 </div>
             </div>
@@ -124,7 +126,7 @@
                             <td class="align-middle white-space-nowrap transaction">
                                 <a href="{{ route('admin.transactions.show', $earning->transaction ) }}">{{ $earning->transaction->description }}</a>
                             </td>
-                            <td class="align-middle text-end earning">{{ format_cur($earning->earnings) }}</td>
+                            <td class="align-middle text-end earning">{{ format_cur($earning->earnings, 4) }}</td>
 
                             <td class="align-middle text-center fs-0 white-space-nowrap type">
 

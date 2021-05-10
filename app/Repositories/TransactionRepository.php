@@ -62,9 +62,9 @@ class TransactionRepository extends Model
 
     }
 
-    public function updateToSuccess(Transaction $transaction)
+    public function updateStatus(Transaction $transaction, $status = 'pending')
     {
-        $transaction->status = 'success';
+        $transaction->status = $status;
 
         $transaction->save();
     }

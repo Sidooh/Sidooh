@@ -33,9 +33,6 @@ class AirtimePurchaseSuccess
 
         Log::info('----------------- Airtime Purchase Success ');
 
-//        Log::info($event->airtime_response);
-//        Log::info($event->airtime_response->request->transaction);
-
         $phone = ltrim($event->airtime_response->phoneNumber, '+');
         $sender = $event->airtime_response->request->transaction->account->phone;
         $method = $event->airtime_response->request->transaction->payment->subtype;

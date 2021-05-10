@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\SubInvestment;
+
+use App\Http\Controllers\Controller;
+use App\Models\SubInvestment;
 use Illuminate\Http\Request;
 
 class SubInvestmentController extends Controller

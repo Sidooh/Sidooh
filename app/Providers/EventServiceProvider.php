@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Events\AirtimePurchaseFailedEvent;
 use App\Events\AirtimePurchaseSuccessEvent;
+use App\Events\B2CPaymentFailedEvent;
+use App\Events\B2CPaymentSuccessEvent;
 use App\Events\MerchantPurchaseEvent;
 use App\Events\ReferralJoinedEvent;
 use App\Events\SubscriptionPurchaseEvent;
@@ -24,8 +26,7 @@ use App\Listeners\VoucherPurchaseSuccess;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Samerior\MobileMoney\Mpesa\Events\B2cPaymentFailedEvent;
-use Samerior\MobileMoney\Mpesa\Events\B2cPaymentSuccessEvent;
+
 use Samerior\MobileMoney\Mpesa\Events\QueueTimeoutEvent;
 use Samerior\MobileMoney\Mpesa\Events\StkPushPaymentFailedEvent;
 use Samerior\MobileMoney\Mpesa\Events\StkPushPaymentSuccessEvent;
@@ -50,11 +51,12 @@ class EventServiceProvider extends ServiceProvider
             StkPaymentFailed::class, //your listening classs
         ],
 
-        B2cPaymentSuccessEvent::class => [
+//        TODO: Change these 2 B2C events once Samerior update library
+        B2CPaymentSuccessEvent::class => [
             B2CPaymentSent::class
         ],
 
-        B2cPaymentFailedEvent::class => [
+        B2CPaymentFailedEvent::class => [
             B2CPaymentFailed::class
         ],
 

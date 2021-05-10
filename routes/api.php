@@ -70,6 +70,11 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::post('services/test/stk', 'UssdController@stk')->name('services.test.stk');
     Route::post('services/test/b2c', 'UssdController@b2c')->name('services.test.b2c');
 
+    Route::post('testb2c', 'UssdController@test');
+
+//    TODO: Remove this and reset back once Samerior update library
+    Route::post('/payments/callbacks/result/{section?}', 'UssdController@b2cResult');
+
 });
 
 

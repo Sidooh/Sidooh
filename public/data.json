@@ -348,7 +348,7 @@
                 "title": "Withdraw",
                 "type": "int",
                 "value": "3",
-                "next": "redeem_amount"
+                "next": "confirm_pin_withdraw"
             },
             "4": {
                 "title": "Biz",
@@ -493,11 +493,11 @@
     },
     "redeem_amount": {
         "key": "redeem_amount",
-        "title": "Enter points you wish to withdraw:\n\n- Available Points: {$ap}\n- Sidooh Bonus Balance: {$sb}\n- Withdrawable Points: {$wp}",
+        "title": "Enter points you wish to withdraw (Min. 10):\n\n- Available Points: {$ap}\n- Withdrawable Points: {$wp}",
         "type": "OPEN",
         "next": "redeem_account",
         "options": {},
-        "option_type": "AMOUNT"
+        "option_type": "MIN|WITHDRAW"
     },
     "redeem_account": {
         "key": "redeem_account",
@@ -541,7 +541,7 @@
         "type": "OPEN",
         "next": "redeem_confirm",
         "options": {},
-        "option_type": "NUMBER"
+        "option_type": "MPESA"
     },
     "redeem_confirm": {
         "key": "redeem_confirm",
@@ -569,7 +569,7 @@
     },
     "redeem_confirm_pin": {
         "key": "confirm_pin",
-        "title": "Please enter your Sidooh PIN",
+        "title": "Please enter your Sidooh PIN again to confirm this transaction.",
         "type": "OPEN",
         "next": "redeem_end",
         "options": {},
@@ -585,6 +585,14 @@
         "title": "Please enter your Sidooh PIN",
         "type": "OPEN",
         "next": "check_balance",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "confirm_pin_withdraw": {
+        "key": "confirm_pin_withdraw",
+        "title": "Please enter your Sidooh PIN",
+        "type": "OPEN",
+        "next": "redeem_amount",
         "options": {},
         "option_type": "PIN"
     },

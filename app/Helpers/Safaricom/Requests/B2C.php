@@ -201,4 +201,6 @@ class B2C extends MpesaClient
 
         return $response = $this->call($this->endPoint, ['json' => $parameters]);
     }
+
+
 }

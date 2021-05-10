@@ -101,13 +101,13 @@ return [
         * Make sure this was the user who was used to 'GO LIVE'
         * https://org.ke.m-pesa.com/
         */
-        'initiator' => 'Ngethe Sidney',
+        'initiator' => env('MPESA_B2C_INITIATOR'),
         /*
          * The user security credential.
          * Go to https://developer.safaricom.co.ke/test_credentials and paste your initiator password to generate
          * security credential
          */
-        'security_credential' => 'NuaLznkkv0eEG0g51dESOPbAIg5IpAMRJSM74gO1FMhk+d36su7S2ND0mrlmE2XwMO0Gz0sk4NTaDpPGVK5VsUwQChsXbixmO3JL2TTEAWAVq/YNO6GN3sj6L/+654HzRufM2UKifuTQdBY3FitxFDMjwn5XbXg7QXXiNzv1ZBxyZhZmianAqrSFms5hS7fAZRVHoJnQ5yup4fgrjrK2KpNK5UjbEacRgymLMT5nVDKJRcvENa0YooiWt1Wo8PekaeqcV7V5W61esiCDH37AqMXyWxnHJ28fEF4WknCzsK19qMXOiMGrUA6IVNIjU6uYihCpoP361WZWFvSlSaP70A==',
+        'security_credential' => 'gHP4lQUbqsytGzCvG+Y0M+HaKTywbv42rS8tnCFU6wxgMO+4sJkkf5plbNnC+Jb8RJh1nzQp/cFkcp6Q3tFICu51jwslX1IWN4sQYwUt0lGtlmEOhvZOCT4cPYxfPpLnggkRmSyEE+gwk3+7o78rcboiQ7YxTD5l5yVddhMkcWDKeoQUnsx0LSrSL8NcOksq0rj11lIN4a2WhilVNfqKzoIzrEBehnuH+ouvy7IDxg2C8C7YKYQZ8LkGpizq9W+D41MlVP927LldZfGtardounCWEzNXAkmEQlFsGfs0S5v3dCg4HRCMK/2Z0yo83/NUggPRS/jnVV+4kkJbfcWlQA==',
         /*
          * Notification URL for timeout
          */
@@ -115,7 +115,8 @@ return [
         /**
          * Result URL
          */
-        'result_url' => env('APP_URL') . '/payments/callbacks/result/',
+//        'result_url' => env('APP_URL') . '/payments/callbacks/result/',
+        'result_url' => env('APP_URL') . '/api/v1/payments/callbacks/result/',
     ],
     'b2b' => [
         /*

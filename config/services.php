@@ -53,6 +53,15 @@ return [
     'sidooh' => [
         'tagline' => env('SIDOOH_TAGLINE'),
 //        'about' => "Sidooh is a digital platform that gives you cash refunds on every airtime you purchase from the platform, out of which 80% is then automatically saved and invested to generate extra income for you, so as to improve your financial life."
+
+        'mpesa' => [
+            'env' => env('MPESA_ENV', 'local'),
+            'b2c' => [
+                'phone' => env('MPESA_B2C_PHONE'),
+                'min_amount' => env('MPESA_B2C_MIN_AMOUNT', 10),
+                'max_amount' => env('MPESA_B2C_MAX_AMOUNT', 70000),
+            ],
+        ]
     ]
 
 ];

@@ -32,7 +32,7 @@ class Airtime
     /**
      * Purchase method.
      *
-     * @var
+     * @var PaymentMethods
      */
     protected $method;
 
@@ -52,6 +52,7 @@ class Airtime
     public function purchase($targetNumber = null, $mpesaNumber = null)
     {
         Log::info("====== Airtime Purchase ($this->method) ======");
+
         $targetNumber = $targetNumber ? ltrim(PhoneNumber::make($targetNumber, 'KE')->formatE164(), '+') : $this->phone;
         $mpesaNumber = $mpesaNumber ? ltrim(PhoneNumber::make($mpesaNumber, 'KE')->formatE164(), '+') : '';
         Log::info("$targetNumber - $mpesaNumber");

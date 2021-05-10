@@ -412,6 +412,8 @@ class USSD
                 return $this->validate_amount_min($value, 100);
             case "MIN|AIRTIME":
                 return $this->validate_amount_min($value, 20);
+            case "MIN|WITHDRAW":
+                return $this->validate_amount_min($value, 10);
             case "PIN":
                 return $this->validate_PIN($value);
             case "NUMBER":
@@ -419,6 +421,14 @@ class USSD
 
                 if ($phone != false && $phone != $this->validate_number($this->product->phone)) {
                     return true;
+                }
+                return false;
+            case "MPESA":
+                $phone = $this->validate_number($value);
+
+                if ($phone != false && $phone != $this->validate_number($this->product->phone)) {
+                    if (preg_match('(^(?:\+?254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$)', $phone))
+                        return true;
                 }
                 return false;
             case "BUSINESS_NUMBER":

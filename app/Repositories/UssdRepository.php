@@ -4,12 +4,18 @@
 namespace App\Repositories;
 
 
+use App\Events\B2CPaymentFailedEvent;
+use App\Events\B2CPaymentSuccessEvent;
 use App\Helpers\Sidooh\USSD\USSD;
 use App\Models\UssdLog;
 use App\Models\UssdUser;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
+use Samerior\MobileMoney\Mpesa\Database\Entities\MpesaBulkPaymentResponse;
+
 
 class UssdRepository
 {
@@ -119,6 +125,61 @@ class UssdRepository
         } else {
             return TRUE;
         }
+    }
+
+    /**
+     * @return MpesaBulkPaymentResponse|\Illuminate\Database\Eloquent\Model
+     */
+    private function handleB2cResult()
+    {
+        $data = request('Result');
+
+        //check if data is an array
+        if (!is_array($data)) {
+            $data->toArray();
+        }
+
+        $common = [
+            'ResultType', 'ResultCode', 'ResultDesc', 'OriginatorConversationID', 'ConversationID', 'TransactionID'
+        ];
+        $seek = ['OriginatorConversationID' => $data['OriginatorConversationID']];
+        /** @var MpesaBulkPaymentResponse $response */
+        $response = null;
+        if ($data['ResultCode'] !== 0) {
+            $response = MpesaBulkPaymentResponse::updateOrCreate($seek, Arr::only($data, $common));
+            event(new B2CPaymentFailedEvent($response, $data));
+            return $response;
+        }
+        $resultParameter = $data['ResultParameters'];
+
+        $data['ResultParameters'] = json_encode($resultParameter);
+        $response = MpesaBulkPaymentResponse::updateOrCreate($seek, Arr::except($data, ['ReferenceData', 'ResultParameters']));
+        $this->saveResultParams($resultParameter, $response);
+        event(new B2CPaymentSuccessEvent($response, $data));
+        return $response;
+    }
+
+    private function saveResultParams(array $params, MpesaBulkPaymentResponse $response): \Illuminate\Database\Eloquent\Model
+    {
+        $params_payload = $params['ResultParameter'];
+        $new_params = Arr::pluck($params_payload, 'Value', 'Key');
+
+//        TODO: Added this for date conversion otherwise throws db error
+        $new_params['TransactionCompletedDateTime'] = Carbon::createFromFormat('d.m.Y H:i:s', $new_params['TransactionCompletedDateTime'], 'Africa/Nairobi');
+
+        return $response->data()->create($new_params);
+    }
+
+    /**
+     * @param string|null $initiator
+     * @return MpesaBulkPaymentResponse|void
+     */
+    public function handleResult($initiator = null)
+    {
+        if ($initiator === 'b2c') {
+            return $this->handleB2cResult();
+        }
+        return;
     }
 
 }

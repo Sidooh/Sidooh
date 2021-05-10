@@ -2,8 +2,10 @@
 
 namespace App\Listeners;
 
+use App\Events\B2CPaymentFailedEvent;
+use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Log;
-use Samerior\MobileMoney\Mpesa\Events\B2cPaymentFailedEvent;
 
 class B2CPaymentFailed
 {
@@ -20,21 +22,24 @@ class B2CPaymentFailed
     /**
      * Handle the event.
      *
-     * @param B2cPaymentFailedEvent $event
+     * @param B2CPaymentFailedEvent $event
      * @return void
      */
-    public function handle(B2cPaymentFailedEvent $event)
+    public function handle(B2CPaymentFailedEvent $event)
     {
         //
-        Log::info('------------------------ B2C Payment Failed ' . now() . ' ---------------------- ');
 
-        $stk = $event->response; //an instance of mpesa callback model
-//        $mpesa_response = $event->mpesa_response;// mpesa response as array
+        $b2c = $event->bulkPaymentResponse; //an instance of mpesa callback model
 
-        Log::info($event->response);
+        Log::info('----------------- B2C Payment Failed (' . $b2c->ResultDesc . ')');
 
-//        $message = "We failed to carry out your transaction. No amount was debited from your account.\nSorry for the inconvenience, please try again...\n\nSidooh, Makes You Money!";
 
-//        (new AfricasTalkingApi())->sms($stk->request->phone, $message);
+        $payment = Payment::wherePaymentId($event->bulkPaymentResponse->request->id)->whereSubtype('B2C')->firstOrFail();
+        $transaction = $payment->payable;
+        $account = $transaction->account;
+
+        $message = "Sorry! We failed to complete your withdrawal transaction. No amount was deducted from your account. We apologize for the inconvenience. Please try again.";
+
+        (new AfricasTalkingApi())->sms($account->phone, $message);
     }
 }

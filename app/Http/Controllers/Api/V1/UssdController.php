@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Api\V1;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Http\Controllers\Controller;
 use App\Repositories\UssdRepository;
+use Illuminate\Support\Facades\Log;
 
 class UssdController extends Controller
 {
     //
 
     protected $ussd;
+
 
     /**
      * UssdController constructor.
@@ -105,9 +107,24 @@ class UssdController extends Controller
     public function b2c()
     {
 
-        $b2c = mpesa_send(request()->phone, 5, "B2C Test");
+        $b2c = mpesa_send(request()->phone, request()->amount, "B2C Test 2");
 
         return $b2c;
+    }
+
+    /**
+     * @param string|null $initiator
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function b2cResult($initiator = null): \Illuminate\Http\JsonResponse
+    {
+        $this->ussd->handleResult($initiator);
+        return response()->json(
+            [
+                'ResponseCode' => '00000000',
+                'ResponseDesc' => 'success'
+            ]
+        );
     }
 
 }

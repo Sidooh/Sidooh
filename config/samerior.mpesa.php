@@ -85,12 +85,12 @@ return [
         /*
          * Sending app consumer key
          */
-        'consumer_key' => env('MPESA_KEY'),
+        'consumer_key' => env('MPESA_B2C_KEY'),
 //            'Ei4lr5xbDZXS9XEAZ1BhNE4xCBcAYGVyA',
         /*
          * Sending app consumer secret
          */
-        'consumer_secret' => env('MPESA_SECRET'),
+        'consumer_secret' => env('MPESA_B2C_SECRET'),
 //            'eMhCDmzFQyx1SNSZ',
         /*
          * Shortcode sending funds
@@ -101,7 +101,7 @@ return [
         * Make sure this was the user who was used to 'GO LIVE'
         * https://org.ke.m-pesa.com/
         */
-        'initiator' => 'Ngethe Sidney',
+        'initiator' => env('MPESA_B2C_INITIATOR'),
         /*
          * The user security credential.
          * Go to https://developer.safaricom.co.ke/test_credentials and paste your initiator password to generate

@@ -173,7 +173,7 @@ class EarningRepository extends Model
             'totalReferralToday' => $totalReferralToday,
             'totalSystemToday' => $totalSystemToday,
 
-            'recentEarnings' => $earnings->take(16)
+            'recentEarnings' => $earnings->take(20)
         ];
     }
 }

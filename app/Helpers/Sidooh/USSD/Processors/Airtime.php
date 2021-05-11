@@ -124,7 +124,8 @@ class Airtime extends Product
                     $bal = $acc->voucher->balance;
 
                     if ($bal == 0 || $bal < (int)$this->vars['{$amount}']) {
-                        $this->screen->title = "Sorry but your Voucher Balance is insufficient";
+//                        TODO: Can we create a completely new screen and populate it?
+                        $this->screen->title = "Sorry, your voucher balance is insufficient. Please top-up your Sidooh Voucher to continue enjoying the service.";
                         $this->screen->type = 'END';
                     }
 

@@ -69,6 +69,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::get('services/test/transaction', 'UssdController@transaction')->name('services.test.transaction');
     Route::post('services/test/stk', 'UssdController@stk')->name('services.test.stk');
     Route::post('services/test/b2c', 'UssdController@b2c')->name('services.test.b2c');
+    Route::post('services/sms/bulk', 'UssdController@sms')->name('services.test.sms');
 
     Route::post('testb2c', 'UssdController@test');
 

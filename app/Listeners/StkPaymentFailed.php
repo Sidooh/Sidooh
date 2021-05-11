@@ -34,7 +34,7 @@ class StkPaymentFailed
         Log::info('----------------- STK Payment Failed (' . $stk->ResultDesc . ')');
 
 //        TODO: Make into a transaction/try catch?
-        $p = Payment::wherePaymentId($stk->request->id)->firstOrFail();
+        $p = Payment::wherePaymentId($stk->request->id)->whereSubtype('STK')->firstOrFail();
 
         if ($p->status == 'Failed')
             return;

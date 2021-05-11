@@ -27,6 +27,7 @@
     <!-- ===============================================-->
     <!--    Stylesheets-->
     <!-- ===============================================-->
+    <link href="{{ asset('vendors/choices/choices.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/leaflet/leaflet.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/leaflet.markercluster/MarkerCluster.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/leaflet.markercluster/MarkerCluster.Default.css') }}" rel="stylesheet">

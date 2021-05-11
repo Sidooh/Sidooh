@@ -158,8 +158,8 @@
                     <!-- parent pages-->
                     <a class="nav-link" href="{{ route('admin.user-notifications.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                                    class="fas fa-ticket-alt"></span></span><span
-                                class="nav-link-text ps-1">View</span>
+                                    class="fas fa-envelope"></span></span><span
+                                class="nav-link-text ps-1">User Notifications</span>
                         </div>
                     </a>
 

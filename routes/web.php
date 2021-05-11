@@ -36,6 +36,7 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'as' => 'admin.'], f
     Route::get('collective-investments/{collectiveInvestment}/sub-investments', 'CollectiveInvestmentController@subInvestments')->name('collective-investments.sub-investments');
 
     Route::apiResource('sub-investments', 'SubInvestmentController');
+    Route::apiResource('user-notifications', 'UserNotificationController');
 
 
 });

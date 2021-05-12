@@ -118,6 +118,8 @@ class UssdController extends Controller
      */
     public function b2cResult($initiator = null): \Illuminate\Http\JsonResponse
     {
+        Log::info(request());
+
         $this->ussd->handleResult($initiator);
         return response()->json(
             [

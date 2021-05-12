@@ -21,7 +21,7 @@ return [
    | generating credentials
    |
    */
-    'cache_credentials' => true,
+    'cache_credentials' => false,
     /*
    |--------------------------------------------------------------------------
    | C2B array
@@ -85,12 +85,12 @@ return [
         /*
          * Sending app consumer key
          */
-        'consumer_key' => env('MPESA_KEY'),
+        'consumer_key' => env('MPESA_B2C_KEY'),
 //            'Ei4lr5xbDZXS9XEAZ1BhNE4xCBcAYGVyA',
         /*
          * Sending app consumer secret
          */
-        'consumer_secret' => env('MPESA_SECRET'),
+        'consumer_secret' => env('MPESA_B2C_SECRET'),
 //            'eMhCDmzFQyx1SNSZ',
         /*
          * Shortcode sending funds
@@ -107,7 +107,7 @@ return [
          * Go to https://developer.safaricom.co.ke/test_credentials and paste your initiator password to generate
          * security credential
          */
-        'security_credential' => 'gHP4lQUbqsytGzCvG+Y0M+HaKTywbv42rS8tnCFU6wxgMO+4sJkkf5plbNnC+Jb8RJh1nzQp/cFkcp6Q3tFICu51jwslX1IWN4sQYwUt0lGtlmEOhvZOCT4cPYxfPpLnggkRmSyEE+gwk3+7o78rcboiQ7YxTD5l5yVddhMkcWDKeoQUnsx0LSrSL8NcOksq0rj11lIN4a2WhilVNfqKzoIzrEBehnuH+ouvy7IDxg2C8C7YKYQZ8LkGpizq9W+D41MlVP927LldZfGtardounCWEzNXAkmEQlFsGfs0S5v3dCg4HRCMK/2Z0yo83/NUggPRS/jnVV+4kkJbfcWlQA==',
+        'security_credential' => 'KcU4MlDi8VXJMxaYS71NSEWmvenjeleJdmEHSTr1+datoe62P5WtT9d6A69fvNccjQgcpCxpuy9MDuNE6/1cA36SidNmGYDBN8gNov6LKlZgGAKrOkBvmDU5xD2OIZ9FggVK1Y4ZuAm2QFQ5zgqaD6QQRUJNde2g9yRnPdFupoSt/wnG3ArDSFBdeWt7cyP7U23GqEnEj7wh5IkubrzkoF/BNGdVljJAW5kf5QmjT58qG/LE2YXXScqyOKGO76LQL4go1Vwm65ceBY63G+vyMg6louITzHWrK4c/i3BEPijJrk3IOS43KnbnY6kNBhUWdhnVhBnONMOe2avBV2LJwg==',
         /*
          * Notification URL for timeout
          */

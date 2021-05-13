@@ -12,8 +12,8 @@
             <div class="border border-top-0 border-200">
 
                 <select class="form-select border-0 rounded-0 outline-none px-card" id="type" name="type" required>
-                    <option disabled selected>Select message type...</option>
-                    <option value="SMS">SMS</option>
+                    <option disabled>Select message type...</option>
+                    <option value="SMS" selected>SMS</option>
                     <option value="EMAIL" disabled>EMAIL</option>
                     <option value="ALL" disabled>ALL</option>
                 </select>

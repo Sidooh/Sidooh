@@ -569,7 +569,7 @@ class Account extends Product
                     'password' => Hash::make($pass)
                 ]);
 
-        $acc->user()->associate($user);
+        $acc->user_id = $user->id;
         $acc->save();
     }
 

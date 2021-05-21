@@ -231,7 +231,7 @@ class AccountRepository extends Model
 
     }
 
-    public function findByPhone($phoneNumber, $throw = true)
+    public function findByPhone($phoneNumber, $throw = true): Account
     {
         $valid = (new ReferralRepository())->validatePhone($phoneNumber, $throw);
 

@@ -50,9 +50,9 @@ class VoucherRepository extends Model
 
     public function create(array $acc): Voucher
     {
-        error_log('-------------------');
-        error_log($acc['phone']);
-        error_log('-------------------');
+//        error_log('-------------------');
+//        error_log($acc['phone']);
+//        error_log('-------------------');
 
         $phone = ltrim(PhoneNumber::make($acc['phone'], 'KE')->formatE164(), '+');
 

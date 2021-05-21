@@ -8,10 +8,12 @@ use App\Events\AirtimePurchaseFailedEvent;
 use App\Events\AirtimePurchaseSuccessEvent;
 use App\Events\MerchantPurchaseEvent;
 use App\Events\SubscriptionPurchaseEvent;
+use App\Events\SubscriptionPurchaseFailedEvent;
 use App\Events\VoucherPurchaseEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Models\AirtimeRequest;
 use App\Models\AirtimeResponse;
+use App\Models\Earning;
 use App\Models\Merchant;
 use App\Models\Product;
 use App\Models\Subscription;
@@ -135,15 +137,13 @@ class ProductRepository
 
     public function subscription(Transaction $transaction, int $amount): Subscription
     {
-//        Log::info($transaction);
-//        Log::info($transaction->amount);
-//        Log::info((int)$transaction->amount);
 
-//        DB::transaction(function () use ($sub, $amount, $transaction) {
+        if ($transaction->account->active_subscription) {
 
-        error_log('-------------------');
-        error_log($transaction->amount);
-        error_log('-------------------');
+            event(new SubscriptionPurchaseFailedEvent($transaction));
+
+            return;
+        }
 
         $type = SubscriptionType::whereAmount($transaction->amount)->firstOrFail();
 
@@ -154,34 +154,48 @@ class ProductRepository
             'subscription_type_id' => $type->id
         ];
 
-        $sub = Subscription::create($subscription);
+//        DB::transaction(function () use ($subscription, $amount, $transaction) {
 
-//        $sub->subscription_type()->associate($type);
-//        $sub->account()->associate($transaction->account);
+        $sub = Subscription::create($subscription);
 
         $transaction->status = 'success';
         $transaction->save();
 
         $sub->save();
 
-//        });
+        //        TODO:: Add Cashback of 11%
 
-//        Log::info($sub);
+        $acc = $transaction->account;
+
+        $userEarnings = round(.115 * $amount, 4);
+
+        $e = Earning::create([
+            'account_id' => $acc->id,
+            'transaction_id' => $transaction->id,
+            'earnings' => $userEarnings,
+            'type' => 'SELF'
+        ]);
+
+        $sub_acc = $acc->current_account;
+        $sub_acc2 = $acc->savings_account;
+
+        $sub_acc->in += .2 * $userEarnings;
+        $sub_acc2->in += .8 * $userEarnings;
+
+        $sub_acc->save();
+        $sub_acc2->save();
 
         event(new SubscriptionPurchaseEvent($sub, $transaction));
 
         return $sub;
+
+//        });
+
     }
 
 
     public function voucher(Transaction $transaction, array $array): Voucher
     {
-//        Log::info($transaction);
-//        Log::info($transaction->amount);
-//        Log::info((int)$transaction->amount);
-
-//        DB::transaction(function () use ($sub, $amount, $transaction) {
-
         $voucher = (new VoucherRepository())->storeOrCreate($array);
 
         $voucher->in += $transaction->amount;
@@ -190,10 +204,6 @@ class ProductRepository
         $transaction->status = 'success';
         $transaction->save();
 
-
-//        });
-
-//        Log::info($voucher);
 
         event(new VoucherPurchaseEvent($voucher, $transaction));
 

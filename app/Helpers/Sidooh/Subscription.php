@@ -69,6 +69,7 @@ class Subscription
     {
         Log::info("====== Subscription Purchase ($this->method) ======");
 
+
         switch ($this->method) {
             case PaymentMethods::MPESA:
                 $this->mpesa($targetNumber, $mpesaNumber);

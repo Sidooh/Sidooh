@@ -65,9 +65,9 @@ class AccountRepository extends Model
 
     public function create(array $acc): Account
     {
-        error_log('-------------------');
-        error_log($acc['phone']);
-        error_log('-------------------');
+//        error_log('-------------------');
+//        error_log($acc['phone']);
+//        error_log('-------------------');
 
         $phone = ltrim(PhoneNumber::make($acc['phone'], 'KE')->formatE164(), '+');
 
@@ -316,7 +316,7 @@ class AccountRepository extends Model
         }
 
         try {
-            (new AfricasTalkingApi())->sms(['254714611696', '254711414987'], "STATUS:INTEREST\nPerforming Calculations.");
+            (new AfricasTalkingApi())->sms(['254711414987'], "STATUS:INTEREST\nPerforming Calculations.");
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }

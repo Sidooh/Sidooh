@@ -142,7 +142,7 @@ class ProductRepository
 
             event(new SubscriptionPurchaseFailedEvent($transaction));
 
-            return;
+            return $transaction->account->active_subscription;
         }
 
         $type = SubscriptionType::whereAmount($transaction->amount)->firstOrFail();

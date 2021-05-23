@@ -11,20 +11,6 @@
 |
 */
 
-use App\Http\Controllers\Admin\DashboardController;
-
-Route::get('/', function () {
+Route::get('/{any?}', function () {
     return view('welcome');
 });
-//middleware(['auth', 'verified'])->
-Route::group([], function () {
-//    'middleware' => 'role:admin',
-    Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
-        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    });
-
-});
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

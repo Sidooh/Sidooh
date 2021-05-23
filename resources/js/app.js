@@ -1,32 +1,60 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+import {BASE_URL} from "./constants";
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+// window.Vue = require('vue');
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+import Vue from "vue";
+import VueRouter from "vue-router";
+import CoreuiVue from '@coreui/vue';
+import "@coreui/coreui/dist/css/coreui.css";
+import {iconsSet as icons} from './assets/icons/icons.js';
+import axios from 'axios';
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+import router from "./router";
+import store from "./store";
+import App from './App';
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.use(VueRouter);
+Vue.use(CoreuiVue);
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+axios.defaults.withCredentials = true
+axios.defaults.baseURL = BASE_URL;
+axios.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    function (error) {
+        if (error.response.status === 401 || error.response.status === 419) {
+            store.dispatch("auth/logout");
+            return router.push('/login')
+        }
+
+
+        if (error.response.status === 422) {
+            //TODO: Add error global alert
+            console.log(error)
+        }
+
+        return Promise.reject(error.response);
+
+        // if (error) {
+        //     const originalRequest = error.config;
+        //     if (error.response.status === 401 && !originalRequest._retry) {
+        //
+        //         originalRequest._retry = true;
+        //         store.dispatch('LogOut')
+        //         return router.push('/login')
+        //     }
+        // }
+    })
+
+Vue.config.productionTip = false
 
 const app = new Vue({
     el: '#app',
+    router,
+    store,
+    icons,
+    components: {App}
 });

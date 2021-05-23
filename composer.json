@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.4",
+        "ext-intl": "*",
         "ext-json": "*",
         "ext-openssl": "*",
         "africastalking/africastalking": "^2.3",
@@ -16,12 +17,12 @@
         "guzzlehttp/guzzle": "^6.5",
         "karriere/json-decoder": "^3.1",
         "laravel/framework": "^6.2",
+        "laravel/passport": "^9",
         "laravel/tinker": "^2.0",
         "mratiebatie/laravel-repositories": "^1.0",
         "propaganistas/laravel-phone": "^4.2",
         "samerior/mobile-money": "^2.1",
-        "staudenmeir/laravel-adjacency-list": "^1.0",
-        "ext-intl": "*"
+        "staudenmeir/laravel-adjacency-list": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

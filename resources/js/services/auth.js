@@ -1,10 +1,12 @@
-import axios from 'axios';
+import {ApiClient} from './axiosClient';
+
+let client = new ApiClient();
 
 const API_URL = 'auth/';
 
 class AuthService {
     login(user) {
-        return axios
+        return client
             .post(API_URL + 'login', {
                 username: user.username,
                 password: user.password
@@ -12,8 +14,9 @@ class AuthService {
             .then(response => {
                 console.log('resSuccess', response)
 
-                if (response.data.accessToken) {
+                if (response.data.token) {
                     localStorage.setItem('user', JSON.stringify(response.data));
+                    localStorage.setItem('token', response.data.token)
                 }
 
                 if (response.data) {
@@ -33,7 +36,7 @@ class AuthService {
     }
 
     register(user) {
-        return axios.post(API_URL + 'register', {
+        return client.post(API_URL + 'register', {
             username: user.username,
             email: user.email,
             password: user.password

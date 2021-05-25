@@ -9,6 +9,10 @@
                                 <CForm @submit.prevent="submit">
                                     <h1>Login</h1>
                                     <p class="text-muted">Sign In to your account</p>
+
+                                    <p v-if="showError" id="error" class="alert-warning">Username or Password is
+                                        incorrect</p>
+
                                     <CInput
                                         v-model="form.username"
                                         autocomplete="username email"
@@ -16,6 +20,9 @@
                                     >
                                         <template #prepend-content>
                                             <CIcon name="cil-user"/>
+                                        </template>
+                                        <template v-if="errors.username" #invalid-feedback>
+                                            {{ errors.username[0] }}
                                         </template>
                                     </CInput>
                                     <CInput
@@ -27,6 +34,9 @@
                                         <template #prepend-content>
                                             <CIcon name="cil-lock-locked"/>
                                         </template>
+                                        <template v-if="errors.password" #invalid-feedback>
+                                            {{ errors.password[0] }}
+                                        </template>
                                     </CInput>
 
                                     <CRow>
@@ -35,13 +45,11 @@
                                         </CCol>
                                         <CCol class="text-right" col="6">
                                             <CButton class="px-0" color="link">Forgot password?</CButton>
-                                            <!--                                            <router-link :to="{ name: 'register' }">-->
-                                            <CButton class="d-lg-none" color="link">Register now!</CButton>
-                                            <!--                                            </router-link>-->
+                                            <router-link :to="{ name: 'register' }">
+                                                <CButton class="d-lg-none" color="link">Register now!</CButton>
+                                            </router-link>
                                         </CCol>
                                     </CRow>
-
-                                    <p v-if="showError" id="error">Username or Password is incorrect</p>
 
                                 </CForm>
                             </CCardBody>
@@ -94,14 +102,11 @@ export default {
     },
 
     computed: {
-        // ...mapGetters("auth", [ "loggedIn" ])
-        loggedIn() {
-            return this.$store.state.auth.loggedIn;
-        }
+        ...mapGetters("auth", ["isAuthenticated", "errors"])
     },
 
     created() {
-        if (this.loggedIn) {
+        if (this.isAuthenticated) {
             this.$router.push('/');
         }
     },
@@ -112,9 +117,16 @@ export default {
         ]),
 
         async submit() {
-            const User = new FormData();
-            User.append("username", this.form.username);
-            User.append("password", this.form.password);
+            // const User = new FormData();
+            // User.append("username", this.form.username);
+            // User.append("password", this.form.password);
+            //
+            // console.log(User);
+            //
+            const User = {
+                "username": this.form.username,
+                "password": this.form.password
+            }
 
             try {
                 await this.login(User).then(
@@ -126,16 +138,19 @@ export default {
                     error => {
                         console.log('error', error)
 
-                        this.showError = true
+                        if (error.error) {
+                            this.showError = true
+                        }
+
                         this.loading = false;
                         this.message =
                             (error.response && error.response.data) ||
-                            error.message ||
+                            error.message || error.error ||
                             error.toString();
                     });
 
             } catch (error) {
-                console.log('try', error)
+                console.log('loginVueError', error)
 
                 this.showError = true
             }

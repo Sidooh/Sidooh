@@ -1,143 +1,77 @@
 import axios from 'axios';
-import store from '../store/index';
+import {BASE_URL} from "../constants";
+import Vue from 'vue';
 
-/**
- * Create a new Axios client instance
- * @see https://github.com/mzabriskie/axios#creating-an-instance
- */
-const getClient = (baseUrl = null) => {
 
-    const options = {
-        baseURL: baseUrl
-    };
-
-    if (store.getters['auth/isAuthenticated']) {
-        options.headers = {
-            Authorization: `Bearer ${store.getters['auth/accessToken']}`,
-        };
+const httpClient = axios.create({
+    // baseURL: process.env.app_url,
+    baseURL: BASE_URL,
+    timeout: 5000, // indicates, 1000ms ie. 1 second
+    headers: {
+        "Content-Type": "application/json",
+        // anything you want to add to the headers
     }
+});
 
-    const client = axios.create(options);
+const getAuthToken = () => localStorage.getItem('token');
 
-    // Add a request interceptor
-    client.interceptors.request.use(
-        requestConfig => requestConfig,
-        (requestError) => {
-            Raven.captureException(requestError);
-
-            return Promise.reject(requestError);
-        },
-    );
-
-    // Add a response interceptor
-    client.interceptors.response.use(
-        response => response,
-        (error) => {
-            if (error.response.status >= 500) {
-                Raven.captureException(error);
-            }
-
-            return Promise.reject(error);
-        },
-    );
-
-    return client;
-};
-
-class ApiClient {
-    constructor(baseUrl = null) {
-        this.client = getClient(baseUrl);
-    }
-
-    get(url, conf = {}) {
-        return this.client.get(url, conf)
-            .then(response => Promise.resolve(response))
-            .catch(error => Promise.reject(error));
-    }
-
-    delete(url, conf = {}) {
-        return this.client.delete(url, conf)
-            .then(response => Promise.resolve(response))
-            .catch(error => Promise.reject(error));
-    }
-
-    head(url, conf = {}) {
-        return this.client.head(url, conf)
-            .then(response => Promise.resolve(response))
-            .catch(error => Promise.reject(error));
-    }
-
-    options(url, conf = {}) {
-        return this.client.options(url, conf)
-            .then(response => Promise.resolve(response))
-            .catch(error => Promise.reject(error));
-    }
-
-    post(url, data = {}, conf = {}) {
-        return this.client.post(url, data, conf)
-            .then(response => Promise.resolve(response))
-            .catch(error => Promise.reject(error));
-    }
-
-    put(url, data = {}, conf = {}) {
-        return this.client.put(url, data, conf)
-            .then(response => Promise.resolve(response))
-            .catch(error => Promise.reject(error));
-    }
-
-    patch(url, data = {}, conf = {}) {
-        return this.client.patch(url, data, conf)
-            .then(response => Promise.resolve(response))
-            .catch(error => Promise.reject(error));
-    }
+const authInterceptor = (config) => {
+    config.headers['Authorization'] = getAuthToken();
+    return config;
 }
 
-export {ApiClient};
+httpClient.interceptors.request.use(authInterceptor);
 
-/**
- * Base HTTP Client
- */
-export default {
-    // Provide request methods with the default base_url
-    get(url, conf = {}) {
-        return getClient().get(url, conf)
-            .then(response => Promise.resolve(response))
-            .catch(error => Promise.reject(error));
-    },
+// interceptor to catch errors
+const errorInterceptor = error => {
 
-    delete(url, conf = {}) {
-        return getClient().delete(url, conf)
-            .then(response => Promise.resolve(response))
-            .catch(error => Promise.reject(error));
-    },
+    // check if it's a server error
+    if (!error.response) {
+        Vue.notify({type: 'warn', text: 'Network/Server error'});
+        return Promise.reject(error);
+    }
 
-    head(url, conf = {}) {
-        return getClient().head(url, conf)
-            .then(response => Promise.resolve(response))
-            .catch(error => Promise.reject(error));
-    },
+    // all the other error responses
+    switch (error.response.status) {
+        case 400:
+            console.error(error.response.status, error.message);
+            Vue.notify({type: 'warn', text: 'Nothing to display', title: 'Data Not Found'});
+            break;
 
-    options(url, conf = {}) {
-        return getClient().options(url, conf)
-            .then(response => Promise.resolve(response))
-            .catch(error => Promise.reject(error));
-    },
+        case 401: // authentication error, logout the user
+            Vue.notify({type: 'warn', text: 'Please login again', title: 'Session Expired'});
+            localStorage.removeItem('token');
+            router.push('/login');
+            break;
 
-    post(url, data = {}, conf = {}) {
-        return getClient().post(url, data, conf)
-            .then(response => Promise.resolve(response))
-            .catch(error => Promise.reject(error));
-    },
+        case 422: // validation errors
+            Vue.notify({type: 'info', text: 'Please check the form for errors.', title: 'Invalid inputs'});
+            //TODO: Add class to handle this
+            // throw ValidationError
+            break;
 
-    put(url, data = {}, conf = {}) {
-        return getClient().put(url, data, conf)
-            .then(response => Promise.resolve(response))
-            .catch(error => Promise.reject(error));
-    },
+        default:
+            console.error(error.response.status, error.message);
+            Vue.notify({type: 'error', text: 'Server Error'});
 
-    patch(url, data = {}, conf = {}) {
-        return getClient().patch(url, data, conf)
-            .then(response => Promise.resolve(response))
-            .catch(error => Promise.reject(error));
-    },
-};
+    }
+    return Promise.reject(error);
+}
+
+// Interceptor for responses
+const responseInterceptor = response => {
+    switch (response.status) {
+        case 200:
+            // yay!
+            break;
+        // any other cases
+        default:
+        // default case
+    }
+
+    return response;
+}
+
+httpClient.interceptors.response.use(responseInterceptor, errorInterceptor);
+
+export default httpClient;

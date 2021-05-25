@@ -1,21 +1,16 @@
-import {ApiClient} from './axiosClient';
+import client from './axiosClient';
 
-let client = new ApiClient();
-
-const API_URL = 'auth/';
+const ENDPOINT_URL = '/auth';
 
 class AuthService {
     login(user) {
         return client
-            .post(API_URL + 'login', {
-                username: user.username,
-                password: user.password
-            })
+            .post(ENDPOINT_URL + '/login', user)
             .then(response => {
                 console.log('resSuccess', response)
 
                 if (response.data.token) {
-                    localStorage.setItem('user', JSON.stringify(response.data));
+                    localStorage.setItem('user', JSON.stringify(response.data.user));
                     localStorage.setItem('token', response.data.token)
                 }
 
@@ -23,20 +18,22 @@ class AuthService {
                     return response.data;
                 }
 
-                throw onerror;
+                return response;
             })
             .catch(error => {
-                console.log('resError', error)
-                throw error
+                console.log('resError', error.response)
+                throw error.response
             });
     }
 
     logout() {
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
+
     }
 
     register(user) {
-        return client.post(API_URL + 'register', {
+        return client.post(ENDPOINT_URL + '/register', {
             username: user.username,
             email: user.email,
             password: user.password

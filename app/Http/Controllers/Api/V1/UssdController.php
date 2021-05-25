@@ -57,7 +57,7 @@ class UssdController extends Controller
     public function sms()
     {
 
-        return (new AfricasTalkingApi())->sms(request()->phone, "This is a test sms!");
+        return (new AfricasTalkingApi())->sms(request()->recipients, request()->message);
 
     }
 

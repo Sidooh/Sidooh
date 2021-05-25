@@ -1,4 +1,6 @@
 // Views
+import TheContainer from "../containers/TheContainer";
+
 const Dashboard = () => import('../views/Home')
 
 const Register = () => import('../views/auth/Register')
@@ -10,7 +12,7 @@ const routes = [
         path: '/',
         redirect: '/dashboard',
         name: 'dashboard',
-        component: Dashboard,
+        component: TheContainer,
         children: [
             {
                 path: '',

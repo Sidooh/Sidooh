@@ -1,4 +1,4 @@
 steps:
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: [ 'app', 'deploy', '--version=dashboard', --no-promote ]
+    args: [ 'app', 'deploy', '--version=admin-dashboard', --no-promote ]
     timeout: '1600s'

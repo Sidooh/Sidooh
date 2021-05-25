@@ -42,7 +42,7 @@ COPY . /home/app
 RUN composer install --ignore-platform-reqs
 
 # Run npm install
-RUN npm install && npm run prod
+#RUN npm install && npm run prod
 
 # Install package
 #RUN php artisan passport:install

@@ -68,7 +68,7 @@
             <CIcon name="cil-shield-alt"/>
             Lock Account
         </CDropdownItem>
-        <CDropdownItem>
+        <CDropdownItem @click="signout">
             <CIcon name="cil-lock-locked"/>
             Logout
         </CDropdownItem>
@@ -76,13 +76,29 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
     name: 'TheHeaderDropdownAccnt',
     data() {
         return {
             itemsCount: 42
         }
+    },
+
+    methods: {
+        ...mapActions('auth', ['logout']),
+
+        async signout() {
+
+            await this.logout().then(
+                () => {
+                    console.log('success', 'Logout')
+                    this.$router.push('/');
+                });
+        }
     }
+
 }
 </script>
 

@@ -36,9 +36,9 @@ const actions = {
 
     },
 
-    logout({commit}) {
-        AuthService.logout();
-        commit('logout');
+    async logout({commit}) {
+        await AuthService.logout();
+        commit('LOGOUT');
     },
 
     register({commit}, user) {
@@ -59,6 +59,7 @@ const mutations = {
     LOGIN_SUCCESS(state, user) {
         state.isAuthenticated = true;
         state.user = user;
+        state.errors = {};
     },
     LOGIN_FAILURE(state, errors) {
         state.isAuthenticated = false;

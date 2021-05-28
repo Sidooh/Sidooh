@@ -11,6 +11,7 @@ use App\Models\CollectiveInvestment;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 use Propaganistas\LaravelPhone\PhoneNumber;
@@ -316,7 +317,7 @@ class AccountRepository extends Model
         }
 
         try {
-            (new AfricasTalkingApi())->sms(['254711414987'], "STATUS:INTEREST\nPerforming Calculations.");
+            (new AfricasTalkingApi())->sms(['254711414987'], "STATUS:INVESTMENT\nPCalculating Interest.");
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
@@ -363,9 +364,53 @@ class AccountRepository extends Model
 
     public function allocateInterest()
     {
-//        TODO: Will be done everyday for those investments that have matured...
+//        TODO: Will be done every month for those investments that have matured...
+        $accs = Account::with(['current_account', 'savings_account', 'interest_account'])->get();
+        $allocated = collect();
 
+        DB::beginTransaction();
 
+        try {
+            $counter = 0;
+            foreach ($accs as $acc) {
+                if ($acc->interest_account && $acc->interest_balance > 0) {
+                    $interest = $acc->interest_account->balance;
+
+//            1. Add 20% to current account
+//            2. Add 80% to savings account
+//            3. Minus amount from interest account
+                    $acc->current_account->in += .2 * $interest;
+                    $acc->savings_account->in += .8 * $interest;
+                    $acc->interest_account->out += $interest;
+
+                    $acc->current_account->save();
+                    $acc->savings_account->save();
+                    $acc->interest_account->save();
+
+                    $counter++;
+                    $allocated->add($acc);
+                }
+            }
+
+        } catch (\Exception $e) {
+            //failed logic here
+            DB::rollback();
+            Log::error($e);
+            throw $e;
+        }
+
+        DB::commit();
+
+        if (count($allocated) > 0) {
+            try {
+                (new AfricasTalkingApi())->sms(['254714611696', '254711414987'], "STATUS:INVESTMENT\nAllocating Interest. $counter accounts updated.");
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+            }
+
+        }
+
+        return $allocated;
     }
 
     public function getDailyRate(float $rate)

@@ -4,8 +4,12 @@
 namespace App\Repositories;
 
 
+use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Models\Account;
 use App\Models\CollectiveInvestment;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 
 class InvestmentRepository extends Model
@@ -102,7 +106,42 @@ class InvestmentRepository extends Model
 
     public function allocateInterest()
     {
-//        TODO: Will be done everyday for those investments that have matured...
+//        TODO: Will be done every month for those investments that have matured...
+        $accs = Account::all();
+
+        DB::beginTransaction();
+
+        try {
+            foreach ($accs as $acc) {
+                $interest = $acc->interest_account->balance;
+
+//            1. Add 20% to current account
+//            2. Add 80% to savings account
+//            3. Minus amount from interest account
+                $acc->current_account->in += .2 * $interest;
+                $acc->savings_account->in += .8 * $interest;
+                $acc->interest_account->out += $interest;
+
+                $acc->current_account->save();
+                $acc->savings_account->save();
+                $acc->interest_account->save();
+
+            }
+
+            try {
+                (new AfricasTalkingApi())->sms(['254714611696', '254711414987'], "STATUS:INVESTMENT\nAllocating Interest.");
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+            }
+
+        } catch (\Exception $e) {
+            //failed logic here
+            DB::rollback();
+            Log::error($e);
+            throw $e;
+        }
+
+        DB::commit();
     }
 
 }

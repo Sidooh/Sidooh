@@ -8,6 +8,7 @@ use App\Http\Resources\AccountResource;
 use App\Models\Account;
 use App\Repositories\AccountRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 
 class AccountController extends Controller
@@ -197,10 +198,15 @@ class AccountController extends Controller
 //     * @param Account $account
 //     * @return AccountResource
 //     */
-    public function subAccounts(Account $account)
+    public function calculateInterest(): AccountResource
     {
         //
         return new AccountResource($this->account->invest());
     }
 
+    public function allocateInterest(): AccountResource
+    {
+        //
+        return new AccountResource($this->account->allocateInterest());
+    }
 }

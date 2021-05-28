@@ -58,8 +58,9 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
 
     Route::post('b2b/test', 'PaymentController@b2b')->name('b2b.test');
 
-    Route::get('investment/balances', 'AccountController@subAccounts')->name('investments.balances');
+    Route::get('investment/interest/calculate', 'AccountController@calculateInterest')->name('investments.interest.calculate');
     Route::get('interest', 'CollectiveInvestmentController@storeRate')->name('investments.rate.store');
+    Route::get('investment/interest/allocate', 'AccountController@allocateInterest')->name('investments.interest.allocate');
 
 
 //    TODO: Refactor into own service controller?

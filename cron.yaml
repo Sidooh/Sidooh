@@ -14,7 +14,7 @@ cron:
 
   - description: "monthly interest allocation"
     url: /api/v1/investment/interest/allocate
-    schedule: 1 month 00:00
+    schedule: 1 of month 00:00
 #  - description: "monday morning mailout"
 #    url: /mail/weekly
 #    schedule: every monday 09:00

@@ -153,7 +153,7 @@ class Referral extends Product
 
                 if (!preg_match('(^(?:\+?254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$)', $phone)) {
                     $this->screen = $this->previousScreen;
-                    $this->screen->title = "Sorry the number you entered is not eligible for referral.";
+                    $this->screen->title = "Sorry the number you entered is not eligible for referral. Only SAFARICOM is currently supported.";
                 } else {
                     $this->vars['{$number}'] = $phone;
                     $this->refer();

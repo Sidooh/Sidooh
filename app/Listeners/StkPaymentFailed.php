@@ -45,6 +45,7 @@ class StkPaymentFailed
         $p->payable->status = 'Failed';
         $p->payable->save();
 
+//        TODO: Can we inform the user of the actual issue?
         $message = "Sorry! We failed to complete your transaction. No amount was deducted from your account. We apologize for the inconvenience. Please try again.";
 
         (new AfricasTalkingApi())->sms($stk->request->phone, $message);

@@ -25,6 +25,15 @@ class Account extends Model
         'telco_id', 'phone', 'referrer_id'
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'pin',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

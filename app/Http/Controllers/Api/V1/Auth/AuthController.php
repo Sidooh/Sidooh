@@ -75,4 +75,34 @@ class AuthController extends Controller
             'samesite' => true,
         ];
     }
+
+
+    public function checkPhone(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required|string|phone:KE',
+        ]);
+
+        $credentials = request(['phone']);
+
+        $acc = (new AccountRepository)->findByPhone($credentials['phone']);
+
+        if ($acc) {
+            if ($acc->user) {
+                return response()->json(
+                    [
+                        'status' => 'success',
+                        'data' => $acc,
+                    ]
+                );
+            }
+//
+//            return response()->json(
+//                ['error' => 'invalid-credentials']
+//            );
+        }
+
+        return response()->json(
+            ['message' => 'No account with this phone number exists'], 404);
+    }
 }

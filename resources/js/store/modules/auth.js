@@ -3,8 +3,8 @@ import AuthService from '../../services/auth';
 const user = JSON.parse(localStorage.getItem('user'));
 
 const initialState = user
-    ? {isAuthenticated: true, user, errors: {}}
-    : {isAuthenticated: false, user: null, errors: {}};
+    ? {isAuthenticated: true, user, errors: {}, registrationStep: 1}
+    : {isAuthenticated: false, user: null, errors: {}, registrationStep: 1};
 
 
 const state = initialState;
@@ -14,10 +14,16 @@ const getters = {
         return state.isAuthenticated;
     },
 
-    errors: state => state.errors
+    errors: state => state.errors,
+
+    registrationStep: state => state.registrationStep,
 }
 
 const actions = {
+    setRegistrationStep({state}, step) {
+        state.registrationStep = step
+    },
+
     async login({commit}, user) {
         try {
             const response = await AuthService.login(user);
@@ -39,6 +45,19 @@ const actions = {
     async logout({commit}) {
         await AuthService.logout();
         commit('LOGOUT');
+    },
+
+    registerCheckPhone({commit}, phone) {
+        return AuthService.registerCheckPhone(phone).then(
+            response => {
+                commit('REGISTER_CHECK_PHONE_SUCCESS');
+                return Promise.resolve(response.data);
+            },
+            error => {
+                commit('REGISTER_CHECK_PHONE_FAILURE');
+                return Promise.reject(error);
+            }
+        );
     },
 
     register({commit}, user) {
@@ -69,6 +88,12 @@ const mutations = {
     LOGOUT(state) {
         state.isAuthenticated = false;
         state.user = null;
+    },
+    REGISTER_CHECK_PHONE_SUCCESS(state) {
+        // state.isAuthenticated = false;
+    },
+    REGISTER_CHECK_PHONE_FAILURE(state) {
+        // state.isAuthenticated = false;
     },
     REGISTER_SUCCESS(state) {
         state.isAuthenticated = false;

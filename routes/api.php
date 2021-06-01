@@ -21,6 +21,8 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
 
         Route::post('login', 'AuthController@login')->name('login');
 
+        Route::post('register/check-phone', 'AuthController@checkPhone')->name('register.check_phone');
+
     });
 });
 

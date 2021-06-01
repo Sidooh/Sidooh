@@ -31,6 +31,24 @@ class AuthService {
         localStorage.removeItem('token');
     }
 
+    registerCheckPhone(phone) {
+        return client
+            .post(ENDPOINT_URL + '/register/check-phone', phone)
+            .then(response => {
+                console.log('resSuccess', response)
+
+                if (response.data) {
+                    return response.data;
+                }
+
+                return response;
+            })
+            .catch(error => {
+                console.log('resError', error.response)
+                throw error.response
+            });
+    }
+
     register(user) {
         return client.post(ENDPOINT_URL + '/register', {
             username: user.username,

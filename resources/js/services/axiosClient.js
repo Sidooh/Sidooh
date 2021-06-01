@@ -44,6 +44,11 @@ const errorInterceptor = error => {
             router.push('/login');
             break;
 
+        case 404:
+            console.error(error.response.status, error.message);
+            Vue.notify({type: 'warn', text: error.response.data.message, title: 'Data Not Found'});
+            break;
+
         case 422: // validation errors
             Vue.notify({type: 'info', text: 'Please check the form for errors.', title: 'Invalid inputs'});
             //TODO: Add class to handle this

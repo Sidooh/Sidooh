@@ -19,10 +19,14 @@
             <strong>Account</strong>
         </CDropdownHeader>
         <CDropdownItem>
-            <CIcon name="cil-bell"/>
-            Updates
-            <CBadge class="mfs-auto" color="info">{{ itemsCount }}</CBadge>
+            <CIcon name="cil-user"/>
+            Profile
         </CDropdownItem>
+        <!--        <CDropdownItem>-->
+        <!--            <CIcon name="cil-bell"/>-->
+        <!--            Profile-->
+        <!--&lt;!&ndash;            <CBadge class="mfs-auto" color="info">{{ itemsCount }}</CBadge>&ndash;&gt;-->
+        <!--        </CDropdownItem>-->
         <CDropdownItem>
             <CIcon name="cil-envelope-open"/>
             Messages
@@ -33,11 +37,11 @@
             Tasks
             <CBadge class="mfs-auto" color="danger">{{ itemsCount }}</CBadge>
         </CDropdownItem>
-        <CDropdownItem>
-            <CIcon name="cil-comment-square"/>
-            Comments
-            <CBadge class="mfs-auto" color="warning">{{ itemsCount }}</CBadge>
-        </CDropdownItem>
+        <!--        <CDropdownItem>-->
+        <!--            <CIcon name="cil-comment-square"/>-->
+        <!--            Comments-->
+        <!--            <CBadge class="mfs-auto" color="warning">{{ itemsCount }}</CBadge>-->
+        <!--        </CDropdownItem>-->
         <CDropdownHeader
             class="text-center"
             color="light"
@@ -45,10 +49,6 @@
         >
             <strong>Settings</strong>
         </CDropdownHeader>
-        <CDropdownItem>
-            <CIcon name="cil-user"/>
-            Profile
-        </CDropdownItem>
         <CDropdownItem>
             <CIcon name="cil-settings"/>
             Settings
@@ -58,11 +58,11 @@
             Payments
             <CBadge class="mfs-auto" color="secondary">{{ itemsCount }}</CBadge>
         </CDropdownItem>
-        <CDropdownItem>
-            <CIcon name="cil-file"/>
-            Projects
-            <CBadge class="mfs-auto" color="primary">{{ itemsCount }}</CBadge>
-        </CDropdownItem>
+        <!--        <CDropdownItem>-->
+        <!--            <CIcon name="cil-file"/>-->
+        <!--            Projects-->
+        <!--            <CBadge class="mfs-auto" color="primary">{{ itemsCount }}</CBadge>-->
+        <!--        </CDropdownItem>-->
         <CDropdownDivider/>
         <CDropdownItem>
             <CIcon name="cil-shield-alt"/>
@@ -94,7 +94,7 @@ export default {
             await this.logout().then(
                 () => {
                     console.log('success', 'Logout')
-                    this.$router.push('/');
+                    this.$router.push('login');
                 });
         }
     }

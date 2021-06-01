@@ -132,11 +132,6 @@
                                         </CButton>
                                     </router-link>
                                 </CCol>
-                                <!--                <CCol col="6">-->
-                                <!--                  <CButton block color="twitter">-->
-                                <!--                    Twitter-->
-                                <!--                  </CButton>-->
-                                <!--                </CCol>-->
                             </CRow>
                         </CCardFooter>
                     </CCard>
@@ -378,10 +373,6 @@ export default {
             if (!this.validForm) {
                 return false
             }
-
-            // const phone = {
-            //     "phone": this.form.phone,
-            // }
 
             this.form.password_confirmation = this.form.confirmPassword
 

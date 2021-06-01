@@ -30,9 +30,6 @@
                                         <template #prepend-content>
                                             <CIcon name="cil-lock-locked"/>
                                         </template>
-                                        <!--                                        <template v-if="errors.password" #invalid-feedback>-->
-                                        <!--                                            {{ errors.password[0] }}-->
-                                        <!--                                        </template>-->
                                     </CInput>
                                     <p v-if="errors.password" id="passwordError" class="alert-warning">
                                         {{
@@ -97,8 +94,8 @@ export default {
             },
             showError: false,
             loading: false,
-            message: ''
-
+            message: '',
+            error: null
         };
     },
 
@@ -133,17 +130,6 @@ export default {
         },
 
         async submit() {
-            // const User = new FormData();
-            // User.append("username", this.form.username);
-            // User.append("password", this.form.password);
-            //
-            // console.log(User);
-            //
-            // const User = {
-            //     "username": this.form.username,
-            //     "password": this.form.password
-            // }
-
             try {
                 await this.login(this.form).then(
                     (d) => {

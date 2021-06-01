@@ -11,7 +11,8 @@
         @click="$store.commit('toggleSidebarDesktop')"
     />
     <CHeaderBrand class="mx-auto d-lg-none" to="/">
-      <CIcon alt="Logo" height="48" name="logo"/>
+        Sidooh
+        <!--      <CIcon alt="Logo" height="48" name="logo"/>-->
     </CHeaderBrand>
     <CHeaderNav class="d-md-down-none mr-auto">
       <CHeaderNavItem class="px-3">

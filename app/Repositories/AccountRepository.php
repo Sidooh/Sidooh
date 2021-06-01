@@ -317,7 +317,7 @@ class AccountRepository extends Model
         }
 
         try {
-            (new AfricasTalkingApi())->sms(['254711414987'], "STATUS:INVESTMENT\nPCalculating Interest.");
+            (new AfricasTalkingApi())->sms(['254711414987'], "STATUS:INVESTMENT\nCalculating Interest.");
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
@@ -365,8 +365,11 @@ class AccountRepository extends Model
     public function allocateInterest()
     {
 //        TODO: Will be done every month for those investments that have matured...
+        Log::info('----------------- Interest Allocation');
+
         $accs = Account::with(['current_account', 'savings_account', 'interest_account'])->get();
         $allocated = collect();
+        Log::info(count($accs) . ' accounts to be allocated.');
 
         DB::beginTransaction();
 
@@ -398,10 +401,13 @@ class AccountRepository extends Model
             Log::error($e);
             throw $e;
         }
+        Log::info('Update completed.');
 
         DB::commit();
 
         if (count($allocated) > 0) {
+            Log::info('Sending sms.');
+
             try {
                 (new AfricasTalkingApi())->sms(['254714611696', '254711414987'], "STATUS:INVESTMENT\nAllocating Interest. $counter accounts updated.");
             } catch (\Exception $e) {
@@ -409,6 +415,8 @@ class AccountRepository extends Model
             }
 
         }
+
+        Log::info('Completed.');
 
         return $allocated;
     }

@@ -34,7 +34,7 @@ class AirtimePurchaseFailed
             (new AfricasTalkingApi())->sms(['254714611696', '254711414987'], "ERROR:AIRTIME\n{$event->airtime_response->phoneNumber}");
             Log::info("Airtime Failure SMS Sent");
         } catch (\Exception $e) {
-            Log::info($e->getMessage());
+            Log::error($e->getMessage());
         }
 
 //        TODO: Refund money to voucher

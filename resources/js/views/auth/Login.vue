@@ -13,35 +13,36 @@
                                     <p v-if="showError" id="error" class="alert-warning">Username or Password is
                                         incorrect</p>
 
-                                    <CInput
-                                        v-model="form.username"
-                                        autocomplete="username email"
-                                        placeholder="Username"
-                                    >
-                                        <template #prepend-content>
-                                            <CIcon name="cil-user"/>
-                                        </template>
-                                        <template v-if="errors.username" #invalid-feedback>
-                                            {{ errors.username[0] }}
-                                        </template>
-                                    </CInput>
+                                    <vue-tel-input :invalidMsg="error" class="mt-3"
+                                                   @validate="checkPhone"></vue-tel-input>
+                                    <p v-if="errors.phone" id="phoneError" class="alert-warning">
+                                        {{
+                                            errors.phone[0]
+                                        }}
+                                    </p>
                                     <CInput
                                         v-model="form.password"
                                         autocomplete="curent-password"
                                         placeholder="Password"
                                         type="password"
+                                        class="mt-3 mb-0"
                                     >
                                         <template #prepend-content>
                                             <CIcon name="cil-lock-locked"/>
                                         </template>
-                                        <template v-if="errors.password" #invalid-feedback>
-                                            {{ errors.password[0] }}
-                                        </template>
+                                        <!--                                        <template v-if="errors.password" #invalid-feedback>-->
+                                        <!--                                            {{ errors.password[0] }}-->
+                                        <!--                                        </template>-->
                                     </CInput>
+                                    <p v-if="errors.password" id="passwordError" class="alert-warning">
+                                        {{
+                                            errors.password[0]
+                                        }}
+                                    </p>
 
                                     <CRow>
                                         <CCol class="text-left" col="6">
-                                            <CButton class="px-4" color="primary" type="submit">Login</CButton>
+                                            <CButton class="px-4 mt-3" color="primary" type="submit">Login</CButton>
                                         </CCol>
                                         <CCol class="text-right" col="6">
                                             <CButton class="px-0" color="link">Forgot password?</CButton>
@@ -91,7 +92,7 @@ export default {
     data() {
         return {
             form: {
-                username: "",
+                phone: "",
                 password: "",
             },
             showError: false,
@@ -116,6 +117,21 @@ export default {
             "login",
         ]),
 
+        checkPhone(phoneObject) {
+            if (phoneObject.valid) {
+                let safRegex = /^(?:\+?254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$/
+
+                if (safRegex.test(phoneObject.number)) {
+                    this.validPhoneInput = true
+                    this.error = null
+                    this.form.phone = phoneObject.number.replace("+", "");
+                } else {
+                    this.validPhoneInput = false
+                    this.error = "Only Safaricom numbers are currently supported. Please try again."
+                }
+            }
+        },
+
         async submit() {
             // const User = new FormData();
             // User.append("username", this.form.username);
@@ -123,13 +139,13 @@ export default {
             //
             // console.log(User);
             //
-            const User = {
-                "username": this.form.username,
-                "password": this.form.password
-            }
+            // const User = {
+            //     "username": this.form.username,
+            //     "password": this.form.password
+            // }
 
             try {
-                await this.login(User).then(
+                await this.login(this.form).then(
                     (d) => {
                         console.log('success', d)
                         this.showError = false

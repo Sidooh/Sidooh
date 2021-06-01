@@ -63,11 +63,11 @@ const actions = {
     register({commit}, user) {
         return AuthService.register(user).then(
             response => {
-                commit('registerSuccess');
+                commit('REGISTER_SUCCESS');
                 return Promise.resolve(response.data);
             },
             error => {
-                commit('registerFailure');
+                commit('REGISTER_FAILURE');
                 return Promise.reject(error);
             }
         );
@@ -93,7 +93,7 @@ const mutations = {
         // state.isAuthenticated = false;
     },
     REGISTER_CHECK_PHONE_FAILURE(state) {
-        // state.isAuthenticated = false;
+        state.isAuthenticated = false;
     },
     REGISTER_SUCCESS(state) {
         state.isAuthenticated = false;

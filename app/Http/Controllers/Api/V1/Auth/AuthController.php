@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1\Auth;
 
-use App\Helpers\Sidooh\USSD\Processors\Account;
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
+use App\Models\User;
 use App\Repositories\AccountRepository;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -29,13 +29,14 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|phone:KE',
+            'phone' => 'required|string|phone:KE',
             'password' => 'required|string',
         ]);
 
-        $credentials = request(['username', 'password']);
+        $phone = $request->phone;
+        $credentials = request(['password']);
 
-        $acc = (new AccountRepository)->findByPhone($credentials['username']);
+        $acc = (new AccountRepository)->findByPhone($phone);
 
         if ($acc && $acc->user) {
             $credentials['email'] = $acc->user->email;
@@ -43,7 +44,7 @@ class AuthController extends Controller
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
                 $token = $user->createToken('Personal Access Token')->accessToken;
-                $cookie = $this->getCookieDetails($token);
+//                $cookie = $this->getCookieDetails($token);
 
                 return response()
                     ->json([
@@ -60,6 +61,85 @@ class AuthController extends Controller
         return response()->json(
             ['error' => 'invalid-credentials'], 422);
     }
+
+    public function register(Request $request)
+    {
+        $acc = (new AccountRepository)->findByPhone($request->phone);
+
+        $request->validate([
+            'phone' => 'required|string|phone:KE',
+            'name' => 'required|string|min:3|max:255',
+            'email' => 'required|string|email|max:255|unique:users' . ($acc->user ? ',id,' . $acc->user->id : null),
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $credentials = request(['phone', 'name', 'email', 'password']);
+        $credentials['password'] = Hash::make($credentials['password']);
+
+        $acc = (new AccountRepository)->findByPhone($credentials['phone']);
+
+        if ($acc) {
+
+            if ($user = $acc->user) {
+//                Modify user
+                $user->update($credentials);
+
+            } else {
+//                Create user
+                $credentials['id_number'] = $credentials['email'];
+                $credentials['username'] = $credentials['email'];
+
+                $user = User::create($credentials);
+
+                $acc->user()->associate($user);
+                $acc->save();
+            }
+
+            return response()
+                ->json([
+                    'status' => 'SUCCESS',
+                    'user' => $user,
+                ]);
+
+        } else {
+            return response()->json(
+                [
+                    'status' => 'ERROR',
+                    'message' => 'No account with this phone number exists'
+                ], 404);
+        }
+
+        if ($acc && $acc->user) {
+            $credentials['email'] = $acc->user->email;
+
+            if (Auth::attempt($credentials)) {
+                $user = Auth::user();
+                $token = $user->createToken('Personal Access Token')->accessToken;
+                $cookie = $this->getCookieDetails($token);
+
+                return response()
+                    ->json([
+                        'status' => 'SUCCESS',
+                        'user' => $user,
+                        'token' => $token,
+                    ]);
+//                    ->cookie($cookie['name'], $cookie['value'], $cookie['minutes'], $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly'], $cookie['samesite']);
+            } else {
+                return response()->json(
+                    [
+                        'status' => 'ERROR',
+                        'message' => 'invalid-credentials'
+                    ], 422);
+            }
+        }
+
+        return response()->json(
+            [
+                'status' => 'ERROR',
+                'message' => 'invalid-credentials'
+            ], 422);
+    }
+
 
     private function getCookieDetails($token)
     {
@@ -88,11 +168,16 @@ class AuthController extends Controller
         $acc = (new AccountRepository)->findByPhone($credentials['phone']);
 
         if ($acc) {
+            $otp = $this->sendOtp($acc);
+
             if ($acc->user) {
                 return response()->json(
                     [
-                        'status' => 'success',
-                        'data' => $acc,
+                        'status' => 'SUCCESS',
+                        'data' => [
+                            'acc' => $acc,
+                            'otp' => $otp,
+                        ]
                     ]
                 );
             }
@@ -103,6 +188,20 @@ class AuthController extends Controller
         }
 
         return response()->json(
-            ['message' => 'No account with this phone number exists'], 404);
+            [
+                'status' => 'ERROR',
+                'message' => 'No account with this phone number exists'
+            ], 404);
+    }
+
+    private function sendOtp($acc)
+    {
+        $otp = mt_rand(100000, 999999);
+
+//        $message = "$otp is your Sidooh Verification code.";
+//
+//        (new AfricasTalkingApi())->sms($acc->phone, $message);
+
+        return $otp;
     }
 }

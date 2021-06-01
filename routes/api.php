@@ -23,6 +23,8 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
 
         Route::post('register/check-phone', 'AuthController@checkPhone')->name('register.check_phone');
 
+        Route::post('register', 'AuthController@register')->name('register');
+
     });
 });
 

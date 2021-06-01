@@ -371,12 +371,13 @@ class AccountRepository extends Model
         $allocated = collect();
         Log::info(count($accs) . ' accounts to be allocated.');
 
-        DB::beginTransaction();
+//        DB::beginTransaction();
 
         try {
             $counter = 0;
             foreach ($accs as $acc) {
-                if ($acc->interest_account && $acc->interest_balance > 0) {
+                if ($acc->interest_account && $acc->interest_account->balance > 0) {
+                    Log::info($acc->id . ' -> ' . $acc->interest_account->balance);
                     $interest = $acc->interest_account->balance;
 
 //            1. Add 20% to current account
@@ -397,13 +398,13 @@ class AccountRepository extends Model
 
         } catch (\Exception $e) {
             //failed logic here
-            DB::rollback();
+//            DB::rollback();
             Log::error($e);
             throw $e;
         }
         Log::info('Update completed.');
 
-        DB::commit();
+//        DB::commit();
 
         if (count($allocated) > 0) {
             Log::info('Sending sms.');

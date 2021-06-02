@@ -81,9 +81,13 @@ class ProductRepository
             $phone = $account->phone;
             $date = $req->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
 
+//            TODO: Can we add a counter to try 3 times before accepting it as failed?
             $voucher = $account->voucher;
             $voucher->in += $amount;
             $voucher->save();
+
+            $req->transasction->status = 'reimbursed';
+            $req->transaction->save();
 
 //        TODO:: Send sms notification
             $message = "Sorry! We could not complete your airtime purchase for {$phone} worth {$amount} on {$date}. We have credited your voucher {$amount} and your balance is now {$voucher->balance}.";

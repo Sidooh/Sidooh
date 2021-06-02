@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
     name: 'TheHeaderDropdownAccnt',
@@ -84,6 +84,10 @@ export default {
         return {
             itemsCount: 42
         }
+    },
+
+    computed: {
+        ...mapGetters('auth', ['user'])
     },
 
     methods: {

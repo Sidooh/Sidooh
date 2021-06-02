@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TransactionResource;
-use App\Model\Transaction;
+use App\Models\Account;
+use App\Models\Transaction;
 use App\Repositories\TransactionRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
@@ -29,10 +31,13 @@ class TransactionController extends Controller
      *
      * @return TransactionResource
      */
-    public function index()
+    public function index(Account $account)
     {
         //
-        return new TransactionResource($this->repo->with(['payment'])->get());
+//        TODO: Should we filter status here or in the frontend? SHoudl we show users failed and pending transactions?
+        $data = $account->transactions()->whereStatus(['success', 'completed'])->with(['payment'])->get();
+
+        return new TransactionResource($data);
     }
 
     /**

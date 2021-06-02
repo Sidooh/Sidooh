@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
 import auth from './modules/auth';
+import TransactionsIndex from "./modules/Transactions";
 
 Vue.use(Vuex);
 
@@ -27,7 +28,8 @@ const store = new Vuex.Store({
     actions: {},
 
     modules: {
-        auth
+        auth,
+        TransactionsIndex,
     },
     plugins: [createPersistedState()]
 })

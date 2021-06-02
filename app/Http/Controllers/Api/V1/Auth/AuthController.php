@@ -48,6 +48,7 @@ class AuthController extends Controller
 
                 return response()
                     ->json([
+                        'account' => $acc,
                         'user' => $user,
                         'token' => $token,
                     ], 200);
@@ -108,36 +109,6 @@ class AuthController extends Controller
                     'message' => 'No account with this phone number exists'
                 ], 404);
         }
-
-        if ($acc && $acc->user) {
-            $credentials['email'] = $acc->user->email;
-
-            if (Auth::attempt($credentials)) {
-                $user = Auth::user();
-                $token = $user->createToken('Personal Access Token')->accessToken;
-                $cookie = $this->getCookieDetails($token);
-
-                return response()
-                    ->json([
-                        'status' => 'SUCCESS',
-                        'user' => $user,
-                        'token' => $token,
-                    ]);
-//                    ->cookie($cookie['name'], $cookie['value'], $cookie['minutes'], $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly'], $cookie['samesite']);
-            } else {
-                return response()->json(
-                    [
-                        'status' => 'ERROR',
-                        'message' => 'invalid-credentials'
-                    ], 422);
-            }
-        }
-
-        return response()->json(
-            [
-                'status' => 'ERROR',
-                'message' => 'invalid-credentials'
-            ], 422);
     }
 
 
@@ -198,9 +169,9 @@ class AuthController extends Controller
     {
         $otp = mt_rand(100000, 999999);
 
-//        $message = "$otp is your Sidooh Verification code.";
-//
-//        (new AfricasTalkingApi())->sms($acc->phone, $message);
+        $message = "$otp is your Sidooh Verification code.";
+
+        (new AfricasTalkingApi())->sms($acc->phone, $message);
 
         return $otp;
     }

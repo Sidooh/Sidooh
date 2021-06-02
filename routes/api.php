@@ -12,8 +12,9 @@
 */
 
 Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], function () {
-    Route::group(['middleware' => 'auth:api', 'prefix' => 'auth', 'namespace' => 'Auth', 'as' => 'auth.'], function () {
+    Route::group(['middleware' => 'client'], function () {
 
+        Route::apiResource('{account}/transactions', 'TransactionController', ['only' => ['index', 'show']]);
 
     });
 
@@ -26,6 +27,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
         Route::post('register', 'AuthController@register')->name('register');
 
     });
+
 });
 
 

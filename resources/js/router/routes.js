@@ -11,12 +11,16 @@ const routes = [
     {
         path: '/',
         redirect: '/dashboard',
-        name: 'dashboard',
+        // name: 'dashboard',
+    },
+
+    {
+        path: "/dashboard",
         component: TheContainer,
         children: [
             {
                 path: '',
-                name: 'home',
+                name: 'dashboard',
                 component: Dashboard
             },
         ],

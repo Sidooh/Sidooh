@@ -1,10 +1,10 @@
 import AuthService from '../../services/auth';
 
-const user = JSON.parse(localStorage.getItem('user'));
+const token = localStorage.getItem('token');
 
-const initialState = user
-    ? {isAuthenticated: true, user, errors: {}, registrationStep: 1}
-    : {isAuthenticated: false, user: null, errors: {}, registrationStep: 1};
+const initialState = token
+    ? {isAuthenticated: true, token, errors: {}, registrationStep: 1}
+    : {isAuthenticated: false, token: null, errors: {}, registrationStep: 1};
 
 
 const state = initialState;
@@ -17,6 +17,8 @@ const getters = {
     errors: state => state.errors,
 
     registrationStep: state => state.registrationStep,
+
+    user: state => state.user
 }
 
 const actions = {
@@ -28,7 +30,7 @@ const actions = {
         try {
             const response = await AuthService.login(user);
 
-            commit('LOGIN_SUCCESS', response.user);
+            commit('LOGIN_SUCCESS', response);
             return Promise.resolve(response);
 
         } catch (e) {
@@ -75,9 +77,9 @@ const actions = {
 }
 
 const mutations = {
-    LOGIN_SUCCESS(state, user) {
+    LOGIN_SUCCESS(state, data) {
         state.isAuthenticated = true;
-        state.user = user;
+        state.user = data.user;
         state.errors = {};
     },
     LOGIN_FAILURE(state, errors) {

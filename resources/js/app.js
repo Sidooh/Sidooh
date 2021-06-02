@@ -1,6 +1,7 @@
 require('./bootstrap');
 
 // window.Vue = require('vue');
+window.purify = o => JSON.parse(JSON.stringify(o))
 
 import Vue from "vue";
 import VueRouter from "vue-router";

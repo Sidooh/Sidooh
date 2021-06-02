@@ -41,7 +41,9 @@ const errorInterceptor = error => {
         case 401: // authentication error, logout the user
             Vue.notify({type: 'warn', text: 'Please login again', title: 'Session Expired'});
             localStorage.removeItem('token');
-            router.push('/login');
+            localStorage.removeItem('user');
+            // router.push('/login');
+            // window.location.assign('/login')
             break;
 
         case 404:

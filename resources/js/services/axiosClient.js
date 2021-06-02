@@ -6,7 +6,7 @@ import Vue from 'vue';
 const httpClient = axios.create({
     // baseURL: process.env.app_url,
     baseURL: BASE_URL,
-    timeout: 5000, // indicates, 1000ms ie. 1 second
+    // timeout: 10000, // indicates, 1000ms ie. 1 second
     headers: {
         "Content-Type": "application/json",
         // anything you want to add to the headers

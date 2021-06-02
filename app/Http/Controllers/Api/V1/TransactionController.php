@@ -35,7 +35,7 @@ class TransactionController extends Controller
     {
         //
 //        TODO: Should we filter status here or in the frontend? SHoudl we show users failed and pending transactions?
-        $data = $account->transactions()->whereStatus(['success', 'completed'])->with(['payment'])->get();
+        $data = $account->transactions()->whereIn('status', ['success', 'completed'])->with(['payment'])->get();
 
         return new TransactionResource($data);
     }

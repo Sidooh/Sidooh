@@ -6,6 +6,9 @@ const Dashboard = () => import('../views/Home')
 const Register = () => import('../views/auth/Register')
 const Login = () => import('../views/auth/Login')
 
+const TransactionsIndex = () => import('../views/transactions/Index')
+const InvitesIndex = () => import('../views/referrals/Index')
+
 
 const routes = [
     {
@@ -22,6 +25,16 @@ const routes = [
                 path: '',
                 name: 'dashboard',
                 component: Dashboard
+            },
+            {
+                path: '/transactions',
+                name: 'transactions',
+                component: TransactionsIndex
+            },
+            {
+                path: '/invites',
+                name: 'invites',
+                component: InvitesIndex
             },
         ],
     },

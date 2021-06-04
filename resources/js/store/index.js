@@ -4,6 +4,7 @@ import createPersistedState from 'vuex-persistedstate';
 
 import auth from './modules/auth';
 import TransactionsIndex from "./modules/Transactions";
+import ReferralsIndex from "./modules/Referrals";
 
 Vue.use(Vuex);
 
@@ -30,8 +31,10 @@ const store = new Vuex.Store({
     modules: {
         auth,
         TransactionsIndex,
+        ReferralsIndex,
     },
-    plugins: [createPersistedState()]
+    plugins: [createPersistedState()],
+    strict: process.env.NODE_ENV !== 'production',
 })
 
 export default store;

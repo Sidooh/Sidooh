@@ -1,11 +1,11 @@
-import TransactionService from '../../../services/transaction';
+import ReferralService from '../../../services/referral';
 
 const initialState = {
     all: [],
     chartData: [],
     loading: false,
-    query: {sort: 'id', order: 'desc', group: 'd', type: 'PAYMENT'},
-    states: ['completed', 'success'],
+    query: {sort: 'id', order: 'desc', group: 'y', type: 'PAYMENT'},
+    states: ['active'],
 }
 
 const state = initialState;
@@ -20,12 +20,16 @@ const getters = {
         //
         // return rows.slice(state.query.offset, state.query.offset + state.query.limit)
 
-        rows = rows.filter(item => item.type === state.query.type)
+        // rows = rows.filter(item => item.type === state.query.type)
 
 //    Filter data by status
-        rows = rows.filter(item => state.states.includes(item.status))
+//         rows = rows.filter(item => state.states.includes(item.status))
 
         return rows
+    },
+
+    activeReferrals: state => {
+        return state.all.filter(item => state.states.includes(item.status))
     },
 
     chartData: state => state.chartData,
@@ -40,15 +44,15 @@ const actions = {
         commit('LOADING', true)
 
         try {
-            const response = await TransactionService.all();
+            const response = await ReferralService.all();
 
-            commit('TRANSACTION_INDEX_SUCCESS', response.data);
+            commit('REFERRAL_INDEX_SUCCESS', response.data);
             return Promise.resolve(response.data);
 
         } catch (e) {
 
             if (e.status === 422) {
-                commit('TRANSACTION_INDEX_FAILURE', e.data.errors ?? e.data.error);
+                commit('REFERRAL_INDEX_FAILURE', e.data.errors ?? e.data.error);
                 return Promise.reject(e.data);
             }
 
@@ -59,9 +63,10 @@ const actions = {
 
     processChartData({commit, state}) {
         let data = []
+
         //    Get Y, M, D attributes first
         state.all.forEach(item => {
-            const x = _.pick(item, 'id', 'type', 'amount', 'status', 'created_at')
+            const x = _.pick(item, 'id', 'status', 'created_at')
 
             const splitDateTime = x.created_at.split(' ')
             const splitDate = splitDateTime[0]
@@ -76,8 +81,11 @@ const actions = {
             data.push(x)
         })
 
+        console.log(data)
+
+
         //    Filter data by type
-        data = data.filter(item => item.type === state.query.type)
+        // data = data.filter(item => item.type === state.query.type)
 
         //    Filter data by status
         data = data.filter(item => state.states.includes(item.status))
@@ -93,20 +101,24 @@ const actions = {
         let currentMonth = new Date().getMonth() + 1
         let currentDay = new Date().getDay()
 
-        switch (state.query.group) {
-            case 'y':
-                dateFilter = 'fullMonth'
-                data = data.filter(item => item.year == currentYear)
-                break
-            case 'm':
-                dateFilter = 'day'
-                data = data.filter(item => item.year == currentYear && item.month == currentMonth)
-                break
-            case 'd':
-                dateFilter = 'hour'
-                data = data.filter(item => item.year == currentYear && item.month == currentMonth && item.year == currentDay)
-                break
-        }
+        console.log(data, currentYear)
+
+        // TODO: Should we limit to year for referrals?
+
+        // switch (state.query.group) {
+        //     case 'y':
+        dateFilter = 'fullMonth'
+        //         data = data.filter(item => item.year == currentYear)
+        //         break
+        //     case 'm':
+        //         dateFilter = 'day'
+        //         data = data.filter(item => item.year == currentYear && item.month == currentMonth)
+        //         break
+        //     case 'd':
+        //         dateFilter = 'hour'
+        //         data = data.filter(item => item.year == currentYear && item.month == currentMonth && item.year == currentDay)
+        //         break
+        // }
 
         data.forEach(item => {
             var date = item[dateFilter];
@@ -114,15 +126,15 @@ const actions = {
             var index = dateArr.indexOf(date);
             if (index == -1) {
                 dateArr.push(date);
-                var obj = {date: date, amount: item.amount, count: 1};
+                var obj = {date: date, count: 1};
                 resultArr.push(obj);
             } else {
-                resultArr[index].amount += item.amount;
                 resultArr[index].count += 1;
             }
         });
+        console.log(data)
 
-        commit('TRANSACTION_UPDATE_CHART_DATA', resultArr);
+        commit('REFERRAL_UPDATE_CHART_DATA', resultArr);
     },
 
     setQuery({commit}, value) {
@@ -135,15 +147,15 @@ const actions = {
 }
 
 const mutations = {
-    TRANSACTION_INDEX_SUCCESS(state, transactions) {
-        state.all = transactions;
+    REFERRAL_INDEX_SUCCESS(state, referrals) {
+        state.all = referrals;
         state.errors = {};
     },
-    TRANSACTION_INDEX_FAILURE(state, errors) {
+    REFERRAL_INDEX_FAILURE(state, errors) {
         state.all = null;
         state.errors = errors;
     },
-    TRANSACTION_UPDATE_CHART_DATA(state, data) {
+    REFERRAL_UPDATE_CHART_DATA(state, data) {
         state.chartData = data;
     },
     LOADING(state, loading) {

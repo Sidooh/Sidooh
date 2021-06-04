@@ -95,6 +95,11 @@ class Account extends Model
         return $this->hasMany(Referral::class)->active();
     }
 
+    public function referrals()
+    {
+        return $this->hasMany(Referral::class);
+    }
+
     public function referrer()
     {
         return $this->belongsTo(Account::class, 'referrer_id');

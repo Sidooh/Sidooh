@@ -12,9 +12,11 @@
 */
 
 Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], function () {
-    Route::group(['middleware' => 'client'], function () {
+    Route::group([], function () {
 
         Route::apiResource('{account}/transactions', 'TransactionController', ['only' => ['index', 'show']]);
+        Route::apiResource('{account}/referrals', 'ReferralController', ['only' => ['index', 'show']]);
+
 
     });
 

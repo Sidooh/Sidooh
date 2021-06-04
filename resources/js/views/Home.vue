@@ -12,20 +12,29 @@
                 <CRow>
                     <CCol class="col-sm-5">
                         <h4 class="card-title mb-0">Transactions Summary</h4>
-                        <div class="small text-muted">November 2017</div>
+                        <div class="small text-muted">{{
+                                transactionsQuery.group === 'd' ? 'Transactions done today' : (transactionsQuery.group === 'm' ? 'Transactions done this month' : 'Transactions done this year')
+                            }}
+                        </div>
                     </CCol>
                     <CCol class="d-none d-md-block col-sm-7">
                         <button class="btn float-right btn-primary">
                             <CIcon name="cil-cloud-download"/>
                         </button>
                         <CButtonGroup class="float-right mr-3 btn-group">
-                            <CButton class="btn mx-0 btn-outline-secondary" @click="groupTransactions('d')">
+                            <CButton class="btn mx-0 btn-outline-secondary"
+                                     v-bind:class="[ transactionsQuery.group === 'd' ? 'active' : '' ]"
+                                     @click="groupTransactions('d')">
                                 Day
                             </CButton>
-                            <button class="btn mx-0 btn-outline-secondary" @click="groupTransactions('m')">
+                            <button class="btn mx-0 btn-outline-secondary"
+                                    v-bind:class="[ transactionsQuery.group === 'm' ? 'active' : '' ]"
+                                    @click="groupTransactions('m')">
                                 Month
                             </button>
-                            <button class="btn mx-0 btn-outline-secondary" @click="groupTransactions('y')">
+                            <button class="btn mx-0 btn-outline-secondary"
+                                    v-bind:class="[ transactionsQuery.group === 'y' ? 'active' : '' ]"
+                                    @click="groupTransactions('y')">
                                 Year
                             </button>
                         </CButtonGroup>
@@ -33,23 +42,100 @@
                 </CRow>
 
                 <CChartLine :datasets="datasets" :labels="chartLabels" :options="options"
-                            style="height: 400px; margin-top: 40px;"/>
+                            style="height: 300px; margin-top: 40px;"/>
 
             </CCardBody>
             <CCardFooter>
                 <CRow class="text-center">
                     <CCol sclass="mb-sm-2 mb-0 col-sm-12 col-md">
-                        <div class="text-muted">Visits</div>
-                        <strong>29.703 Users (40%)</strong>
-                        <CProgress :value="20"/>
+                        <div class="text-muted">Total Transactions</div>
+                        <strong>{{ totalTransactions }}</strong> <span
+                        title="Today's Transactions">({{ totalTransactionsToday }})</span>
+                        <CProgress
+                            :precision="1"
+                            :value="totalTransactionsToday"
+                            class="progress-xs mt-2"
+                            color="success"
+                        />
                     </CCol>
                     <CCol sclass="mb-sm-2 mb-0 col-sm-12 col-md">
-                        <div class="text-muted">Pageviews</div>
-                        <strong>29.03 Users (20%)</strong>
-                        <CProgress :value="80"/>
+                        <div class="text-muted">Total Amounts</div>
+                        <strong>{{ totalAmount }}</strong> <span title="Today's Transactions">({{
+                            totalAmountToday
+                        }})</span>
+                        <CProgress
+                            :precision="1"
+                            :value="totalAmountToday"
+                            class="progress-xs mt-2"
+                            color="success"
+                        />
                     </CCol>
                 </CRow>
             </CCardFooter>
+        </CCard>
+
+        <CRow>
+            <CCol lg="3" sm="6">
+                <CWidgetDropdown :header="totalActiveReferrals" color="primary" text="Invites">
+                    <!--                    <template #default>-->
+                    <!--                        <CDropdown-->
+                    <!--                            color="transparent p-0"-->
+                    <!--                            placement="bottom-end"-->
+                    <!--                        >-->
+                    <!--                            <template #toggler-content>-->
+                    <!--                                <CIcon name="cil-settings"/>-->
+                    <!--                            </template>-->
+                    <!--                            <CDropdownItem>Action</CDropdownItem>-->
+                    <!--                            <CDropdownItem>Another action</CDropdownItem>-->
+                    <!--                            <CDropdownItem>Something else here...</CDropdownItem>-->
+                    <!--                            <CDropdownItem disabled>Disabled action</CDropdownItem>-->
+                    <!--                        </CDropdown>-->
+                    <!--                    </template>-->
+                    <template #footer>
+                        <CChartLineSimple
+                            :data-points="referralChartData"
+                            :labels="referralChartLabels"
+                            class="mt-3 mx-3"
+                            label="Invites"
+                            point-hover-background-color="primary"
+                            pointed
+                            style="height:70px"
+                        />
+                    </template>
+                </CWidgetDropdown>
+            </CCol>
+        </CRow>
+
+        <CCard>
+            <CCardHeader>
+                <slot name="header">
+                    <CIcon name="cil-grid"/>
+                    Recent Transactions
+                </slot>
+            </CCardHeader>
+            <CCardBody>
+                <CDataTable
+                    :fields="fields"
+                    :items="recentTransactions"
+                    :items-per-page="8"
+                    :pagination="{ doubleArrows: false, align: 'center'}"
+                    clickable-rows
+                    hover
+                    items-per-page-select
+                    sorter
+                    striped
+                    table-filter
+                    @row-clicked="rowClicked"
+                >
+                    <template #status="data">
+                        <td>
+                            <CBadge :color="getBadge(data.item.status)">
+                                {{ data.item.status }}
+                            </CBadge>
+                        </td>
+                    </template>
+                </CDataTable>
+            </CCardBody>
         </CCard>
 
         <!--        <h1>-->
@@ -63,14 +149,36 @@
 // import { mapState } from 'vuex';
 import {CChartLine} from '@coreui/vue-chartjs'
 import {mapActions, mapGetters} from "vuex";
+import CChartLineSimple from "../components/CChartLineSimple";
 
 export default {
     name: "Home",
 
-    components: {CChartLine},
+    components: {CChartLineSimple, CChartLine},
     data() {
         return {
-            // query: {sort: 'id', order: 'desc', group: 'd', type: 'PAYMENT'},
+            fields: [
+                {key: 'id', /*_style: { width: '40%'}*/},
+                {key: 'type',},
+                {key: 'description'},
+                {key: 'amount',},
+                {key: 'status'},
+                {key: 'created_at',},
+                // {key: 'description'},
+                // {key: 'content', format: 'trim:100'},
+                // {key: 'created_at', label: 'Created', format: 'date:d/m/Y'},
+                // {key: 'author_id', label: 'Author', type: 'relationship'},
+                // {key: 'stage_id', label: 'Stage', type: 'relationship'},
+                // {key: 'approved_by', label: 'Approver', type: 'relationship'},
+
+                // {
+                //     key: 'show_details',
+                //     label: '',
+                //     _style: { width: '1%' },
+                //     sorter: false,
+                //     filter: false
+                // }
+            ],
 
             options: {
                 maintainAspectRatio: false,
@@ -99,6 +207,7 @@ export default {
                         grid: {
                             drawOnChartArea: false, // only want the grid lines for one axis to show up
                         },
+
                     },
                 }
             },
@@ -107,7 +216,12 @@ export default {
     },
 
     created() {
-        this.fetchData()
+        this.fetchTransactions().then(() => {
+            this.processTransactionChartData()
+        })
+        this.fetchReferrals().then(() => {
+            this.processReferralChartData()
+        })
     },
 
     destroyed() {
@@ -119,47 +233,68 @@ export default {
         // ...mapState({
         //     count: state => state.count
         // }),
-        ...mapGetters('TransactionsIndex', ['data', 'query', "total", "loading"]),
+        ...mapGetters('TransactionsIndex', {
+            transactions: 'data',
+            transactionsChartData: 'chartData',
+            transactionsQuery: 'query',
+            transactionsTotal: "total",
+            transactionsLoading: "loading"
+        }),
+        ...mapGetters('ReferralsIndex', {
+            referrals: 'data',
+            referralsChartData: 'chartData',
+            activeReferrals: 'activeReferrals',
+        }),
 
-        groupedData() {
-            var resultArr = [];
-            var dateArr = [];
-
-            this.data.forEach(item => {
-                var date = new Date(item.created_at).toISOString().replace(/T/, ' ').split(' ')[0];
-
-                var index = dateArr.indexOf(date);
-                if (index == -1) {
-                    dateArr.push(date);
-                    var obj = {date: date, amount: item.amount, count: 1};
-                    resultArr.push(obj);
-                } else {
-                    resultArr[index].amount += item.amount;
-                    resultArr[index].count += item.count ?? 0;
-                }
-            });
-
-            return resultArr
-        },
 
         chartLabels() {
-            return this.groupedData.map(a => a.date)
+            return this.transactionsChartData.map(a => a.date)
         },
-        chartData() {
-            return this.groupedData.map(a => a.amount)
+        chartData1() {
+            return this.transactionsChartData.map(a => a.amount)
         },
         chartData2() {
-            return this.groupedData.map(a => a.count)
+            return this.transactionsChartData.map(a => a.count)
         },
 
         totalAmount() {
-            return _.sum(this.chartData)
+            return _.sum(this.transactions.map(a => a.amount))
+        },
+        totalAmountToday() {
+            return _.sum(this.transactions.filter(item => this.isToday(new Date(item.created_at))).map(a => a.amount))
+        },
+        totalAmountThisMonth() {
+            return _.sum(this.transactions.filter(item => this.isThisMonth(new Date(item.created_at))).map(a => a.amount))
+        },
+
+        totalTransactions() {
+            return this.transactions.length
+        },
+        totalTransactionsToday() {
+            return this.transactions.filter(item => this.isToday(new Date(item.created_at))).length
+        },
+        totalTransactionsThisMonth() {
+            return this.transactions.filter(item => this.isThisMonth(new Date(item.created_at))).length
+        },
+
+        recentTransactions() {
+            return this.transactions.sort((a, b) => b.id - a.id).slice(0, 15)
+        },
+
+        totalActiveReferrals() {
+            return this.activeReferrals.length + ''
+        },
+        referralChartLabels() {
+            return this.referralsChartData.map(a => a.date)
+        },
+        referralChartData() {
+            return this.referralsChartData.map(a => a.count)
         },
 
         datasets() {
             return [
                 {
-                    data: this.chartData,
+                    data: this.chartData1,
                     backgroundColor: '#008',
                     borderColor: '#00c',
                     label: 'Amount',
@@ -183,20 +318,48 @@ export default {
         }
     },
 
-    // watch: {
-    //     query: {
-    //         handler(query) {
-    //             this.setQuery(query)
-    //         },
-    //         deep: true
-    //     }
-    // },
 
     methods: {
-        ...mapActions('TransactionsIndex', ['fetchData', 'setQuery', 'resetState']),
+        ...mapActions('TransactionsIndex', {
+            fetchTransactions: 'fetchData',
+            processTransactionChartData: 'processChartData',
+            setQuery: 'setQuery',
+            resetState: 'resetState'
+        }),
+        ...mapActions('ReferralsIndex', {
+            fetchReferrals: 'fetchData',
+            processReferralChartData: 'processChartData'
+        }),
 
         groupTransactions(e) {
-            this.query.group = e
+            this.transactionsQuery.group = e
+            this.processTransactionChartData()
+        },
+
+        isToday(someDate) {
+            const today = new Date()
+            return someDate.getDate() == today.getDate() &&
+                someDate.getMonth() == today.getMonth() &&
+                someDate.getFullYear() == today.getFullYear()
+        },
+
+        isThisMonth(someDate) {
+            const today = new Date()
+            return someDate.getMonth() == today.getMonth() &&
+                someDate.getFullYear() == today.getFullYear()
+        },
+
+        rowClicked(item, index, e, detailsClick = false) {
+            this.$emit(
+                'row-clicked', item, index, e
+            )
+        },
+
+        getBadge(status) {
+            return status === 'Active' ? 'success'
+                : status === 'Inactive' ? 'secondary'
+                    : status === 'Pending' ? 'warning'
+                        : status === 'Banned' ? 'danger' : 'primary'
         }
     },
 

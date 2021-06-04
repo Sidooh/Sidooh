@@ -30,6 +30,9 @@ Vue.use(VueTelInput, {
 })
 
 Vue.config.productionTip = false
+Vue.config.performance = true
+
+strict: process.env.NODE_ENV !== 'production'
 
 const app = new Vue({
     el: '#app',

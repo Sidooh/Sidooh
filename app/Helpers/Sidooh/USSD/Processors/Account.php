@@ -584,7 +584,7 @@ class Account extends Product
         $user = $acc->user;
 
         if (!$user) {
-            $email = $this->vars['{$email}'];
+            $email = $this->vars['{$email}'] ?? $this->vars['{$my_number}'] . "@sid.ooh";
             $pass = $this->vars['{$email}'] . '5!D00h';
 
             $user = User::firstOrCreate(

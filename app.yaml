@@ -76,6 +76,9 @@ env_variables:
 
   SIDOOH_TAGLINE: "Sidooh, Makes You Money with Every Purchase."
 
+  SENTRY_LARAVEL_DSN: https://127d0d5f0b19418d8fc3c9d16b44fd2b@o802918.ingest.sentry.io/5802789
+  SENTRY_TRACES_SAMPLE_RATE: 1
+
 
 # Use the connection name obtained when configuring your Cloud SQL instance.
 beta_settings:

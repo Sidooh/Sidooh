@@ -45,9 +45,9 @@ class Account extends Product
                     $this->set_kyc_details();
                 }
                 break;
-//            case "kyc_details_pin":
-//                $this->set_pin_title($previousScreen);
-//                break;
+            case "kyc_details":
+                $this->check_pin_exists($previousScreen);
+                break;
             case "kyc_details_name":
                 $this->set_name($previousScreen);
                 break;
@@ -253,6 +253,18 @@ class Account extends Product
         }
 
         return null;
+    }
+
+
+    private function check_pin_exists(Screen $previousScreen)
+    {
+        $acc = (new AccountRepository)->findByPhone($this->phone);
+
+        if ($acc)
+            if ($acc->pin) {
+                unset($this->screen->options[0]);
+            }
+
     }
 
     private function set_earnings(Screen $previousScreen)
@@ -676,5 +688,6 @@ class Account extends Product
         else
             (new \App\Helpers\Sidooh\Withdrawal($amount, $phone, $method))->withdraw($target);
     }
+
 
 }

@@ -557,7 +557,7 @@ class Account extends Product
         $phone = $this->vars['{$my_number}'];
 //
         $name = $this->vars['{$name}'];
-        $email = $this->vars['{$email}'];
+        $email = $this->vars['{$email}'] ?? $this->vars['{$my_number}'] . "@sid.ooh";
         $pass = $this->vars['{$email}'] . '5!D00h';
         $pin = $this->vars['{$confirm_pin}'];
 
@@ -568,7 +568,7 @@ class Account extends Product
 
         $user = $acc->user;
 
-        if (!$acc->user)
+        if (!$user)
             $user = User::firstOrCreate(
                 [
                     'username' => $phone,
@@ -581,7 +581,7 @@ class Account extends Product
                     'password' => Hash::make($pass)
                 ]);
 
-        $acc->user_id = $user->id;
+        $acc->user()->associate($user);
         $acc->save();
     }
 

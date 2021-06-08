@@ -86,8 +86,8 @@ class ProductRepository
             $voucher->in += $amount;
             $voucher->save();
 
-            $req->transasction->status = 'reimbursed';
-            $req->transaction->save();
+            $transaction->status = 'reimbursed';
+            $transaction->save();
 
 //        TODO:: Send sms notification
             $message = "Sorry! We could not complete your airtime purchase for {$phone} worth {$amount} on {$date}. We have credited your voucher {$amount} and your balance is now {$voucher->balance}.";

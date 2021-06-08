@@ -14,9 +14,9 @@ const getters = {
     data: state => {
         let rows = state.all
         //
-        // if (state.query.sort) {
-        //     rows = _.orderBy(state.all, state.query.sort, state.query.order)
-        // }
+        if (state.query.sort) {
+            rows = _.orderBy(state.all, state.query.sort, state.query.order)
+        }
         //
         // return rows.slice(state.query.offset, state.query.offset + state.query.limit)
 

@@ -1,6 +1,7 @@
 import AuthService from '../../services/auth';
 
 const token = localStorage.getItem('token');
+const account = localStorage.getItem('token');
 
 const initialState = token
     ? {isAuthenticated: true, token, errors: {}, registrationStep: 1}

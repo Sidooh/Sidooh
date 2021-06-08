@@ -42,7 +42,7 @@
             <CCardBody>
                 <CDataTable
                     :fields="fields"
-                    :items="referrals"
+                    :items="data"
                     :items-per-page="15"
                     :pagination="{ doubleArrows: false, align: 'center'}"
                     clickable-rows
@@ -126,9 +126,9 @@ export default {
             return this.data.filter(item => this.isThisMonth(new Date(item.created_at))).length
         },
 
-        referrals() {
-            return this.data.sort((a, b) => b.id - a.id)
-        },
+        // referrals() {
+        //     return this.data.sort((a, b) => b.id - a.id)
+        // },
 
     },
 

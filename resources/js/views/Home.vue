@@ -332,7 +332,12 @@ export default {
         }),
 
         groupTransactions(e) {
-            this.transactionsQuery.group = e
+            const q = Object.assign({}, this.transactionsQuery, {group: e});
+
+            // or
+            // const q = {...this.transactionsQuery, { group: e} }
+
+            this.setQuery(q);
             this.processTransactionChartData()
         },
 

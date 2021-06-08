@@ -1,8 +1,14 @@
 import client from './axiosClient';
+import router from "../router";
 
-const id = JSON.parse(localStorage.getItem('account')).id;
+const account = JSON.parse(localStorage.getItem('account'));
 
-const ENDPOINT_URL = '/' + id + '/transactions/';
+// if (account) {
+const ENDPOINT_URL = '/' + account.id + '/transactions/';
+// } else {
+//     // router.push('/login')
+// }
+
 
 class TransactionService {
     all() {

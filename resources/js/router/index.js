@@ -3,7 +3,7 @@ import routes from './routes';
 import store from "../store";
 
 const router = new VueRouter({
-    mode: 'history',
+    // mode: 'history',
     linkActiveClass: 'active',
     scrollBehavior: () => ({y: 0}),
     routes

@@ -8,6 +8,7 @@ const Login = () => import('../views/auth/Login')
 
 const TransactionsIndex = () => import('../views/transactions/Index')
 const InvitesIndex = () => import('../views/referrals/Index')
+const AirtimePurchase = () => import('../views/purchases/Airtime')
 
 
 const routes = [
@@ -27,12 +28,30 @@ const routes = [
                 component: Dashboard
             },
             {
-                path: '/transactions',
+                path: 'purchase',
+                component: {
+                    render(c) {
+                        return c('router-view')
+                    }
+                },
+                children: [
+                    {
+                        path: 'airtime',
+                        name: 'airtime',
+                        component: AirtimePurchase,
+                        meta: {
+                            title: 'Airtime Purchase',
+                        }
+                    },
+                ]
+            },
+            {
+                path: 'transactions',
                 name: 'transactions',
                 component: TransactionsIndex
             },
             {
-                path: '/invites',
+                path: 'invites',
                 name: 'invites',
                 component: InvitesIndex
             },

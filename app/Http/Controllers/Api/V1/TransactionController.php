@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TransactionResource;
 use App\Models\Account;
@@ -122,6 +123,25 @@ class TransactionController extends Controller
 
 
         Log::info($request->all());
+
+    }
+
+    public function buyAirtime(Account $account, Request $request): \Illuminate\Http\JsonResponse
+    {
+        Log::info('******* API AIRTIME PURCHASE *******');
+
+        $amount = $request->amount;
+        $target = $request->other_phone;
+        $method = $request->method;
+
+//        TODO: Do we need to store all numbers bought for in our system? What if it is not a safaricom number?
+        $transaction = (new \App\Helpers\Sidooh\Airtime($amount, $account->phone, $method))->purchase($target);
+
+        return response()
+            ->json([
+                'status' => 'SUCCESS',
+                'transaction' => $transaction,
+            ]);
 
     }
 }

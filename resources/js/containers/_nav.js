@@ -19,25 +19,25 @@ export default [
             {
                 _name: 'CSidebarNavItem',
                 name: 'Buy Airtime',
-                to: '/purchase/airtime',
+                to: '/dashboard/purchase/airtime',
                 icon: 'cil-drop'
             },
             {
                 _name: 'CSidebarNavItem',
                 name: 'Top Up Voucher',
-                to: '/purchase/voucher',
+                to: '/dashboard/purchase/voucher',
                 icon: 'cil-drop'
             },
             {
                 _name: 'CSidebarNavItem',
                 name: 'Purchase Subscription',
-                to: '/purchase/subscription',
+                to: '/dashboard/purchase/subscription',
                 icon: 'cil-pencil'
             },
             {
                 _name: 'CSidebarNavItem',
                 name: 'Pay Merchant',
-                to: '/purchase/merchant',
+                to: '/dashboard/purchase/merchant',
                 icon: 'cil-pencil'
             },
             {
@@ -47,25 +47,25 @@ export default [
             {
                 _name: 'CSidebarNavItem',
                 name: 'Transactions',
-                to: '/transactions',
+                to: '/dashboard/transactions',
                 icon: 'cil-chart-pie'
             },
             {
                 _name: 'CSidebarNavItem',
                 name: 'Invites',
-                to: '/invites',
+                to: '/dashboard/invites',
                 icon: 'cil-chart-pie'
             },
             {
                 _name: 'CSidebarNavItem',
                 name: 'Balances',
-                to: '/balances',
+                to: '/dashboard/balances',
                 icon: 'cil-chart-pie'
             },
             {
                 _name: 'CSidebarNavItem',
                 name: 'Earnings ??? ',
-                to: '/charts',
+                to: '/dashboard/charts',
                 icon: 'cil-chart-pie'
             },
             // {

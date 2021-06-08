@@ -17,7 +17,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
         Route::apiResource('{account}/transactions', 'TransactionController', ['only' => ['index', 'show']]);
         Route::apiResource('{account}/referrals', 'ReferralController', ['only' => ['index', 'show']]);
 
-
+        Route::post('{account}/purchase/airtime', 'TransactionController@buyAirtime');
     });
 
     Route::group(['prefix' => 'auth', 'namespace' => 'Auth', 'as' => 'auth.'], function () {

@@ -44,9 +44,10 @@ class AirtimePurchaseFailed
         $amount = explode(".", explode(" ", $event->airtime_response->amount)[1])[0];
         $date = $event->airtime_response->request->created_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
 
-        $transaction = new $event->airtime_response->request->transaction;
-        $transaction->status = 'reimbursed';
-        $transaction->save();
+//        TODO: Find a better way to get the transaction cause of gateway error from AT and transaction seems empty
+//        $transaction = new $event->airtime_response->request->transaction;
+//        $transaction->status = 'reimbursed';
+//        $transaction->save();
 
         $voucher = $account->voucher;
         $voucher->in += $amount;

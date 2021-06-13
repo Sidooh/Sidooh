@@ -29,6 +29,7 @@ class AirtimePurchaseFailed
     {
         //
         Log::info('----------------- Airtime Purchase Failed');
+        Log::info($event->airtime_response);
 //        Adding failed airtime alert
         try {
             (new AfricasTalkingApi())->sms(['254714611696', '254711414987'], "ERROR:AIRTIME\n{$event->airtime_response->phoneNumber}");

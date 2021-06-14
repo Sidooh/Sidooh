@@ -3,7 +3,7 @@
 
         <CCardGroup class="mb-4">
             <CWidgetProgressIcon
-                :header="balances.voucher.balance + ''"
+                :header="balances.voucher.balance | numFormat('0,0')"
                 color="gradient-info"
                 inverse
                 text="VOUCHER"
@@ -13,7 +13,7 @@
             <CWidgetProgressIcon
                 v-for="acc in balances.sub_accounts"
                 :color="getColour(acc.type)"
-                :header="acc.balance + ''"
+                :header="acc.balance | numFormat('0,0.0000')"
                 :text="acc.type"
             >
                 <CIcon :name="getIcon(acc.type)" height="36"/>

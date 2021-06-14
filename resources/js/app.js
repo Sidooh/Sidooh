@@ -13,6 +13,8 @@ import VueTelInput from 'vue-tel-input';
 import 'vue-tel-input/dist/vue-tel-input.css';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import numeral from 'numeral';
+import numFormat from 'vue-filter-number-format';
 
 
 import router from "./router";
@@ -33,6 +35,7 @@ Vue.use(VueTelInput, {
 })
 Vue.use(VueSweetalert2);
 Vue.use(require('vue-moment'));
+Vue.filter('numFormat', numFormat(numeral));
 
 Vue.config.productionTip = false
 Vue.config.performance = true

@@ -74,5 +74,7 @@ class Voucher
         ]);
 
         $transaction->payment()->save($payment);
+
+        return $transaction;
     }
 }

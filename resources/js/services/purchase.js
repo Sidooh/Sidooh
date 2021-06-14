@@ -1,5 +1,4 @@
 import client from './axiosClient';
-import router from "../router";
 
 const account = JSON.parse(localStorage.getItem('account'));
 
@@ -28,6 +27,63 @@ class PurchaseService {
                 throw error.response
             });
     }
+
+
+    airtimeStatus(transactionId) {
+        return client
+            .get(ENDPOINT_URL + 'airtime/' + transactionId)
+            .then(response => {
+                console.log('resSuccess', response)
+
+                if (response.data) {
+                    return response.data;
+                }
+
+                return response;
+            })
+            .catch(error => {
+                console.log('resError', error.response)
+                throw error.response
+            });
+    }
+
+    voucher(form) {
+        return client
+            .post(ENDPOINT_URL + 'voucher', form)
+            .then(response => {
+                console.log('resSuccess', response)
+
+                if (response.data) {
+                    return response.data;
+                }
+
+                return response;
+            })
+            .catch(error => {
+                console.log('resError', error.response)
+                throw error.response
+            });
+    }
+
+
+    voucherStatus(transactionId) {
+        return client
+            .get(ENDPOINT_URL + 'voucher/' + transactionId)
+            .then(response => {
+                console.log('resSuccess', response)
+
+                if (response.data) {
+                    return response.data;
+                }
+
+                return response;
+            })
+            .catch(error => {
+                console.log('resError', error.response)
+                throw error.response
+            });
+    }
+
 
 }
 

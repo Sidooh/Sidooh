@@ -16,6 +16,13 @@ class Voucher extends Model
         'account_id', 'in', 'out'
     ];
 
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['balance'];
+
     public function account()
     {
         return $this->belongsTo(Account::class);

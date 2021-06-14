@@ -1,7 +1,9 @@
 import PurchaseService from '../../../services/purchase';
+import Vue from "vue";
 
 const initialState = {
     all: [],
+    status: {},
     loading: false,
     errors: {},
     states: ['completed', 'success'],
@@ -27,6 +29,8 @@ const getters = {
         return rows
     },
 
+    status: state => state.status,
+
     errors: state => state.errors,
 
     query: state => state.query,
@@ -41,14 +45,93 @@ const actions = {
         try {
             const response = await PurchaseService.airtime(form);
 
-            commit('PURCHASE_INDEX_SUCCESS', response.data);
+            commit('PURCHASE_SUCCESS', response);
+            return Promise.resolve(response);
+
+        } catch (e) {
+
+            if (e.status === 422) {
+                commit('PURCHASE_FAILURE', e.data.errors ?? e.data.error);
+                return Promise.reject(e.data);
+            }
+
+        }
+
+        commit('LOADING', false)
+    },
+
+    async checkAirtimeStatus({commit}, transactionId) {
+        commit('LOADING', true)
+
+        try {
+            const response = await PurchaseService.airtimeStatus(transactionId);
+
+            commit('PURCHASE_STATUS_SUCCESS', response.data);
             return Promise.resolve(response.data);
 
         } catch (e) {
 
             if (e.status === 422) {
-                commit('PURCHASE_INDEX_FAILURE', e.data.errors ?? e.data.error);
+                commit('PURCHASE_STATUS_FAILURE', e.data.errors ?? e.data.error);
                 return Promise.reject(e.data);
+            }
+
+            if (e.status === 404) {
+                commit('PURCHASE_STATUS_FAILURE', 'Not Found');
+                // TODO: Is this necessary?
+                // Vue.swal({
+                //     title: 'Not Found',
+                //     text: "The record was not found.",
+                //     icon: 'warning',
+                // });
+            }
+
+        }
+
+        commit('LOADING', false)
+    },
+
+    async buyVoucher({commit}, form) {
+        commit('LOADING', true)
+
+        try {
+            const response = await PurchaseService.voucher(form);
+
+            commit('PURCHASE_SUCCESS', response);
+            return Promise.resolve(response);
+
+        } catch (e) {
+
+            if (e.status === 422) {
+                commit('PURCHASE_FAILURE', e.data.errors ?? e.data.error);
+                return Promise.reject(e.data);
+            }
+
+        }
+
+        commit('LOADING', false)
+
+        return Promise.reject();
+    },
+
+    async checkVoucherStatus({commit}, transactionId) {
+        commit('LOADING', true)
+
+        try {
+            const response = await PurchaseService.voucherStatus(transactionId);
+
+            commit('PURCHASE_STATUS_SUCCESS', response.data);
+            return Promise.resolve(response.data);
+
+        } catch (e) {
+
+            if (e.status === 422) {
+                commit('PURCHASE_STATUS_FAILURE', e.data.errors ?? e.data.error);
+                return Promise.reject(e.data);
+            }
+
+            if (e.status === 404) {
+                commit('PURCHASE_STATUS_FAILURE', 'Not Found');
             }
 
         }
@@ -72,6 +155,14 @@ const mutations = {
     },
     PURCHASE_FAILURE(state, errors) {
         state.all = null;
+        state.errors = errors;
+    },
+    PURCHASE_STATUS_SUCCESS(state, purchases) {
+        state.status = purchases;
+        state.errors = {};
+    },
+    PURCHASE_STATUS_FAILURE(state, errors) {
+        state.status = null;
         state.errors = errors;
     },
     LOADING(state, loading) {

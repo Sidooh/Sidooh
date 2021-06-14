@@ -11,6 +11,9 @@ import {iconsSet as icons} from './assets/icons/icons.js';
 import Notifications from 'vue-notification';
 import VueTelInput from 'vue-tel-input';
 import 'vue-tel-input/dist/vue-tel-input.css';
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+
 
 import router from "./router";
 import store from "./store";
@@ -28,11 +31,13 @@ Vue.use(VueTelInput, {
     }
 
 })
+Vue.use(VueSweetalert2);
+Vue.use(require('vue-moment'));
 
 Vue.config.productionTip = false
 Vue.config.performance = true
 
-strict: process.env.NODE_ENV !== 'production'
+// strict: process.env.NODE_ENV !== 'production'
 
 const app = new Vue({
     el: '#app',

@@ -8,8 +8,13 @@ const Login = () => import('../views/auth/Login')
 
 const TransactionsIndex = () => import('../views/transactions/Index')
 const InvitesIndex = () => import('../views/referrals/Index')
-const AirtimePurchase = () => import('../views/purchases/Airtime')
+const BalancesIndex = () => import('../views/accounts/Index')
 
+
+const AirtimePurchase = () => import('../views/purchases/Airtime')
+const AirtimeStatus = () => import('../views/purchases/AirtimeStatus')
+const VoucherPurchase = () => import('../views/purchases/Voucher')
+const VoucherStatus = () => import('../views/purchases/VoucherStatus')
 
 const routes = [
     {
@@ -43,6 +48,30 @@ const routes = [
                             title: 'Airtime Purchase',
                         }
                     },
+                    {
+                        path: 'airtime/:id',
+                        name: 'airtime_status',
+                        component: AirtimeStatus,
+                        meta: {
+                            title: 'Airtime Status',
+                        }
+                    },
+                    {
+                        path: 'voucher',
+                        name: 'voucher',
+                        component: VoucherPurchase,
+                        meta: {
+                            title: 'Voucher Purchase',
+                        }
+                    },
+                    {
+                        path: 'voucher/:id',
+                        name: 'voucher_status',
+                        component: VoucherStatus,
+                        meta: {
+                            title: 'Voucher Status',
+                        }
+                    },
                 ]
             },
             {
@@ -55,6 +84,25 @@ const routes = [
                 name: 'invites',
                 component: InvitesIndex
             },
+            {
+                path: 'account',
+                component: {
+                    render(c) {
+                        return c('router-view')
+                    }
+                },
+                children: [
+                    {
+                        path: 'balances',
+                        name: 'Account Balances',
+                        component: BalancesIndex,
+                        meta: {
+                            title: 'Account Balances',
+                        }
+                    },
+
+                ]
+            }
         ],
     },
 

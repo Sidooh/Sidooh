@@ -17,74 +17,95 @@
                                 </p>
 
                                 <!--                                Number : if other number-->
-                                <CRow class="form-group" form>
-                                    <CCol class="col-form-label" md="6" tag="label">
-                                        Other number?
-                                    </CCol>
-                                    <!--                                    try 3d variant and label-->
-                                    <CCol md="6">
-                                        <CSwitch
-                                            :checked="otherNumber"
-                                            class="mr-1"
-                                            color="info"
-                                            shape="pill"
-                                            slabelOn="Buy for other"
-                                            variant="outline"
-                                            @update:checked="setOtherNumber"
-                                        />
-                                    </CCol>
-                                </CRow>
 
-                                <CRow v-if="otherNumber" class="form-group" form>
-                                    <CCol>
-                                        <vue-tel-input :invalidMsg="error" class="mt-3"
-                                                       @validate="checkPhone"></vue-tel-input>
-                                        <p v-if="errors.phone" id="phoneError" class="alert-warning">
-                                            {{
-                                                errors.phone[0]
-                                            }}
-                                        </p>
-                                        <p v-if="validation.other_phone" id="otherNumberError" class="alert-warning">
-                                            {{ validation.other_phone }}
-                                        </p>
-                                    </CCol>
-                                </CRow>
+                                <div class="mt-3">
+                                    <CRow class="form-group mb-0" form>
+                                        <CCol class="col-form-label" md="6" tag="label">
+                                            Other number?
+                                        </CCol>
+                                        <!--                                    try 3d variant and label-->
+                                        <CCol md="6">
+                                            <CSwitch
+                                                :checked="otherNumber"
+                                                class="mr-1"
+                                                color="info"
+                                                shape="pill"
+                                                slabelOn="Buy for other"
+                                                variant="outline"
+                                                @update:checked="setOtherNumber"
+                                            />
+                                        </CCol>
+
+                                        <CCol v-if="otherNumber">
+                                            <vue-tel-input :invalidMsg="error" class="mt-3"
+                                                           @validate="checkPhone"></vue-tel-input>
+                                            <p v-if="errors.phone" id="phoneError" class="alert-warning">
+                                                {{
+                                                    errors.phone[0]
+                                                }}
+                                            </p>
+                                            <p v-if="validation.other_phone" id="otherNumberError"
+                                               class="alert-warning">
+                                                {{ validation.other_phone }}
+                                            </p>
+                                        </CCol>
+                                    </CRow>
+                                </div>
+                                <!--                                <CRow v-if="otherNumber" class="form-group mt-0" form>-->
+                                <!--                                    -->
+                                <!--                                </CRow>-->
 
                                 <!--                                Amount-->
-                                <CInput
-                                    v-model="form.amount"
-                                    class="mb-0"
-                                    max="10000"
-                                    min="10"
-                                    placeholder="1000"
-                                    type="number"
-                                    @update:value="checkAmount"
-                                >
-                                    <template #prepend-content>
-                                        <CIcon name="cil-dollar"/>
-                                    </template>
-                                </CInput>
-                                <p v-if="validation.amount" id="amountError" class="alert-warning">
-                                    {{ validation.amount }}
-                                </p>
+
+                                <div class="mt-4">
+                                    <span>Amount</span>
+                                    <CRow>
+                                        <CCol v-for="(a, key) in airtimeAmounts" class="mb-3" md="4" sm="6"
+                                              xl="3">
+                                            <CButton :key="key" block color="primary" shape="pill"
+                                                     @click="checkAmount(key)">{{ a }}
+                                            </CButton>
+                                        </CCol>
+                                    </CRow>
+
+                                    <CInput
+                                        v-model="form.amount"
+                                        :disabled="!otherAmount"
+                                        class="mb-0 mt-3"
+                                        max="10000"
+                                        min="10"
+                                        placeholder="amount"
+                                        type="number"
+                                        @update:value="checkAmount"
+                                    >
+                                        <template #prepend-content>
+                                            <CIcon name="cil-dollar"/>
+                                        </template>
+                                    </CInput>
+                                    <p v-if="validation.amount" id="amountError" class="alert-warning">
+                                        {{ validation.amount }}
+                                    </p>
+                                </div>
 
                                 <!--                                Method : if voucher has amount equivalent-->
+                                <div class="mt-4">
 
-                                <CRow class="form-group mt-3" form>
-                                    <CCol sm="6">
-                                        Payment Method
-                                    </CCol>
-                                    <CInputRadioGroup
-                                        :checked="selectedOption"
-                                        :inline="true"
-                                        :options="options"
-                                        class="col-sm-6"
-                                        @update:checked="setMethod"
-                                    />
-                                    <p v-if="validation.method" id="methodError" class="alert-warning">
-                                        {{ validation.method }}
-                                    </p>
-                                </CRow>
+                                    <CRow class="form-group mt-3" form>
+                                        <CCol sm="6">
+                                            Payment Method
+                                        </CCol>
+                                        <CInputRadioGroup
+                                            :checked="selectedOption"
+                                            :inline="true"
+                                            :options="options"
+                                            class="col-sm-6"
+                                            @update:checked="setMethod"
+                                        />
+                                        <p v-if="validation.purchaseMethod" id="methodError" class="alert-warning">
+                                            {{ validation.purchaseMethod }}
+                                        </p>
+                                    </CRow>
+                                </div>
 
                                 <CRow>
                                     <CCol class="text-left mt-3" col="12">
@@ -151,6 +172,7 @@
 
 <script>
 import {mapGetters, mapActions} from "vuex";
+import Vue from "vue";
 
 export default {
     name: 'Airtime',
@@ -160,9 +182,14 @@ export default {
             form: {
                 other_phone: null,
                 amount: "",
-                method: "MPESA"
+                purchaseMethod: "MPESA"
             },
 
+            airtimeAmounts: {
+                20: '20', 50: '50', 100: '100', 200: '200', 500: '500', 1000: '1000', '-1': 'Other'
+            },
+
+            otherAmount: false,
             otherNumber: false,
             options: ['MPesa', 'Voucher'],
             selectedOption: 'MPesa',
@@ -170,7 +197,7 @@ export default {
             validation: {
                 other_phone: '',
                 amount: '',
-                method: '',
+                purchaseMethod: '',
             },
 
             showError: false,
@@ -185,7 +212,7 @@ export default {
 
         validForm() {
             return !this.validation.amount &&
-                !this.validation.method &&
+                !this.validation.purchaseMethod &&
                 (this.otherNumber ? !this.validation.other_phone : true) && this.form.amount
         },
     },
@@ -206,18 +233,20 @@ export default {
         ]),
 
         checkPhone(phoneObject) {
-            if (phoneObject.valid) {
+            console.log(phoneObject)
+            if (phoneObject.number)
+                if (phoneObject.valid) {
 
-                // let safRegex = /^(?:\+?254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$/
-                //
-                // if (safRegex.test(phoneObject.number)) {
-                this.validation.other_phone = ''
-                this.error = null
-                this.form.other_phone = phoneObject.number.replace("+", "");
+                    // let safRegex = /^(?:\+?254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$/
+                    //
+                    // if (safRegex.test(phoneObject.number)) {
+                    this.validation.other_phone = ''
+                    this.error = null
+                    this.form.other_phone = phoneObject.number.replace("+", "");
 
-            } else {
-                this.validation.other_phone = "Number seems to be invalid. Please try again."
-            }
+                } else {
+                    this.validation.other_phone = "Number seems to be invalid. Please try again."
+                }
             // }
         },
 
@@ -231,6 +260,9 @@ export default {
                 } else {
                     this.validation.amount = "Please only put whole numbers"
                 }
+
+            } else if (amount === '-1') {
+                this.otherAmount = true
             } else {
                 this.validation.amount = "Amount should be min of 10 and max of 10000"
             }
@@ -240,8 +272,12 @@ export default {
             this.otherNumber = e
         },
 
+        setOtherAmount(e) {
+            this.otherAmount = e
+        },
+
         setMethod(e) {
-            this.form.method = e.toUpperCase()
+            this.form.purchaseMethod = e.toUpperCase()
         },
 
         async submit() {
@@ -250,7 +286,13 @@ export default {
                     (d) => {
                         console.log('success', d)
                         this.showError = false
-                        // this.$router.push('/');
+                        Vue.swal({
+                            title: d.status,
+                            text: d.message,
+                            icon: 'success',
+                        });
+
+                        this.$router.push({name: 'airtime_status', params: {id: d.data.id}});
                     },
                     error => {
                         console.log('error', error)
@@ -267,7 +309,7 @@ export default {
                     });
 
             } catch (error) {
-                console.log('loginVueError', error)
+                console.log('purchaseAirtimeVueError', error)
 
                 this.showError = true
             }

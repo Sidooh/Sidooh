@@ -18,6 +18,13 @@ class SubAccount extends Model
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['balance'];
+
+    /**
      * Scope a query to only include specific sub account type.
      *
      * @param Builder $query

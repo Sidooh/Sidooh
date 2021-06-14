@@ -10,8 +10,10 @@ use App\Models\Transaction;
 use App\Repositories\TransactionRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Samerior\MobileMoney\Mpesa\Exceptions\MpesaException;
 
 class TransactionController extends Controller
 {
@@ -132,16 +134,113 @@ class TransactionController extends Controller
 
         $amount = $request->amount;
         $target = $request->other_phone;
-        $method = $request->method;
+        $method = $request->purchaseMethod;
+
+        try {
 
 //        TODO: Do we need to store all numbers bought for in our system? What if it is not a safaricom number?
-        $transaction = (new \App\Helpers\Sidooh\Airtime($amount, $account->phone, $method))->purchase($target);
+            $transaction = (new \App\Helpers\Sidooh\Airtime($amount, $account->phone, $method))->purchase($target);
+
+        } catch (MpesaException $e) {
+            Log::error($e->getMessage());
+            return response()
+                ->json([
+                    'status' => 'ERROR',
+                    'message' => 'There was an error with MPesa servers. Please try again later.'
+                ], 503);
+        }
 
         return response()
             ->json([
                 'status' => 'SUCCESS',
-                'transaction' => $transaction,
+                'message' => "STK Push sent successfully",
+                'data' => $transaction
             ]);
 
     }
+
+    public function getAirtimeStatus(Account $account, Transaction $transaction, Request $request): \Illuminate\Http\JsonResponse
+    {
+        if ($transaction->product_id != 1) {
+            return response()
+                ->json([
+                    'status' => 'ERROR',
+                    'message' => "This record does not exist",
+                ], 404);
+        }
+
+        $transaction = $transaction->load(['airtime.response', 'payment.stkRequest.response']);
+
+        if ($transaction->payment->stkRequest->status == "Requested") {
+            $exitCode = Artisan::call('mpesa:query_status');
+
+            $transaction = $transaction->load(['airtime.response', 'payment.stkRequest.response']);
+        }
+
+        return response()
+            ->json([
+                'status' => 'SUCCESS',
+                'message' => "Airtime status retrieved successfully",
+                'data' => $transaction
+            ]);
+
+    }
+
+    public function buyVoucher(Account $account, Request $request): \Illuminate\Http\JsonResponse
+    {
+        Log::info('******* API VOUCHER PURCHASE *******');
+
+        $amount = $request->amount;
+        $target = $request->other_phone;
+
+        try {
+
+//        TODO: Do we need to store all numbers bought for in our system? What if it is not a safaricom number?
+            $transaction = (new \App\Helpers\Sidooh\Voucher($account->phone, $amount))->purchase($target);
+
+        } catch (MpesaException $e) {
+            Log::error($e->getMessage());
+            return response()
+                ->json([
+                    'status' => 'ERROR',
+                    'message' => 'There was an error with MPesa servers. Please try again later.'
+                ], 503);
+        }
+
+        return response()
+            ->json([
+                'status' => 'SUCCESS',
+                'message' => "STK Push sent successfully",
+                'data' => $transaction
+            ]);
+
+    }
+
+    public function getVoucherStatus(Account $account, Transaction $transaction, Request $request): \Illuminate\Http\JsonResponse
+    {
+        if ($transaction->product_id != 3) {
+            return response()
+                ->json([
+                    'status' => 'ERROR',
+                    'message' => "This record does not exist",
+                ], 404);
+        }
+
+        $transaction = $transaction->load(['payment.stkRequest.response']);
+
+        if ($transaction->payment->stkRequest->status == "Requested") {
+            $exitCode = Artisan::call('mpesa:query_status');
+
+            $transaction = $transaction->load(['payment.stkRequest.response']);
+        }
+
+        return response()
+            ->json([
+                'status' => 'SUCCESS',
+                'message' => "Voucher status retrieved successfully",
+                'data' => $transaction
+            ]);
+
+    }
+
 }

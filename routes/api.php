@@ -18,6 +18,13 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
         Route::apiResource('{account}/referrals', 'ReferralController', ['only' => ['index', 'show']]);
 
         Route::post('{account}/purchase/airtime', 'TransactionController@buyAirtime');
+        Route::get('{account}/purchase/airtime/{transaction}', 'TransactionController@getAirtimeStatus');
+
+        Route::post('{account}/purchase/voucher', 'TransactionController@buyVoucher');
+        Route::get('{account}/purchase/voucher/{transaction}', 'TransactionController@getVoucherStatus');
+
+        Route::get('{account}/accounts/balances', 'AccountController@balances');
+
     });
 
     Route::group(['prefix' => 'auth', 'namespace' => 'Auth', 'as' => 'auth.'], function () {

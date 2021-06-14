@@ -27,12 +27,18 @@ const errorInterceptor = error => {
 
     // check if it's a server error
     if (!error.response) {
+
         Vue.notify({type: 'warn', text: 'Network/Server error'});
+
         return Promise.reject(error);
     }
 
     // all the other error responses
     switch (error.response.status) {
+        case 503:
+            Vue.notify({type: 'warn', text: error.response.data.message, title: 'Oops!'});
+            break;
+
         case 400:
             console.error(error.response.status, error.message);
             Vue.notify({type: 'warn', text: 'Nothing to display', title: 'Data Not Found'});
@@ -48,7 +54,7 @@ const errorInterceptor = error => {
 
         case 404:
             console.error(error.response.status, error.message);
-            Vue.notify({type: 'warn', text: error.response.data.message, title: 'Data Not Found'});
+            // Vue.notify({type: 'warn', text: error.response.data.message, title: 'Data Not Found'});
             break;
 
         case 422: // validation errors

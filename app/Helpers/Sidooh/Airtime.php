@@ -58,10 +58,10 @@ class Airtime
 
         switch ($this->method) {
             case PaymentMethods::MPESA:
-                $this->mpesa($targetNumber, $mpesaNumber);
+                return $this->mpesa($targetNumber, $mpesaNumber);
                 break;
             case PaymentMethods::VOUCHER:
-                $this->voucher($targetNumber);
+                return $this->voucher($targetNumber);
                 break;
         }
 
@@ -70,7 +70,7 @@ class Airtime
     public function mpesa($targetNumber = null, $mpesaNumber = null)
     {
         $description = $targetNumber ? "Airtime Purchase - $targetNumber" : "Airtime Purchase";
-        $number = $mpesaNumber ?? $this->phone;
+        $number = !empty($mpesaNumber) ?: $this->phone;
 
         $stkResponse = mpesa_request($number, $this->amount, MpesaReferences::AIRTIME, $description);
 
@@ -103,6 +103,8 @@ class Airtime
         ]);
 
         $transaction->payment()->save($payment);
+
+        return $transaction;
     }
 
     public function voucher($targetNumber = null)
@@ -152,5 +154,7 @@ class Airtime
             'amount' => $this->amount
         ];
         (new ProductRepository())->airtime($transaction, $airtime);
+
+        return $transaction;
     }
 }

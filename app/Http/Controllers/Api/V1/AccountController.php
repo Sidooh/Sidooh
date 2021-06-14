@@ -203,4 +203,17 @@ class AccountController extends Controller
         return new AccountResource($this->account->invest());
     }
 
+
+    public function balances(Account $account)
+    {
+        //
+        $account->load(['sub_accounts', 'voucher']);
+//        $this->account->nth_level_referrals($account, 5);
+//
+//        $data = $this->account->statistics($account);
+//
+//        return view('admin.crud.accounts.show', compact('account', 'data'));
+//
+        return new AccountResource($account);
+    }
 }

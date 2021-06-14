@@ -59,13 +59,13 @@ export default [
             {
                 _name: 'CSidebarNavItem',
                 name: 'Balances',
-                to: '/dashboard/balances',
+                to: '/dashboard/account/balances',
                 icon: 'cil-chart-pie'
             },
             {
                 _name: 'CSidebarNavItem',
                 name: 'Earnings ??? ',
-                to: '/dashboard/charts',
+                to: '/dashboard/account/earnings',
                 icon: 'cil-chart-pie'
             },
             // {

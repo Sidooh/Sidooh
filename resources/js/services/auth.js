@@ -4,6 +4,8 @@ const ENDPOINT_URL = '/auth';
 
 class AuthService {
     login(user) {
+        //Finally, if for some reason you want to do disable the loader for a specific request, you can do it by passing the showLoader option to Axios like so:
+        // axios.get('api/your-endpoint', { showLoader: false })
         return client
             .post(ENDPOINT_URL + '/login', user)
             .then(response => {

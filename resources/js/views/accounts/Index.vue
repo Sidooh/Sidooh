@@ -1,6 +1,7 @@
 <template>
     <div>
 
+        <CCardText>Account Balances</CCardText>
         <CCardGroup class="mb-4">
             <CWidgetProgressIcon
                 :header="balances.voucher.balance | numFormat('0,0')"
@@ -20,16 +21,35 @@
             </CWidgetProgressIcon>
         </CCardGroup>
 
+        <CCardText>Earnings</CCardText>
+
+        <CRow>
+            <CCol lg="4" sm="4">
+                <CWidgetSimple :text="myTotalEarnings | numFormat('0,0.00')" header="Total">
+                    <CChartBarSimple background-color="info" style="height:40px"/>
+                </CWidgetSimple>
+            </CCol>
+            <CCol lg="4" sm="4">
+                <CWidgetSimple :text="myEarnings | numFormat('0,0.00')" header="Self">
+                    <CChartBarSimple background-color="primary" style="height:40px"/>
+                </CWidgetSimple>
+            </CCol>
+            <CCol lg="4" sm="4">
+                <CWidgetSimple :text="myInviteEarnings | numFormat('0,0.00')" header="Invites">
+                    <CChartBarSimple background-color="success" style="height:40px"/>
+                </CWidgetSimple>
+            </CCol>
+        </CRow>
     </div>
 </template>
 
 <script>
-import {CChartLine} from '@coreui/vue-chartjs'
 import {mapActions, mapGetters} from "vuex";
+import CChartBarSimple from "../../components/CChartBarSimple";
 
 export default {
     name: "Index",
-
+    components: {CChartBarSimple},
     data() {
         return {
             items: {
@@ -51,6 +71,7 @@ export default {
 
     mounted() {
         this.getAccountBalances()
+        this.getEarnings()
     },
 
     destroyed() {
@@ -59,13 +80,13 @@ export default {
     },
 
     computed: {
-        ...mapGetters('Accounts', ['balances']),
+        ...mapGetters('Accounts', ['balances', 'earnings', 'myTotalEarnings', 'myEarnings', 'myInviteEarnings']),
 
     },
 
 
     methods: {
-        ...mapActions('Accounts', ['getAccountBalances']),
+        ...mapActions('Accounts', ['getAccountBalances', 'getEarnings']),
 
         isToday(someDate) {
             const today = new Date()

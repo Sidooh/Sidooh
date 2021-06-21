@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
 import auth from './modules/auth';
+import {loader} from "./modules/loader";
 import TransactionsIndex from "./modules/Transactions";
 import ReferralsIndex from "./modules/Referrals";
 import Purchases from "./modules/Purchases";
@@ -32,6 +33,7 @@ const store = new Vuex.Store({
 
     modules: {
         auth,
+        loader,
         TransactionsIndex,
         ReferralsIndex,
         Purchases,

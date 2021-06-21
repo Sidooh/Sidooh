@@ -8,6 +8,7 @@ use App\Http\Resources\AccountResource;
 use App\Models\Account;
 use App\Repositories\AccountRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 
 class AccountController extends Controller
@@ -216,4 +217,5 @@ class AccountController extends Controller
 //
         return new AccountResource($account);
     }
+
 }

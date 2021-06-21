@@ -10,6 +10,7 @@ use App\Models\Payment;
 use App\Models\Transaction;
 use App\Repositories\AccountRepository;
 use App\Repositories\ProductRepository;
+use http\Exception\InvalidArgumentException;
 use Illuminate\Support\Facades\Log;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
@@ -119,7 +120,7 @@ class Airtime
         if ($account->voucher) {
             $bal = $account->voucher->balance;
             if ($bal == 0 || $bal < (int)$this->amount) {
-                return;
+                throw new InvalidArgumentException("Voucher balance insufficient");
             }
         }
 

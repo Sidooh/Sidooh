@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TransactionResource;
 use App\Models\Account;
@@ -11,7 +10,6 @@ use App\Repositories\TransactionRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Samerior\MobileMoney\Mpesa\Exceptions\MpesaException;
 
@@ -37,6 +35,9 @@ class TransactionController extends Controller
     public function index(Account $account)
     {
         //
+        Log::info(auth()->user());
+        Log::info(\request());
+
 //        TODO: Should we filter status here or in the frontend? SHoudl we show users failed and pending transactions?
         $data = $account->transactions()->whereIn('status', ['success', 'completed'])->with(['payment'])->get();
 
@@ -141,6 +142,15 @@ class TransactionController extends Controller
 //        TODO: Do we need to store all numbers bought for in our system? What if it is not a safaricom number?
             $transaction = (new \App\Helpers\Sidooh\Airtime($amount, $account->phone, $method))->purchase($target);
 
+            $message = $method === 'MPESA' ? "STK Push sent successfully" : "Voucher purchase in progress";
+
+            return response()
+                ->json([
+                    'status' => 'SUCCESS',
+                    'message' => $message,
+                    'data' => $transaction
+                ]);
+
         } catch (MpesaException $e) {
             Log::error($e->getMessage());
             return response()
@@ -148,14 +158,15 @@ class TransactionController extends Controller
                     'status' => 'ERROR',
                     'message' => 'There was an error with MPesa servers. Please try again later.'
                 ], 503);
-        }
 
-        return response()
-            ->json([
-                'status' => 'SUCCESS',
-                'message' => "STK Push sent successfully",
-                'data' => $transaction
-            ]);
+        } catch (\InvalidArgumentException $e) {
+            Log::error($e->getMessage());
+            return response()
+                ->json([
+                    'status' => 'ERROR',
+                    'message' => $e->getMessage()
+                ], 503);
+        }
 
     }
 

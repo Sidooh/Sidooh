@@ -43,21 +43,24 @@ const actions = {
         commit('LOADING', true)
 
         try {
-            const response = await PurchaseService.airtime(form);
+          const response = await PurchaseService.airtime(form);
 
-            commit('PURCHASE_SUCCESS', response);
-            return Promise.resolve(response);
+          commit('PURCHASE_SUCCESS', response);
+
+          commit('LOADING', false)
+          return Promise.resolve(response);
 
         } catch (e) {
 
-            if (e.status === 422) {
-                commit('PURCHASE_FAILURE', e.data.errors ?? e.data.error);
-                return Promise.reject(e.data);
-            }
+          if (e.status === 422) {
+            commit('PURCHASE_FAILURE', e.data.errors ?? e.data.error);
+            return Promise.reject(e.data);
+          }
 
+          commit('LOADING', false)
+          return Promise.reject(e);
         }
 
-        commit('LOADING', false)
     },
 
     async checkAirtimeStatus({commit}, transactionId) {

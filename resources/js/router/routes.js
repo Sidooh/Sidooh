@@ -8,13 +8,16 @@ const Login = () => import('../views/auth/Login')
 
 const TransactionsIndex = () => import('../views/transactions/Index')
 const InvitesIndex = () => import('../views/referrals/Index')
-const BalancesIndex = () => import('../views/accounts/Index')
+const FinancesIndex = () => import('../views/accounts/Index')
 
 
 const AirtimePurchase = () => import('../views/purchases/Airtime')
 const AirtimeStatus = () => import('../views/purchases/AirtimeStatus')
 const VoucherPurchase = () => import('../views/purchases/Voucher')
 const VoucherStatus = () => import('../views/purchases/VoucherStatus')
+const SubscriptionPurchase = () => import('../views/purchases/Subscription')
+const MerchantPurchase = () => import('../views/purchases/Merchant')
+
 
 const routes = [
     {
@@ -72,6 +75,22 @@ const routes = [
                             title: 'Voucher Status',
                         }
                     },
+                    {
+                        path: 'subscription',
+                        name: 'subscription',
+                        component: SubscriptionPurchase,
+                        meta: {
+                            title: 'Subscription Purchase',
+                        }
+                    },
+                    {
+                        path: 'merchant',
+                        name: 'merchant',
+                        component: MerchantPurchase,
+                        meta: {
+                            title: 'Merchant Purchase',
+                        }
+                    },
                 ]
             },
             {
@@ -93,11 +112,11 @@ const routes = [
                 },
                 children: [
                     {
-                        path: 'balances',
-                        name: 'Account Balances',
-                        component: BalancesIndex,
+                        path: 'finances',
+                        name: 'Finances',
+                        component: FinancesIndex,
                         meta: {
-                            title: 'Account Balances',
+                            title: 'Finances',
                         }
                     },
 

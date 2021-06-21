@@ -72,8 +72,8 @@
                                         v-model="form.amount"
                                         :disabled="!otherAmount"
                                         class="mb-0 mt-3"
-                                        max="10000"
-                                        min="10"
+                                        :max="maxAmount"
+                                        :min="minAmount"
                                         placeholder="amount"
                                         type="number"
                                         @update:value="checkAmount"
@@ -189,10 +189,13 @@ export default {
                 20: '20', 50: '50', 100: '100', 200: '200', 500: '500', 1000: '1000', '-1': 'Other'
             },
 
+            minAmount: 10,
+            maxAmount: 10002340,
+
             otherAmount: false,
             otherNumber: false,
-            options: ['MPesa', 'Voucher'],
-            selectedOption: 'MPesa',
+            options: ['MPESA', 'VOUCHER'],
+            selectedOption: 'MPESA',
 
             validation: {
                 other_phone: '',
@@ -209,6 +212,7 @@ export default {
 
     computed: {
         ...mapGetters("Purchases", ["errors"]),
+        ...mapGetters("Accounts", ['voucherBalance']),
 
         validForm() {
             return !this.validation.amount &&
@@ -231,6 +235,9 @@ export default {
         ...mapActions('Purchases', [
             "buyAirtime",
         ]),
+        ...mapActions('Accounts', [
+            "getAccountBalances",
+        ]),
 
         checkPhone(phoneObject) {
             console.log(phoneObject)
@@ -251,12 +258,12 @@ export default {
         },
 
         checkAmount(amount) {
-            if (amount >= 10 && amount <= 10000) {
+            if (amount >= this.minAmount && amount <= this.maxAmount) {
                 let amountRegex = /^\d+$/
 
                 if (amountRegex.test(amount)) {
                     this.validation.amount = ''
-                    this.form.amount = amount;
+                    this.form.amount = parseInt(amount);
                 } else {
                     this.validation.amount = "Please only put whole numbers"
                 }
@@ -264,7 +271,7 @@ export default {
             } else if (amount === '-1') {
                 this.otherAmount = true
             } else {
-                this.validation.amount = "Amount should be min of 10 and max of 10000"
+                this.validation.amount = `Amount should be min of ${this.minAmount} and max of ${this.maxAmount}`
             }
         },
 
@@ -278,9 +285,45 @@ export default {
 
         setMethod(e) {
             this.form.purchaseMethod = e.toUpperCase()
+
+            if (e === 'VOUCHER') {
+                if (this.voucherBalance < parseInt(this.form.amount)) {
+                    this.confirmPayment()
+                }
+                console.log(this.voucherBalance, parseInt(this.form.amount))
+            }
+        },
+
+        confirmPayment() {
+            Vue.swal({
+                title: 'Balance Insufficient',
+                text: "Would you like to top up your voucher?",
+                html:
+                    `Current balance: <b>${this.voucherBalance}</b>, Would you like to top up?`,
+                icon: 'info',
+                // showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: `Top Up`,
+                // denyButtonText: `Use MPESA`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    this.$router.push({name: 'voucher'});
+                } else if (result.isDenied) {
+                    this.setMethod('MPESA')
+                    this.selectedOption = 'MPESA'
+                }
+            })
         },
 
         async submit() {
+            if (this.form.purchaseMethod === 'VOUCHER') {
+                if (this.voucherBalance < parseInt(this.form.amount)) {
+                    this.confirmPayment()
+                }
+                return false
+            }
+
             try {
                 await this.buyAirtime(this.form).then(
                     (d) => {
@@ -290,6 +333,9 @@ export default {
                             title: d.status,
                             text: d.message,
                             icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            position: 'top-end',
                         });
 
                         this.$router.push({name: 'airtime_status', params: {id: d.data.id}});

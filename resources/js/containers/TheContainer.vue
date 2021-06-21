@@ -6,6 +6,7 @@
             <div class="c-body">
                 <main class="c-main">
                     <CContainer fluid>
+                        <loader :is-visible="loading"></loader>
                         <transition mode="out-in" name="fade">
                             <router-view :key="$route.path"></router-view>
                         </transition>
@@ -21,13 +22,19 @@
 import TheSidebar from './TheSidebar'
 import TheHeader from './TheHeader'
 import TheFooter from './TheFooter'
+import {mapState} from "vuex";
+import Loader from "../views/Loader";
 
 export default {
     name: 'TheContainer',
     components: {
+        Loader,
         TheSidebar,
         TheHeader,
         TheFooter
+    },
+    computed: {
+        ...mapState('loader', ['loading'])
     }
 }
 </script>

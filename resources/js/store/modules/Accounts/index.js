@@ -3,6 +3,10 @@ import AccountService from '../../../services/account';
 const initialState = {
     all: [],
     balances: {},
+    earnings: {},
+    myTotalEarnings: 0,
+    myEarnings: 0,
+    myInviteEarnings: 0,
     loading: false,
     query: {sort: 'id', order: 'desc', group: 'y', type: 'PAYMENT'},
     states: ['active'],
@@ -29,6 +33,13 @@ const getters = {
     },
 
     balances: state => state.balances,
+    earnings: state => state.earnings,
+
+    myTotalEarnings: state => state.myTotalEarnings,
+    myEarnings: state => state.myEarnings,
+    myInviteEarnings: state => state.myInviteEarnings,
+
+    voucherBalance: state => state.balances.voucher.balance,
 
     chartData: state => state.chartData,
 
@@ -57,6 +68,26 @@ const actions = {
         }
 
         commit('LOADING', false)
+    },
+
+    async getEarnings({commit}) {
+        commit('LOADING', true)
+
+        try {
+            const response = await AccountService.earnings();
+
+            commit('EARNINGS_SUCCESS', response.data);
+            commit('LOADING', false)
+            return Promise.resolve(response.data);
+
+        } catch (e) {
+
+            commit('EARNINGS_FAILURE', e.data.errors ?? e.data.error);
+            commit('LOADING', false)
+            return Promise.reject(e.data);
+
+        }
+
     },
 
     processChartData({commit, state}) {
@@ -155,6 +186,17 @@ const mutations = {
     },
     ACCOUNT_UPDATE_CHART_DATA(state, data) {
         state.chartData = data;
+    },
+    EARNINGS_SUCCESS(state, account) {
+        state.earnings = account.earnings;
+        state.myTotalEarnings = account.total_earnings
+        state.myEarnings = account.self_earnings
+        state.myInviteEarnings = account.referral_earnings
+        state.errors = {};
+    },
+    EARNINGS_FAILURE(state, errors) {
+        state.earnings = null;
+        state.errors = errors;
     },
     LOADING(state, loading) {
         state.loading = loading

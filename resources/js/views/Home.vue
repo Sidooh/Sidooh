@@ -219,6 +219,7 @@ export default {
         this.fetchTransactions().then(() => {
             this.processTransactionChartData()
         })
+        this.groupReferrals('y');
         this.fetchReferrals().then(() => {
             this.processReferralChartData()
         })
@@ -267,18 +268,24 @@ export default {
             return _.sum(this.transactions.filter(item => this.isThisMonth(new Date(item.created_at))).map(a => a.amount))
         },
 
+        todayTransactions() {
+            return this.transactions.filter(item => this.isToday(new Date(item.created_at)))
+        },
+
         totalTransactions() {
             return this.transactions.length
         },
         totalTransactionsToday() {
-            return this.transactions.filter(item => this.isToday(new Date(item.created_at))).length
+            return this.todayTransactions.length
         },
         totalTransactionsThisMonth() {
             return this.transactions.filter(item => this.isThisMonth(new Date(item.created_at))).length
         },
 
         recentTransactions() {
-            return this.transactions.sort((a, b) => b.id - a.id).slice(0, 15)
+            return !_.isEmpty(this.todayTransactions) ?
+                this.todayTransactions.sort((a, b) => b.id - a.id) :
+                this.transactions.sort((a, b) => b.id - a.id)
         },
 
         totalActiveReferrals() {
@@ -323,11 +330,12 @@ export default {
         ...mapActions('TransactionsIndex', {
             fetchTransactions: 'fetchData',
             processTransactionChartData: 'processChartData',
-            setQuery: 'setQuery',
+            setTransactionsQuery: 'setQuery',
             resetState: 'resetState'
         }),
         ...mapActions('ReferralsIndex', {
             fetchReferrals: 'fetchData',
+            setReferralsQuery: 'setQuery',
             processReferralChartData: 'processChartData'
         }),
 
@@ -337,8 +345,18 @@ export default {
             // or
             // const q = {...this.transactionsQuery, { group: e} }
 
-            this.setQuery(q);
+            this.setTransactionsQuery(q);
             this.processTransactionChartData()
+        },
+
+        groupReferrals(e) {
+            const q = Object.assign({}, this.referralsQuery, {group: e, yearLimit: false});
+
+            // or
+            // const q = {...this.transactionsQuery, { group: e} }
+
+            this.setReferralsQuery(q);
+            this.processReferralChartData()
         },
 
         isToday(someDate) {

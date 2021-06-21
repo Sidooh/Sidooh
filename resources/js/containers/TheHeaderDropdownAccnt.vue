@@ -98,7 +98,7 @@ export default {
             await this.logout().then(
                 () => {
                     console.log('success', 'Logout')
-                    this.$router.push('login');
+                    this.$router.push('/login');
                 });
         }
     }

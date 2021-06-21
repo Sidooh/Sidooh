@@ -24,7 +24,7 @@ class PurchaseService {
             })
             .catch(error => {
                 console.log('resError', error.response)
-                throw error.response
+                throw error.response.data
             });
     }
 

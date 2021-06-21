@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {BASE_URL} from "../constants";
 import Vue from 'vue';
+import store from "../store";
 
 
 const httpClient = axios.create({
@@ -9,8 +10,9 @@ const httpClient = axios.create({
     // timeout: 10000, // indicates, 1000ms ie. 1 second
     headers: {
         "Content-Type": "application/json",
+        "showLoader": true
         // anything you want to add to the headers
-    }
+    },
 });
 
 const getAuthToken = () => localStorage.getItem('token');
@@ -22,8 +24,24 @@ const authInterceptor = (config) => {
 
 httpClient.interceptors.request.use(authInterceptor);
 
+httpClient.interceptors.request.use(config => {
+        if (config.headers['showLoader']) {
+            store.dispatch('loader/pending');
+        }
+        return config;
+    },
+    error => {
+        if (error.config.headers['showLoader']) {
+            store.dispatch('loader/done');
+        }
+        return Promise.reject(error);
+    });
+
 // interceptor to catch errors
 const errorInterceptor = error => {
+    if (error.response.config.headers['showLoader']) {
+        store.dispatch('loader/done');
+    }
 
     // check if it's a server error
     if (!error.response) {
@@ -73,6 +91,10 @@ const errorInterceptor = error => {
 
 // Interceptor for responses
 const responseInterceptor = response => {
+    if (response.config.headers['showLoader']) {
+        store.dispatch('loader/done');
+    }
+
     switch (response.status) {
         case 200:
             // yay!

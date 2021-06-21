@@ -1,36 +1,59 @@
 <template>
     <div>
-        <!--        <CRow>-->
-        <!--            <CCol sm="6" lg="3">-->
-        <!--                <CWidgetDropdown color="primary" :header="totalActiveReferrals" text="Invites">-->
-        <!--                    &lt;!&ndash;                    <template #default>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                        <CDropdown&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            color="transparent p-0"&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            placement="bottom-end"&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                        >&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            <template #toggler-content>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                                <CIcon name="cil-settings"/>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            </template>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            <CDropdownItem>Action</CDropdownItem>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            <CDropdownItem>Another action</CDropdownItem>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            <CDropdownItem>Something else here...</CDropdownItem>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            <CDropdownItem disabled>Disabled action</CDropdownItem>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                        </CDropdown>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                    </template>&ndash;&gt;-->
-        <!--                    <template #footer>-->
-        <!--                        <CChartLineSimple-->
-        <!--                            pointed-->
-        <!--                            class="mt-3 mx-3"-->
-        <!--                            style="height:70px"-->
-        <!--                            :data-points="referralChartData"-->
-        <!--                            point-hover-background-color="primary"-->
-        <!--                            label="Invites"-->
-        <!--                            :labels="referralChartLabels"-->
-        <!--                        />-->
-        <!--                    </template>-->
-        <!--                </CWidgetDropdown>-->
-        <!--            </CCol>-->
-        <!--        </CRow>-->
+        <CCard>
+            <CCardBody>
+                <CRow>
+                    <CCol class="col-sm-5">
+                        <h4 class="card-title mb-0">Invites Summary</h4>
+                        <div class="small text-muted">{{
+                                referralsQuery.group === 'd' ? 'Invites done today' : (referralsQuery.group === 'm' ? 'Invites done this month' : 'Invites done this year')
+                            }}
+                        </div>
+                    </CCol>
+                    <CCol class="d-none d-md-block col-sm-7">
+                        <button class="btn float-right btn-primary">
+                            <CIcon name="cil-cloud-download"/>
+                        </button>
+                        <CButtonGroup class="float-right mr-3 btn-group">
+                            <CButton class="btn mx-0 btn-outline-secondary"
+                                     v-bind:class="[ referralsQuery.group === 'd' ? 'active' : '' ]"
+                                     @click="groupReferrals('d')">
+                                Day
+                            </CButton>
+                            <button class="btn mx-0 btn-outline-secondary"
+                                    v-bind:class="[ referralsQuery.group === 'm' ? 'active' : '' ]"
+                                    @click="groupReferrals('m')">
+                                Month
+                            </button>
+                            <button class="btn mx-0 btn-outline-secondary"
+                                    v-bind:class="[ referralsQuery.group === 'y' ? 'active' : '' ]"
+                                    @click="groupReferrals('y')">
+                                Year
+                            </button>
+                        </CButtonGroup>
+                    </CCol>
+                </CRow>
+
+                <CChartLine :datasets="datasets" :labels="chartLabels" :options="options"
+                            style="height: 300px; margin-top: 40px;"/>
+
+            </CCardBody>
+            <CCardFooter>
+                <CRow class="text-center">
+                    <CCol sclass="mb-sm-2 mb-0 col-sm-12 col-md">
+                        <div class="text-muted">Total Invites</div>
+                        <strong>{{ totalReferrals }}</strong> <span
+                        title="Today's Invites">({{ totalReferralsToday }})</span>
+                        <CProgress
+                            :precision="1"
+                            :value="totalReferrals"
+                            class="progress-xs mt-2"
+                            color="success"
+                        />
+                    </CCol>
+                </CRow>
+            </CCardFooter>
+        </CCard>
 
         <CCard>
             <CCardHeader>
@@ -99,22 +122,67 @@ export default {
                 // }
             ],
 
+            options: {
+                maintainAspectRatio: false,
+                // elements: {
+                //     line: {
+                //         // tension: .3
+                //     }
+                // },
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                stacked: false,
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+
+                        // grid line settings
+                        grid: {
+                            drawOnChartArea: false, // only want the grid lines for one axis to show up
+                        },
+
+                    },
+                }
+            },
         }
     },
 
     created() {
-        this.fetchReferrals()
+        this.groupReferrals('y');
+        this.fetchReferrals().then(() => {
+            this.processReferralChartData()
+        })
     },
 
     destroyed() {
         //TODO: Maybe add this after setting up data persistence
-        // this.resetState()
+        this.resetState()
     },
 
     computed: {
         ...mapGetters('ReferralsIndex', {
-            data: 'data'
+            data: 'data',
+            referralsChartData: 'chartData',
+            referralsQuery: 'query',
+            referralsTotal: "total",
+            activeReferrals: 'activeReferrals',
         }),
+
+        chartLabels() {
+            return this.referralsChartData.map(a => a.date)
+        },
+        chartData() {
+            return this.referralsChartData.map(a => a.count)
+        },
 
         totalReferrals() {
             return this.data.length
@@ -126,19 +194,39 @@ export default {
             return this.data.filter(item => this.isThisMonth(new Date(item.created_at))).length
         },
 
-        // referrals() {
-        //     return this.data.sort((a, b) => b.id - a.id)
-        // },
+        datasets() {
+            return [
+                {
+                    data: this.chartData,
+                    backgroundColor: '#008',
+                    borderColor: '#00c',
+                    label: 'Count',
+                    // cubicInterpolationMode: 'monotone',
+                    fill: false,
+                    // yAxisID: 'y',
 
+                },
+            ]
+        }
     },
-
 
     methods: {
         ...mapActions('ReferralsIndex', {
             fetchReferrals: 'fetchData',
+            processReferralChartData: 'processChartData',
             setQuery: 'setQuery',
             resetState: 'resetState'
         }),
+
+        groupReferrals(e) {
+            const q = Object.assign({}, this.referralsQuery, {group: e, yearLimit: true});
+
+            // or
+            // const q = {...this.referralsQuery, { group: e} }
+
+            this.setQuery(q);
+            this.processReferralChartData()
+        },
 
         isToday(someDate) {
             const today = new Date()

@@ -12,7 +12,7 @@
 */
 
 Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], function () {
-    Route::group([], function () {
+    Route::group(['smiddleware' => 'client'], function () {
 
         Route::apiResource('{account}/transactions', 'TransactionController', ['only' => ['index', 'show']]);
         Route::apiResource('{account}/referrals', 'ReferralController', ['only' => ['index', 'show']]);
@@ -24,6 +24,8 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
         Route::get('{account}/purchase/voucher/{transaction}', 'TransactionController@getVoucherStatus');
 
         Route::get('{account}/accounts/balances', 'AccountController@balances');
+        Route::get('{account}/accounts/earnings', 'AccountController@earnings');
+
 
     });
 

@@ -29,7 +29,12 @@ const actions = {
 
     async login({commit}, user) {
         try {
-            const response = await AuthService.login(user);
+            const response = await AuthService.login({
+                // grant_type: 'password',
+                // client_id: '3',
+                // client_secret: 'NJRjEerHU4hykYj8AvisilgaM0ZLGDwndIZtfZQe',
+                ...user
+            });
 
             commit('LOGIN_SUCCESS', response);
             return Promise.resolve(response);

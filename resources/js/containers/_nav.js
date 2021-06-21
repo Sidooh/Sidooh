@@ -6,7 +6,7 @@ export default [
                 _name: 'CSidebarNavItem',
                 name: 'Dashboard',
                 to: '/dashboard',
-                icon: 'cil-speedometer',
+                icon: 'cil-apps',
                 // badge: {
                 //   color: 'primary',
                 //   text: 'NEW'
@@ -20,25 +20,25 @@ export default [
                 _name: 'CSidebarNavItem',
                 name: 'Buy Airtime',
                 to: '/dashboard/purchase/airtime',
-                icon: 'cil-drop'
+                icon: 'cil-cursor'
             },
             {
                 _name: 'CSidebarNavItem',
                 name: 'Top Up Voucher',
                 to: '/dashboard/purchase/voucher',
-                icon: 'cil-drop'
+                icon: 'cil-cash'
             },
             {
                 _name: 'CSidebarNavItem',
                 name: 'Purchase Subscription',
                 to: '/dashboard/purchase/subscription',
-                icon: 'cil-pencil'
+                icon: 'cil-cart'
             },
             {
                 _name: 'CSidebarNavItem',
                 name: 'Pay Merchant',
                 to: '/dashboard/purchase/merchant',
-                icon: 'cil-pencil'
+                icon: 'cil-cart'
             },
             {
                 _name: 'CSidebarNavTitle',
@@ -48,26 +48,26 @@ export default [
                 _name: 'CSidebarNavItem',
                 name: 'Transactions',
                 to: '/dashboard/transactions',
-                icon: 'cil-chart-pie'
+                icon: 'cil-transfer'
             },
             {
                 _name: 'CSidebarNavItem',
                 name: 'Invites',
                 to: '/dashboard/invites',
-                icon: 'cil-chart-pie'
+                icon: 'cil-link'
             },
             {
                 _name: 'CSidebarNavItem',
-                name: 'Balances',
-                to: '/dashboard/account/balances',
-                icon: 'cil-chart-pie'
+                name: 'Finances',
+                to: '/dashboard/account/finances',
+                icon: 'cil-wallet'
             },
-            {
-                _name: 'CSidebarNavItem',
-                name: 'Earnings ??? ',
-                to: '/dashboard/account/earnings',
-                icon: 'cil-chart-pie'
-            },
+            // {
+            //     _name: 'CSidebarNavItem',
+            //     name: 'Earnings ??? ',
+            //     to: '/dashboard/account/earnings',
+            //     icon: 'cil-chart-pie'
+            // },
             // {
             //     _name: 'CSidebarNavDropdown',
             //     name: 'Base',

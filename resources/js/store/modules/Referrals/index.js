@@ -4,8 +4,8 @@ const initialState = {
     all: [],
     chartData: [],
     loading: false,
-    query: {sort: 'id', order: 'desc', group: 'y', type: 'PAYMENT'},
-    states: ['active'],
+    query: {sort: 'id', order: 'desc', group: 'y', yearLimit: true},
+    states: ['active', 'pending'],
 }
 
 const state = initialState;
@@ -105,28 +105,40 @@ const actions = {
 
         // TODO: Should we limit to year for referrals?
 
-        // switch (state.query.group) {
-        //     case 'y':
-        dateFilter = 'fullMonth'
-        //         data = data.filter(item => item.year == currentYear)
-        //         break
-        //     case 'm':
-        //         dateFilter = 'day'
-        //         data = data.filter(item => item.year == currentYear && item.month == currentMonth)
-        //         break
-        //     case 'd':
-        //         dateFilter = 'hour'
-        //         data = data.filter(item => item.year == currentYear && item.month == currentMonth && item.year == currentDay)
-        //         break
-        // }
+        if (state.query.yearLimit) {
+            data = data.filter(item => item.year == currentYear)
+        }
+
+        switch (state.query.group) {
+            case 'y':
+                dateFilter = 'fullMonth'
+                break
+            case 'm':
+                dateFilter = 'day'
+                data = data.filter(item => item.month == currentMonth)
+                break
+            case 'd':
+                dateFilter = 'hour'
+                data = data.filter(item => item.month == currentMonth && item.year == currentDay)
+                break
+        }
 
         data.forEach(item => {
-            var date = item[dateFilter];
 
-            var index = dateArr.indexOf(date);
+            let date;
+            if (!state.query.yearLimit && state.query.group === 'y') {
+                date = item[dateFilter] + ' ' + item.year;
+            } else {
+                date = item[dateFilter];
+            }
+
+            console.log(dateFilter, item[dateFilter], !state.query.yearLimit && state.query.group === 'y')
+            console.log(date, state.query)
+
+            const index = dateArr.indexOf(date);
             if (index == -1) {
                 dateArr.push(date);
-                var obj = {date: date, count: 1};
+                const obj = {date: date, count: 1};
                 resultArr.push(obj);
             } else {
                 resultArr[index].count += 1;

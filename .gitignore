@@ -20,3 +20,5 @@ yarn-error.log
 /.idea/dataSources.local.xml
 /.idea/dataSources.xml
 /.idea
+/public/css/app.css
+/public/js/app.js

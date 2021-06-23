@@ -57,7 +57,7 @@
 
                     <CCardBody>
                         <div v-if="completed">
-                            <CButton :to="{ name: 'balances' }" color="success" size="sm">
+                            <CButton :to="{ name: 'finances' }" color="success" size="sm">
                                 <CIcon name="cil-info"/>
                                 Check voucher balance
                             </CButton>

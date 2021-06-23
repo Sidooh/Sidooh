@@ -183,7 +183,9 @@ class TransactionController extends Controller
         $transaction = $transaction->load(['airtime.response', 'payment.stkRequest.response']);
 
         if ($transaction->payment->stkRequest->status == "Requested") {
-            $exitCode = Artisan::call('mpesa:query_status');
+            dispatch(function () {
+                $exitCode = Artisan::call('mpesa:query_status');
+            });
 
             $transaction = $transaction->load(['airtime.response', 'payment.stkRequest.response']);
         }
@@ -240,7 +242,9 @@ class TransactionController extends Controller
         $transaction = $transaction->load(['payment.stkRequest.response']);
 
         if ($transaction->payment->stkRequest->status == "Requested") {
-            $exitCode = Artisan::call('mpesa:query_status');
+            dispatch(function () {
+                $exitCode = Artisan::call('mpesa:query_status');
+            });
 
             $transaction = $transaction->load(['payment.stkRequest.response']);
         }

@@ -217,6 +217,7 @@ export default {
 
     created() {
         this.fetchTransactions().then(() => {
+            // TODO: If chart ends up null can we display no data instead of blank chart?
             this.processTransactionChartData()
         })
         this.groupReferrals('y');

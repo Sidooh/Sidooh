@@ -42,6 +42,7 @@ class AuthController extends Controller
         if ($acc && $acc->user) {
             $credentials['email'] = $acc->user->email;
 
+//                TODO: Possibly check if password is equivalent to $this->vars['{$email}'] . '5!D00h'; If so, user has not logged in before, redirect to register
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
                 $token = $user->createToken('Personal Access Token')->accessToken;
@@ -144,6 +145,7 @@ class AuthController extends Controller
 
 //            TODO: Use otp library instead of session, someone can just check network tab
             if ($acc->user) {
+//                TODO: Possibly check if password is equivalent to $this->vars['{$email}'] . '5!D00h'; If so, user has not logged in before
                 return response()->json(
                     [
                         'status' => 'SUCCESS',
@@ -154,6 +156,8 @@ class AuthController extends Controller
                     ]
                 );
             }
+
+//            TODO: Consider if acc exists but no user exists
 //
 //            return response()->json(
 //                ['error' => 'invalid-credentials']

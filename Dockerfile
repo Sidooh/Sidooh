@@ -48,7 +48,7 @@ COPY . /home/app
 RUN composer install --ignore-platform-reqs
 
 # Run npm install
-RUN chmod -R a+rwx ./node_modules && npm install && npm run prod
+RUN chmod -R a+rwx node_modules && npm install && npm run prod
 
 # Install package
 #RUN php artisan passport:install

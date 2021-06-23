@@ -12,7 +12,8 @@ RUN apt-get update -y && apt-get install -y \
     openssl \
     zip \
     unzip \
-    git
+    git \
+    npm
 
 # Install docker dependencies
 RUN apt-get install -y libc-client-dev libkrb5-dev \
@@ -42,7 +43,7 @@ COPY . /home/app
 RUN composer install --ignore-platform-reqs
 
 # Run npm install
-#RUN npm install && npm run prod
+RUN npm install && npm run prod
 
 # Install package
 #RUN php artisan passport:install

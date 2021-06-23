@@ -2,8 +2,10 @@ import client from './axiosClient';
 
 const account = JSON.parse(localStorage.getItem('account'));
 
+let ENDPOINT_URL = '/';
+
 if (account) {
-    const ENDPOINT_URL = '/' + account.id + '/transactions/';
+    ENDPOINT_URL = '/' + account.id + '/transactions/';
 } else {
     // router.push('/login')
 }

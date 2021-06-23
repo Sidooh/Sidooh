@@ -1,7 +1,7 @@
 # PHP image
 FROM php:7.4-apache
 
-# Install systme libraries
+# Install system libraries
 RUN apt-get update -y && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -14,6 +14,10 @@ RUN apt-get update -y && apt-get install -y \
     unzip \
     git \
     npm
+
+RUN npm install npm@lts -g && \
+    npm install n -g && \
+    n latest
 
 # Install docker dependencies
 RUN apt-get install -y libc-client-dev libkrb5-dev \

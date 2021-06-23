@@ -20,5 +20,3 @@ yarn-error.log
 /.idea/dataSources.local.xml
 /.idea/dataSources.xml
 /.idea
-
-/public/js

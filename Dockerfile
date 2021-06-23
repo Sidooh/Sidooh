@@ -1,7 +1,7 @@
 # PHP image
 FROM php:7.4-apache
 
-# Install system libraries
+# Install systme libraries
 RUN apt-get update -y && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -13,12 +13,6 @@ RUN apt-get update -y && apt-get install -y \
     zip \
     unzip \
     git
-
-RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
-
-RUN apt-get install -y nodejs
-
-RUN echo "NODE Version:" && node --version && echo "NPM Version:" && npm --version
 
 # Install docker dependencies
 RUN apt-get install -y libc-client-dev libkrb5-dev \
@@ -48,7 +42,7 @@ COPY . /home/app
 RUN composer install --ignore-platform-reqs
 
 # Run npm install
-RUN npm install && npm run prod
+#RUN npm install && npm run prod
 
 # Install package
 #RUN php artisan passport:install

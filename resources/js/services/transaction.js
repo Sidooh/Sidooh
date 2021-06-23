@@ -3,11 +3,11 @@ import router from "../router";
 
 const account = JSON.parse(localStorage.getItem('account'));
 
-// if (account) {
-const ENDPOINT_URL = '/' + account.id + '/transactions/';
-// } else {
-//     // router.push('/login')
-// }
+if (account) {
+    const ENDPOINT_URL = '/' + account.id + '/transactions/';
+} else {
+    // router.push('/login')
+}
 
 
 class TransactionService {

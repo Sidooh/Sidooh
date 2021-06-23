@@ -2,11 +2,11 @@ import client from './axiosClient';
 
 const account = JSON.parse(localStorage.getItem('account'));
 
-// if (account) {
-const ENDPOINT_URL = '/' + account.id + '/purchase/';
-// } else {
-//     // router.push('/login')
-// }
+if (account) {
+    const ENDPOINT_URL = '/' + account.id + '/purchase/';
+} else {
+    // router.push('/login')
+}
 
 
 class PurchaseService {

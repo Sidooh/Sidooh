@@ -3,11 +3,11 @@ import client from './axiosClient';
 const account = JSON.parse(localStorage.getItem('account'));
 
 //TODO: Transfer this to helper file that deals with local storage
-// if (account) {
-const ENDPOINT_URL = '/' + account.id + '/referrals/';
-// } else {
-//     // router.push('/login')
-// }
+if (account) {
+    const ENDPOINT_URL = '/' + account.id + '/referrals/';
+} else {
+    // router.push('/login')
+}
 
 class ReferralService {
     all() {

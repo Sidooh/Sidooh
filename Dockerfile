@@ -12,12 +12,13 @@ RUN apt-get update -y && apt-get install -y \
     openssl \
     zip \
     unzip \
-    git \
-    npm
+    git
 
-RUN npm install npm@lts -g && \
-    npm install n -g && \
-    n latest
+RUN curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+
+RUN sudo apt-get install -y nodejs
+
+RUN echo "NODE Version:" && node --version && echo "NPM Version:" && npm --version
 
 # Install docker dependencies
 RUN apt-get install -y libc-client-dev libkrb5-dev \
@@ -47,7 +48,7 @@ COPY . /home/app
 RUN composer install --ignore-platform-reqs
 
 # Run npm install
-RUN npm install && npm run prod
+RUN chmod -R a+rwx ./node_modules && npm install && npm run prod
 
 # Install package
 #RUN php artisan passport:install

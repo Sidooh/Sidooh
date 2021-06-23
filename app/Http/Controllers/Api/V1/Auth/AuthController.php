@@ -142,6 +142,7 @@ class AuthController extends Controller
         if ($acc) {
             $otp = $this->sendOtp($acc);
 
+//            TODO: Use otp library instead of session, someone can just check network tab
             if ($acc->user) {
                 return response()->json(
                     [
@@ -172,7 +173,9 @@ class AuthController extends Controller
 
         $message = "$otp is your Sidooh Verification code.";
 
-        (new AfricasTalkingApi())->sms($acc->phone, $message);
+//        TODO: Check OTP sent and return success or failure.
+//
+        (new AfricasTalkingApi())->sms([$acc->phone], $message);
 
         return $otp;
     }

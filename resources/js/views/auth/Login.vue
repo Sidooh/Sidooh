@@ -10,6 +10,9 @@
                                     <h1>Login</h1>
                                     <p class="text-muted">Sign In to your account</p>
 
+                                    <p class="alert-info">If this is your first time accessing the web portal, please
+                                        register first.</p>
+
                                     <p v-if="showError" id="error" class="alert-warning">Username or Password is
                                         incorrect</p>
 

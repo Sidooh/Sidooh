@@ -45,14 +45,11 @@ RUN composer install --ignore-platform-reqs
 #RUN npm install && npm run prod
 
 # Install package
-#RUN php artisan passport:install
+RUN php artisan passport:keys
+# :install if you need clients created as well
 
 # Expose the port
 EXPOSE 8080
 
 # Run server
 CMD php artisan serve --host=0.0.0.0 --port=8080
-
-
-
-

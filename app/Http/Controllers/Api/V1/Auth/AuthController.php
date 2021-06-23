@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Auth;
 
+use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Repositories\AccountRepository;

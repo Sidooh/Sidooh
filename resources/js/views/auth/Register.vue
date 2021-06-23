@@ -2,7 +2,7 @@
     <div class="d-flex align-items-center min-vh-100">
         <CContainer fluid>
             <CRow class="justify-content-center">
-                <CCol md="4">
+                <CCol md="4" sm="6">
                     <CCard class="mx-4 mb-0">
                         <CCardBody class="p-4">
                             <CForm v-if="registrationStep === 1" @submit.prevent="submitStepOne">

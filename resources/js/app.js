@@ -20,6 +20,19 @@ import numFormat from 'vue-filter-number-format';
 import router from "./router";
 import store from "./store";
 import App from './App';
+import * as Sentry from "@sentry/vue";
+import {Integrations} from "@sentry/tracing";
+
+Sentry.init({
+    Vue,
+    dsn: "https://ca625ff84c4546b68413a2b2f4f6737e@o802918.ingest.sentry.io/5831082",
+    integrations: [new Integrations.BrowserTracing()],
+
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0,
+});
 
 Vue.use(VueRouter);
 Vue.use(CoreuiVue);

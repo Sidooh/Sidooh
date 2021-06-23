@@ -11,6 +11,8 @@
     },
     "devDependencies": {
         "@coreui/vue-chartjs": "^1.0.6",
+        "@sentry/tracing": "^6.7.2",
+        "@sentry/vue": "^6.7.2",
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
         "cross-env": "^5.1",

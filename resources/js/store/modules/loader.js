@@ -6,42 +6,48 @@ export const loader = {
     },
     actions: {
         show({commit}) {
-            commit("show");
+            commit("show")
         },
         hide({commit}) {
-            commit("hide");
+            commit("hide")
         },
         pending({commit}) {
-            commit("pending");
+            commit("pending")
         },
         done({commit}) {
-            commit("done");
+            commit("done")
+        },
+        reset({commit}) {
+            commit("reset")
         }
     },
     mutations: {
         show(state) {
-            state.loading = true;
+            state.loading = true
         },
         hide(state) {
-            state.loading = false;
+            state.loading = false
         },
         pending(state) {
             if (state.requestsPending === 0 || !state.loading) {
-                this.commit("loader/show");
+                this.commit("loader/show")
             }
 
-            state.requestsPending++;
+            state.requestsPending++
         },
         done(state) {
             if (state.requestsPending >= 1) {
-                state.requestsPending--;
+                state.requestsPending--
             }
 
             if (state.requestsPending <= 0) {
-                this.commit("loader/hide");
+                this.commit("loader/hide")
             }
-            // state.requestsPending = 0
-            // this.commit("loader/hide");
+
+        },
+        reset(state) {
+            state.requestsPending = 0
+            this.commit("loader/hide")
         }
     }
-};
+}

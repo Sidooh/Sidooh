@@ -22,7 +22,7 @@
                                     <CRow>
                                         <CCol v-for="(a, key) in voucherAmounts" class="mb-3" md="4" sm="6"
                                               xl="3">
-                                            <CButton :key="key" block color="primary" shape="pill"
+                                            <CButton :key="key" block color="primary" shape="pill" variant="outline"
                                                      @click="checkAmount(key)">{{ a }}
                                             </CButton>
                                         </CCol>
@@ -46,6 +46,41 @@
                                         {{ validation.amount }}
                                     </p>
                                 </div>
+
+                                <div class="mt-3">
+                                    <CRow class="form-group mb-0" form>
+                                        <CCol class="col-form-label" md="6" tag="label">
+                                            Other Mpesa Number?
+                                        </CCol>
+                                        <!--                                    try 3d variant and label-->
+                                        <CCol md="6">
+                                            <CSwitch
+                                                :checked="mpesaNumber"
+                                                class="mr-1"
+                                                color="info"
+                                                shape="pill"
+                                                slabelOn="Buy for other"
+                                                variant="outline"
+                                                @update:checked="setMpesaNumber"
+                                            />
+                                        </CCol>
+
+                                        <CCol v-if="mpesaNumber">
+                                            <vue-tel-input :invalidMsg="error" class="mt-3"
+                                                           @validate="checkMpesaPhone"></vue-tel-input>
+                                            <p v-if="errors.mpesaPhone" id="mpesaPhoneError" class="alert-warning">
+                                                {{
+                                                    errors.mpesaPhone[0]
+                                                }}
+                                            </p>
+                                            <p v-if="validation.mpesa_phone" id="mpesaNumberError"
+                                               class="alert-warning">
+                                                {{ validation.mpesa_phone }}
+                                            </p>
+                                        </CCol>
+                                    </CRow>
+                                </div>
+
 
                                 <CRow>
                                     <CCol class="text-left mt-3" col="12">
@@ -81,6 +116,7 @@ export default {
                 // other_phone: null,
                 amount: "",
                 // purchaseMethod: "MPESA"
+                mpesa_phone: null
             },
 
             voucherAmounts: {
@@ -89,6 +125,7 @@ export default {
 
             otherAmount: false,
             otherNumber: false,
+            mpesaNumber: false,
             options: ['MPesa', 'Voucher'],
             selectedOption: 'MPesa',
 
@@ -96,6 +133,7 @@ export default {
                 // other_phone: '',
                 amount: '',
                 // purchaseMethod: '',
+                mpesa_phone: ''
             },
 
             showError: false,
@@ -111,7 +149,7 @@ export default {
         validForm() {
             return !this.validation.amount &&
                 !this.validation.purchaseMethod &&
-                (this.otherNumber ? !this.validation.other_phone : true) && this.form.amount
+                (this.mpesaNumber ? !this.validation.mpesa_phone : true) && this.form.amount
         },
     },
 
@@ -138,8 +176,32 @@ export default {
             }
         },
 
+        checkMpesaPhone(phoneObject) {
+            if (phoneObject.number)
+                if (phoneObject.valid) {
+                    let safRegex = /^(?:\+?254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$/
+                    //
+                    if (safRegex.test(phoneObject.number)) {
+                        this.validation.mpesa_phone = ''
+                        this.error = null
+                        this.form.mpesa_phone = phoneObject.number.replace("+", "");
+                    } else {
+                        this.validation.mpesa_phone = "Enter a valid Mpesa Number"
+                    }
+
+                } else {
+                    this.validation.mpesa_phone = "Number seems to be invalid. Please try again."
+                }
+            // }
+        },
+
+
         setOtherAmount(e) {
             this.otherAmount = e
+        },
+
+        setMpesaNumber(e) {
+            this.mpesaNumber = e
         },
 
         async submit() {

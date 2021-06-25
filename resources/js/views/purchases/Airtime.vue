@@ -1,8 +1,7 @@
 <template>
-    <!--    <div class="c-app flex-row align-items-center">-->
     <CContainer>
         <CRow class="justify-content-center">
-            <CCol lg="4" md="6" sm="6">
+            <CCol md="5" sm="6">
                 <CCardGroup>
                     <CCard class="p-4">
                         <CCardBody>
@@ -21,7 +20,7 @@
                                 <div class="mt-3">
                                     <CRow class="form-group mb-0" form>
                                         <CCol class="col-form-label" md="6" tag="label">
-                                            Other number?
+                                            Other Number?
                                         </CCol>
                                         <!--                                    try 3d variant and label-->
                                         <CCol md="6">
@@ -51,10 +50,6 @@
                                         </CCol>
                                     </CRow>
                                 </div>
-                                <!--                                <CRow v-if="otherNumber" class="form-group mt-0" form>-->
-                                <!--                                    -->
-                                <!--                                </CRow>-->
-
                                 <!--                                Amount-->
 
                                 <div class="mt-4">
@@ -62,7 +57,7 @@
                                     <CRow>
                                         <CCol v-for="(a, key) in airtimeAmounts" class="mb-3" md="4" sm="6"
                                               xl="3">
-                                            <CButton :key="key" block color="primary" shape="pill"
+                                            <CButton :key="key" block color="primary" shape="pill" variant="outline"
                                                      @click="checkAmount(key)">{{ a }}
                                             </CButton>
                                         </CCol>
@@ -71,9 +66,9 @@
                                     <CInput
                                         v-model="form.amount"
                                         :disabled="!otherAmount"
-                                        class="mb-0 mt-3"
                                         :max="maxAmount"
                                         :min="minAmount"
+                                        class="mb-0 mt-3"
                                         placeholder="amount"
                                         type="number"
                                         @update:value="checkAmount"
@@ -107,6 +102,42 @@
                                     </CRow>
                                 </div>
 
+                                <!--                                Number : if other mpesa number-->
+
+                                <div v-if="form.purchaseMethod === 'MPESA'" class="mt-3">
+                                    <CRow class="form-group mb-0" form>
+                                        <CCol class="col-form-label" md="6" tag="label">
+                                            Other Mpesa Number?
+                                        </CCol>
+                                        <!--                                    try 3d variant and label-->
+                                        <CCol md="6">
+                                            <CSwitch
+                                                :checked="mpesaNumber"
+                                                class="mr-1"
+                                                color="info"
+                                                shape="pill"
+                                                slabelOn="Buy for other"
+                                                variant="outline"
+                                                @update:checked="setMpesaNumber"
+                                            />
+                                        </CCol>
+
+                                        <CCol v-if="mpesaNumber">
+                                            <vue-tel-input :invalidMsg="error" class="mt-3"
+                                                           @validate="checkMpesaPhone"></vue-tel-input>
+                                            <p v-if="errors.mpesaPhone" id="mpesaPhoneError" class="alert-warning">
+                                                {{
+                                                    errors.mpesaPhone[0]
+                                                }}
+                                            </p>
+                                            <p v-if="validation.mpesa_phone" id="mpesaNumberError"
+                                               class="alert-warning">
+                                                {{ validation.mpesa_phone }}
+                                            </p>
+                                        </CCol>
+                                    </CRow>
+                                </div>
+
                                 <CRow>
                                     <CCol class="text-left mt-3" col="12">
                                         <CButton :disabled="!validForm" color="primary" sclass="px-4 mt-3"
@@ -124,50 +155,8 @@
                     </CCard>
                 </CCardGroup>
             </CCol>
-            <!--            <CCol sm="4">-->
-            <!--                <CCard>-->
-            <!--                    <CCardHeader>-->
-            <!--                        <strong>Buy Airtime</strong>-->
-            <!--                    </CCardHeader>-->
-            <!--                    <CCardBody>-->
-            <!--                        <CInput placeholder="Username">-->
-            <!--                            <template #prepend-content>-->
-            <!--                                <CIcon name="cil-user"/>-->
-            <!--                            </template>-->
-            <!--                        </CInput>-->
-            <!--                        <CInput-->
-            <!--                            type="email"-->
-            <!--                            placeholder="Email"-->
-            <!--                            autocomplete="email"-->
-            <!--                        >-->
-            <!--                            <template #append-content>-->
-            <!--                                <CIcon name="cil-envelope-open"/>-->
-            <!--                            </template>-->
-            <!--                        </CInput>-->
-            <!--                        <CInput-->
-            <!--                            placeholder="ex. $1.000.000"-->
-            <!--                            append=".00"-->
-            <!--                        >-->
-            <!--                            <template #prepend-content>-->
-            <!--                                <CIcon name="cil-euro"/>-->
-            <!--                            </template>-->
-            <!--                        </CInput>-->
-            <!--                    </CCardBody>-->
-            <!--                    <CCardFooter>-->
-            <!--                        <CButton type="submit" size="sm" color="success">-->
-            <!--                            <CIcon name="cil-check-circle"/>-->
-            <!--                            Buy-->
-            <!--                        </CButton>-->
-            <!--                        <CButton type="reset" size="sm" color="danger">-->
-            <!--                            <CIcon name="cil-ban"/>-->
-            <!--                            Reset-->
-            <!--                        </CButton>-->
-            <!--                    </CCardFooter>-->
-            <!--                </CCard>-->
-            <!--            </CCol>-->
         </CRow>
     </CContainer>
-    <!--    </div>-->
 </template>
 
 <script>
@@ -182,7 +171,8 @@ export default {
             form: {
                 other_phone: null,
                 amount: "",
-                purchaseMethod: "MPESA"
+                purchaseMethod: "MPESA",
+                mpesa_phone: null
             },
 
             airtimeAmounts: {
@@ -194,6 +184,7 @@ export default {
 
             otherAmount: false,
             otherNumber: false,
+            mpesaNumber: false,
             options: ['MPESA', 'VOUCHER'],
             selectedOption: 'MPESA',
 
@@ -201,6 +192,7 @@ export default {
                 other_phone: '',
                 amount: '',
                 purchaseMethod: '',
+                mpesa_phone: ''
             },
 
             showError: false,
@@ -217,7 +209,8 @@ export default {
         validForm() {
             return !this.validation.amount &&
                 !this.validation.purchaseMethod &&
-                (this.otherNumber ? !this.validation.other_phone : true) && this.form.amount
+                (this.otherNumber ? !this.validation.other_phone : true) && this.form.amount &&
+                (this.mpesaNumber ? !this.validation.mpesa_phone : true)
         },
     },
 
@@ -240,7 +233,6 @@ export default {
         ]),
 
         checkPhone(phoneObject) {
-            console.log(phoneObject)
             if (phoneObject.number)
                 if (phoneObject.valid) {
 
@@ -253,6 +245,25 @@ export default {
 
                 } else {
                     this.validation.other_phone = "Number seems to be invalid. Please try again."
+                }
+            // }
+        },
+
+        checkMpesaPhone(phoneObject) {
+            if (phoneObject.number)
+                if (phoneObject.valid) {
+                    let safRegex = /^(?:\+?254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$/
+                    //
+                    if (safRegex.test(phoneObject.number)) {
+                        this.validation.mpesa_phone = ''
+                        this.error = null
+                        this.form.mpesa_phone = phoneObject.number.replace("+", "");
+                    } else {
+                        this.validation.mpesa_phone = "Enter a valid Mpesa Number"
+                    }
+
+                } else {
+                    this.validation.mpesa_phone = "Number seems to be invalid. Please try again."
                 }
             // }
         },
@@ -290,8 +301,12 @@ export default {
                 if (this.voucherBalance < parseInt(this.form.amount)) {
                     this.confirmPayment()
                 }
-                console.log(this.voucherBalance, parseInt(this.form.amount))
+                // console.log(this.voucherBalance, parseInt(this.form.amount))
             }
+        },
+
+        setMpesaNumber(e) {
+            this.mpesaNumber = e
         },
 
         confirmPayment() {

@@ -114,6 +114,14 @@
 
                 <CCard v-else>
                     <CCardBody>
+                        <CCardHeader>
+                            <CIcon name="cil-justify-center"/>
+                            Airtime <small>Status</small>
+
+                            <span v-if="timerEnabled" class="text-right float-right">Refreshing in {{
+                                    timerCount
+                                }}</span>
+                        </CCardHeader>
                         <CCardText>
                             <b>Oops!</b>
 

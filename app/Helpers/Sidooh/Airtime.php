@@ -60,10 +60,8 @@ class Airtime
         switch ($this->method) {
             case PaymentMethods::MPESA:
                 return $this->mpesa($targetNumber, $mpesaNumber);
-                break;
             case PaymentMethods::VOUCHER:
                 return $this->voucher($targetNumber);
-                break;
         }
 
     }
@@ -71,7 +69,7 @@ class Airtime
     public function mpesa($targetNumber = null, $mpesaNumber = null)
     {
         $description = $targetNumber ? "Airtime Purchase - $targetNumber" : "Airtime Purchase";
-        $number = !empty($mpesaNumber) ?: $this->phone;
+        $number = !empty($mpesaNumber) ? $mpesaNumber : $this->phone;
 
         $stkResponse = mpesa_request($number, $this->amount, MpesaReferences::AIRTIME, $description);
 

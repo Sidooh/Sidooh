@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TransactionResource;
-use App\Models\Account;
 use App\Models\Transaction;
 use App\Repositories\TransactionRepository;
 use Illuminate\Http\Request;
@@ -127,18 +126,20 @@ class TransactionController extends Controller
 
     }
 
-    public function buyAirtime(Account $account, Request $request): \Illuminate\Http\JsonResponse
+    public function buyAirtime(Request $request): \Illuminate\Http\JsonResponse
     {
         Log::info('******* API AIRTIME PURCHASE *******');
 
+//        TODO: Standardize your params and vars
         $amount = $request->amount;
         $target = $request->other_phone;
         $method = $request->purchaseMethod;
+        $mpesa = $request->mpesa_phone;
 
         try {
 
 //        TODO: Do we need to store all numbers bought for in our system? What if it is not a safaricom number?
-            $transaction = (new \App\Helpers\Sidooh\Airtime($amount, $account->phone, $method))->purchase($target);
+            $transaction = (new \App\Helpers\Sidooh\Airtime($amount, $this->account->phone, $method))->purchase($target, $mpesa);
 
             $message = $method === 'MPESA' ? "STK Push sent successfully" : "Voucher purchase in progress";
 
@@ -168,7 +169,7 @@ class TransactionController extends Controller
 
     }
 
-    public function getAirtimeStatus(Account $account, Transaction $transaction, Request $request): \Illuminate\Http\JsonResponse
+    public function getAirtimeStatus(Transaction $transaction, Request $request): \Illuminate\Http\JsonResponse
     {
         if ($transaction->product_id != 1) {
             return response()
@@ -181,9 +182,11 @@ class TransactionController extends Controller
         $transaction = $transaction->load(['airtime.response', 'payment.stkRequest.response']);
 
         if ($transaction->payment->stkRequest->status == "Requested") {
-            dispatch(function () {
-                $exitCode = Artisan::call('mpesa:query_status');
-            });
+            try {
+                Artisan::call('mpesa:query_status');
+            } catch (\Exception $e) {
+                Log::error($e);
+            }
 
             $transaction = $transaction->load(['airtime.response', 'payment.stkRequest.response']);
         }
@@ -197,17 +200,18 @@ class TransactionController extends Controller
 
     }
 
-    public function buyVoucher(Account $account, Request $request): \Illuminate\Http\JsonResponse
+    public function buyVoucher(Request $request): \Illuminate\Http\JsonResponse
     {
         Log::info('******* API VOUCHER PURCHASE *******');
 
         $amount = $request->amount;
         $target = $request->other_phone;
+        $mpesa = $request->mpesa_phone;
 
         try {
 
 //        TODO: Do we need to store all numbers bought for in our system? What if it is not a safaricom number?
-            $transaction = (new \App\Helpers\Sidooh\Voucher($account->phone, $amount))->purchase($target);
+            $transaction = (new \App\Helpers\Sidooh\Voucher($this->account->phone, $amount))->purchase($target, $mpesa);
 
         } catch (MpesaException $e) {
             Log::error($e->getMessage());
@@ -227,7 +231,7 @@ class TransactionController extends Controller
 
     }
 
-    public function getVoucherStatus(Account $account, Transaction $transaction, Request $request): \Illuminate\Http\JsonResponse
+    public function getVoucherStatus(Transaction $transaction, Request $request): \Illuminate\Http\JsonResponse
     {
         if ($transaction->product_id != 3) {
             return response()
@@ -240,9 +244,11 @@ class TransactionController extends Controller
         $transaction = $transaction->load(['payment.stkRequest.response']);
 
         if ($transaction->payment->stkRequest->status == "Requested") {
-            dispatch(function () {
-                $exitCode = Artisan::call('mpesa:query_status');
-            });
+            try {
+                Artisan::call('mpesa:query_status');
+            } catch (\Exception $e) {
+                Log::error($e);
+            }
 
             $transaction = $transaction->load(['payment.stkRequest.response']);
         }

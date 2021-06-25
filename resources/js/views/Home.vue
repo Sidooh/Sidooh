@@ -18,8 +18,8 @@
                         </div>
                     </CCol>
                     <CCol class="d-none d-md-block col-sm-7">
-                        <button class="btn float-right btn-primary">
-                            <CIcon name="cil-cloud-download"/>
+                        <button class="btn float-right btn-primary" disabled @click="reloadChart">
+                            <CIcon name="cil-reload"/>
                         </button>
                         <CButtonGroup class="float-right mr-3 btn-group">
                             <CButton class="btn mx-0 btn-outline-secondary"
@@ -360,6 +360,12 @@ export default {
 
             this.setReferralsQuery(q);
             this.processReferralChartData()
+        },
+
+        reloadChart() {
+            this.fetchTransactions().then(() => {
+                this.processTransactionChartData()
+            })
         },
 
         isToday(someDate) {

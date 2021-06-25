@@ -12,19 +12,20 @@
 */
 
 Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], function () {
-    Route::group(['smiddleware' => 'client'], function () {
 
-        Route::apiResource('{account}/transactions', 'TransactionController', ['only' => ['index', 'show']]);
-        Route::apiResource('{account}/referrals', 'ReferralController', ['only' => ['index', 'show']]);
+    Route::group(['middleware' => 'auth:api'], function () {
 
-        Route::post('{account}/purchases/airtime', 'TransactionController@buyAirtime');
-        Route::get('{account}/purchases/airtime/{transaction}', 'TransactionController@getAirtimeStatus');
+        Route::apiResource('transactions', 'TransactionController', ['only' => ['index', 'show']]);
+        Route::apiResource('referrals', 'ReferralController', ['only' => ['index', 'show']]);
 
-        Route::post('{account}/purchases/voucher', 'TransactionController@buyVoucher');
-        Route::get('{account}/purchases/voucher/{transaction}', 'TransactionController@getVoucherStatus');
+        Route::post('purchases/airtime', 'TransactionController@buyAirtime');
+        Route::get('purchases/airtime/{transaction}', 'TransactionController@getAirtimeStatus');
 
-        Route::get('{account}/accounts/balances', 'AccountController@balances');
-        Route::get('{account}/accounts/earnings', 'AccountController@earnings');
+        Route::post('purchases/voucher', 'TransactionController@buyVoucher');
+        Route::get('purchases/voucher/{transaction}', 'TransactionController@getVoucherStatus');
+
+        Route::get('accounts/balances', 'AccountController@balances');
+        Route::get('accounts/earnings', 'AccountController@earnings');
 
 
     });

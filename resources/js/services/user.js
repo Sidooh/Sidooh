@@ -1,8 +1,7 @@
-import axios from 'axios';
-import authHeader from './auth-header';
-import {BASE_URL} from "../constants";
+import client from './axiosClient';
 
-const API_URL = BASE_URL + 'user';
+let ENDPOINT_URL = '/user/';
+
 
 class UserService {
     // getPublicContent() {

@@ -1,15 +1,6 @@
 import client from './axiosClient';
 
-const account = JSON.parse(localStorage.getItem('account'));
-
-let ENDPOINT_URL = '/';
-
-if (account) {
-    ENDPOINT_URL = '/' + account.id + '/transactions/';
-} else {
-    // router.push('/login')
-}
-
+let ENDPOINT_URL = 'transactions/';
 
 class TransactionService {
     all() {
@@ -25,7 +16,7 @@ class TransactionService {
                 return response;
             })
             .catch(error => {
-                console.log('resError', error.response)
+                console.log('resError', error)
                 throw error.response
             });
     }

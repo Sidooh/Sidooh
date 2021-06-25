@@ -24,6 +24,7 @@ class TransactionController extends Controller
      */
     public function __construct(TransactionRepository $repo)
     {
+        parent::__construct();
         $this->repo = $repo;
     }
 
@@ -32,14 +33,11 @@ class TransactionController extends Controller
      *
      * @return TransactionResource
      */
-    public function index(Account $account)
+    public function index()
     {
         //
-        Log::info(auth()->user());
-        Log::info(\request());
-
 //        TODO: Should we filter status here or in the frontend? SHoudl we show users failed and pending transactions?
-        $data = $account->transactions()->whereIn('status', ['success', 'completed'])->with(['payment'])->get();
+        $data = $this->account->transactions()->whereIn('status', ['success', 'completed'])->with(['payment'])->get();
 
         return new TransactionResource($data);
     }

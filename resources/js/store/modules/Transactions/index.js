@@ -36,7 +36,7 @@ const getters = {
 }
 
 const actions = {
-    async fetchData({commit, state}) {
+    async fetchData({commit}) {
         commit('LOADING', true)
 
         try {
@@ -47,6 +47,7 @@ const actions = {
 
         } catch (e) {
 
+            console.log(e)
             if (e.status === 422) {
                 commit('TRANSACTION_INDEX_FAILURE', e.data.errors ?? e.data.error);
                 return Promise.reject(e.data);

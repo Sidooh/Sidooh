@@ -13,16 +13,17 @@ use Illuminate\Http\Response;
 
 class AccountController extends Controller
 {
-    protected $account;
+    protected $accountRep;
 
     /**
      * AccountController constructor.
      *
      * @param AccountRepository $account
      */
-    public function __construct(AccountRepository $account)
+    public function __construct(AccountRepository $accountRep)
     {
-        $this->account = $account;
+        parent::__construct();
+        $this->accountRep = $accountRep;
     }
 
     /**
@@ -33,7 +34,7 @@ class AccountController extends Controller
     public function index()
     {
         //
-        return new AccountResource($this->account->all());
+//        return new AccountResource($this->account->all());
     }
 
     /**
@@ -55,7 +56,7 @@ class AccountController extends Controller
     public function store(AccountStoreRequest $request)
     {
         //
-        return new AccountResource($this->account->store($request));
+//        return new AccountResource($this->account->store($request));
     }
 
     /**
@@ -172,50 +173,24 @@ class AccountController extends Controller
      * @param Account $account
      * @return AccountResource
      */
-    public function earnings(Account $account)
+    public function earnings()
     {
         //
-        return new AccountResource($this->account->earningsSummary($account->phone));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Account $account
-     * @return AccountResource
-     */
-    public function earningsReport(Account $account)
-    {
-        //
-
-        return $this->account->earningsReport($account->phone);
-        return new AccountResource($this->account->earningsReport($account->phone));
-    }
-
-//    /**
-//     * Display the specified resource.
-//     *
-//     * @param Account $account
-//     * @return AccountResource
-//     */
-    public function subAccounts(Account $account)
-    {
-        //
-        return new AccountResource($this->account->invest());
+        return new AccountResource($this->accountRep->earningsSummary($this->account->phone));
     }
 
 
-    public function balances(Account $account)
+    public function balances()
     {
         //
-        $account->load(['sub_accounts', 'voucher']);
+        $this->account->load(['sub_accounts', 'voucher']);
 //        $this->account->nth_level_referrals($account, 5);
 //
 //        $data = $this->account->statistics($account);
 //
 //        return view('admin.crud.accounts.show', compact('account', 'data'));
 //
-        return new AccountResource($account);
+        return new AccountResource($this->account);
     }
 
 }

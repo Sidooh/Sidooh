@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReferralStoreRequest;
 use App\Http\Resources\ReferralResource;
-use App\Model\Referral;
+
 use App\Models\Account;
 use App\Repositories\ReferralRepository;
 use Illuminate\Http\Request;
@@ -21,6 +21,7 @@ class ReferralController extends Controller
      */
     public function __construct(ReferralRepository $referral)
     {
+        parent::__construct();
         $this->referral = $referral;
     }
 
@@ -29,11 +30,11 @@ class ReferralController extends Controller
      *
      * @return ReferralResource
      */
-    public function index(Account $account)
+    public function index()
     {
         //
         //        TODO: Should we filter status here or in the frontend? SHoudl we show users failed and pending transactions?
-        $data = $account->referrals()->get();
+        $data = $this->account->referrals()->get();
 
         return new ReferralResource($data);
     }

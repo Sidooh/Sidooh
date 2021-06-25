@@ -1,6 +1,6 @@
 import client from './axiosClient';
 
-const ENDPOINT_URL = '/auth';
+const ENDPOINT_URL = 'auth';
 
 class AuthService {
     login(user) {

@@ -45,7 +45,7 @@ class AuthController extends Controller
 //                TODO: Possibly check if password is equivalent to $this->vars['{$email}'] . '5!D00h'; If so, user has not logged in before, redirect to register
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
-                $token = $user->createToken('Personal Access Token')->accessToken;
+                $token = $user->createToken('JWT')->accessToken;
 //                $cookie = $this->getCookieDetails($token);
 
                 return response()

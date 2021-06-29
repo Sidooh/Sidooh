@@ -17,6 +17,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
 
         Route::apiResource('transactions', 'TransactionController', ['only' => ['index', 'show']]);
         Route::apiResource('referrals', 'ReferralController', ['only' => ['index', 'show']]);
+        Route::apiResource('earnings', 'EarningController', ['only' => ['index', 'show']]);
 
         Route::post('purchases/airtime', 'TransactionController@buyAirtime');
         Route::get('purchases/airtime/{transaction}', 'TransactionController@getAirtimeStatus');
@@ -25,7 +26,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
         Route::get('purchases/voucher/{transaction}', 'TransactionController@getVoucherStatus');
 
         Route::get('accounts/balances', 'AccountController@balances');
-        Route::get('accounts/earnings', 'AccountController@earnings');
+//        Route::get('accounts/earnings/summary', 'AccountController@earnings');
 
 
     });

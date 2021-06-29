@@ -6,6 +6,7 @@ import auth from './modules/auth';
 import {loader} from "./modules/loader";
 import TransactionsIndex from "./modules/Transactions";
 import ReferralsIndex from "./modules/Referrals";
+import EarningsIndex from "./modules/Earnings";
 import Purchases from "./modules/Purchases";
 import Accounts from "./modules/Accounts";
 
@@ -36,6 +37,7 @@ const store = new Vuex.Store({
         loader,
         TransactionsIndex,
         ReferralsIndex,
+        EarningsIndex,
         Purchases,
         Accounts,
     },

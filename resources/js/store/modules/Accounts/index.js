@@ -33,11 +33,6 @@ const getters = {
     },
 
     balances: state => state.balances,
-    earnings: state => state.earnings,
-
-    myTotalEarnings: state => state.myTotalEarnings,
-    myEarnings: state => state.myEarnings,
-    myInviteEarnings: state => state.myInviteEarnings,
 
     voucherBalance: state => state.balances.voucher.balance,
 
@@ -70,11 +65,11 @@ const actions = {
         commit('LOADING', false)
     },
 
-    async getEarnings({commit}) {
+    async getEarningsSummary({commit}) {
         commit('LOADING', true)
 
         try {
-            const response = await AccountService.earnings();
+            const response = await AccountService.earningsSummary();
 
             commit('EARNINGS_SUCCESS', response.data);
             commit('LOADING', false)

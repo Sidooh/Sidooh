@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ReferralStoreRequest;
 use App\Http\Resources\ReferralResource;
 
-use App\Models\Account;
 use App\Repositories\ReferralRepository;
 use Illuminate\Http\Request;
 

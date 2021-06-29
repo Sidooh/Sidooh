@@ -21,9 +21,9 @@ class ReferralService {
             });
     }
 
-    earnings() {
+    earningsSummary() {
         return client
-            .get(ENDPOINT_URL + 'earnings')
+            .get(ENDPOINT_URL + 'earnings/summary')
             .then(response => {
                 console.log('resSuccess', response)
 

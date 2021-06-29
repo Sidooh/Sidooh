@@ -1,11 +1,11 @@
-import TransactionService from '../../../services/transaction';
+import EarningService from '../../../services/earning';
 
 const initialState = {
     all: [],
     chartData: [],
     loading: false,
-    query: {sort: 'id', order: 'desc', group: 'm', type: 'PAYMENT'},
-    states: ['completed', 'success'],
+    query: {sort: 'id', order: 'desc', group: 'y', yearLimit: false},
+    types: ['self', 'referral'],
 }
 
 const state = initialState;
@@ -14,19 +14,26 @@ const getters = {
     data: state => {
         let rows = state.all
         //
-        // if (state.query.sort) {
-        //     rows = _.orderBy(state.all, state.query.sort, state.query.order)
-        // }
+        if (state.query.sort) {
+            rows = _.orderBy(state.all, state.query.sort, state.query.order)
+        }
         //
         // return rows.slice(state.query.offset, state.query.offset + state.query.limit)
 
-        rows = rows.filter(item => item.type === state.query.type)
+        // rows = rows.filter(item => item.type === state.query.type)
 
 //    Filter data by status
-        rows = rows.filter(item => state.states.includes(item.status))
+//         rows = rows.filter(item => state.states.includes(item.status))
 
         return rows
     },
+
+    //TODO: What is the difference between this and data? Can data be used across?
+    earnings: state => state.all.sort((a, b) => b.id - a.id),
+
+    myEarnings: state => _.sum(state.all.filter(item => item.type === 'SELF').map(a => parseFloat(a.earnings))),
+    myInviteEarnings: state => _.sum(state.all.filter(item => item.type === 'REFERRAL').map(a => parseFloat(a.earnings))),
+    // myTotalEarnings: state => getters.myEarnings + getters.myInviteEarnings,
 
     chartData: state => state.chartData,
 
@@ -36,20 +43,19 @@ const getters = {
 }
 
 const actions = {
-    async fetchData({commit}) {
+    async fetchData({commit, state}) {
         commit('LOADING', true)
 
         try {
-            const response = await TransactionService.all();
+            const response = await EarningService.all();
 
-            commit('TRANSACTION_INDEX_SUCCESS', response.data);
+            commit('EARNING_INDEX_SUCCESS', response.data);
             return Promise.resolve(response.data);
 
         } catch (e) {
 
-            console.log(e)
             if (e.status === 422) {
-                commit('TRANSACTION_INDEX_FAILURE', e.data.errors ?? e.data.error);
+                commit('EARNING_INDEX_FAILURE', e.data.errors ?? e.data.error);
                 return Promise.reject(e.data);
             }
 
@@ -60,9 +66,10 @@ const actions = {
 
     processChartData({commit, state}) {
         let data = []
+
         //    Get Y, M, D attributes first
         state.all.forEach(item => {
-            const x = _.pick(item, 'id', 'type', 'amount', 'status', 'created_at')
+            const x = _.pick(item, 'id', 'type', 'earnings', 'created_at')
 
             const splitDateTime = x.created_at.split(' ')
             const splitDate = splitDateTime[0]
@@ -74,14 +81,19 @@ const actions = {
             x.hour = splitTime.split(':')[0]
             x.fullMonth = new Date(x.created_at).toLocaleString('default', {month: 'long'})
 
+            x.earnings = parseFloat(x.earnings)
             data.push(x)
         })
 
+        console.log(data)
+        data = _.orderBy(data, 'id', 'asc')
+
+
         //    Filter data by type
-        data = data.filter(item => item.type === state.query.type)
+        // data = data.filter(item => item.type === state.query.type)
 
         //    Filter data by status
-        data = data.filter(item => state.states.includes(item.status))
+        data = data.filter(item => state.types.includes(item.type.toLowerCase()))
 
         //    Group data by d,m,y and perform sum and count
         // TODO: For the below code can it be added to a utils module?
@@ -94,36 +106,53 @@ const actions = {
         let currentMonth = new Date().getMonth() + 1
         let currentDay = new Date().getDay()
 
+        // console.log(data, currentYear)
+
+        // TODO: Should we limit to year for earnings?
+
+        if (state.query.yearLimit) {
+            data = data.filter(item => item.year == currentYear)
+        }
+
         switch (state.query.group) {
             case 'y':
                 dateFilter = 'fullMonth'
-                data = data.filter(item => item.year == currentYear)
                 break
             case 'm':
                 dateFilter = 'day'
-                data = data.filter(item => item.year == currentYear && item.month == currentMonth)
+                data = data.filter(item => item.month == currentMonth)
                 break
             case 'd':
                 dateFilter = 'hour'
-                data = data.filter(item => item.year == currentYear && item.month == currentMonth && item.year == currentDay)
+                data = data.filter(item => item.month == currentMonth && item.year == currentDay)
                 break
         }
 
         data.forEach(item => {
-            var date = item[dateFilter];
 
-            var index = dateArr.indexOf(date);
+            let date;
+            if (!state.query.yearLimit && state.query.group === 'y') {
+                date = item[dateFilter] + ' ' + item.year;
+            } else {
+                date = item[dateFilter];
+            }
+
+            // console.log(dateFilter, item[dateFilter], !state.query.yearLimit && state.query.group === 'y')
+            // console.log(date, state.query)
+
+            const index = dateArr.indexOf(date);
             if (index == -1) {
                 dateArr.push(date);
-                var obj = {date: date, amount: item.amount, count: 1};
+                const obj = {date: date, amount: item.earnings, count: 1};
                 resultArr.push(obj);
             } else {
-                resultArr[index].amount += item.amount;
+                resultArr[index].amount += item.earnings;
                 resultArr[index].count += 1;
             }
         });
+        // console.log(data)
 
-        commit('TRANSACTION_UPDATE_CHART_DATA', resultArr);
+        commit('EARNING_UPDATE_CHART_DATA', resultArr);
     },
 
     setQuery({commit}, value) {
@@ -136,15 +165,16 @@ const actions = {
 }
 
 const mutations = {
-    TRANSACTION_INDEX_SUCCESS(state, transactions) {
-        state.all = transactions;
+    EARNING_INDEX_SUCCESS(state, earnings) {
+        //TODO: Find out why the each parsing is not working below
+        state.all = earnings;
         state.errors = {};
     },
-    TRANSACTION_INDEX_FAILURE(state, errors) {
+    EARNING_INDEX_FAILURE(state, errors) {
         state.all = null;
         state.errors = errors;
     },
-    TRANSACTION_UPDATE_CHART_DATA(state, data) {
+    EARNING_UPDATE_CHART_DATA(state, data) {
         state.chartData = data;
     },
     LOADING(state, loading) {

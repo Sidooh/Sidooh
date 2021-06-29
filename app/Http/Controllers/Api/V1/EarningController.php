@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Model\Earning;
+use App\Http\Resources\ReferralResource;
+use App\Models\Earning;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class EarningController extends Controller
 {
@@ -16,6 +18,10 @@ class EarningController extends Controller
     public function index()
     {
         //
+        $data = $this->account->earnings()->get();
+
+        Log::info($data);
+        return new ReferralResource($data);
     }
 
     /**

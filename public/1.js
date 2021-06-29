@@ -679,6 +679,7 @@
 //
 //
 //
+//
 
 
         /* harmony default export */
@@ -702,7 +703,32 @@
                             icon: 'cil-speedometer',
                             colour: 'gradient-warning'
                         }
-                    }
+                    },
+                    fields: [// {key: 'id', /*_style: { width: '40%'}*/},
+                        // {key: 'type',},
+                        // {key: 'description'},
+                        {
+                            key: 'earnings',
+                            label: 'amount'
+                        }, {
+                            key: 'type'
+                        }, {
+                            key: 'created_at',
+                            label: 'Date'
+                        } // {key: 'description'},
+                        // {key: 'content', format: 'trim:100'},
+                        // {key: 'created_at', label: 'Created', format: 'date:d/m/Y'},
+                        // {key: 'author_id', label: 'Author', type: 'relationship'},
+                        // {key: 'stage_id', label: 'Stage', type: 'relationship'},
+                        // {key: 'approved_by', label: 'Approver', type: 'relationship'},
+                        // {
+                        //     key: 'show_details',
+                        //     label: '',
+                        //     _style: { width: '1%' },
+                        //     sorter: false,
+                        //     filter: false
+                        // }
+                    ]
                 };
             },
             mounted: function mounted() {
@@ -712,8 +738,14 @@
             destroyed: function destroyed() {//TODO: Maybe add this after setting up data persistence
                 // this.resetState()
             },
-            computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('Accounts', ['balances', 'earnings', 'myTotalEarnings', 'myEarnings', 'myInviteEarnings'])),
-            methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('Accounts', ['getAccountBalances', 'getEarnings'])), {}, {
+            computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('Accounts', ['balances'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('EarningsIndex', ['earnings', 'myEarnings', 'myInviteEarnings'])), {}, {
+                myTotalEarnings: function myTotalEarnings() {
+                    return this.myEarnings + this.myInviteEarnings;
+                }
+            }),
+            methods: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('Accounts', ['getAccountBalances', 'getEarningsSummary'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('EarningsIndex', {
+                getEarnings: "fetchData"
+            })), {}, {
                 isToday: function isToday(someDate) {
                     var today = new Date();
                     return someDate.getDate() == today.getDate() && someDate.getMonth() == today.getMonth() && someDate.getFullYear() == today.getFullYear();
@@ -727,7 +759,8 @@
                     this.$emit('row-clicked', item, index, e);
                 },
                 getBadge: function getBadge(status) {
-                    return status === 'success' ? 'success' : status === 'pending' ? 'secondary' : status === 'reimbursed' ? 'warning' : status === 'failed' ? 'danger' : 'primary';
+                    status = status.toLowerCase();
+                    return status === 'self' ? 'success' : status === 'referral' ? 'primary' : status === 'reimbursed' ? 'warning' : status === 'failed' ? 'danger' : 'secondary';
                 },
                 getColour: function getColour(type) {
                     return this.items[type].colour;

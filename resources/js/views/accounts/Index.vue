@@ -40,6 +40,7 @@
                 </CWidgetSimple>
             </CCol>
         </CRow>
+
     </div>
 </template>
 
@@ -65,7 +66,30 @@ export default {
                     icon: 'cil-speedometer',
                     colour: 'gradient-warning',
                 }
-            }
+            },
+
+            fields: [
+                // {key: 'id', /*_style: { width: '40%'}*/},
+                // {key: 'type',},
+                // {key: 'description'},
+                {key: 'earnings', label: 'amount'},
+                {key: 'type',},
+                {key: 'created_at', label: 'Date'},
+                // {key: 'description'},
+                // {key: 'content', format: 'trim:100'},
+                // {key: 'created_at', label: 'Created', format: 'date:d/m/Y'},
+                // {key: 'author_id', label: 'Author', type: 'relationship'},
+                // {key: 'stage_id', label: 'Stage', type: 'relationship'},
+                // {key: 'approved_by', label: 'Approver', type: 'relationship'},
+
+                // {
+                //     key: 'show_details',
+                //     label: '',
+                //     _style: { width: '1%' },
+                //     sorter: false,
+                //     filter: false
+                // }
+            ],
         }
     },
 
@@ -80,13 +104,19 @@ export default {
     },
 
     computed: {
-        ...mapGetters('Accounts', ['balances', 'earnings', 'myTotalEarnings', 'myEarnings', 'myInviteEarnings']),
+        ...mapGetters('Accounts', ['balances']),
+        ...mapGetters('EarningsIndex', ['earnings', 'myEarnings', 'myInviteEarnings']),
 
+        myTotalEarnings() {
+            return this.myEarnings + this.myInviteEarnings
+        }
     },
 
-
     methods: {
-        ...mapActions('Accounts', ['getAccountBalances', 'getEarnings']),
+        ...mapActions('Accounts', ['getAccountBalances', 'getEarningsSummary']),
+        ...mapActions('EarningsIndex', {
+            getEarnings: "fetchData"
+        }),
 
         isToday(someDate) {
             const today = new Date()
@@ -108,10 +138,11 @@ export default {
         },
 
         getBadge(status) {
-            return status === 'success' ? 'success'
-                : status === 'pending' ? 'secondary'
+            status = status.toLowerCase()
+            return status === 'self' ? 'success'
+                : status === 'referral' ? 'primary'
                     : status === 'reimbursed' ? 'warning'
-                        : status === 'failed' ? 'danger' : 'primary'
+                        : status === 'failed' ? 'danger' : 'secondary'
         },
 
         getColour(type) {

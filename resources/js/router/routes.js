@@ -8,6 +8,7 @@ const Login = () => import('../views/auth/Login')
 
 const TransactionsIndex = () => import('../views/transactions/Index')
 const InvitesIndex = () => import('../views/referrals/Index')
+const EarningsIndex = () => import('../views/earnings/Index')
 const FinancesIndex = () => import('../views/accounts/Index')
 
 
@@ -102,6 +103,11 @@ const routes = [
                 path: 'invites',
                 name: 'invites',
                 component: InvitesIndex
+            },
+            {
+                path: 'earnings',
+                name: 'earnings',
+                component: EarningsIndex
             },
             {
                 path: 'account',

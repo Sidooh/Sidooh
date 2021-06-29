@@ -259,6 +259,8 @@ class AccountRepository extends Model
     {
         $acc = $this->findByPhone($phoneNumber);
 
+        $earnings = [];
+
         //        TODO:: USE ONE QUERY FOR DB THEN COLLECTION FILTER? MORE EFFICIENT?
 //        $acc = $this->account->find($account->id);
         $acc['total_earnings'] = $acc->earnings->sum('earnings');

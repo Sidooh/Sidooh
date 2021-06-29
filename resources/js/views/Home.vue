@@ -1,12 +1,5 @@
 <template>
     <div>
-
-        <!--        <CRow>-->
-        <!--            <CCol>-->
-        <!--                -->
-        <!--            </CCol>-->
-        <!--        </CRow>-->
-
         <CCard>
             <CCardBody>
                 <CRow>

@@ -58,6 +58,12 @@ export default [
             },
             {
                 _name: 'CSidebarNavItem',
+                name: 'Earnings',
+                to: '/dashboard/earnings',
+                icon: 'cil-euro'
+            },
+            {
+                _name: 'CSidebarNavItem',
                 name: 'Finances',
                 to: '/dashboard/account/finances',
                 icon: 'cil-wallet'

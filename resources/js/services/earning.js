@@ -1,6 +1,6 @@
 import client from './axiosClient';
 
-let ENDPOINT_URL = '/earnings/';
+let ENDPOINT_URL = '/earnings';
 
 class EarningService {
     all() {

@@ -192,20 +192,20 @@ export default {
             return this.earningsChartData.map(a => a.date)
         },
         chartData1() {
-            return this.earningsChartData.map(a => a.amount)
+            return this.earningsChartData.map(a => parseFloat(a.amount).toFixed(4))
         },
         chartData2() {
             return this.earningsChartData.map(a => a.count)
         },
 
         totalAmount() {
-            return _.sum(this.data.map(a => parseFloat(a.earnings)))
+            return _.sum(this.data.map(a => parseFloat(a.earnings))).toFixed(4)
         },
         totalAmountToday() {
-            return _.sum(this.data.filter(item => this.isToday(new Date(item.created_at))).map(a => parseFloat(a.earnings)))
+            return _.sum(this.data.filter(item => this.isToday(new Date(item.created_at))).map(a => parseFloat(a.earnings))).toFixed(4)
         },
         totalAmountThisMonth() {
-            return _.sum(this.data.filter(item => this.isThisMonth(new Date(item.created_at))).map(a => parseFloat(a.earnings)))
+            return _.sum(this.data.filter(item => this.isThisMonth(new Date(item.created_at))).map(a => parseFloat(a.earnings))).toFixed(4)
         },
 
         totalEarnings() {

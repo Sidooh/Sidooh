@@ -680,6 +680,7 @@
 //
 //
 //
+//
 
 
         /* harmony default export */
@@ -740,7 +741,7 @@
             },
             computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('Accounts', ['balances'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('EarningsIndex', ['earnings', 'myEarnings', 'myInviteEarnings'])), {}, {
                 myTotalEarnings: function myTotalEarnings() {
-                    return this.myEarnings + this.myInviteEarnings;
+                    return (parseFloat(this.myEarnings) + parseFloat(this.myInviteEarnings)).toFixed(4);
                 }
             }),
             methods: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('Accounts', ['getAccountBalances', 'getEarningsSummary'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('EarningsIndex', {
@@ -863,7 +864,9 @@
                                 return _c(
                                     "CWidgetProgressIcon",
                                     {
+                                        key: acc.id,
                                         attrs: {
+                                            data: acc,
                                             color: _vm.getColour(acc.type),
                                             header: _vm._f("numFormat")(acc.balance, "0,0.0000"),
                                             text: acc.type

@@ -81,7 +81,7 @@ const actions = {
             x.hour = splitTime.split(':')[0]
             x.fullMonth = new Date(x.created_at).toLocaleString('default', {month: 'long'})
 
-            x.earnings = parseFloat(x.earnings)
+            x.earnings = parseFloat(x.earnings).toFixed(4)
             data.push(x)
         })
 

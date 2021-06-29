@@ -20,7 +20,8 @@
                                 <div class="mt-4">
                                     <span>Amount</span>
                                     <CRow>
-                                        <CCol v-for="(a, key) in voucherAmounts" class="mb-3" md="4" sm="6"
+                                        <CCol v-for="(a, key) in voucherAmounts" v-bind:key="key" class="mb-3" md="4"
+                                              sm="6" v-bind:data="a"
                                               xl="3">
                                             <CButton :key="key" block color="primary" shape="pill" variant="outline"
                                                      @click="checkAmount(key)">{{ a }}

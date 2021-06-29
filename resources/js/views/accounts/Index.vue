@@ -13,6 +13,7 @@
             </CWidgetProgressIcon>
             <CWidgetProgressIcon
                 v-for="acc in balances.sub_accounts"
+                v-bind:key="acc.id" v-bind:data="acc"
                 :color="getColour(acc.type)"
                 :header="acc.balance | numFormat('0,0.0000')"
                 :text="acc.type"
@@ -108,7 +109,7 @@ export default {
         ...mapGetters('EarningsIndex', ['earnings', 'myEarnings', 'myInviteEarnings']),
 
         myTotalEarnings() {
-            return this.myEarnings + this.myInviteEarnings
+            return (parseFloat(this.myEarnings) + parseFloat(this.myInviteEarnings)).toFixed(4)
         }
     },
 

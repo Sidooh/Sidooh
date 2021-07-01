@@ -1,4 +1,5 @@
 import TransactionService from '../../../services/transaction';
+import logger from "../../../helpers/logger";
 
 const initialState = {
     all: [],
@@ -47,7 +48,7 @@ const actions = {
 
         } catch (e) {
 
-            console.log(e)
+            // logger.log(e)
             if (e.status === 422) {
                 commit('TRANSACTION_INDEX_FAILURE', e.data.errors ?? e.data.error);
                 return Promise.reject(e.data);
@@ -92,7 +93,7 @@ const actions = {
         let dateFilter = null
         let currentYear = new Date().getFullYear()
         let currentMonth = new Date().getMonth() + 1
-        let currentDay = new Date().getDay()
+        let currentDay = new Date().getDate()
 
         switch (state.query.group) {
             case 'y':
@@ -105,12 +106,20 @@ const actions = {
                 break
             case 'd':
                 dateFilter = 'hour'
-                data = data.filter(item => item.year == currentYear && item.month == currentMonth && item.year == currentDay)
+                data = data.filter(item => item.year == currentYear && item.month == currentMonth && item.day == currentDay)
                 break
         }
 
         data.forEach(item => {
-            var date = item[dateFilter];
+            let date;
+            if (!state.query.yearLimit && state.query.group === 'y') {
+                date = item[dateFilter] + ' ' + item.year;
+            } else {
+                date = item[dateFilter];
+            }
+
+            // logger.log(dateFilter, item[dateFilter], !state.query.yearLimit && state.query.group === 'y')
+            // logger.log(date, state.query)
 
             var index = dateArr.indexOf(date);
             if (index == -1) {

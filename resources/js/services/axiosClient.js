@@ -2,6 +2,7 @@ import axios from 'axios';
 import {BASE_URL} from "../constants";
 import Vue from 'vue';
 import store from "../store";
+import logger from "../helpers/logger";
 
 
 const httpClient = axios.create({
@@ -58,7 +59,7 @@ const errorInterceptor = error => {
             break;
 
         case 400:
-            console.error(error.response.status, error.message);
+            logger.error(error.response.status, error.message);
             Vue.notify({type: 'warn', text: 'Nothing to display', title: 'Data Not Found'});
             break;
 
@@ -71,7 +72,7 @@ const errorInterceptor = error => {
             break;
 
         case 404:
-            console.error(error.response.status, error.message);
+            logger.error(error.response.status, error.message);
             // Vue.notify({type: 'warn', text: error.response.data.message, title: 'Data Not Found'});
             break;
 
@@ -82,7 +83,7 @@ const errorInterceptor = error => {
             break;
 
         default:
-            console.error(error.response.status, error.message);
+            logger.error(error.response.status, error.message);
             Vue.notify({type: 'error', text: 'Server Error'});
 
     }

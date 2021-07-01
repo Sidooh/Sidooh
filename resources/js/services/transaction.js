@@ -1,4 +1,5 @@
 import client from './axiosClient';
+import logger from "../helpers/logger";
 
 let ENDPOINT_URL = 'transactions/';
 
@@ -7,7 +8,7 @@ class TransactionService {
         return client
             .get(ENDPOINT_URL)
             .then(response => {
-                console.log('resSuccess', response)
+                logger.log('resSuccess', response)
 
                 if (response.data) {
                     return response.data;
@@ -16,7 +17,7 @@ class TransactionService {
                 return response;
             })
             .catch(error => {
-                console.log('resError', error)
+                logger.log('resError', error)
                 throw error.response
             });
     }

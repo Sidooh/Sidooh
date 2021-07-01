@@ -1,4 +1,5 @@
 import EarningService from '../../../services/earning';
+import logger from "../../../helpers/logger";
 
 const initialState = {
     all: [],
@@ -85,7 +86,7 @@ const actions = {
             data.push(x)
         })
 
-        console.log(data)
+        logger.log(data)
         data = _.orderBy(data, 'id', 'asc')
 
 
@@ -104,9 +105,9 @@ const actions = {
         let dateFilter = null
         let currentYear = new Date().getFullYear()
         let currentMonth = new Date().getMonth() + 1
-        let currentDay = new Date().getDay()
+        let currentDay = new Date().getDate()
 
-        // console.log(data, currentYear)
+        // logger.log(data, currentDay)
 
         // TODO: Should we limit to year for earnings?
 
@@ -124,7 +125,7 @@ const actions = {
                 break
             case 'd':
                 dateFilter = 'hour'
-                data = data.filter(item => item.month == currentMonth && item.year == currentDay)
+                data = data.filter(item => item.month == currentMonth && item.day == currentDay)
                 break
         }
 
@@ -137,8 +138,8 @@ const actions = {
                 date = item[dateFilter];
             }
 
-            // console.log(dateFilter, item[dateFilter], !state.query.yearLimit && state.query.group === 'y')
-            // console.log(date, state.query)
+            // logger.log(dateFilter, item[dateFilter], !state.query.yearLimit && state.query.group === 'y')
+            // logger.log(date, state.query)
 
             const index = dateArr.indexOf(date);
             if (index == -1) {
@@ -150,7 +151,7 @@ const actions = {
                 resultArr[index].count += 1;
             }
         });
-        // console.log(data)
+        // logger.log(data)
 
         commit('EARNING_UPDATE_CHART_DATA', resultArr);
     },

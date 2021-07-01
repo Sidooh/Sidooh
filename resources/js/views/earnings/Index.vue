@@ -11,9 +11,9 @@
                         </div>
                     </CCol>
                     <CCol class="d-none d-md-block col-sm-7">
-                        <button class="btn float-right btn-primary">
-                            <CIcon name="cil-cloud-download"/>
-                        </button>
+                        <!--                        <button class="btn float-right btn-primary">-->
+                        <!--                            <CIcon name="cil-reload"/>-->
+                        <!--                        </button>-->
                         <CButtonGroup class="float-right mr-3 btn-group">
                             <CButton class="btn mx-0 btn-outline-secondary"
                                      v-bind:class="[ earningsQuery.group === 'd' ? 'active' : '' ]"
@@ -42,8 +42,10 @@
                 <CRow class="text-center">
                     <CCol sclass="mb-sm-2 mb-0 col-sm-12 col-md">
                         <div class="text-muted">Number of Earnings</div>
-                        <strong>{{ totalEarnings | numFormat('0,0') }}</strong> <span
-                        title="Today's Number of Earnings">({{ totalEarningsToday | numFormat('0,0') }})</span>
+                        <strong>{{ formatNumber(totalEarnings) | numFormat('0,0') }}</strong> <span
+                        title="Today's Number of Earnings">({{
+                            formatNumber(totalEarningsToday) | numFormat('0,0')
+                        }})</span>
                         <CProgress
                             :precision="1"
                             :value="totalEarnings"
@@ -53,8 +55,9 @@
                     </CCol>
                     <CCol sclass="mb-sm-2 mb-0 col-sm-12 col-md">
                         <div class="text-muted">Total Amounts</div>
-                        <strong>{{ totalAmount | numFormat('0,0.0000') }}</strong> <span title="Today's Transactions">({{
-                            totalAmountToday | numFormat('0,0.0000')
+                        <strong>{{ formatNumber(totalAmount) | numFormat('0,0.0000') }}</strong> <span
+                        title="Today's Transactions">({{
+                            formatNumber(totalAmountToday) | numFormat('0,0.0000')
                         }})</span>
                         <CProgress
                             :precision="1"
@@ -169,7 +172,7 @@ export default {
     },
 
     created() {
-        this.groupEarnings('y');
+        // this.groupEarnings('y');
         this.fetchEarnings().then(() => {
             this.processEarningChartData()
         })
@@ -199,13 +202,13 @@ export default {
         },
 
         totalAmount() {
-            return _.sum(this.data.map(a => parseFloat(a.earnings))).toFixed(4)
+            return _.sum(this.data.map(a => parseFloat(a.earnings)))
         },
         totalAmountToday() {
-            return _.sum(this.data.filter(item => this.isToday(new Date(item.created_at))).map(a => parseFloat(a.earnings))).toFixed(4)
+            return _.sum(this.data.filter(item => this.isToday(new Date(item.created_at))).map(a => parseFloat(a.earnings)))
         },
         totalAmountThisMonth() {
-            return _.sum(this.data.filter(item => this.isThisMonth(new Date(item.created_at))).map(a => parseFloat(a.earnings))).toFixed(4)
+            return _.sum(this.data.filter(item => this.isThisMonth(new Date(item.created_at))).map(a => parseFloat(a.earnings)))
         },
 
         totalEarnings() {
@@ -289,6 +292,10 @@ export default {
                     : status === 'reimbursed' ? 'warning'
                         : status === 'failed' ? 'danger' : 'secondary'
         },
+
+        formatNumber(e, dp = 4) {
+            return e.toFixed(dp)
+        }
 
     },
 

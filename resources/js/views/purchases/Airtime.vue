@@ -20,7 +20,7 @@
                                 <div class="mt-3">
                                     <CRow class="form-group mb-0" form>
                                         <CCol class="col-form-label" md="6" tag="label">
-                                            Other Number?
+                                            Buy for another?
                                         </CCol>
                                         <!--                                    try 3d variant and label-->
                                         <CCol md="6">
@@ -55,9 +55,8 @@
                                 <div class="mt-4">
                                     <span>Amount</span>
                                     <CRow>
-                                        <CCol v-for="(a, key) in airtimeAmounts" v-bind:key="key" class="mb-3" md="4"
-                                              sm="6" v-bind:data="a"
-                                              xl="3">
+                                        <CCol v-for="(a, key) in airtimeAmounts" v-bind:key="key" class="mb-3"
+                                              sm="6" v-bind:data="a" xl="4">
                                             <CButton :key="key" block color="primary" shape="pill" variant="outline"
                                                      @click="checkAmount(key)">{{ a }}
                                             </CButton>
@@ -75,7 +74,7 @@
                                         @update:value="checkAmount"
                                     >
                                         <template #prepend-content>
-                                            <CIcon name="cil-dollar"/>
+                                            <CIcon name="cil-money"/>
                                         </template>
                                     </CInput>
                                     <p v-if="validation.amount" id="amountError" class="alert-warning">
@@ -108,7 +107,7 @@
                                 <div v-if="form.purchaseMethod === 'MPESA'" class="mt-3">
                                     <CRow class="form-group mb-0" form>
                                         <CCol class="col-form-label" md="6" tag="label">
-                                            Other Mpesa Number?
+                                            Different Mpesa Number?
                                         </CCol>
                                         <!--                                    try 3d variant and label-->
                                         <CCol md="6">

@@ -1,4 +1,5 @@
 import AccountService from '../../../services/account';
+import logger from "../../../helpers/logger";
 
 const initialState = {
     all: [],
@@ -85,81 +86,81 @@ const actions = {
 
     },
 
-    processChartData({commit, state}) {
-        let data = []
-
-        //    Get Y, M, D attributes first
-        state.all.forEach(item => {
-            const x = _.pick(item, 'id', 'status', 'created_at')
-
-            const splitDateTime = x.created_at.split(' ')
-            const splitDate = splitDateTime[0]
-            const splitTime = splitDateTime[1]
-
-            x.year = splitDate.split('-')[0]
-            x.month = splitDate.split('-')[1]
-            x.day = splitDate.split('-')[2]
-            x.hour = splitTime.split(':')[0]
-            x.fullMonth = new Date(x.created_at).toLocaleString('default', {month: 'long'})
-
-            data.push(x)
-        })
-
-        console.log(data)
-
-
-        //    Filter data by type
-        // data = data.filter(item => item.type === state.query.type)
-
-        //    Filter data by status
-        data = data.filter(item => state.states.includes(item.status))
-
-        //    Group data by d,m,y and perform sum and count
-        // TODO: For the below code can it be added to a utils module?
-        var resultArr = [];
-        var dateArr = [];
-
-        // TODO: Should we filter this month or last 30 days? similar to day and year....
-        let dateFilter = null
-        let currentYear = new Date().getFullYear()
-        let currentMonth = new Date().getMonth() + 1
-        let currentDay = new Date().getDay()
-
-        console.log(data, currentYear)
-
-        // TODO: Should we limit to year for accounts?
-
-        // switch (state.query.group) {
-        //     case 'y':
-        dateFilter = 'fullMonth'
-        //         data = data.filter(item => item.year == currentYear)
-        //         break
-        //     case 'm':
-        //         dateFilter = 'day'
-        //         data = data.filter(item => item.year == currentYear && item.month == currentMonth)
-        //         break
-        //     case 'd':
-        //         dateFilter = 'hour'
-        //         data = data.filter(item => item.year == currentYear && item.month == currentMonth && item.year == currentDay)
-        //         break
-        // }
-
-        data.forEach(item => {
-            var date = item[dateFilter];
-
-            var index = dateArr.indexOf(date);
-            if (index == -1) {
-                dateArr.push(date);
-                var obj = {date: date, count: 1};
-                resultArr.push(obj);
-            } else {
-                resultArr[index].count += 1;
-            }
-        });
-        console.log(data)
-
-        commit('ACCOUNT_UPDATE_CHART_DATA', resultArr);
-    },
+    // processChartData({commit, state}) {
+    //     let data = []
+    //
+    //     //    Get Y, M, D attributes first
+    //     state.all.forEach(item => {
+    //         const x = _.pick(item, 'id', 'status', 'created_at')
+    //
+    //         const splitDateTime = x.created_at.split(' ')
+    //         const splitDate = splitDateTime[0]
+    //         const splitTime = splitDateTime[1]
+    //
+    //         x.year = splitDate.split('-')[0]
+    //         x.month = splitDate.split('-')[1]
+    //         x.day = splitDate.split('-')[2]
+    //         x.hour = splitTime.split(':')[0]
+    //         x.fullMonth = new Date(x.created_at).toLocaleString('default', {month: 'long'})
+    //
+    //         data.push(x)
+    //     })
+    //
+    //     logger.log(data)
+    //
+    //
+    //     //    Filter data by type
+    //     // data = data.filter(item => item.type === state.query.type)
+    //
+    //     //    Filter data by status
+    //     data = data.filter(item => state.states.includes(item.status))
+    //
+    //     //    Group data by d,m,y and perform sum and count
+    //     // TODO: For the below code can it be added to a utils module?
+    //     var resultArr = [];
+    //     var dateArr = [];
+    //
+    //     // TODO: Should we filter this month or last 30 days? similar to day and year....
+    //     let dateFilter = null
+    //     let currentYear = new Date().getFullYear()
+    //     let currentMonth = new Date().getMonth() + 1
+    //     let currentDay = new Date().getDay()
+    //
+    //     logger.log(data, currentYear)
+    //
+    //     // TODO: Should we limit to year for accounts?
+    //
+    //     // switch (state.query.group) {
+    //     //     case 'y':
+    //     dateFilter = 'fullMonth'
+    //     //         data = data.filter(item => item.year == currentYear)
+    //     //         break
+    //     //     case 'm':
+    //     //         dateFilter = 'day'
+    //     //         data = data.filter(item => item.year == currentYear && item.month == currentMonth)
+    //     //         break
+    //     //     case 'd':
+    //     //         dateFilter = 'hour'
+    //     //         data = data.filter(item => item.year == currentYear && item.month == currentMonth && item.year == currentDay)
+    //     //         break
+    //     // }
+    //
+    //     data.forEach(item => {
+    //         var date = item[dateFilter];
+    //
+    //         var index = dateArr.indexOf(date);
+    //         if (index == -1) {
+    //             dateArr.push(date);
+    //             var obj = {date: date, count: 1};
+    //             resultArr.push(obj);
+    //         } else {
+    //             resultArr[index].count += 1;
+    //         }
+    //     });
+    //     logger.log(data)
+    //
+    //     commit('ACCOUNT_UPDATE_CHART_DATA', resultArr);
+    // },
 
     setQuery({commit}, value) {
         commit('SET_QUERY', purify(value))

@@ -1,4 +1,5 @@
 import client from './axiosClient';
+import logger from "../helpers/logger";
 
 let ENDPOINT_URL = '/purchases/';
 
@@ -7,7 +8,7 @@ class PurchaseService {
         return client
             .post(ENDPOINT_URL + 'airtime', form)
             .then(response => {
-                console.log('resSuccess', response)
+                logger.log('resSuccess', response)
 
                 if (response.data) {
                     return response.data;
@@ -16,7 +17,7 @@ class PurchaseService {
                 return response;
             })
             .catch(error => {
-                console.log('resError', error.response)
+                logger.log('resError', error.response)
                 throw error.response.data
             });
     }
@@ -26,7 +27,7 @@ class PurchaseService {
         return client
             .get(ENDPOINT_URL + 'airtime/' + transactionId)
             .then(response => {
-                console.log('resSuccess', response)
+                logger.log('resSuccess', response)
 
                 if (response.data) {
                     return response.data;
@@ -35,7 +36,7 @@ class PurchaseService {
                 return response;
             })
             .catch(error => {
-                console.log('resError', error.response)
+                logger.log('resError', error.response)
                 throw error.response
             });
     }
@@ -44,7 +45,7 @@ class PurchaseService {
         return client
             .post(ENDPOINT_URL + 'voucher', form)
             .then(response => {
-                console.log('resSuccess', response)
+                logger.log('resSuccess', response)
 
                 if (response.data) {
                     return response.data;
@@ -53,7 +54,7 @@ class PurchaseService {
                 return response;
             })
             .catch(error => {
-                console.log('resError', error.response)
+                logger.log('resError', error.response)
                 throw error.response
             });
     }
@@ -63,7 +64,7 @@ class PurchaseService {
         return client
             .get(ENDPOINT_URL + 'voucher/' + transactionId)
             .then(response => {
-                console.log('resSuccess', response)
+                logger.log('resSuccess', response)
 
                 if (response.data) {
                     return response.data;
@@ -72,7 +73,7 @@ class PurchaseService {
                 return response;
             })
             .catch(error => {
-                console.log('resError', error.response)
+                logger.log('resError', error.response)
                 throw error.response
             });
     }

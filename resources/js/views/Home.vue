@@ -122,7 +122,7 @@
                 >
                     <template #status="data">
                         <td>
-                            <CBadge :color="getBadge(data.item.status)">
+                            <CBadge :color="this.miscHelpers.getBadge(data.item.status)">
                                 {{ data.item.status }}
                             </CBadge>
                         </td>
@@ -139,10 +139,11 @@
 </template>
 
 <script>
-// import { mapState } from 'vuex';
 import {CChartLine} from '@coreui/vue-chartjs'
-import {mapActions, mapGetters} from "vuex";
-import CChartLineSimple from "../components/CChartLineSimple";
+import {mapActions, mapGetters} from "vuex"
+import CChartLineSimple from "../components/CChartLineSimple"
+
+import miscHelpers from '../helpers/misc-helpers'
 
 export default {
     name: "Home",
@@ -157,29 +158,10 @@ export default {
                 {key: 'amount',},
                 {key: 'status'},
                 {key: 'created_at',},
-                // {key: 'description'},
-                // {key: 'content', format: 'trim:100'},
-                // {key: 'created_at', label: 'Created', format: 'date:d/m/Y'},
-                // {key: 'author_id', label: 'Author', type: 'relationship'},
-                // {key: 'stage_id', label: 'Stage', type: 'relationship'},
-                // {key: 'approved_by', label: 'Approver', type: 'relationship'},
-
-                // {
-                //     key: 'show_details',
-                //     label: '',
-                //     _style: { width: '1%' },
-                //     sorter: false,
-                //     filter: false
-                // }
             ],
 
             options: {
                 maintainAspectRatio: false,
-                // elements: {
-                //     line: {
-                //         // tension: .3
-                //     }
-                // },
                 interaction: {
                     mode: 'index',
                     intersect: false,
@@ -300,10 +282,7 @@ export default {
                     backgroundColor: '#008',
                     borderColor: '#00c',
                     label: 'Amount',
-                    // cubicInterpolationMode: 'monotone',
                     fill: false,
-                    // yAxisID: 'y',
-
                 },
 
                 {
@@ -311,10 +290,7 @@ export default {
                     backgroundColor: '#080',
                     borderColor: '#0c0',
                     label: 'Count',
-                    // cubicInterpolationMode: 'monotone',
                     fill: false,
-                    // yAxisID: 'y1',
-
                 }
             ]
         }
@@ -336,10 +312,10 @@ export default {
         ...mapActions('loader', ['reset']),
 
         groupTransactions(e) {
-            const q = Object.assign({}, this.transactionsQuery, {group: e});
+            // const q = Object.assign({}, this.transactionsQuery, {group: e});
 
             // or
-            // const q = {...this.transactionsQuery, { group: e} }
+            const q = {...this.transactionsQuery, group: e}
 
             this.setTransactionsQuery(q);
             this.processTransactionChartData()
@@ -361,6 +337,7 @@ export default {
             })
         },
 
+        //TODO: Move the below to date helper
         isToday(someDate) {
             const today = new Date()
             return someDate.getDate() == today.getDate() &&
@@ -380,12 +357,6 @@ export default {
             )
         },
 
-        getBadge(status) {
-            return status === 'Active' ? 'success'
-                : status === 'Inactive' ? 'secondary'
-                    : status === 'Pending' ? 'warning'
-                        : status === 'Banned' ? 'danger' : 'primary'
-        }
     },
 
 }

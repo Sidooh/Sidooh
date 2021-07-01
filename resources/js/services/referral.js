@@ -1,4 +1,5 @@
 import client from './axiosClient';
+import logger from "../helpers/logger";
 
 let ENDPOINT_URL = '/referrals/';
 
@@ -7,7 +8,7 @@ class ReferralService {
         return client
             .get(ENDPOINT_URL)
             .then(response => {
-                console.log('resSuccess', response)
+                logger.log('resSuccess', response)
 
                 if (response.data) {
                     return response.data;
@@ -16,7 +17,7 @@ class ReferralService {
                 return response;
             })
             .catch(error => {
-                console.log('resError', error.response)
+                logger.log('resError', error.response)
                 throw error.response
             });
     }

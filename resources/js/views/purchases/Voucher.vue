@@ -21,8 +21,7 @@
                                     <span>Amount</span>
                                     <CRow>
                                         <CCol v-for="(a, key) in voucherAmounts" v-bind:key="key" class="mb-3" md="4"
-                                              sm="6" v-bind:data="a"
-                                              xl="3">
+                                              sm="6" v-bind:data="a" xl="4">
                                             <CButton :key="key" block color="primary" shape="pill" variant="outline"
                                                      @click="checkAmount(key)">{{ a }}
                                             </CButton>
@@ -40,7 +39,7 @@
                                         @update:value="checkAmount"
                                     >
                                         <template #prepend-content>
-                                            <CIcon name="cil-dollar"/>
+                                            <CIcon name="cil-money"/>
                                         </template>
                                     </CInput>
                                     <p v-if="validation.amount" id="amountError" class="alert-warning">
@@ -51,7 +50,7 @@
                                 <div class="mt-3">
                                     <CRow class="form-group mb-0" form>
                                         <CCol class="col-form-label" md="6" tag="label">
-                                            Other Mpesa Number?
+                                            Different Mpesa Number?
                                         </CCol>
                                         <!--                                    try 3d variant and label-->
                                         <CCol md="6">
@@ -107,6 +106,7 @@
 <script>
 import {mapGetters, mapActions} from "vuex";
 import Vue from "vue";
+import logger from "../../helpers/logger";
 
 export default {
     name: 'Airtime',
@@ -209,7 +209,7 @@ export default {
             try {
                 await this.buyVoucher(this.form).then(
                     (d) => {
-                        console.log('success', d)
+                        logger.log('success', d)
                         this.showError = false
                         Vue.swal({
                             title: d.status,
@@ -220,7 +220,7 @@ export default {
                         this.$router.push({name: 'voucher_status', params: {id: d.data.id}});
                     },
                     error => {
-                        console.log('error', error)
+                        logger.log('error', error)
 
                         if (error.error) {
                             this.showError = true
@@ -234,7 +234,7 @@ export default {
                     });
 
             } catch (error) {
-                console.log('purchaseVoucherVueError', error)
+                logger.log('purchaseVoucherVueError', error)
             }
         },
     },

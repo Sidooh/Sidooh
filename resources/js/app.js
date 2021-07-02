@@ -59,6 +59,8 @@ Vue.config.performance = true
 
 // strict: process.env.NODE_ENV !== 'production'
 
+window.addEventListener('unload', store.commit('loader/reset'))
+
 const app = new Vue({
     el: '#app',
     router,

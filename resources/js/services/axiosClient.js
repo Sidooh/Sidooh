@@ -27,7 +27,7 @@ httpClient.interceptors.request.use(authInterceptor);
 
 httpClient.interceptors.request.use(config => {
         if (config.headers['showLoader']) {
-            store.dispatch('loader/pending');
+            store.dispatch('loader/show');
         }
         return config;
     },

@@ -568,7 +568,7 @@ class Account extends Product
 
         $user = $acc->user;
 
-        if (!$user)
+        if (!$user) {
             $user = User::firstOrCreate(
                 [
                     'username' => $phone,
@@ -581,8 +581,10 @@ class Account extends Product
                     'password' => Hash::make($pass)
                 ]);
 
-        $acc->user->associate($user);
-        $acc->save();
+            $acc->user()->associate($user);
+            $acc->save();
+        }
+
     }
 
     private function updateProfile()

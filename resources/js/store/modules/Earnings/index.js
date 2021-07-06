@@ -30,7 +30,7 @@ const getters = {
     },
 
     //TODO: What is the difference between this and data? Can data be used across?
-    earnings: state => state.all.sort((a, b) => b.id - a.id),
+    earnings: state => _.orderBy(state.all, 'id', 'asc'),
 
     myEarnings: state => _.sum(state.all.filter(item => item.type === 'SELF').map(a => parseFloat(a.earnings))),
     myInviteEarnings: state => _.sum(state.all.filter(item => item.type === 'REFERRAL').map(a => parseFloat(a.earnings))),

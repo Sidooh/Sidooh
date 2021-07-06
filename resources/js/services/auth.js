@@ -13,8 +13,8 @@ class AuthService {
                 logger.log('resSuccess', response)
 
                 if (response.data.token) {
-                    localStorage.setItem('account', JSON.stringify(response.data.account));
-                    localStorage.setItem('user', JSON.stringify(response.data.user));
+                    // localStorage.setItem('account', JSON.stringify(response.data.account));
+                    // localStorage.setItem('user', JSON.stringify(response.data.user));
                     localStorage.setItem('token', response.data.token)
                 }
 
@@ -31,9 +31,9 @@ class AuthService {
     }
 
     logout() {
-        localStorage.removeItem('user');
+        // localStorage.removeItem('user');
         localStorage.removeItem('token');
-        localStorage.removeItem('account');
+        // localStorage.removeItem('account');
     }
 
     registerCheckPhone(phone) {

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-const isProduction = process.env.NODE_ENV === 'production'
+const {isProduction} = require("../constants");
 
 exports.log = (message, ...args) => {
     if (!isProduction) console.log(message, args)

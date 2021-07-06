@@ -1,3 +1,5 @@
+import {isProduction} from "./constants";
+
 require('./bootstrap')
 
 // window.Vue = require('vue');
@@ -25,16 +27,17 @@ import {Integrations} from "@sentry/tracing"
 
 import helpers from './helpers'
 
-Sentry.init({
-    Vue,
-    dsn: "https://ca625ff84c4546b68413a2b2f4f6737e@o802918.ingest.sentry.io/5831082",
-    integrations: [new Integrations.BrowserTracing()],
+if (isProduction)
+    Sentry.init({
+        Vue,
+        dsn: "https://ca625ff84c4546b68413a2b2f4f6737e@o802918.ingest.sentry.io/5831082",
+        integrations: [new Integrations.BrowserTracing()],
 
-    // Set tracesSampleRate to 1.0 to capture 100%
-    // of transactions for performance monitoring.
-    // We recommend adjusting this value in production
-    tracesSampleRate: 1.0,
-});
+        // Set tracesSampleRate to 1.0 to capture 100%
+        // of transactions for performance monitoring.
+        // We recommend adjusting this value in production
+        tracesSampleRate: 1.0,
+    });
 
 Vue.use(VueRouter);
 Vue.use(CoreuiVue);

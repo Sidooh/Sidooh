@@ -122,7 +122,7 @@
                 >
                     <template #status="data">
                         <td>
-                            <CBadge :color="this.miscHelpers.getBadge(data.item.status)">
+                            <CBadge :color="miscHelpers.getBadge(data.item.status)">
                                 {{ data.item.status }}
                             </CBadge>
                         </td>
@@ -151,6 +151,7 @@ export default {
     components: {CChartLineSimple, CChartLine},
     data() {
         return {
+            miscHelpers,
             fields: [
                 {key: 'id', /*_style: { width: '40%'}*/},
                 {key: 'type',},

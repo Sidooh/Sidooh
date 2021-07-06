@@ -8,9 +8,9 @@
         <template #toggler>
             <CHeaderNavLink>
                 <div class="c-avatar">
-                    <img
+                    <CIcon
                         class="c-avatar-img "
-                        src="img/avatars/1.jpg"
+                        :src="avatarIcon"
                     />
                 </div>
             </CHeaderNavLink>
@@ -27,47 +27,47 @@
         <!--            Profile-->
         <!--&lt;!&ndash;            <CBadge class="mfs-auto" color="info">{{ itemsCount }}</CBadge>&ndash;&gt;-->
         <!--        </CDropdownItem>-->
-        <CDropdownItem>
-            <CIcon name="cil-envelope-open"/>
-            Messages
-            <CBadge class="mfs-auto" color="success">{{ itemsCount }}</CBadge>
-        </CDropdownItem>
-        <CDropdownItem>
-            <CIcon name="cil-task"/>
-            Tasks
-            <CBadge class="mfs-auto" color="danger">{{ itemsCount }}</CBadge>
-        </CDropdownItem>
+        <!--        <CDropdownItem>-->
+        <!--            <CIcon name="cil-envelope-open"/>-->
+        <!--            Messages-->
+        <!--            <CBadge class="mfs-auto" color="success">{{ itemsCount }}</CBadge>-->
+        <!--        </CDropdownItem>-->
+        <!--        <CDropdownItem>-->
+        <!--            <CIcon name="cil-task"/>-->
+        <!--            Tasks-->
+        <!--            <CBadge class="mfs-auto" color="danger">{{ itemsCount }}</CBadge>-->
+        <!--        </CDropdownItem>-->
         <!--        <CDropdownItem>-->
         <!--            <CIcon name="cil-comment-square"/>-->
         <!--            Comments-->
         <!--            <CBadge class="mfs-auto" color="warning">{{ itemsCount }}</CBadge>-->
         <!--        </CDropdownItem>-->
-        <CDropdownHeader
-            class="text-center"
-            color="light"
-            tag="div"
-        >
-            <strong>Settings</strong>
-        </CDropdownHeader>
+        <!--        <CDropdownHeader-->
+        <!--            class="text-center"-->
+        <!--            color="light"-->
+        <!--            tag="div"-->
+        <!--        >-->
+        <!--            <strong>Settings</strong>-->
+        <!--        </CDropdownHeader>-->
         <CDropdownItem>
             <CIcon name="cil-settings"/>
             Settings
         </CDropdownItem>
-        <CDropdownItem>
-            <CIcon name="cil-dollar"/>
-            Payments
-            <CBadge class="mfs-auto" color="secondary">{{ itemsCount }}</CBadge>
-        </CDropdownItem>
+        <!--        <CDropdownItem>-->
+        <!--            <CIcon name="cil-dollar"/>-->
+        <!--            Payments-->
+        <!--            <CBadge class="mfs-auto" color="secondary">{{ itemsCount }}</CBadge>-->
+        <!--        </CDropdownItem>-->
         <!--        <CDropdownItem>-->
         <!--            <CIcon name="cil-file"/>-->
         <!--            Projects-->
         <!--            <CBadge class="mfs-auto" color="primary">{{ itemsCount }}</CBadge>-->
         <!--        </CDropdownItem>-->
         <CDropdownDivider/>
-        <CDropdownItem>
-            <CIcon name="cil-shield-alt"/>
-            Lock Account
-        </CDropdownItem>
+        <!--        <CDropdownItem>-->
+        <!--            <CIcon name="cil-shield-alt"/>-->
+        <!--            Lock Account-->
+        <!--        </CDropdownItem>-->
         <CDropdownItem @click="signout">
             <CIcon name="cil-lock-locked"/>
             Logout
@@ -87,7 +87,11 @@ export default {
     },
 
     computed: {
-        ...mapGetters('auth', ['user'])
+        ...mapGetters('auth', ['user']),
+
+        avatarIcon() {
+            return require('../assets/img/avatars/1.jpg')
+        }
     },
 
     methods: {

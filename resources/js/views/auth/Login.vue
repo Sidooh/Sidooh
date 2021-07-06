@@ -2,6 +2,7 @@
     <div class="c-app flex-row align-items-center">
         <CContainer>
             <CRow class="justify-content-center">
+                <loader :is-visible="loading"></loader>
                 <CCol md="8">
                     <CCardGroup>
                         <CCard class="p-4">
@@ -84,11 +85,12 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from "vuex";
+import {mapGetters, mapActions, mapState} from "vuex";
+import Loader from "../Loader";
 
 export default {
     name: 'Login',
-
+    components: {Loader},
     data() {
         return {
             form: {
@@ -96,13 +98,13 @@ export default {
                 password: "",
             },
             showError: false,
-            loading: false,
             message: '',
             error: null
         };
     },
 
     computed: {
+        ...mapState('loader', ['loading']),
         ...mapGetters("auth", ["isAuthenticated", "errors"])
     },
 
@@ -112,9 +114,13 @@ export default {
         }
     },
 
+    destroyed() {
+        this.reset()
+    },
+
     methods: {
         ...mapActions('auth', [
-            "login",
+            "login", "reset"
         ]),
 
         checkPhone(phoneObject) {

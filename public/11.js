@@ -1,1 +1,596 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[11],{254:function(t,e,r){"use strict";r.r(e);var n=r(3),a=r.n(n),o=r(2),s=r(4),i=r.n(s),u=r(5),l=r.n(u);function c(t,e,r,n,a,o,s){try{var i=t[o](s),u=i.value}catch(t){return void r(t)}i.done?e(u):Promise.resolve(u).then(n,a)}function m(t,e){var r=Object.keys(t);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(t);e&&(n=n.filter((function(e){return Object.getOwnPropertyDescriptor(t,e).enumerable}))),r.push.apply(r,n)}return r}function p(t){for(var e=1;e<arguments.length;e++){var r=null!=arguments[e]?arguments[e]:{};e%2?m(Object(r),!0).forEach((function(e){h(t,e,r[e])})):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(r)):m(Object(r)).forEach((function(e){Object.defineProperty(t,e,Object.getOwnPropertyDescriptor(r,e))}))}return t}function h(t,e,r){return e in t?Object.defineProperty(t,e,{value:r,enumerable:!0,configurable:!0,writable:!0}):t[e]=r,t}var d={name:"Airtime",data:function(){return{form:{amount:"",mpesa_phone:null},voucherAmounts:{100:"100",200:"200",500:"500",1e3:"1000",2500:"2500",1e4:"10000","-1":"Other"},otherAmount:!1,otherNumber:!1,mpesaNumber:!1,options:["MPesa","Voucher"],selectedOption:"MPesa",validation:{amount:"",mpesa_phone:""},showError:!1,loading:!1,message:"",error:null}},computed:p(p({},Object(o.c)("Purchases",["errors"])),{},{validForm:function(){return!this.validation.amount&&!this.validation.purchaseMethod&&(!this.mpesaNumber||!this.validation.mpesa_phone)&&this.form.amount}}),methods:p(p({},Object(o.b)("Purchases",["buyVoucher"])),{},{checkAmount:function(t){if(t>=100&&t<=15e4){/^\d+$/.test(t)?(this.validation.amount="",this.form.amount=t):this.validation.amount="Please only put whole numbers"}else"-1"===t?this.otherAmount=!0:this.validation.amount="Amount should be min of 100 and max of 150000"},checkMpesaPhone:function(t){if(t.number)if(t.valid){/^(?:\+?254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$/.test(t.number)?(this.validation.mpesa_phone="",this.error=null,this.form.mpesa_phone=t.number.replace("+","")):this.validation.mpesa_phone="Enter a valid Mpesa Number"}else this.validation.mpesa_phone="Number seems to be invalid. Please try again."},setOtherAmount:function(t){this.otherAmount=t},setMpesaNumber:function(t){this.mpesaNumber=t},submit:function(){var t,e=this;return(t=a.a.mark((function t(){return a.a.wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return t.prev=0,t.next=3,e.buyVoucher(e.form).then((function(t){l.a.log("success",t),e.showError=!1,i.a.swal({title:t.status,text:t.message,icon:"success"}),e.$router.push({name:"voucher_status",params:{id:t.data.id}})}),(function(t){l.a.log("error",t),t.error&&(e.showError=!0),e.loading=!1,e.message=t.response&&t.response.data||t.message||t.error||t.toString()}));case 3:t.next=8;break;case 5:t.prev=5,t.t0=t.catch(0),l.a.log("purchaseVoucherVueError",t.t0);case 8:case"end":return t.stop()}}),t,null,[[0,5]])})),function(){var e=this,r=arguments;return new Promise((function(n,a){var o=t.apply(e,r);function s(t){c(o,n,a,s,i,"next",t)}function i(t){c(o,n,a,s,i,"throw",t)}s(void 0)}))})()}})},v=r(6),f=Object(v.a)(d,(function(){var t=this,e=t.$createElement,r=t._self._c||e;return r("CContainer",[r("CRow",{staticClass:"justify-content-center"},[r("CCol",{attrs:{md:"5",sm:"6"}},[r("CCardGroup",[r("CCard",{staticClass:"p-4"},[r("CCardBody",[r("CForm",{on:{submit:function(e){return e.preventDefault(),t.submit(e)}}},[r("h1",[t._v("Top Up Voucher")]),t._v(" "),r("p",{staticClass:"text-muted"},[t._v("Kindly fill in the required details")]),t._v(" "),t.showError?r("p",{staticClass:"alert-warning",attrs:{id:"error"}},[t._v("Some details were not filled in\n                                correctly")]):t._e(),t._v(" "),t.error?r("p",{staticClass:"alert-warning"},[t._v("\n                                "+t._s(t.error)+"\n                            ")]):t._e(),t._v(" "),r("div",{staticClass:"mt-4"},[r("span",[t._v("Amount")]),t._v(" "),r("CRow",t._l(t.voucherAmounts,(function(e,n){return r("CCol",{key:n,staticClass:"mb-3",attrs:{md:"4",sm:"6",data:e,xl:"4"}},[r("CButton",{key:n,attrs:{block:"",color:"primary",shape:"pill",variant:"outline"},on:{click:function(e){return t.checkAmount(n)}}},[t._v(t._s(e)+"\n                                        ")])],1)})),1),t._v(" "),r("CInput",{staticClass:"mb-0 mt-3",attrs:{disabled:!t.otherAmount,max:"10000",min:"10",placeholder:"amount",type:"number"},on:{"update:value":t.checkAmount},scopedSlots:t._u([{key:"prepend-content",fn:function(){return[r("CIcon",{attrs:{name:"cil-money"}})]},proxy:!0}]),model:{value:t.form.amount,callback:function(e){t.$set(t.form,"amount",e)},expression:"form.amount"}}),t._v(" "),t.validation.amount?r("p",{staticClass:"alert-warning",attrs:{id:"amountError"}},[t._v("\n                                    "+t._s(t.validation.amount)+"\n                                ")]):t._e()],1),t._v(" "),r("div",{staticClass:"mt-3"},[r("CRow",{staticClass:"form-group mb-0",attrs:{form:""}},[r("CCol",{staticClass:"col-form-label",attrs:{md:"6",tag:"label"}},[t._v("\n                                        Different Mpesa Number?\n                                    ")]),t._v(" "),r("CCol",{attrs:{md:"6"}},[r("CSwitch",{staticClass:"mr-1",attrs:{checked:t.mpesaNumber,color:"info",shape:"pill",slabelOn:"Buy for other",variant:"outline"},on:{"update:checked":t.setMpesaNumber}})],1),t._v(" "),t.mpesaNumber?r("CCol",[r("vue-tel-input",{staticClass:"mt-3",attrs:{invalidMsg:t.error},on:{validate:t.checkMpesaPhone}}),t._v(" "),t.errors.mpesaPhone?r("p",{staticClass:"alert-warning",attrs:{id:"mpesaPhoneError"}},[t._v("\n                                            "+t._s(t.errors.mpesaPhone[0])+"\n                                        ")]):t._e(),t._v(" "),t.validation.mpesa_phone?r("p",{staticClass:"alert-warning",attrs:{id:"mpesaNumberError"}},[t._v("\n                                            "+t._s(t.validation.mpesa_phone)+"\n                                        ")]):t._e()],1):t._e()],1)],1),t._v(" "),r("CRow",[r("CCol",{staticClass:"text-left mt-3",attrs:{col:"12"}},[r("CButton",{attrs:{disabled:!t.validForm,color:"primary",sclass:"px-4 mt-3",type:"submit"}},[t._v("Top Up\n                                    ")]),t._v(" "),r("CButton",{attrs:{color:"danger",ssize:"sm",type:"reset"}},[t._v("\n                                        Reset\n                                    ")])],1)],1)],1)],1)],1)],1)],1)],1)],1)}),[],!1,null,null,null);e.default=f.exports}}]);
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[11], {
+
+    /***/
+    "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/purchases/VoucherStatus.vue?vue&type=script&lang=js&":
+    /*!*****************************************************************************************************************************************************************************!*\
+      !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/purchases/VoucherStatus.vue?vue&type=script&lang=js& ***!
+      \*****************************************************************************************************************************************************************************/
+    /*! exports provided: default */
+    /***/ (function (module, __webpack_exports__, __webpack_require__) {
+
+        "use strict";
+        __webpack_require__.r(__webpack_exports__);
+        /* harmony import */
+        var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+        /* harmony import */
+        var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+        /* harmony import */
+        var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
+
+        function ownKeys(object, enumerableOnly) {
+            var keys = Object.keys(object);
+            if (Object.getOwnPropertySymbols) {
+                var symbols = Object.getOwnPropertySymbols(object);
+                if (enumerableOnly) symbols = symbols.filter(function (sym) {
+                    return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+                });
+                keys.push.apply(keys, symbols);
+            }
+            return keys;
+        }
+
+        function _objectSpread(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i] != null ? arguments[i] : {};
+                if (i % 2) {
+                    ownKeys(Object(source), true).forEach(function (key) {
+                        _defineProperty(target, key, source[key]);
+                    });
+                } else if (Object.getOwnPropertyDescriptors) {
+                    Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+                } else {
+                    ownKeys(Object(source)).forEach(function (key) {
+                        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+                    });
+                }
+            }
+            return target;
+        }
+
+        function _defineProperty(obj, key, value) {
+            if (key in obj) {
+                Object.defineProperty(obj, key, {value: value, enumerable: true, configurable: true, writable: true});
+            } else {
+                obj[key] = value;
+            }
+            return obj;
+        }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+        /* harmony default export */
+        __webpack_exports__["default"] = ({
+            name: 'AirtimeStatus',
+            data: function data() {
+                return {
+                    steps: 3,
+                    timerCount: 30,
+                    timerEnabled: true
+                };
+            },
+            beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+                // react to route changes...
+                // don't forget to call next()
+                this.checkVoucherStatus(this.$route.params.id);
+                next();
+            },
+            computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])("Purchases", ["status", "errors"])), {}, {
+                completed: function completed() {
+                    return this.status.payment.status === 'Complete' && this.status.payment.stk_request.status === 'Paid';
+                }
+            }),
+            watch: {
+                timerEnabled: function timerEnabled(value) {
+                    var _this = this;
+
+                    if (value) {
+                        setTimeout(function () {
+                            _this.timerCount--;
+                        }, 1000);
+                    }
+                },
+                timerCount: {
+                    handler: function handler(value) {
+                        var _this2 = this;
+
+                        if (value > 0 && this.timerEnabled) {
+                            setTimeout(function () {
+                                _this2.timerCount--;
+                            }, 1000);
+                        }
+
+                        if (value === 0) {
+                            this.checkVoucherStatus(this.$route.params.id);
+                            this.timerEnabled = false;
+                        }
+                    },
+                    immediate: true // This ensures the watcher is triggered upon creation
+
+                }
+            },
+            mounted: function mounted() {
+                this.checkVoucherStatus(this.$route.params.id);
+                this.timerEnabled = true;
+            },
+            methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('Purchases', ["checkVoucherStatus"])), {}, {
+                getColour: function getColour(status) {
+                    status = status.toLowerCase().trim();
+                    return ['success', 'paid', 'complete'].includes(status) ? 'success' : ['pending', 'sent'].includes(status) ? 'secondary' : status === 'reimbursed' ? 'warning' : status === 'failed' ? 'danger' : 'primary';
+                }
+            })
+        });
+
+        /***/
+    }),
+
+    /***/
+    "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/purchases/VoucherStatus.vue?vue&type=template&id=16a1a934&":
+    /*!*********************************************************************************************************************************************************************************************************************!*\
+      !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/purchases/VoucherStatus.vue?vue&type=template&id=16a1a934& ***!
+      \*********************************************************************************************************************************************************************************************************************/
+    /*! exports provided: render, staticRenderFns */
+    /***/ (function (module, __webpack_exports__, __webpack_require__) {
+
+        "use strict";
+        __webpack_require__.r(__webpack_exports__);
+        /* harmony export (binding) */
+        __webpack_require__.d(__webpack_exports__, "render", function () {
+            return render;
+        });
+        /* harmony export (binding) */
+        __webpack_require__.d(__webpack_exports__, "staticRenderFns", function () {
+            return staticRenderFns;
+        });
+        var render = function () {
+            var _vm = this
+            var _h = _vm.$createElement
+            var _c = _vm._self._c || _h
+            return _c(
+                "CContainer",
+                [
+                    _c(
+                        "CRow",
+                        {staticClass: "justify-content-center"},
+                        [
+                            _c(
+                                "CCol",
+                                {attrs: {col: "12", md: "6"}},
+                                [
+                                    _vm.status
+                                        ? _c(
+                                        "CCard",
+                                        [
+                                            _c(
+                                                "CCardHeader",
+                                                [
+                                                    _c("CIcon", {
+                                                        attrs: {name: "cil-justify-center"}
+                                                    }),
+                                                    _vm._v("\n                    Voucher "),
+                                                    _c("small", [_vm._v("Status")]),
+                                                    _vm._v(" "),
+                                                    _vm.timerEnabled
+                                                        ? _c(
+                                                        "span",
+                                                        {staticClass: "text-right float-right"},
+                                                        [
+                                                            _vm._v(
+                                                                "Refreshing in " + _vm._s(_vm.timerCount)
+                                                            )
+                                                        ]
+                                                        )
+                                                        : _vm._e()
+                                                ],
+                                                1
+                                            ),
+                                            _vm._v(" "),
+                                            _c("CCardBody", [
+                                                _vm.status.payment.stk_request
+                                                    ? _c(
+                                                    "div",
+                                                    [
+                                                        _c(
+                                                            "CAlert",
+                                                            {
+                                                                attrs: {
+                                                                    color: _vm.getColour(
+                                                                        _vm.status.payment.stk_request.status
+                                                                    ),
+                                                                    show: ""
+                                                                }
+                                                            },
+                                                            [
+                                                                _c("h4", {staticClass: "alert-heading"}, [
+                                                                    _vm._v("STK Push")
+                                                                ]),
+                                                                _vm._v(" "),
+                                                                _c("p", [
+                                                                    _vm._v(
+                                                                        "\n                                " +
+                                                                        _vm._s(
+                                                                            _vm.status.payment.stk_request
+                                                                                .status
+                                                                        ) +
+                                                                        "\n\n                                "
+                                                                    ),
+                                                                    _vm.status.payment.stk_request.status ===
+                                                                    "Failed"
+                                                                        ? _c("span", [
+                                                                            _vm._v(
+                                                                                "\n                                    - "
+                                                                            ),
+                                                                            _c("b", [
+                                                                                _vm._v(
+                                                                                    _vm._s(
+                                                                                        _vm.status.payment.stk_request
+                                                                                            .response.ResultDesc
+                                                                                    )
+                                                                                )
+                                                                            ])
+                                                                        ])
+                                                                        : _vm._e()
+                                                                ]),
+                                                                _vm._v(" "),
+                                                                _c("hr"),
+                                                                _vm._v(" "),
+                                                                _c("p", {staticClass: "mb-0"}, [
+                                                                    _vm._v(
+                                                                        "\n                                " +
+                                                                        _vm._s(
+                                                                            _vm._f("moment")(
+                                                                                _vm.status.payment.stk_request
+                                                                                    .updated_at,
+                                                                                "from"
+                                                                            )
+                                                                        ) +
+                                                                        "\n                            "
+                                                                    )
+                                                                ])
+                                                            ]
+                                                        )
+                                                    ],
+                                                    1
+                                                    )
+                                                    : _vm._e()
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("CCardBody", [
+                                                _vm.status.payment
+                                                    ? _c(
+                                                    "div",
+                                                    [
+                                                        _c(
+                                                            "CAlert",
+                                                            {
+                                                                attrs: {
+                                                                    color: _vm.getColour(
+                                                                        _vm.status.payment.status
+                                                                    ),
+                                                                    show: ""
+                                                                }
+                                                            },
+                                                            [
+                                                                _c("h4", {staticClass: "alert-heading"}, [
+                                                                    _vm._v("Payment")
+                                                                ]),
+                                                                _vm._v(" "),
+                                                                _c("p", [
+                                                                    _vm._v(
+                                                                        "\n                                " +
+                                                                        _vm._s(_vm.status.payment.status) +
+                                                                        "\n                            "
+                                                                    )
+                                                                ]),
+                                                                _vm._v(" "),
+                                                                _c("hr"),
+                                                                _vm._v(" "),
+                                                                _c("p", {staticClass: "mb-0"}, [
+                                                                    _vm._v(
+                                                                        "\n                                " +
+                                                                        _vm._s(
+                                                                            _vm._f("moment")(
+                                                                                _vm.status.payment.updated_at,
+                                                                                "from"
+                                                                            )
+                                                                        ) +
+                                                                        "\n                            "
+                                                                    )
+                                                                ])
+                                                            ]
+                                                        )
+                                                    ],
+                                                    1
+                                                    )
+                                                    : _vm._e()
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("CCardBody", [
+                                                _vm.completed
+                                                    ? _c(
+                                                    "div",
+                                                    [
+                                                        _c(
+                                                            "CButton",
+                                                            {
+                                                                attrs: {
+                                                                    to: {name: "finances"},
+                                                                    color: "success",
+                                                                    size: "sm"
+                                                                }
+                                                            },
+                                                            [
+                                                                _c("CIcon", {
+                                                                    attrs: {name: "cil-info"}
+                                                                }),
+                                                                _vm._v(
+                                                                    "\n                            Check voucher balance\n                        "
+                                                                )
+                                                            ],
+                                                            1
+                                                        )
+                                                    ],
+                                                    1
+                                                    )
+                                                    : _vm._e()
+                                            ])
+                                        ],
+                                        1
+                                        )
+                                        : _c(
+                                        "CCard",
+                                        [
+                                            _c(
+                                                "CCardBody",
+                                                [
+                                                    _c(
+                                                        "CCardHeader",
+                                                        [
+                                                            _c("CIcon", {
+                                                                attrs: {name: "cil-justify-center"}
+                                                            }),
+                                                            _vm._v("\n                        Voucher "),
+                                                            _c("small", [_vm._v("Status")]),
+                                                            _vm._v(" "),
+                                                            _vm.timerEnabled
+                                                                ? _c(
+                                                                "span",
+                                                                {staticClass: "text-right float-right"},
+                                                                [
+                                                                    _vm._v(
+                                                                        "Refreshing in " +
+                                                                        _vm._s(_vm.timerCount)
+                                                                    )
+                                                                ]
+                                                                )
+                                                                : _vm._e()
+                                                        ],
+                                                        1
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c("CCardText", [
+                                                        _c("b", [_vm._v("Oops!")]),
+                                                        _vm._v(
+                                                            "\n\n                        The item you are looking for does not exist.\n                    "
+                                                        )
+                                                    ]),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                        "CButton",
+                                                        {
+                                                            attrs: {
+                                                                to: {name: "dashboard"},
+                                                                color: "danger",
+                                                                size: "sm"
+                                                            }
+                                                        },
+                                                        [
+                                                            _c("CIcon", {attrs: {name: "cil-ban"}}),
+                                                            _vm._v(
+                                                                "\n                        Go home\n                    "
+                                                            )
+                                                        ],
+                                                        1
+                                                    )
+                                                ],
+                                                1
+                                            )
+                                        ],
+                                        1
+                                        )
+                                ],
+                                1
+                            )
+                        ],
+                        1
+                    )
+                ],
+                1
+            )
+        }
+        var staticRenderFns = []
+        render._withStripped = true
+
+
+        /***/
+    }),
+
+    /***/
+    "./resources/js/views/purchases/VoucherStatus.vue":
+    /*!********************************************************!*\
+      !*** ./resources/js/views/purchases/VoucherStatus.vue ***!
+      \********************************************************/
+    /*! exports provided: default */
+    /***/ (function (module, __webpack_exports__, __webpack_require__) {
+
+        "use strict";
+        __webpack_require__.r(__webpack_exports__);
+        /* harmony import */
+        var _VoucherStatus_vue_vue_type_template_id_16a1a934___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VoucherStatus.vue?vue&type=template&id=16a1a934& */ "./resources/js/views/purchases/VoucherStatus.vue?vue&type=template&id=16a1a934&");
+        /* harmony import */
+        var _VoucherStatus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VoucherStatus.vue?vue&type=script&lang=js& */ "./resources/js/views/purchases/VoucherStatus.vue?vue&type=script&lang=js&");
+        /* empty/unused harmony star reexport *//* harmony import */
+        var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+        /* normalize component */
+
+        var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+            _VoucherStatus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+            _VoucherStatus_vue_vue_type_template_id_16a1a934___WEBPACK_IMPORTED_MODULE_0__["render"],
+            _VoucherStatus_vue_vue_type_template_id_16a1a934___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+            false,
+            null,
+            null,
+            null
+        )
+
+        /* hot reload */
+        if (false) {
+            var api;
+        }
+        component.options.__file = "resources/js/views/purchases/VoucherStatus.vue"
+        /* harmony default export */
+        __webpack_exports__["default"] = (component.exports);
+
+        /***/
+    }),
+
+    /***/
+    "./resources/js/views/purchases/VoucherStatus.vue?vue&type=script&lang=js&":
+    /*!*********************************************************************************!*\
+      !*** ./resources/js/views/purchases/VoucherStatus.vue?vue&type=script&lang=js& ***!
+      \*********************************************************************************/
+    /*! exports provided: default */
+    /***/ (function (module, __webpack_exports__, __webpack_require__) {
+
+        "use strict";
+        __webpack_require__.r(__webpack_exports__);
+        /* harmony import */
+        var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VoucherStatus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./VoucherStatus.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/purchases/VoucherStatus.vue?vue&type=script&lang=js&");
+        /* empty/unused harmony star reexport */ /* harmony default export */
+        __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VoucherStatus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+        /***/
+    }),
+
+    /***/
+    "./resources/js/views/purchases/VoucherStatus.vue?vue&type=template&id=16a1a934&":
+    /*!***************************************************************************************!*\
+      !*** ./resources/js/views/purchases/VoucherStatus.vue?vue&type=template&id=16a1a934& ***!
+      \***************************************************************************************/
+    /*! exports provided: render, staticRenderFns */
+    /***/ (function (module, __webpack_exports__, __webpack_require__) {
+
+        "use strict";
+        __webpack_require__.r(__webpack_exports__);
+        /* harmony import */
+        var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VoucherStatus_vue_vue_type_template_id_16a1a934___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./VoucherStatus.vue?vue&type=template&id=16a1a934& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/purchases/VoucherStatus.vue?vue&type=template&id=16a1a934&");
+        /* harmony reexport (safe) */
+        __webpack_require__.d(__webpack_exports__, "render", function () {
+            return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VoucherStatus_vue_vue_type_template_id_16a1a934___WEBPACK_IMPORTED_MODULE_0__["render"];
+        });
+
+        /* harmony reexport (safe) */
+        __webpack_require__.d(__webpack_exports__, "staticRenderFns", function () {
+            return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VoucherStatus_vue_vue_type_template_id_16a1a934___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"];
+        });
+
+
+        /***/
+    })
+
+}]);

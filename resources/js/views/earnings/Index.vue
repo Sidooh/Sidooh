@@ -91,6 +91,11 @@
                     table-filter
                     @row-clicked="rowClicked"
                 >
+                    <template #account="data">
+                        <td>
+                            {{ data.item.account.id }}
+                        </td>
+                    </template>
                     <template #type="data">
                         <td>
                             <CBadge :color="getBadge(data.item.type)">
@@ -120,6 +125,7 @@ export default {
                 // {key: 'description'},
                 {key: 'earnings', label: 'Amount'},
                 {key: 'type',},
+                {key: 'account', label: 'Invitee'},
                 {key: 'created_at', label: 'Date'},
                 // {key: 'description'},
                 // {key: 'content', format: 'trim:100'},

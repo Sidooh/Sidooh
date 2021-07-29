@@ -582,10 +582,8 @@ class Account extends Product
                 ]);
 
             $acc->user()->associate($user);
-
+            $acc->save();
         }
-
-        $acc->save();
 
     }
 

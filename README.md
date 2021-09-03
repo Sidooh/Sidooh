@@ -17,7 +17,7 @@ Built on Laravel 6. Run on App Engine, Cloud Build, Cloud SQL e.t.c.
 ### Tools
 
 - lampp
-- cloud_sql_proxy (if you wish to connect to live db)
+- cloud_sql_proxy (if you wish to connect to cloud sql)
 - gcloud (if you wish to run gcloud commands straight from dev machine)
 - docker (if you wish to run on docker)
 
@@ -36,7 +36,60 @@ Coming soon
 
 ## Running on App Engine
 
-Coming soon
+### Requirements
+
+- GCP Project - will hold all required resources
+- App Engine - VM to hold our code/app
+- Cloud SQL - Will deal with our db
+- Cloud Build - For simple CD (Continuous Deployment)
+- Cloud APIs
+
+### Steps
+
+#### 1. Create a GCP Project
+
+- Create a project on GCP and enable billing. Billing will be required for appengine to run on flex environment
+
+
+- Enable APIS
+    - Compute Engine API (App Engine and SQL instances)
+    - Cloud Build API
+    - Cloud SQL Admin API
+    - App Engine Admin API
+    - Google App Engine Flexible Environment
+    - Cloud Deployment Manager V2 API
+    - Cloud Scheduler API (Cron jobs and scheduling)
+
+#### 2. Set up App engine
+
+- Create an App Engine app with flex and other type selected
+- Deploy cron job after the first build with the following command on project directory `gcloud app deploy cron.yaml`
+
+#### 3. Set up Cloud SQL
+
+- Create an instance of mysql 8.0, 1vCPU, 3.75 GB Machine, and 10 GB SSD.
+- Create a database and take note of the connection string
+
+#### 4. Set up Cloud Build
+
+- In settings enable the `App Engine Admin` and `Service Account User` roles
+
+
+- Connect to the repository containing code
+
+
+- Optionally create a sample build trigger and modify as follows:
+    - ```
+      Name: appengine-cd-trigger (or name of branch-trigger)
+      Description: Invokes a build every time code is pushed to appengine-cd branch
+      Event: Push to a branch
+      Source: Repository connected earlier
+      Branch: ^appengine-cd$ (or otherwise)
+      Type: Cloud Build file
+      Location: Repository (__deployment__/cloudbuild.yaml) 
+      ```
+
+- Once all this is done, run the trigger manually for the first time and watch for any errors.
 
 ## Debugging
 
@@ -103,7 +156,7 @@ Run 5 terminals as follows:
       used to ssh into compute engine on GCP
 
 4. cloudsql terminal
-    - `./cloud_sql_proxy -instances=sidooh2:europe-west3:sidooh=tcp:3309`
+    - `./cloud_sql_proxy -instances=hoodis1:us-central1:sidooh=tcp:3309`
       used to connect to cloud sql instance on GCP. Needs gcloud installed
 
 5. Terminal

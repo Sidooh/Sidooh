@@ -17,7 +17,7 @@ Built on Laravel 6. Run on App Engine, Cloud Build, Cloud SQL e.t.c.
 ### Tools
 
 - lampp
-- cloud_sql_proxy (if you wish to connect to live db)
+- cloud_sql_proxy (if you wish to connect to cloud sql)
 - gcloud (if you wish to run gcloud commands straight from dev machine)
 - docker (if you wish to run on docker)
 
@@ -82,7 +82,7 @@ Coming soon
     - ```
       Name: appengine-cd-trigger (or name of branch-trigger)
       Description: Invokes a build every time code is pushed to appengine-cd branch
-      Event: Push to new branch
+      Event: Push to a branch
       Source: Repository connected earlier
       Branch: ^appengine-cd$ (or otherwise)
       Type: Cloud Build file
@@ -156,7 +156,7 @@ Run 5 terminals as follows:
       used to ssh into compute engine on GCP
 
 4. cloudsql terminal
-    - `./cloud_sql_proxy -instances=hoodis:us-central1:sidooh=tcp:3309`
+    - `./cloud_sql_proxy -instances=hoodis1:us-central1:sidooh=tcp:3309`
       used to connect to cloud sql instance on GCP. Needs gcloud installed
 
 5. Terminal

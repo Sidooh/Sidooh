@@ -12,5 +12,7 @@ abstract class MpesaReferences extends BasicEnum
     const PRE_AGENT_REGISTER_THRIVING = '6.2-PRE-AGENT';
     const AGENT_REGISTER_ASPIRING = '6.3-AGENT-ASPIRE';
     const AGENT_REGISTER_THRIVING = '6.4-AGENT';
+
+    const AGENT_REGISTER = '6-AGENT';
 }
 

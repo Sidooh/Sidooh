@@ -15,11 +15,8 @@ cron:
   - description: "monthly interest allocation"
     url: /api/v1/investment/interest/allocate
     schedule: 1 of month 00:00
-#  - description: "monday morning mailout"
-#    url: /mail/weekly
-#    schedule: every monday 09:00
-#    timezone: Australia/NSW
-#  - description: "new daily summary job"
-#    url: /tasks/summary
-#    schedule: every 24 hours
-#    target: beta
+
+
+  - description: "daily subscription validation"
+      url: /api/v1/jobs/subscriptions/deactivate
+      schedule: every day 00:00

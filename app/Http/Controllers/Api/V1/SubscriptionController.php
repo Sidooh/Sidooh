@@ -112,4 +112,15 @@ class SubscriptionController extends Controller
         return new SubscriptionResource($this->subscription->active()->get());
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return SubscriptionResource
+     */
+    public function deactivate()
+    {
+        //
+        return new SubscriptionResource($this->subscription->deactivate());
+    }
+
 }

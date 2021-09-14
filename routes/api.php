@@ -32,7 +32,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::apiResource('referrals', 'ReferralController', ['only' => ['index', 'store']]);
     Route::get('referrals/{phone}', 'ReferralController@byPhone')->name('referrals.byPhone');
 
-    Route::apiResource('subscriptions', 'SubscriptionController', ['only' => ['index', 'store', 'show']]);
+    Route::apiResource('subscriptions', 'SubscriptionController', ['only' => ['index', 'store', 'show', 'deactivate']]);
     Route::apiResource('vouchers', 'VoucherController', ['only' => ['index', 'store', 'show']]);
     Route::apiResource('merchants', 'MerchantController', ['only' => ['index', 'store', 'show']]);
 
@@ -62,6 +62,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::get('interest', 'CollectiveInvestmentController@storeRate')->name('investments.rate.store');
     Route::get('investment/interest/allocate', 'AccountController@allocateInterest')->name('investments.interest.allocate');
 
+    Route::get('jobs/subscriptions/deactivate', 'SubscriptionController@deactivate')->name('subscriptions.deactivate');
 
 //    TODO: Refactor into own service controller?
 //    TEST SERVICES

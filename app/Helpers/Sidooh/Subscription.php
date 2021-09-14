@@ -98,6 +98,9 @@ class Subscription
             case 475:
                 $reference = MpesaReferences::AGENT_REGISTER_ASPIRING;
                 break;
+            case 365:
+                $reference = MpesaReferences::AGENT_REGISTER;
+                break;
         }
 
         try {

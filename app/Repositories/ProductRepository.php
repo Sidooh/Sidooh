@@ -169,25 +169,25 @@ class ProductRepository
 
         //        TODO:: Add Cashback of 11%
 
-        $acc = $transaction->account;
-
-        $userEarnings = round(.115 * $amount, 4);
-
-        $e = Earning::create([
-            'account_id' => $acc->id,
-            'transaction_id' => $transaction->id,
-            'earnings' => $userEarnings,
-            'type' => 'SELF'
-        ]);
-
-        $sub_acc = $acc->current_account;
-        $sub_acc2 = $acc->savings_account;
-
-        $sub_acc->in += .2 * $userEarnings;
-        $sub_acc2->in += .8 * $userEarnings;
-
-        $sub_acc->save();
-        $sub_acc2->save();
+//        $acc = $transaction->account;
+//
+//        $userEarnings = round(.115 * $amount, 4);
+//
+//        $e = Earning::create([
+//            'account_id' => $acc->id,
+//            'transaction_id' => $transaction->id,
+//            'earnings' => $userEarnings,
+//            'type' => 'SELF'
+//        ]);
+//
+//        $sub_acc = $acc->current_account;
+//        $sub_acc2 = $acc->savings_account;
+//
+//        $sub_acc->in += .2 * $userEarnings;
+//        $sub_acc2->in += .8 * $userEarnings;
+//
+//        $sub_acc->save();
+//        $sub_acc2->save();
 
         event(new SubscriptionPurchaseEvent($sub, $transaction));
 

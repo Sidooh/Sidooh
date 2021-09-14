@@ -258,7 +258,7 @@
                 "title": "Pre-register as an agent",
                 "type": "int",
                 "value": "1",
-                "next": "pre_agent"
+                "next": "agent_intro"
             }
         }
     },
@@ -270,7 +270,7 @@
                 "title": "Proceed to register as an Agent",
                 "type": "int",
                 "value": "1",
-                "next": "agent_onboarding_name"
+                "next": "pre_agent_onboarding_name"
             }
         },
         "paginated": true
@@ -627,7 +627,7 @@
     },
     "pre_agent": {
         "key": "pre_agent",
-        "title": "By Preregistering as a Sidooh Agent, you will earn sales commissions on every airtime purchased from the platform by your referred customers and subagents for 1 year, WITHOUT PAYING MONTHLY SUBSCRIPTION FEES.",
+        "title": "By Pre-registering as a Sidooh Agent, you will earn sales commissions on every airtime purchased from the platform by your referred customers and subagents for 1 year, WITHOUT PAYING MONTHLY SUBSCRIPTION FEES.",
         "options": {
             "1": {
                 "title": "Proceed to Pre-register as an Agent",
@@ -675,7 +675,7 @@
     },
     "pre_agent_onboarding_confirm": {
         "key": "pre_agent_onboarding_confirm",
-        "title": "Please confirm your details.\n\nName: {$name}\nAgent: {$subscription_type}",
+        "title": "Please confirm your details.\n\nName: {$name}\nAgent: {$subscription_type} @ {$subscription_amount_f}",
         "options": {
             "1": {
                 "title": "Confirm",

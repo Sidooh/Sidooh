@@ -66,6 +66,7 @@ class StkPaymentReceived
             case MpesaReferences::PRE_AGENT_REGISTER_THRIVING:
             case MpesaReferences::AGENT_REGISTER_ASPIRING:
             case MpesaReferences::AGENT_REGISTER_THRIVING:
+            case MpesaReferences::AGENT_REGISTER:
 
                 (new ProductRepository())->subscription($p->payable, $stk->Amount);
                 break;

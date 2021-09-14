@@ -454,16 +454,17 @@ export default {
         },
 
         isLast7Days(someDate) {
-            const today = new Date()
-            const sevenDaysAgo = today.setDate(today.getDate() - 7)
+            const sevenDaysAgo = new Date()
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
 
-            return someDate.getDate() >= sevenDaysAgo
+            return someDate >= sevenDaysAgo
         },
 
         isLast30Days(someDate) {
-            const today = new Date()
-            const monthAgo = today.setDate(today.getDate() - 30)
-            return someDate.getDate() >= monthAgo
+            const monthAgo = new Date()
+            monthAgo.setDate(monthAgo.getDate() - 30)
+
+            return someDate >= monthAgo
         },
 
         isThisMonth(someDate) {

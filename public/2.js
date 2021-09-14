@@ -1195,14 +1195,14 @@
                     return someDate.getDate() == today.getDate() && someDate.getMonth() == today.getMonth() && someDate.getFullYear() == today.getFullYear();
                 },
                 isLast7Days: function isLast7Days(someDate) {
-                    var today = new Date();
-                    var sevenDaysAgo = today.setDate(today.getDate() - 7);
-                    return someDate.getDate() >= sevenDaysAgo;
+                    var sevenDaysAgo = new Date();
+                    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+                    return someDate >= sevenDaysAgo;
                 },
                 isLast30Days: function isLast30Days(someDate) {
-                    var today = new Date();
-                    var monthAgo = today.setDate(today.getDate() - 30);
-                    return someDate.getDate() >= monthAgo;
+                    var monthAgo = new Date();
+                    monthAgo.setDate(monthAgo.getDate() - 30);
+                    return someDate >= monthAgo;
                 },
                 isThisMonth: function isThisMonth(someDate) {
                     var today = new Date();
@@ -1289,13 +1289,13 @@
                             _vm._v(" "),
                             _c(
                                 "CCol",
-                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                {attrs: {col: "12", lg: "3", sm: "6"}},
                                 [
                                     _c("CWidgetIcon", {
                                         attrs: {
                                             header: _vm.todayActiveReferrals,
-                                            text: "Today",
-                                            color: "gradient-primary"
+                                            color: "gradient-primary",
+                                            text: "Today"
                                         }
                                     })
                                 ],
@@ -1304,13 +1304,13 @@
                             _vm._v(" "),
                             _c(
                                 "CCol",
-                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                {attrs: {col: "12", lg: "3", sm: "6"}},
                                 [
                                     _c("CWidgetIcon", {
                                         attrs: {
                                             header: _vm.last7DaysActiveReferrals,
-                                            text: "Past 7 days",
-                                            color: "gradient-secondary"
+                                            color: "gradient-secondary",
+                                            text: "Past 7 days"
                                         }
                                     })
                                 ],
@@ -1319,13 +1319,13 @@
                             _vm._v(" "),
                             _c(
                                 "CCol",
-                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                {attrs: {col: "12", lg: "3", sm: "6"}},
                                 [
                                     _c("CWidgetIcon", {
                                         attrs: {
                                             header: _vm.last30DaysActiveReferrals,
-                                            text: "Past 30 days",
-                                            color: "gradient-info"
+                                            color: "gradient-info",
+                                            text: "Past 30 days"
                                         }
                                     })
                                 ],
@@ -1334,13 +1334,13 @@
                             _vm._v(" "),
                             _c(
                                 "CCol",
-                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                {attrs: {col: "12", lg: "3", sm: "6"}},
                                 [
                                     _c("CWidgetIcon", {
                                         attrs: {
                                             header: _vm.totalActiveReferrals,
-                                            text: "Total",
-                                            color: "gradient-warning"
+                                            color: "gradient-warning",
+                                            text: "Total"
                                         }
                                     })
                                 ],
@@ -1359,13 +1359,13 @@
                             _vm._v(" "),
                             _c(
                                 "CCol",
-                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                {attrs: {col: "12", lg: "3", sm: "6"}},
                                 [
                                     _c("CWidgetIcon", {
                                         attrs: {
                                             header: _vm._f("numFormat")(_vm.todayEarnings, "0,0.00"),
-                                            text: "Today",
-                                            color: "gradient-primary"
+                                            color: "gradient-primary",
+                                            text: "Today"
                                         }
                                     })
                                 ],
@@ -1374,13 +1374,13 @@
                             _vm._v(" "),
                             _c(
                                 "CCol",
-                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                {attrs: {col: "12", lg: "3", sm: "6"}},
                                 [
                                     _c("CWidgetIcon", {
                                         attrs: {
                                             header: _vm._f("numFormat")(_vm.last7DaysEarnings, "0,0.00"),
-                                            text: "Past 7 days",
-                                            color: "gradient-secondary"
+                                            color: "gradient-secondary",
+                                            text: "Past 7 days"
                                         }
                                     })
                                 ],
@@ -1389,13 +1389,13 @@
                             _vm._v(" "),
                             _c(
                                 "CCol",
-                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                {attrs: {col: "12", lg: "3", sm: "6"}},
                                 [
                                     _c("CWidgetIcon", {
                                         attrs: {
                                             header: _vm._f("numFormat")(_vm.last30DaysEarnings, "0,0.00"),
-                                            text: "Past 30 days",
-                                            color: "gradient-info"
+                                            color: "gradient-info",
+                                            text: "Past 30 days"
                                         }
                                     })
                                 ],
@@ -1404,13 +1404,13 @@
                             _vm._v(" "),
                             _c(
                                 "CCol",
-                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                {attrs: {col: "12", lg: "3", sm: "6"}},
                                 [
                                     _c("CWidgetIcon", {
                                         attrs: {
                                             header: _vm._f("numFormat")(_vm.totalEarnings, "0,0.00"),
-                                            text: "Total",
-                                            color: "gradient-warning"
+                                            color: "gradient-warning",
+                                            text: "Total"
                                         }
                                     })
                                 ],
@@ -1442,7 +1442,7 @@
                                                                 : _vm.transactionsQuery.group === "m"
                                                                     ? "Transactions done this month"
                                                                     : "Transactions done this year"
-                                                        ) + "\n                        "
+                                                        ) + "\n                    "
                                                     )
                                                 ])
                                             ]),
@@ -1483,7 +1483,7 @@
                                                                 },
                                                                 [
                                                                     _vm._v(
-                                                                        "\n                                Day\n                            "
+                                                                        "\n                            Day\n                        "
                                                                     )
                                                                 ]
                                                             ),
@@ -1505,7 +1505,7 @@
                                                                 },
                                                                 [
                                                                     _vm._v(
-                                                                        "\n                                Month\n                            "
+                                                                        "\n                            Month\n                        "
                                                                     )
                                                                 ]
                                                             ),
@@ -1527,7 +1527,7 @@
                                                                 },
                                                                 [
                                                                     _vm._v(
-                                                                        "\n                                Year\n                            "
+                                                                        "\n                            Year\n                        "
                                                                     )
                                                                 ]
                                                             )
@@ -1642,9 +1642,7 @@
                                 [
                                     _vm._t("header", [
                                         _c("CIcon", {attrs: {name: "cil-grid"}}),
-                                        _vm._v(
-                                            "\n                    Recent Transactions\n                "
-                                        )
+                                        _vm._v("\n                Recent Transactions\n            ")
                                     ])
                                 ],
                                 2
@@ -1686,9 +1684,9 @@
                                                                     },
                                                                     [
                                                                         _vm._v(
-                                                                            "\n                                " +
+                                                                            "\n                            " +
                                                                             _vm._s(data.item.status) +
-                                                                            "\n                            "
+                                                                            "\n                        "
                                                                         )
                                                                     ]
                                                                 )

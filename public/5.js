@@ -416,8 +416,8 @@
                                                             _vm.earningsQuery.group === "d"
                                                                 ? "Earnings today"
                                                                 : _vm.earningsQuery.group === "m"
-                                                                ? "Earnings this month"
-                                                                : "Earnings this year"
+                                                                    ? "Earnings this month"
+                                                                    : "Earnings this year"
                                                         ) + "\n                    "
                                                     )
                                                 ])

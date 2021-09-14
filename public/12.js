@@ -355,8 +355,8 @@
                                                             _vm.referralsQuery.group === "d"
                                                                 ? "Invites done today"
                                                                 : _vm.referralsQuery.group === "m"
-                                                                ? "Invites done this month"
-                                                                : "Invites done this year"
+                                                                    ? "Invites done this month"
+                                                                    : "Invites done this year"
                                                         ) + "\n                    "
                                                     )
                                                 ])

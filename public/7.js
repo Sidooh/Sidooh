@@ -295,245 +295,127 @@
                                 [
                                     _vm.status
                                         ? _c(
-                                        "CCard",
-                                        [
-                                            _c(
-                                                "CCardHeader",
-                                                [
-                                                    _c("CIcon", {
-                                                        attrs: {name: "cil-justify-center"}
-                                                    }),
-                                                    _vm._v("\n                    Airtime "),
-                                                    _c("small", [_vm._v("Status")]),
-                                                    _vm._v(" "),
-                                                    _vm.timerEnabled
-                                                        ? _c(
-                                                        "span",
-                                                        {staticClass: "text-right float-right"},
-                                                        [
-                                                            _vm._v(
-                                                                "Refreshing in " + _vm._s(_vm.timerCount)
+                                            "CCard",
+                                            [
+                                                _c(
+                                                    "CCardHeader",
+                                                    [
+                                                        _c("CIcon", {
+                                                            attrs: {name: "cil-justify-center"}
+                                                        }),
+                                                        _vm._v("\n                    Airtime "),
+                                                        _c("small", [_vm._v("Status")]),
+                                                        _vm._v(" "),
+                                                        _vm.timerEnabled
+                                                            ? _c(
+                                                                "span",
+                                                                {staticClass: "text-right float-right"},
+                                                                [
+                                                                    _vm._v(
+                                                                        "Refreshing in " + _vm._s(_vm.timerCount)
+                                                                    )
+                                                                ]
                                                             )
-                                                        ]
-                                                        )
-                                                        : _vm._e()
-                                                ],
-                                                1
-                                            ),
-                                            _vm._v(" "),
-                                            _c("CCardBody", [
-                                                _vm.status.payment.stk_request
-                                                    ? _c(
-                                                    "div",
-                                                    [
-                                                        _c(
-                                                            "CAlert",
-                                                            {
-                                                                attrs: {
-                                                                    color: _vm.getColour(
-                                                                        _vm.status.payment.stk_request.status
-                                                                    ),
-                                                                    show: ""
-                                                                }
-                                                            },
-                                                            [
-                                                                _c("h4", {staticClass: "alert-heading"}, [
-                                                                    _vm._v("STK Push")
-                                                                ]),
-                                                                _vm._v(" "),
-                                                                _c("p", [
-                                                                    _vm._v(
-                                                                        "\n                                " +
-                                                                        _vm._s(
-                                                                            _vm.status.payment.stk_request
-                                                                                .status
-                                                                        ) +
-                                                                        "\n\n                                "
-                                                                    ),
-                                                                    _vm.status.payment.stk_request.status ===
-                                                                    "Failed"
-                                                                        ? _c("span", [
-                                                                            _vm._v(
-                                                                                "\n                                    - "
-                                                                            ),
-                                                                            _c("b", [
-                                                                                _vm._v(
-                                                                                    _vm._s(
-                                                                                        _vm.status.payment.stk_request
-                                                                                            .response.ResultDesc
-                                                                                    )
-                                                                                )
-                                                                            ])
-                                                                        ])
-                                                                        : _vm._e()
-                                                                ]),
-                                                                _vm._v(" "),
-                                                                _c("hr"),
-                                                                _vm._v(" "),
-                                                                _c("p", {staticClass: "mb-0"}, [
-                                                                    _vm._v(
-                                                                        "\n                                " +
-                                                                        _vm._s(
-                                                                            _vm._f("moment")(
-                                                                                _vm.status.payment.stk_request
-                                                                                    .updated_at,
-                                                                                "from"
-                                                                            )
-                                                                        ) +
-                                                                        "\n                            "
-                                                                    )
-                                                                ])
-                                                            ]
-                                                        )
+                                                            : _vm._e()
                                                     ],
                                                     1
-                                                    )
-                                                    : _vm._e()
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("CCardBody", [
-                                                _vm.status.payment
-                                                    ? _c(
-                                                    "div",
-                                                    [
-                                                        _c(
-                                                            "CAlert",
-                                                            {
-                                                                attrs: {
-                                                                    color: _vm.getColour(
-                                                                        _vm.status.payment.status
-                                                                    ),
-                                                                    show: ""
-                                                                }
-                                                            },
-                                                            [
-                                                                _c("h4", {staticClass: "alert-heading"}, [
-                                                                    _vm._v("Payment")
-                                                                ]),
-                                                                _vm._v(" "),
-                                                                _c("p", [
-                                                                    _vm._v(
-                                                                        "\n                                " +
-                                                                        _vm._s(_vm.status.payment.status) +
-                                                                        "\n                            "
-                                                                    )
-                                                                ]),
-                                                                _vm._v(" "),
-                                                                _c("hr"),
-                                                                _vm._v(" "),
-                                                                _c("p", {staticClass: "mb-0"}, [
-                                                                    _vm._v(
-                                                                        "\n                                " +
-                                                                        _vm._s(
-                                                                            _vm._f("moment")(
-                                                                                _vm.status.payment.updated_at,
-                                                                                "from"
-                                                                            )
-                                                                        ) +
-                                                                        "\n                            "
-                                                                    )
-                                                                ])
-                                                            ]
-                                                        )
-                                                    ],
-                                                    1
-                                                    )
-                                                    : _vm._e()
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("CCardBody", [
-                                                _vm.status.airtime
-                                                    ? _c("div", [
-                                                        _vm.status.airtime.errorMessage === "None"
-                                                            ? _c("div", [
-                                                                _vm.status.airtime.response
-                                                                    ? _c(
-                                                                    "div",
-                                                                    [
-                                                                        _c(
-                                                                            "CAlert",
-                                                                            {
-                                                                                attrs: {
-                                                                                    color: _vm.getColour(
-                                                                                        _vm.status.airtime.response
-                                                                                            .status
-                                                                                    ),
-                                                                                    show: ""
-                                                                                }
-                                                                            },
-                                                                            [
-                                                                                _c(
-                                                                                    "h4",
-                                                                                    {
-                                                                                        staticClass: "alert-heading"
-                                                                                    },
-                                                                                    [_vm._v("Airtime")]
-                                                                                ),
-                                                                                _vm._v(" "),
-                                                                                _c("p", [
-                                                                                    _vm._v(
-                                                                                        "\n                                        " +
-                                                                                        _vm._s(
-                                                                                            _vm.status.airtime
-                                                                                                .response.status
-                                                                                        ) +
-                                                                                        "\n                                    "
-                                                                                    )
-                                                                                ]),
-                                                                                _vm._v(" "),
-                                                                                _c("hr"),
-                                                                                _vm._v(" "),
-                                                                                _c(
-                                                                                    "p",
-                                                                                    {staticClass: "mb-0"},
-                                                                                    [
-                                                                                        _vm._v(
-                                                                                            "\n                                        " +
-                                                                                            _vm._s(
-                                                                                                _vm._f("moment")(
-                                                                                                    _vm.status.airtime
-                                                                                                        .response
-                                                                                                        .updated_at,
-                                                                                                    "from"
-                                                                                                )
-                                                                                            ) +
-                                                                                            "\n                                    "
-                                                                                        )
-                                                                                    ]
-                                                                                )
-                                                                            ]
-                                                                        )
-                                                                    ],
-                                                                    1
-                                                                    )
-                                                                    : _vm._e()
-                                                            ])
-                                                            : _c(
+                                                ),
+                                                _vm._v(" "),
+                                                _c("CCardBody", [
+                                                    _vm.status.payment.stk_request
+                                                        ? _c(
                                                             "div",
                                                             [
                                                                 _c(
                                                                     "CAlert",
                                                                     {
                                                                         attrs: {
-                                                                            color: _vm.getColour("failed"),
+                                                                            color: _vm.getColour(
+                                                                                _vm.status.payment.stk_request.status
+                                                                            ),
                                                                             show: ""
                                                                         }
                                                                     },
                                                                     [
-                                                                        _c(
-                                                                            "h4",
-                                                                            {staticClass: "alert-heading"},
-                                                                            [_vm._v("Airtime")]
-                                                                        ),
+                                                                        _c("h4", {staticClass: "alert-heading"}, [
+                                                                            _vm._v("STK Push")
+                                                                        ]),
                                                                         _vm._v(" "),
                                                                         _c("p", [
                                                                             _vm._v(
-                                                                                "\n                                    " +
+                                                                                "\n                                " +
                                                                                 _vm._s(
-                                                                                    _vm.status.airtime
-                                                                                        .errorMessage
+                                                                                    _vm.status.payment.stk_request
+                                                                                        .status
                                                                                 ) +
-                                                                                "\n                                "
+                                                                                "\n\n                                "
+                                                                            ),
+                                                                            _vm.status.payment.stk_request.status ===
+                                                                            "Failed"
+                                                                                ? _c("span", [
+                                                                                    _vm._v(
+                                                                                        "\n                                    - "
+                                                                                    ),
+                                                                                    _c("b", [
+                                                                                        _vm._v(
+                                                                                            _vm._s(
+                                                                                                _vm.status.payment.stk_request
+                                                                                                    .response.ResultDesc
+                                                                                            )
+                                                                                        )
+                                                                                    ])
+                                                                                ])
+                                                                                : _vm._e()
+                                                                        ]),
+                                                                        _vm._v(" "),
+                                                                        _c("hr"),
+                                                                        _vm._v(" "),
+                                                                        _c("p", {staticClass: "mb-0"}, [
+                                                                            _vm._v(
+                                                                                "\n                                " +
+                                                                                _vm._s(
+                                                                                    _vm._f("moment")(
+                                                                                        _vm.status.payment.stk_request
+                                                                                            .updated_at,
+                                                                                        "from"
+                                                                                    )
+                                                                                ) +
+                                                                                "\n                            "
+                                                                            )
+                                                                        ])
+                                                                    ]
+                                                                )
+                                                            ],
+                                                            1
+                                                        )
+                                                        : _vm._e()
+                                                ]),
+                                                _vm._v(" "),
+                                                _c("CCardBody", [
+                                                    _vm.status.payment
+                                                        ? _c(
+                                                            "div",
+                                                            [
+                                                                _c(
+                                                                    "CAlert",
+                                                                    {
+                                                                        attrs: {
+                                                                            color: _vm.getColour(
+                                                                                _vm.status.payment.status
+                                                                            ),
+                                                                            show: ""
+                                                                        }
+                                                                    },
+                                                                    [
+                                                                        _c("h4", {staticClass: "alert-heading"}, [
+                                                                            _vm._v("Payment")
+                                                                        ]),
+                                                                        _vm._v(" "),
+                                                                        _c("p", [
+                                                                            _vm._v(
+                                                                                "\n                                " +
+                                                                                _vm._s(_vm.status.payment.status) +
+                                                                                "\n                            "
                                                                             )
                                                                         ]),
                                                                         _vm._v(" "),
@@ -541,128 +423,246 @@
                                                                         _vm._v(" "),
                                                                         _c("p", {staticClass: "mb-0"}, [
                                                                             _vm._v(
-                                                                                "\n                                    " +
+                                                                                "\n                                " +
                                                                                 _vm._s(
                                                                                     _vm._f("moment")(
-                                                                                        _vm.status.airtime
-                                                                                            .updated_at,
+                                                                                        _vm.status.payment.updated_at,
                                                                                         "from"
                                                                                     )
                                                                                 ) +
-                                                                                "\n                                "
+                                                                                "\n                            "
                                                                             )
                                                                         ])
                                                                     ]
                                                                 )
                                                             ],
                                                             1
-                                                            )
-                                                    ])
-                                                    : _c(
-                                                    "div",
+                                                        )
+                                                        : _vm._e()
+                                                ]),
+                                                _vm._v(" "),
+                                                _c("CCardBody", [
+                                                    _vm.status.airtime
+                                                        ? _c("div", [
+                                                            _vm.status.airtime.errorMessage === "None"
+                                                                ? _c("div", [
+                                                                    _vm.status.airtime.response
+                                                                        ? _c(
+                                                                            "div",
+                                                                            [
+                                                                                _c(
+                                                                                    "CAlert",
+                                                                                    {
+                                                                                        attrs: {
+                                                                                            color: _vm.getColour(
+                                                                                                _vm.status.airtime.response
+                                                                                                    .status
+                                                                                            ),
+                                                                                            show: ""
+                                                                                        }
+                                                                                    },
+                                                                                    [
+                                                                                        _c(
+                                                                                            "h4",
+                                                                                            {
+                                                                                                staticClass: "alert-heading"
+                                                                                            },
+                                                                                            [_vm._v("Airtime")]
+                                                                                        ),
+                                                                                        _vm._v(" "),
+                                                                                        _c("p", [
+                                                                                            _vm._v(
+                                                                                                "\n                                        " +
+                                                                                                _vm._s(
+                                                                                                    _vm.status.airtime
+                                                                                                        .response.status
+                                                                                                ) +
+                                                                                                "\n                                    "
+                                                                                            )
+                                                                                        ]),
+                                                                                        _vm._v(" "),
+                                                                                        _c("hr"),
+                                                                                        _vm._v(" "),
+                                                                                        _c(
+                                                                                            "p",
+                                                                                            {staticClass: "mb-0"},
+                                                                                            [
+                                                                                                _vm._v(
+                                                                                                    "\n                                        " +
+                                                                                                    _vm._s(
+                                                                                                        _vm._f("moment")(
+                                                                                                            _vm.status.airtime
+                                                                                                                .response
+                                                                                                                .updated_at,
+                                                                                                            "from"
+                                                                                                        )
+                                                                                                    ) +
+                                                                                                    "\n                                    "
+                                                                                                )
+                                                                                            ]
+                                                                                        )
+                                                                                    ]
+                                                                                )
+                                                                            ],
+                                                                            1
+                                                                        )
+                                                                        : _vm._e()
+                                                                ])
+                                                                : _c(
+                                                                    "div",
+                                                                    [
+                                                                        _c(
+                                                                            "CAlert",
+                                                                            {
+                                                                                attrs: {
+                                                                                    color: _vm.getColour("failed"),
+                                                                                    show: ""
+                                                                                }
+                                                                            },
+                                                                            [
+                                                                                _c(
+                                                                                    "h4",
+                                                                                    {staticClass: "alert-heading"},
+                                                                                    [_vm._v("Airtime")]
+                                                                                ),
+                                                                                _vm._v(" "),
+                                                                                _c("p", [
+                                                                                    _vm._v(
+                                                                                        "\n                                    " +
+                                                                                        _vm._s(
+                                                                                            _vm.status.airtime
+                                                                                                .errorMessage
+                                                                                        ) +
+                                                                                        "\n                                "
+                                                                                    )
+                                                                                ]),
+                                                                                _vm._v(" "),
+                                                                                _c("hr"),
+                                                                                _vm._v(" "),
+                                                                                _c("p", {staticClass: "mb-0"}, [
+                                                                                    _vm._v(
+                                                                                        "\n                                    " +
+                                                                                        _vm._s(
+                                                                                            _vm._f("moment")(
+                                                                                                _vm.status.airtime
+                                                                                                    .updated_at,
+                                                                                                "from"
+                                                                                            )
+                                                                                        ) +
+                                                                                        "\n                                "
+                                                                                    )
+                                                                                ])
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    1
+                                                                )
+                                                        ])
+                                                        : _c(
+                                                            "div",
+                                                            [
+                                                                _c(
+                                                                    "CAlert",
+                                                                    {
+                                                                        attrs: {
+                                                                            color: _vm.getColour("pending"),
+                                                                            show: ""
+                                                                        }
+                                                                    },
+                                                                    [
+                                                                        _c("h4", {staticClass: "alert-heading"}, [
+                                                                            _vm._v("Airtime")
+                                                                        ]),
+                                                                        _vm._v(" "),
+                                                                        _c("p", [
+                                                                            _vm._v(
+                                                                                "\n                                Not Requested\n                            "
+                                                                            )
+                                                                        ]),
+                                                                        _vm._v(" "),
+                                                                        _c("hr"),
+                                                                        _vm._v(" "),
+                                                                        _c("p", {staticClass: "mb-0"}, [
+                                                                            _vm._v(
+                                                                                "\n                                " +
+                                                                                _vm._s(
+                                                                                    _vm._f("moment")(
+                                                                                        _vm.status.updated_at,
+                                                                                        "from"
+                                                                                    )
+                                                                                ) +
+                                                                                "\n                            "
+                                                                            )
+                                                                        ])
+                                                                    ]
+                                                                )
+                                                            ],
+                                                            1
+                                                        )
+                                                ])
+                                            ],
+                                            1
+                                        )
+                                        : _c(
+                                            "CCard",
+                                            [
+                                                _c(
+                                                    "CCardBody",
                                                     [
                                                         _c(
-                                                            "CAlert",
+                                                            "CCardHeader",
+                                                            [
+                                                                _c("CIcon", {
+                                                                    attrs: {name: "cil-justify-center"}
+                                                                }),
+                                                                _vm._v("\n                        Airtime "),
+                                                                _c("small", [_vm._v("Status")]),
+                                                                _vm._v(" "),
+                                                                _vm.timerEnabled
+                                                                    ? _c(
+                                                                        "span",
+                                                                        {staticClass: "text-right float-right"},
+                                                                        [
+                                                                            _vm._v(
+                                                                                "Refreshing in " +
+                                                                                _vm._s(_vm.timerCount)
+                                                                            )
+                                                                        ]
+                                                                    )
+                                                                    : _vm._e()
+                                                            ],
+                                                            1
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c("CCardText", [
+                                                            _c("b", [_vm._v("Oops!")]),
+                                                            _vm._v(
+                                                                "\n\n                        The item you are looking for does not exist.\n                    "
+                                                            )
+                                                        ]),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                            "CButton",
                                                             {
                                                                 attrs: {
-                                                                    color: _vm.getColour("pending"),
-                                                                    show: ""
+                                                                    to: {name: "dashboard"},
+                                                                    color: "danger",
+                                                                    size: "sm"
                                                                 }
                                                             },
                                                             [
-                                                                _c("h4", {staticClass: "alert-heading"}, [
-                                                                    _vm._v("Airtime")
-                                                                ]),
-                                                                _vm._v(" "),
-                                                                _c("p", [
-                                                                    _vm._v(
-                                                                        "\n                                Not Requested\n                            "
-                                                                    )
-                                                                ]),
-                                                                _vm._v(" "),
-                                                                _c("hr"),
-                                                                _vm._v(" "),
-                                                                _c("p", {staticClass: "mb-0"}, [
-                                                                    _vm._v(
-                                                                        "\n                                " +
-                                                                        _vm._s(
-                                                                            _vm._f("moment")(
-                                                                                _vm.status.updated_at,
-                                                                                "from"
-                                                                            )
-                                                                        ) +
-                                                                        "\n                            "
-                                                                    )
-                                                                ])
-                                                            ]
+                                                                _c("CIcon", {attrs: {name: "cil-ban"}}),
+                                                                _vm._v(
+                                                                    "\n                        Go home\n                    "
+                                                                )
+                                                            ],
+                                                            1
                                                         )
                                                     ],
                                                     1
-                                                    )
-                                            ])
-                                        ],
-                                        1
-                                        )
-                                        : _c(
-                                        "CCard",
-                                        [
-                                            _c(
-                                                "CCardBody",
-                                                [
-                                                    _c(
-                                                        "CCardHeader",
-                                                        [
-                                                            _c("CIcon", {
-                                                                attrs: {name: "cil-justify-center"}
-                                                            }),
-                                                            _vm._v("\n                        Airtime "),
-                                                            _c("small", [_vm._v("Status")]),
-                                                            _vm._v(" "),
-                                                            _vm.timerEnabled
-                                                                ? _c(
-                                                                "span",
-                                                                {staticClass: "text-right float-right"},
-                                                                [
-                                                                    _vm._v(
-                                                                        "Refreshing in " +
-                                                                        _vm._s(_vm.timerCount)
-                                                                    )
-                                                                ]
-                                                                )
-                                                                : _vm._e()
-                                                        ],
-                                                        1
-                                                    ),
-                                                    _vm._v(" "),
-                                                    _c("CCardText", [
-                                                        _c("b", [_vm._v("Oops!")]),
-                                                        _vm._v(
-                                                            "\n\n                        The item you are looking for does not exist.\n                    "
-                                                        )
-                                                    ]),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                        "CButton",
-                                                        {
-                                                            attrs: {
-                                                                to: {name: "dashboard"},
-                                                                color: "danger",
-                                                                size: "sm"
-                                                            }
-                                                        },
-                                                        [
-                                                            _c("CIcon", {attrs: {name: "cil-ban"}}),
-                                                            _vm._v(
-                                                                "\n                        Go home\n                    "
-                                                            )
-                                                        ],
-                                                        1
-                                                    )
-                                                ],
-                                                1
-                                            )
-                                        ],
-                                        1
+                                                )
+                                            ],
+                                            1
                                         )
                                 ],
                                 1

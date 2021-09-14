@@ -843,6 +843,84 @@
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
         /* harmony default export */
@@ -903,16 +981,16 @@
                 this.fetchTransactions().then(function () {
                     // TODO: If chart ends up null can we display no data instead of blank chart?
                     _this.processTransactionChartData();
+                }); // this.groupReferrals('y');
+
+                this.fetchReferrals().then(function () {// this.processReferralChartData()
                 });
-                this.groupReferrals('y');
-                this.fetchReferrals().then(function () {
-                    _this.processReferralChartData();
-                });
+                this.fetchEarnings();
             },
             destroyed: function destroyed() {//TODO: Maybe add this after setting up data persistence
                 // this.resetState()
             },
-            computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('TransactionsIndex', {
+            computed: _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('TransactionsIndex', {
                 transactions: 'data',
                 transactionsChartData: 'chartData',
                 transactionsQuery: 'query',
@@ -922,6 +1000,8 @@
                 referrals: 'data',
                 referralsChartData: 'chartData',
                 activeReferrals: 'activeReferrals'
+            })), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('EarningsIndex', {
+                earnings: 'data'
             })), {}, {
                 chartLabels: function chartLabels() {
                     return this.transactionsChartData.map(function (a) {
@@ -988,6 +1068,27 @@
                         return b.id - a.id;
                     });
                 },
+                todayActiveReferrals: function todayActiveReferrals() {
+                    var _this6 = this;
+
+                    return this.activeReferrals.filter(function (item) {
+                        return _this6.isToday(new Date(item.updated_at));
+                    }).length + '';
+                },
+                last7DaysActiveReferrals: function last7DaysActiveReferrals() {
+                    var _this7 = this;
+
+                    return this.activeReferrals.filter(function (item) {
+                        return _this7.isLast7Days(new Date(item.updated_at));
+                    }).length + '';
+                },
+                last30DaysActiveReferrals: function last30DaysActiveReferrals() {
+                    var _this8 = this;
+
+                    return this.activeReferrals.filter(function (item) {
+                        return _this8.isLast30Days(new Date(item.updated_at));
+                    }).length + '';
+                },
                 totalActiveReferrals: function totalActiveReferrals() {
                     return this.activeReferrals.length + '';
                 },
@@ -1000,6 +1101,38 @@
                     return this.referralsChartData.map(function (a) {
                         return a.count;
                     });
+                },
+                todayEarnings: function todayEarnings() {
+                    var _this9 = this;
+
+                    return _.sum(this.earnings.filter(function (item) {
+                        return _this9.isToday(new Date(item.created_at));
+                    }).map(function (a) {
+                        return parseFloat(a.earnings);
+                    })).toFixed(2);
+                },
+                last7DaysEarnings: function last7DaysEarnings() {
+                    var _this10 = this;
+
+                    return _.sum(this.earnings.filter(function (item) {
+                        return _this10.isLast7Days(new Date(item.created_at));
+                    }).map(function (a) {
+                        return parseFloat(a.earnings);
+                    })).toFixed(2);
+                },
+                last30DaysEarnings: function last30DaysEarnings() {
+                    var _this11 = this;
+
+                    return _.sum(this.earnings.filter(function (item) {
+                        return _this11.isLast30Days(new Date(item.created_at));
+                    }).map(function (a) {
+                        return parseFloat(a.earnings);
+                    })).toFixed(2);
+                },
+                totalEarnings: function totalEarnings() {
+                    return _.sum(this.earnings.map(function (a) {
+                        return parseFloat(a.earnings);
+                    })).toFixed(2);
                 },
                 datasets: function datasets() {
                     return [{
@@ -1017,7 +1150,7 @@
                     }];
                 }
             }),
-            methods: _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('TransactionsIndex', {
+            methods: _objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('TransactionsIndex', {
                 fetchTransactions: 'fetchData',
                 processTransactionChartData: 'processChartData',
                 setTransactionsQuery: 'setQuery',
@@ -1026,6 +1159,8 @@
                 fetchReferrals: 'fetchData',
                 setReferralsQuery: 'setQuery',
                 processReferralChartData: 'processChartData'
+            })), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('EarningsIndex', {
+                fetchEarnings: 'fetchData'
             })), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('loader', ['reset'])), {}, {
                 groupTransactions: function groupTransactions(e) {
                     // const q = Object.assign({}, this.transactionsQuery, {group: e});
@@ -1048,16 +1183,26 @@
                     this.processReferralChartData();
                 },
                 reloadChart: function reloadChart() {
-                    var _this6 = this;
+                    var _this12 = this;
 
                     this.fetchTransactions().then(function () {
-                        _this6.processTransactionChartData();
+                        _this12.processTransactionChartData();
                     });
                 },
                 //TODO: Move the below to date helper
                 isToday: function isToday(someDate) {
                     var today = new Date();
                     return someDate.getDate() == today.getDate() && someDate.getMonth() == today.getMonth() && someDate.getFullYear() == today.getFullYear();
+                },
+                isLast7Days: function isLast7Days(someDate) {
+                    var today = new Date();
+                    var sevenDaysAgo = today.setDate(today.getDate() - 7);
+                    return someDate.getDate() >= sevenDaysAgo;
+                },
+                isLast30Days: function isLast30Days(someDate) {
+                    var today = new Date();
+                    var monthAgo = today.setDate(today.getDate() - 30);
+                    return someDate.getDate() >= monthAgo;
                 },
                 isThisMonth: function isThisMonth(someDate) {
                     var today = new Date();
@@ -1136,6 +1281,146 @@
                 "div",
                 [
                     _c(
+                        "CRow",
+                        [
+                            _c("CCol", {attrs: {col: "12"}}, [
+                                _c("h4", {staticClass: "card-title"}, [_vm._v("Invites")])
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                                "CCol",
+                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                [
+                                    _c("CWidgetIcon", {
+                                        attrs: {
+                                            header: _vm.todayActiveReferrals,
+                                            text: "Today",
+                                            color: "gradient-primary"
+                                        }
+                                    })
+                                ],
+                                1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                                "CCol",
+                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                [
+                                    _c("CWidgetIcon", {
+                                        attrs: {
+                                            header: _vm.last7DaysActiveReferrals,
+                                            text: "Past 7 days",
+                                            color: "gradient-secondary"
+                                        }
+                                    })
+                                ],
+                                1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                                "CCol",
+                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                [
+                                    _c("CWidgetIcon", {
+                                        attrs: {
+                                            header: _vm.last30DaysActiveReferrals,
+                                            text: "Past 30 days",
+                                            color: "gradient-info"
+                                        }
+                                    })
+                                ],
+                                1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                                "CCol",
+                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                [
+                                    _c("CWidgetIcon", {
+                                        attrs: {
+                                            header: _vm.totalActiveReferrals,
+                                            text: "Total",
+                                            color: "gradient-warning"
+                                        }
+                                    })
+                                ],
+                                1
+                            )
+                        ],
+                        1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                        "CRow",
+                        [
+                            _c("CCol", {attrs: {col: "12"}}, [
+                                _c("h4", {staticClass: "card-title"}, [_vm._v("Earnings")])
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                                "CCol",
+                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                [
+                                    _c("CWidgetIcon", {
+                                        attrs: {
+                                            header: _vm._f("numFormat")(_vm.todayEarnings, "0,0.00"),
+                                            text: "Today",
+                                            color: "gradient-primary"
+                                        }
+                                    })
+                                ],
+                                1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                                "CCol",
+                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                [
+                                    _c("CWidgetIcon", {
+                                        attrs: {
+                                            header: _vm._f("numFormat")(_vm.last7DaysEarnings, "0,0.00"),
+                                            text: "Past 7 days",
+                                            color: "gradient-secondary"
+                                        }
+                                    })
+                                ],
+                                1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                                "CCol",
+                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                [
+                                    _c("CWidgetIcon", {
+                                        attrs: {
+                                            header: _vm._f("numFormat")(_vm.last30DaysEarnings, "0,0.00"),
+                                            text: "Past 30 days",
+                                            color: "gradient-info"
+                                        }
+                                    })
+                                ],
+                                1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                                "CCol",
+                                {attrs: {col: "12", sm: "6", lg: "3"}},
+                                [
+                                    _c("CWidgetIcon", {
+                                        attrs: {
+                                            header: _vm._f("numFormat")(_vm.totalEarnings, "0,0.00"),
+                                            text: "Total",
+                                            color: "gradient-warning"
+                                        }
+                                    })
+                                ],
+                                1
+                            )
+                        ],
+                        1
+                    ),
+                    _vm._v(" "),
+                    _c(
                         "CCard",
                         [
                             _c(
@@ -1155,9 +1440,9 @@
                                                             _vm.transactionsQuery.group === "d"
                                                                 ? "Transactions done today"
                                                                 : _vm.transactionsQuery.group === "m"
-                                                                ? "Transactions done this month"
-                                                                : "Transactions done this year"
-                                                        ) + "\n                    "
+                                                                    ? "Transactions done this month"
+                                                                    : "Transactions done this year"
+                                                        ) + "\n                        "
                                                     )
                                                 ])
                                             ]),
@@ -1198,7 +1483,7 @@
                                                                 },
                                                                 [
                                                                     _vm._v(
-                                                                        "\n                            Day\n                        "
+                                                                        "\n                                Day\n                            "
                                                                     )
                                                                 ]
                                                             ),
@@ -1220,7 +1505,7 @@
                                                                 },
                                                                 [
                                                                     _vm._v(
-                                                                        "\n                            Month\n                        "
+                                                                        "\n                                Month\n                            "
                                                                     )
                                                                 ]
                                                             ),
@@ -1242,7 +1527,7 @@
                                                                 },
                                                                 [
                                                                     _vm._v(
-                                                                        "\n                            Year\n                        "
+                                                                        "\n                                Year\n                            "
                                                                     )
                                                                 ]
                                                             )
@@ -1309,10 +1594,23 @@
                                                         _vm._v("Total Amounts")
                                                     ]),
                                                     _vm._v(" "),
-                                                    _c("strong", [_vm._v(_vm._s(_vm.totalAmount))]),
+                                                    _c("strong", [
+                                                        _vm._v(
+                                                            _vm._s(_vm._f("numFormat")(_vm.totalAmount, "0,0.00"))
+                                                        )
+                                                    ]),
                                                     _vm._v(" "),
                                                     _c("span", {attrs: {title: "Today's Transactions"}}, [
-                                                        _vm._v("(" + _vm._s(_vm.totalAmountToday) + ")")
+                                                        _vm._v(
+                                                            "(" +
+                                                            _vm._s(
+                                                                _vm._f("numFormat")(
+                                                                    _vm.totalAmountToday,
+                                                                    "0,0.00"
+                                                                )
+                                                            ) +
+                                                            ")"
+                                                        )
                                                     ]),
                                                     _vm._v(" "),
                                                     _c("CProgress", {
@@ -1337,48 +1635,6 @@
                     ),
                     _vm._v(" "),
                     _c(
-                        "CRow",
-                        [
-                            _c(
-                                "CCol",
-                                {attrs: {lg: "3", sm: "6"}},
-                                [
-                                    _c("CWidgetDropdown", {
-                                        attrs: {
-                                            header: _vm.totalActiveReferrals,
-                                            color: "primary",
-                                            text: "Invites"
-                                        },
-                                        scopedSlots: _vm._u([
-                                            {
-                                                key: "footer",
-                                                fn: function () {
-                                                    return [
-                                                        _c("CChartLineSimple", {
-                                                            staticClass: "mt-3 mx-3",
-                                                            staticStyle: {height: "70px"},
-                                                            attrs: {
-                                                                "data-points": _vm.referralChartData,
-                                                                labels: _vm.referralChartLabels,
-                                                                label: "Invites",
-                                                                "point-hover-background-color": "primary",
-                                                                pointed: ""
-                                                            }
-                                                        })
-                                                    ]
-                                                },
-                                                proxy: true
-                                            }
-                                        ])
-                                    })
-                                ],
-                                1
-                            )
-                        ],
-                        1
-                    ),
-                    _vm._v(" "),
-                    _c(
                         "CCard",
                         [
                             _c(
@@ -1386,7 +1642,9 @@
                                 [
                                     _vm._t("header", [
                                         _c("CIcon", {attrs: {name: "cil-grid"}}),
-                                        _vm._v("\n                Recent Transactions\n            ")
+                                        _vm._v(
+                                            "\n                    Recent Transactions\n                "
+                                        )
                                     ])
                                 ],
                                 2
@@ -1428,9 +1686,9 @@
                                                                     },
                                                                     [
                                                                         _vm._v(
-                                                                            "\n                            " +
+                                                                            "\n                                " +
                                                                             _vm._s(data.item.status) +
-                                                                            "\n                        "
+                                                                            "\n                            "
                                                                         )
                                                                     ]
                                                                 )

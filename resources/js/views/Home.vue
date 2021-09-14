@@ -1,5 +1,83 @@
 <template>
     <div>
+
+        <CRow>
+            <CCol col="12">
+                <h4 class="card-title">Invites</h4>
+            </CCol>
+            <CCol col="12" lg="3" sm="6">
+                <CWidgetIcon
+                    :header="todayActiveReferrals"
+                    color="gradient-primary"
+                    text="Today"
+                >
+                </CWidgetIcon>
+            </CCol>
+            <CCol col="12" lg="3" sm="6">
+                <CWidgetIcon
+                    :header="last7DaysActiveReferrals"
+                    color="gradient-secondary"
+                    text="Past 7 days"
+                >
+                </CWidgetIcon>
+            </CCol>
+            <CCol col="12" lg="3" sm="6">
+                <CWidgetIcon
+                    :header="last30DaysActiveReferrals"
+                    color="gradient-info"
+                    text="Past 30 days"
+                >
+                </CWidgetIcon>
+            </CCol>
+            <CCol col="12" lg="3" sm="6">
+                <CWidgetIcon
+                    :header="totalActiveReferrals"
+                    color="gradient-warning"
+                    text="Total"
+                >
+                </CWidgetIcon>
+            </CCol>
+        </CRow>
+
+
+        <CRow>
+            <CCol col="12">
+                <h4 class="card-title">Earnings</h4>
+            </CCol>
+            <CCol col="12" lg="3" sm="6">
+                <CWidgetIcon
+                    :header="todayEarnings | numFormat('0,0.00')"
+                    color="gradient-primary"
+                    text="Today"
+                >
+                </CWidgetIcon>
+            </CCol>
+            <CCol col="12" lg="3" sm="6">
+                <CWidgetIcon
+                    :header="last7DaysEarnings | numFormat('0,0.00')"
+                    color="gradient-secondary"
+                    text="Past 7 days"
+                >
+                </CWidgetIcon>
+            </CCol>
+            <CCol col="12" lg="3" sm="6">
+                <CWidgetIcon
+                    :header="last30DaysEarnings | numFormat('0,0.00')"
+                    color="gradient-info"
+                    text="Past 30 days"
+                >
+                </CWidgetIcon>
+            </CCol>
+            <CCol col="12" lg="3" sm="6">
+                <CWidgetIcon
+                    :header="totalEarnings | numFormat('0,0.00')"
+                    color="gradient-warning"
+                    text="Total"
+                >
+                </CWidgetIcon>
+            </CCol>
+        </CRow>
+
         <CCard>
             <CCardBody>
                 <CRow>
@@ -53,8 +131,8 @@
                     </CCol>
                     <CCol sclass="mb-sm-2 mb-0 col-sm-12 col-md">
                         <div class="text-muted">Total Amounts</div>
-                        <strong>{{ totalAmount }}</strong> <span title="Today's Transactions">({{
-                            totalAmountToday
+                        <strong>{{ totalAmount | numFormat('0,0.00') }}</strong> <span title="Today's Transactions">({{
+                            totalAmountToday | numFormat('0,0.00')
                         }})</span>
                         <CProgress
                             :precision="1"
@@ -67,37 +145,37 @@
             </CCardFooter>
         </CCard>
 
-        <CRow>
-            <CCol lg="3" sm="6">
-                <CWidgetDropdown :header="totalActiveReferrals" color="primary" text="Invites">
-                    <!--                    <template #default>-->
-                    <!--                        <CDropdown-->
-                    <!--                            color="transparent p-0"-->
-                    <!--                            placement="bottom-end"-->
-                    <!--                        >-->
-                    <!--                            <template #toggler-content>-->
-                    <!--                                <CIcon name="cil-settings"/>-->
-                    <!--                            </template>-->
-                    <!--                            <CDropdownItem>Action</CDropdownItem>-->
-                    <!--                            <CDropdownItem>Another action</CDropdownItem>-->
-                    <!--                            <CDropdownItem>Something else here...</CDropdownItem>-->
-                    <!--                            <CDropdownItem disabled>Disabled action</CDropdownItem>-->
-                    <!--                        </CDropdown>-->
-                    <!--                    </template>-->
-                    <template #footer>
-                        <CChartLineSimple
-                            :data-points="referralChartData"
-                            :labels="referralChartLabels"
-                            class="mt-3 mx-3"
-                            label="Invites"
-                            point-hover-background-color="primary"
-                            pointed
-                            style="height:70px"
-                        />
-                    </template>
-                </CWidgetDropdown>
-            </CCol>
-        </CRow>
+        <!--        <CRow>-->
+        <!--            <CCol lg="3" sm="6">-->
+        <!--                <CWidgetDropdown :header="totalActiveReferrals" color="primary" text="Invites">-->
+        <!--                    &lt;!&ndash;                    <template #default>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                        <CDropdown&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                            color="transparent p-0"&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                            placement="bottom-end"&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                        >&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                            <template #toggler-content>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                                <CIcon name="cil-settings"/>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                            </template>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                            <CDropdownItem>Action</CDropdownItem>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                            <CDropdownItem>Another action</CDropdownItem>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                            <CDropdownItem>Something else here...</CDropdownItem>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                            <CDropdownItem disabled>Disabled action</CDropdownItem>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                        </CDropdown>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                    </template>&ndash;&gt;-->
+        <!--                    <template #footer>-->
+        <!--                        <CChartLineSimple-->
+        <!--                            :data-points="referralChartData"-->
+        <!--                            :labels="referralChartLabels"-->
+        <!--                            class="mt-3 mx-3"-->
+        <!--                            label="Invites"-->
+        <!--                            point-hover-background-color="primary"-->
+        <!--                            pointed-->
+        <!--                            style="height:70px"-->
+        <!--                        />-->
+        <!--                    </template>-->
+        <!--                </CWidgetDropdown>-->
+        <!--            </CCol>-->
+        <!--        </CRow>-->
 
         <CCard>
             <CCardHeader>
@@ -197,10 +275,11 @@ export default {
             // TODO: If chart ends up null can we display no data instead of blank chart?
             this.processTransactionChartData()
         })
-        this.groupReferrals('y');
+        // this.groupReferrals('y');
         this.fetchReferrals().then(() => {
-            this.processReferralChartData()
+            // this.processReferralChartData()
         })
+        this.fetchEarnings()
     },
 
     destroyed() {
@@ -224,7 +303,9 @@ export default {
             referralsChartData: 'chartData',
             activeReferrals: 'activeReferrals',
         }),
-
+        ...mapGetters('EarningsIndex', {
+            earnings: 'data',
+        }),
 
         chartLabels() {
             return this.transactionsChartData.map(a => a.date)
@@ -266,6 +347,15 @@ export default {
                 this.transactions.sort((a, b) => b.id - a.id)
         },
 
+        todayActiveReferrals() {
+            return this.activeReferrals.filter(item => this.isToday(new Date(item.updated_at))).length + ''
+        },
+        last7DaysActiveReferrals() {
+            return this.activeReferrals.filter(item => this.isLast7Days(new Date(item.updated_at))).length + ''
+        },
+        last30DaysActiveReferrals() {
+            return this.activeReferrals.filter(item => this.isLast30Days(new Date(item.updated_at))).length + ''
+        },
         totalActiveReferrals() {
             return this.activeReferrals.length + ''
         },
@@ -274,6 +364,20 @@ export default {
         },
         referralChartData() {
             return this.referralsChartData.map(a => a.count)
+        },
+
+
+        todayEarnings() {
+            return _.sum(this.earnings.filter(item => this.isToday(new Date(item.created_at))).map(a => parseFloat(a.earnings))).toFixed(2)
+        },
+        last7DaysEarnings() {
+            return _.sum(this.earnings.filter(item => this.isLast7Days(new Date(item.created_at))).map(a => parseFloat(a.earnings))).toFixed(2)
+        },
+        last30DaysEarnings() {
+            return _.sum(this.earnings.filter(item => this.isLast30Days(new Date(item.created_at))).map(a => parseFloat(a.earnings))).toFixed(2)
+        },
+        totalEarnings() {
+            return _.sum(this.earnings.map(a => parseFloat(a.earnings))).toFixed(2)
         },
 
         datasets() {
@@ -310,6 +414,9 @@ export default {
             setReferralsQuery: 'setQuery',
             processReferralChartData: 'processChartData'
         }),
+        ...mapActions('EarningsIndex', {
+            fetchEarnings: 'fetchData',
+        }),
         ...mapActions('loader', ['reset']),
 
         groupTransactions(e) {
@@ -344,6 +451,19 @@ export default {
             return someDate.getDate() == today.getDate() &&
                 someDate.getMonth() == today.getMonth() &&
                 someDate.getFullYear() == today.getFullYear()
+        },
+
+        isLast7Days(someDate) {
+            const today = new Date()
+            const sevenDaysAgo = today.setDate(today.getDate() - 7)
+
+            return someDate.getDate() >= sevenDaysAgo
+        },
+
+        isLast30Days(someDate) {
+            const today = new Date()
+            const monthAgo = today.setDate(today.getDate() - 30)
+            return someDate.getDate() >= monthAgo
         },
 
         isThisMonth(someDate) {

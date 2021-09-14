@@ -1,7 +1,7 @@
 import client from './axiosClient';
 import logger from "../helpers/logger";
 
-let ENDPOINT_URL = '/earnings';
+let ENDPOINT_URL = '/earnings/';
 
 class EarningService {
     all() {

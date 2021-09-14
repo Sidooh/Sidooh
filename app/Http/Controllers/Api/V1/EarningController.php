@@ -5,15 +5,29 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EarningResource;
 use App\Models\Earning;
+use App\Repositories\EarningRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class EarningController extends Controller
 {
+    protected $earning;
+
+    /**
+     * EarningController constructor.
+     *
+     * @param EarningRepository $earning
+     */
+    public function __construct(EarningRepository $earning)
+    {
+        parent::__construct();
+        $this->earning = $earning;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return EarningResource
      */
     public function index()
     {
@@ -23,8 +37,8 @@ class EarningController extends Controller
         $data = $this->account->earnings()->with('transaction.account.user')->get();
 //        Log::info(Earning::with('transactedAccount.user')->toSql());
 //        $data->loadMissing('account.user');
-
-        Log::info($data);
+//
+//        Log::info($data);
         return new EarningResource($data);
     }
 

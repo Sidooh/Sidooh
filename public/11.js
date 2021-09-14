@@ -252,244 +252,244 @@
                                 [
                                     _vm.status
                                         ? _c(
-                                        "CCard",
-                                        [
-                                            _c(
-                                                "CCardHeader",
-                                                [
-                                                    _c("CIcon", {
-                                                        attrs: {name: "cil-justify-center"}
-                                                    }),
-                                                    _vm._v("\n                    Voucher "),
-                                                    _c("small", [_vm._v("Status")]),
-                                                    _vm._v(" "),
-                                                    _vm.timerEnabled
-                                                        ? _c(
-                                                        "span",
-                                                        {staticClass: "text-right float-right"},
-                                                        [
-                                                            _vm._v(
-                                                                "Refreshing in " + _vm._s(_vm.timerCount)
+                                            "CCard",
+                                            [
+                                                _c(
+                                                    "CCardHeader",
+                                                    [
+                                                        _c("CIcon", {
+                                                            attrs: {name: "cil-justify-center"}
+                                                        }),
+                                                        _vm._v("\n                    Voucher "),
+                                                        _c("small", [_vm._v("Status")]),
+                                                        _vm._v(" "),
+                                                        _vm.timerEnabled
+                                                            ? _c(
+                                                                "span",
+                                                                {staticClass: "text-right float-right"},
+                                                                [
+                                                                    _vm._v(
+                                                                        "Refreshing in " + _vm._s(_vm.timerCount)
+                                                                    )
+                                                                ]
                                                             )
-                                                        ]
+                                                            : _vm._e()
+                                                    ],
+                                                    1
+                                                ),
+                                                _vm._v(" "),
+                                                _c("CCardBody", [
+                                                    _vm.status.payment.stk_request
+                                                        ? _c(
+                                                            "div",
+                                                            [
+                                                                _c(
+                                                                    "CAlert",
+                                                                    {
+                                                                        attrs: {
+                                                                            color: _vm.getColour(
+                                                                                _vm.status.payment.stk_request.status
+                                                                            ),
+                                                                            show: ""
+                                                                        }
+                                                                    },
+                                                                    [
+                                                                        _c("h4", {staticClass: "alert-heading"}, [
+                                                                            _vm._v("STK Push")
+                                                                        ]),
+                                                                        _vm._v(" "),
+                                                                        _c("p", [
+                                                                            _vm._v(
+                                                                                "\n                                " +
+                                                                                _vm._s(
+                                                                                    _vm.status.payment.stk_request
+                                                                                        .status
+                                                                                ) +
+                                                                                "\n\n                                "
+                                                                            ),
+                                                                            _vm.status.payment.stk_request.status ===
+                                                                            "Failed"
+                                                                                ? _c("span", [
+                                                                                    _vm._v(
+                                                                                        "\n                                    - "
+                                                                                    ),
+                                                                                    _c("b", [
+                                                                                        _vm._v(
+                                                                                            _vm._s(
+                                                                                                _vm.status.payment.stk_request
+                                                                                                    .response.ResultDesc
+                                                                                            )
+                                                                                        )
+                                                                                    ])
+                                                                                ])
+                                                                                : _vm._e()
+                                                                        ]),
+                                                                        _vm._v(" "),
+                                                                        _c("hr"),
+                                                                        _vm._v(" "),
+                                                                        _c("p", {staticClass: "mb-0"}, [
+                                                                            _vm._v(
+                                                                                "\n                                " +
+                                                                                _vm._s(
+                                                                                    _vm._f("moment")(
+                                                                                        _vm.status.payment.stk_request
+                                                                                            .updated_at,
+                                                                                        "from"
+                                                                                    )
+                                                                                ) +
+                                                                                "\n                            "
+                                                                            )
+                                                                        ])
+                                                                    ]
+                                                                )
+                                                            ],
+                                                            1
                                                         )
                                                         : _vm._e()
-                                                ],
-                                                1
-                                            ),
-                                            _vm._v(" "),
-                                            _c("CCardBody", [
-                                                _vm.status.payment.stk_request
-                                                    ? _c(
-                                                    "div",
-                                                    [
-                                                        _c(
-                                                            "CAlert",
-                                                            {
-                                                                attrs: {
-                                                                    color: _vm.getColour(
-                                                                        _vm.status.payment.stk_request.status
-                                                                    ),
-                                                                    show: ""
-                                                                }
-                                                            },
+                                                ]),
+                                                _vm._v(" "),
+                                                _c("CCardBody", [
+                                                    _vm.status.payment
+                                                        ? _c(
+                                                            "div",
                                                             [
-                                                                _c("h4", {staticClass: "alert-heading"}, [
-                                                                    _vm._v("STK Push")
-                                                                ]),
-                                                                _vm._v(" "),
-                                                                _c("p", [
-                                                                    _vm._v(
-                                                                        "\n                                " +
-                                                                        _vm._s(
-                                                                            _vm.status.payment.stk_request
-                                                                                .status
-                                                                        ) +
-                                                                        "\n\n                                "
-                                                                    ),
-                                                                    _vm.status.payment.stk_request.status ===
-                                                                    "Failed"
-                                                                        ? _c("span", [
-                                                                            _vm._v(
-                                                                                "\n                                    - "
+                                                                _c(
+                                                                    "CAlert",
+                                                                    {
+                                                                        attrs: {
+                                                                            color: _vm.getColour(
+                                                                                _vm.status.payment.status
                                                                             ),
-                                                                            _c("b", [
-                                                                                _vm._v(
-                                                                                    _vm._s(
-                                                                                        _vm.status.payment.stk_request
-                                                                                            .response.ResultDesc
-                                                                                    )
-                                                                                )
-                                                                            ])
-                                                                        ])
-                                                                        : _vm._e()
-                                                                ]),
-                                                                _vm._v(" "),
-                                                                _c("hr"),
-                                                                _vm._v(" "),
-                                                                _c("p", {staticClass: "mb-0"}, [
-                                                                    _vm._v(
-                                                                        "\n                                " +
-                                                                        _vm._s(
-                                                                            _vm._f("moment")(
-                                                                                _vm.status.payment.stk_request
-                                                                                    .updated_at,
-                                                                                "from"
+                                                                            show: ""
+                                                                        }
+                                                                    },
+                                                                    [
+                                                                        _c("h4", {staticClass: "alert-heading"}, [
+                                                                            _vm._v("Payment")
+                                                                        ]),
+                                                                        _vm._v(" "),
+                                                                        _c("p", [
+                                                                            _vm._v(
+                                                                                "\n                                " +
+                                                                                _vm._s(_vm.status.payment.status) +
+                                                                                "\n                            "
                                                                             )
-                                                                        ) +
-                                                                        "\n                            "
-                                                                    )
-                                                                ])
-                                                            ]
+                                                                        ]),
+                                                                        _vm._v(" "),
+                                                                        _c("hr"),
+                                                                        _vm._v(" "),
+                                                                        _c("p", {staticClass: "mb-0"}, [
+                                                                            _vm._v(
+                                                                                "\n                                " +
+                                                                                _vm._s(
+                                                                                    _vm._f("moment")(
+                                                                                        _vm.status.payment.updated_at,
+                                                                                        "from"
+                                                                                    )
+                                                                                ) +
+                                                                                "\n                            "
+                                                                            )
+                                                                        ])
+                                                                    ]
+                                                                )
+                                                            ],
+                                                            1
                                                         )
-                                                    ],
-                                                    1
-                                                    )
-                                                    : _vm._e()
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("CCardBody", [
-                                                _vm.status.payment
-                                                    ? _c(
-                                                    "div",
+                                                        : _vm._e()
+                                                ]),
+                                                _vm._v(" "),
+                                                _c("CCardBody", [
+                                                    _vm.completed
+                                                        ? _c(
+                                                            "div",
+                                                            [
+                                                                _c(
+                                                                    "CButton",
+                                                                    {
+                                                                        attrs: {
+                                                                            to: {name: "finances"},
+                                                                            color: "success",
+                                                                            size: "sm"
+                                                                        }
+                                                                    },
+                                                                    [
+                                                                        _c("CIcon", {
+                                                                            attrs: {name: "cil-info"}
+                                                                        }),
+                                                                        _vm._v(
+                                                                            "\n                            Check voucher balance\n                        "
+                                                                        )
+                                                                    ],
+                                                                    1
+                                                                )
+                                                            ],
+                                                            1
+                                                        )
+                                                        : _vm._e()
+                                                ])
+                                            ],
+                                            1
+                                        )
+                                        : _c(
+                                            "CCard",
+                                            [
+                                                _c(
+                                                    "CCardBody",
                                                     [
                                                         _c(
-                                                            "CAlert",
-                                                            {
-                                                                attrs: {
-                                                                    color: _vm.getColour(
-                                                                        _vm.status.payment.status
-                                                                    ),
-                                                                    show: ""
-                                                                }
-                                                            },
+                                                            "CCardHeader",
                                                             [
-                                                                _c("h4", {staticClass: "alert-heading"}, [
-                                                                    _vm._v("Payment")
-                                                                ]),
+                                                                _c("CIcon", {
+                                                                    attrs: {name: "cil-justify-center"}
+                                                                }),
+                                                                _vm._v("\n                        Voucher "),
+                                                                _c("small", [_vm._v("Status")]),
                                                                 _vm._v(" "),
-                                                                _c("p", [
-                                                                    _vm._v(
-                                                                        "\n                                " +
-                                                                        _vm._s(_vm.status.payment.status) +
-                                                                        "\n                            "
-                                                                    )
-                                                                ]),
-                                                                _vm._v(" "),
-                                                                _c("hr"),
-                                                                _vm._v(" "),
-                                                                _c("p", {staticClass: "mb-0"}, [
-                                                                    _vm._v(
-                                                                        "\n                                " +
-                                                                        _vm._s(
-                                                                            _vm._f("moment")(
-                                                                                _vm.status.payment.updated_at,
-                                                                                "from"
+                                                                _vm.timerEnabled
+                                                                    ? _c(
+                                                                        "span",
+                                                                        {staticClass: "text-right float-right"},
+                                                                        [
+                                                                            _vm._v(
+                                                                                "Refreshing in " +
+                                                                                _vm._s(_vm.timerCount)
                                                                             )
-                                                                        ) +
-                                                                        "\n                            "
+                                                                        ]
                                                                     )
-                                                                ])
-                                                            ]
-                                                        )
-                                                    ],
-                                                    1
-                                                    )
-                                                    : _vm._e()
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("CCardBody", [
-                                                _vm.completed
-                                                    ? _c(
-                                                    "div",
-                                                    [
+                                                                    : _vm._e()
+                                                            ],
+                                                            1
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c("CCardText", [
+                                                            _c("b", [_vm._v("Oops!")]),
+                                                            _vm._v(
+                                                                "\n\n                        The item you are looking for does not exist.\n                    "
+                                                            )
+                                                        ]),
+                                                        _vm._v(" "),
                                                         _c(
                                                             "CButton",
                                                             {
                                                                 attrs: {
-                                                                    to: {name: "finances"},
-                                                                    color: "success",
+                                                                    to: {name: "dashboard"},
+                                                                    color: "danger",
                                                                     size: "sm"
                                                                 }
                                                             },
                                                             [
-                                                                _c("CIcon", {
-                                                                    attrs: {name: "cil-info"}
-                                                                }),
+                                                                _c("CIcon", {attrs: {name: "cil-ban"}}),
                                                                 _vm._v(
-                                                                    "\n                            Check voucher balance\n                        "
+                                                                    "\n                        Go home\n                    "
                                                                 )
                                                             ],
                                                             1
                                                         )
                                                     ],
                                                     1
-                                                    )
-                                                    : _vm._e()
-                                            ])
-                                        ],
-                                        1
-                                        )
-                                        : _c(
-                                        "CCard",
-                                        [
-                                            _c(
-                                                "CCardBody",
-                                                [
-                                                    _c(
-                                                        "CCardHeader",
-                                                        [
-                                                            _c("CIcon", {
-                                                                attrs: {name: "cil-justify-center"}
-                                                            }),
-                                                            _vm._v("\n                        Voucher "),
-                                                            _c("small", [_vm._v("Status")]),
-                                                            _vm._v(" "),
-                                                            _vm.timerEnabled
-                                                                ? _c(
-                                                                "span",
-                                                                {staticClass: "text-right float-right"},
-                                                                [
-                                                                    _vm._v(
-                                                                        "Refreshing in " +
-                                                                        _vm._s(_vm.timerCount)
-                                                                    )
-                                                                ]
-                                                                )
-                                                                : _vm._e()
-                                                        ],
-                                                        1
-                                                    ),
-                                                    _vm._v(" "),
-                                                    _c("CCardText", [
-                                                        _c("b", [_vm._v("Oops!")]),
-                                                        _vm._v(
-                                                            "\n\n                        The item you are looking for does not exist.\n                    "
-                                                        )
-                                                    ]),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                        "CButton",
-                                                        {
-                                                            attrs: {
-                                                                to: {name: "dashboard"},
-                                                                color: "danger",
-                                                                size: "sm"
-                                                            }
-                                                        },
-                                                        [
-                                                            _c("CIcon", {attrs: {name: "cil-ban"}}),
-                                                            _vm._v(
-                                                                "\n                        Go home\n                    "
-                                                            )
-                                                        ],
-                                                        1
-                                                    )
-                                                ],
-                                                1
-                                            )
-                                        ],
-                                        1
+                                                )
+                                            ],
+                                            1
                                         )
                                 ],
                                 1

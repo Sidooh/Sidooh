@@ -534,16 +534,16 @@
                                                                     _vm._v(" "),
                                                                     _vm.showError
                                                                         ? _c(
-                                                                        "p",
-                                                                        {
-                                                                            staticClass: "alert-warning",
-                                                                            attrs: {id: "error"}
-                                                                        },
-                                                                        [
-                                                                            _vm._v(
-                                                                                "Some details were not filled in\n                                correctly"
-                                                                            )
-                                                                        ]
+                                                                            "p",
+                                                                            {
+                                                                                staticClass: "alert-warning",
+                                                                                attrs: {id: "error"}
+                                                                            },
+                                                                            [
+                                                                                _vm._v(
+                                                                                    "Some details were not filled in\n                                correctly"
+                                                                                )
+                                                                            ]
                                                                         )
                                                                         : _vm._e(),
                                                                     _vm._v(" "),
@@ -608,62 +608,62 @@
                                                                                     _vm._v(" "),
                                                                                     _vm.otherNumber
                                                                                         ? _c(
-                                                                                        "CCol",
-                                                                                        [
-                                                                                            _c("vue-tel-input", {
-                                                                                                staticClass: "mt-3",
-                                                                                                attrs: {
-                                                                                                    invalidMsg: _vm.error
-                                                                                                },
-                                                                                                on: {validate: _vm.checkPhone}
-                                                                                            }),
-                                                                                            _vm._v(" "),
-                                                                                            _vm.errors.phone
-                                                                                                ? _c(
-                                                                                                "p",
-                                                                                                {
-                                                                                                    staticClass:
-                                                                                                        "alert-warning",
+                                                                                            "CCol",
+                                                                                            [
+                                                                                                _c("vue-tel-input", {
+                                                                                                    staticClass: "mt-3",
                                                                                                     attrs: {
-                                                                                                        id: "phoneError"
-                                                                                                    }
-                                                                                                },
-                                                                                                [
-                                                                                                    _vm._v(
-                                                                                                        "\n                                            " +
-                                                                                                        _vm._s(
-                                                                                                            _vm.errors.phone[0]
-                                                                                                        ) +
-                                                                                                        "\n                                        "
+                                                                                                        invalidMsg: _vm.error
+                                                                                                    },
+                                                                                                    on: {validate: _vm.checkPhone}
+                                                                                                }),
+                                                                                                _vm._v(" "),
+                                                                                                _vm.errors.phone
+                                                                                                    ? _c(
+                                                                                                        "p",
+                                                                                                        {
+                                                                                                            staticClass:
+                                                                                                                "alert-warning",
+                                                                                                            attrs: {
+                                                                                                                id: "phoneError"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        [
+                                                                                                            _vm._v(
+                                                                                                                "\n                                            " +
+                                                                                                                _vm._s(
+                                                                                                                    _vm.errors.phone[0]
+                                                                                                                ) +
+                                                                                                                "\n                                        "
+                                                                                                            )
+                                                                                                        ]
                                                                                                     )
-                                                                                                ]
-                                                                                                )
-                                                                                                : _vm._e(),
-                                                                                            _vm._v(" "),
-                                                                                            _vm.validation.other_phone
-                                                                                                ? _c(
-                                                                                                "p",
-                                                                                                {
-                                                                                                    staticClass:
-                                                                                                        "alert-warning",
-                                                                                                    attrs: {
-                                                                                                        id: "otherNumberError"
-                                                                                                    }
-                                                                                                },
-                                                                                                [
-                                                                                                    _vm._v(
-                                                                                                        "\n                                            " +
-                                                                                                        _vm._s(
-                                                                                                            _vm.validation
-                                                                                                                .other_phone
-                                                                                                        ) +
-                                                                                                        "\n                                        "
+                                                                                                    : _vm._e(),
+                                                                                                _vm._v(" "),
+                                                                                                _vm.validation.other_phone
+                                                                                                    ? _c(
+                                                                                                        "p",
+                                                                                                        {
+                                                                                                            staticClass:
+                                                                                                                "alert-warning",
+                                                                                                            attrs: {
+                                                                                                                id: "otherNumberError"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        [
+                                                                                                            _vm._v(
+                                                                                                                "\n                                            " +
+                                                                                                                _vm._s(
+                                                                                                                    _vm.validation
+                                                                                                                        .other_phone
+                                                                                                                ) +
+                                                                                                                "\n                                        "
+                                                                                                            )
+                                                                                                        ]
                                                                                                     )
-                                                                                                ]
-                                                                                                )
-                                                                                                : _vm._e()
-                                                                                        ],
-                                                                                        1
+                                                                                                    : _vm._e()
+                                                                                            ],
+                                                                                            1
                                                                                         )
                                                                                         : _vm._e()
                                                                                 ],
@@ -761,18 +761,18 @@
                                                                             _vm._v(" "),
                                                                             _vm.validation.amount
                                                                                 ? _c(
-                                                                                "p",
-                                                                                {
-                                                                                    staticClass: "alert-warning",
-                                                                                    attrs: {id: "amountError"}
-                                                                                },
-                                                                                [
-                                                                                    _vm._v(
-                                                                                        "\n                                    " +
-                                                                                        _vm._s(_vm.validation.amount) +
-                                                                                        "\n                                "
-                                                                                    )
-                                                                                ]
+                                                                                    "p",
+                                                                                    {
+                                                                                        staticClass: "alert-warning",
+                                                                                        attrs: {id: "amountError"}
+                                                                                    },
+                                                                                    [
+                                                                                        _vm._v(
+                                                                                            "\n                                    " +
+                                                                                            _vm._s(_vm.validation.amount) +
+                                                                                            "\n                                "
+                                                                                        )
+                                                                                    ]
                                                                                 )
                                                                                 : _vm._e()
                                                                         ],
@@ -808,21 +808,21 @@
                                                                                     _vm._v(" "),
                                                                                     _vm.validation.purchaseMethod
                                                                                         ? _c(
-                                                                                        "p",
-                                                                                        {
-                                                                                            staticClass: "alert-warning",
-                                                                                            attrs: {id: "methodError"}
-                                                                                        },
-                                                                                        [
-                                                                                            _vm._v(
-                                                                                                "\n                                        " +
-                                                                                                _vm._s(
-                                                                                                    _vm.validation
-                                                                                                        .purchaseMethod
-                                                                                                ) +
-                                                                                                "\n                                    "
-                                                                                            )
-                                                                                        ]
+                                                                                            "p",
+                                                                                            {
+                                                                                                staticClass: "alert-warning",
+                                                                                                attrs: {id: "methodError"}
+                                                                                            },
+                                                                                            [
+                                                                                                _vm._v(
+                                                                                                    "\n                                        " +
+                                                                                                    _vm._s(
+                                                                                                        _vm.validation
+                                                                                                            .purchaseMethod
+                                                                                                    ) +
+                                                                                                    "\n                                    "
+                                                                                                )
+                                                                                            ]
                                                                                         )
                                                                                         : _vm._e()
                                                                                 ],
@@ -834,125 +834,125 @@
                                                                     _vm._v(" "),
                                                                     _vm.form.purchaseMethod === "MPESA"
                                                                         ? _c(
-                                                                        "div",
-                                                                        {staticClass: "mt-3"},
-                                                                        [
-                                                                            _c(
-                                                                                "CRow",
-                                                                                {
-                                                                                    staticClass: "form-group mb-0",
-                                                                                    attrs: {form: ""}
-                                                                                },
-                                                                                [
-                                                                                    _c(
-                                                                                        "CCol",
-                                                                                        {
-                                                                                            staticClass: "col-form-label",
-                                                                                            attrs: {
-                                                                                                md: "6",
-                                                                                                tag: "label"
-                                                                                            }
-                                                                                        },
-                                                                                        [
-                                                                                            _vm._v(
-                                                                                                "\n                                        Different Mpesa Number?\n                                    "
+                                                                            "div",
+                                                                            {staticClass: "mt-3"},
+                                                                            [
+                                                                                _c(
+                                                                                    "CRow",
+                                                                                    {
+                                                                                        staticClass: "form-group mb-0",
+                                                                                        attrs: {form: ""}
+                                                                                    },
+                                                                                    [
+                                                                                        _c(
+                                                                                            "CCol",
+                                                                                            {
+                                                                                                staticClass: "col-form-label",
+                                                                                                attrs: {
+                                                                                                    md: "6",
+                                                                                                    tag: "label"
+                                                                                                }
+                                                                                            },
+                                                                                            [
+                                                                                                _vm._v(
+                                                                                                    "\n                                        Different Mpesa Number?\n                                    "
+                                                                                                )
+                                                                                            ]
+                                                                                        ),
+                                                                                        _vm._v(" "),
+                                                                                        _c(
+                                                                                            "CCol",
+                                                                                            {attrs: {md: "6"}},
+                                                                                            [
+                                                                                                _c("CSwitch", {
+                                                                                                    staticClass: "mr-1",
+                                                                                                    attrs: {
+                                                                                                        checked: _vm.mpesaNumber,
+                                                                                                        color: "info",
+                                                                                                        shape: "pill",
+                                                                                                        slabelOn: "Buy for other",
+                                                                                                        variant: "outline"
+                                                                                                    },
+                                                                                                    on: {
+                                                                                                        "update:checked":
+                                                                                                        _vm.setMpesaNumber
+                                                                                                    }
+                                                                                                })
+                                                                                            ],
+                                                                                            1
+                                                                                        ),
+                                                                                        _vm._v(" "),
+                                                                                        _vm.mpesaNumber
+                                                                                            ? _c(
+                                                                                                "CCol",
+                                                                                                [
+                                                                                                    _c("vue-tel-input", {
+                                                                                                        staticClass: "mt-3",
+                                                                                                        attrs: {
+                                                                                                            invalidMsg: _vm.error
+                                                                                                        },
+                                                                                                        on: {
+                                                                                                            validate:
+                                                                                                            _vm.checkMpesaPhone
+                                                                                                        }
+                                                                                                    }),
+                                                                                                    _vm._v(" "),
+                                                                                                    _vm.errors.mpesaPhone
+                                                                                                        ? _c(
+                                                                                                            "p",
+                                                                                                            {
+                                                                                                                staticClass:
+                                                                                                                    "alert-warning",
+                                                                                                                attrs: {
+                                                                                                                    id:
+                                                                                                                        "mpesaPhoneError"
+                                                                                                                }
+                                                                                                            },
+                                                                                                            [
+                                                                                                                _vm._v(
+                                                                                                                    "\n                                            " +
+                                                                                                                    _vm._s(
+                                                                                                                        _vm.errors
+                                                                                                                            .mpesaPhone[0]
+                                                                                                                    ) +
+                                                                                                                    "\n                                        "
+                                                                                                                )
+                                                                                                            ]
+                                                                                                        )
+                                                                                                        : _vm._e(),
+                                                                                                    _vm._v(" "),
+                                                                                                    _vm.validation.mpesa_phone
+                                                                                                        ? _c(
+                                                                                                            "p",
+                                                                                                            {
+                                                                                                                staticClass:
+                                                                                                                    "alert-warning",
+                                                                                                                attrs: {
+                                                                                                                    id:
+                                                                                                                        "mpesaNumberError"
+                                                                                                                }
+                                                                                                            },
+                                                                                                            [
+                                                                                                                _vm._v(
+                                                                                                                    "\n                                            " +
+                                                                                                                    _vm._s(
+                                                                                                                        _vm.validation
+                                                                                                                            .mpesa_phone
+                                                                                                                    ) +
+                                                                                                                    "\n                                        "
+                                                                                                                )
+                                                                                                            ]
+                                                                                                        )
+                                                                                                        : _vm._e()
+                                                                                                ],
+                                                                                                1
                                                                                             )
-                                                                                        ]
-                                                                                    ),
-                                                                                    _vm._v(" "),
-                                                                                    _c(
-                                                                                        "CCol",
-                                                                                        {attrs: {md: "6"}},
-                                                                                        [
-                                                                                            _c("CSwitch", {
-                                                                                                staticClass: "mr-1",
-                                                                                                attrs: {
-                                                                                                    checked: _vm.mpesaNumber,
-                                                                                                    color: "info",
-                                                                                                    shape: "pill",
-                                                                                                    slabelOn: "Buy for other",
-                                                                                                    variant: "outline"
-                                                                                                },
-                                                                                                on: {
-                                                                                                    "update:checked":
-                                                                                                    _vm.setMpesaNumber
-                                                                                                }
-                                                                                            })
-                                                                                        ],
-                                                                                        1
-                                                                                    ),
-                                                                                    _vm._v(" "),
-                                                                                    _vm.mpesaNumber
-                                                                                        ? _c(
-                                                                                        "CCol",
-                                                                                        [
-                                                                                            _c("vue-tel-input", {
-                                                                                                staticClass: "mt-3",
-                                                                                                attrs: {
-                                                                                                    invalidMsg: _vm.error
-                                                                                                },
-                                                                                                on: {
-                                                                                                    validate:
-                                                                                                    _vm.checkMpesaPhone
-                                                                                                }
-                                                                                            }),
-                                                                                            _vm._v(" "),
-                                                                                            _vm.errors.mpesaPhone
-                                                                                                ? _c(
-                                                                                                "p",
-                                                                                                {
-                                                                                                    staticClass:
-                                                                                                        "alert-warning",
-                                                                                                    attrs: {
-                                                                                                        id:
-                                                                                                            "mpesaPhoneError"
-                                                                                                    }
-                                                                                                },
-                                                                                                [
-                                                                                                    _vm._v(
-                                                                                                        "\n                                            " +
-                                                                                                        _vm._s(
-                                                                                                            _vm.errors
-                                                                                                                .mpesaPhone[0]
-                                                                                                        ) +
-                                                                                                        "\n                                        "
-                                                                                                    )
-                                                                                                ]
-                                                                                                )
-                                                                                                : _vm._e(),
-                                                                                            _vm._v(" "),
-                                                                                            _vm.validation.mpesa_phone
-                                                                                                ? _c(
-                                                                                                "p",
-                                                                                                {
-                                                                                                    staticClass:
-                                                                                                        "alert-warning",
-                                                                                                    attrs: {
-                                                                                                        id:
-                                                                                                            "mpesaNumberError"
-                                                                                                    }
-                                                                                                },
-                                                                                                [
-                                                                                                    _vm._v(
-                                                                                                        "\n                                            " +
-                                                                                                        _vm._s(
-                                                                                                            _vm.validation
-                                                                                                                .mpesa_phone
-                                                                                                        ) +
-                                                                                                        "\n                                        "
-                                                                                                    )
-                                                                                                ]
-                                                                                                )
-                                                                                                : _vm._e()
-                                                                                        ],
-                                                                                        1
-                                                                                        )
-                                                                                        : _vm._e()
-                                                                                ],
-                                                                                1
-                                                                            )
-                                                                        ],
-                                                                        1
+                                                                                            : _vm._e()
+                                                                                    ],
+                                                                                    1
+                                                                                )
+                                                                            ],
+                                                                            1
                                                                         )
                                                                         : _vm._e(),
                                                                     _vm._v(" "),

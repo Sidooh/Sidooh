@@ -566,409 +566,409 @@
                                                         [
                                                             _vm.registrationStep === 1
                                                                 ? _c(
-                                                                "CForm",
-                                                                {
-                                                                    on: {
-                                                                        submit: function ($event) {
-                                                                            $event.preventDefault()
-                                                                            return _vm.submitStepOne($event)
-                                                                        }
-                                                                    }
-                                                                },
-                                                                [
-                                                                    _c("h1", [_vm._v("Register")]),
-                                                                    _vm._v(" "),
-                                                                    _c("p", {staticClass: "text-muted"}, [
-                                                                        _vm._v("Create your account")
-                                                                    ]),
-                                                                    _vm._v(" "),
-                                                                    _c("span", [
-                                                                        _c("b", [_vm._v("Step 1:")]),
-                                                                        _vm._v(" Check your number.")
-                                                                    ]),
-                                                                    _vm._v(" "),
-                                                                    _c("vue-tel-input", {
-                                                                        staticClass: "mt-3",
-                                                                        attrs: {invalidMsg: _vm.error},
-                                                                        on: {validate: _vm.checkPhone}
-                                                                    }),
-                                                                    _vm._v(" "),
-                                                                    _vm.error
-                                                                        ? _c(
-                                                                        "span",
-                                                                        {
-                                                                            staticClass:
-                                                                                "text-danger text-sm font-sm text-center"
-                                                                        },
-                                                                        [_vm._v(_vm._s(_vm.error))]
-                                                                        )
-                                                                        : _vm._e(),
-                                                                    _vm._v(" "),
-                                                                    _c(
-                                                                        "CButton",
-                                                                        {
-                                                                            staticClass: "mt-3",
-                                                                            attrs: {
-                                                                                disabled: !_vm.validPhoneInput,
-                                                                                block: "",
-                                                                                color: "success",
-                                                                                type: "submit"
+                                                                    "CForm",
+                                                                    {
+                                                                        on: {
+                                                                            submit: function ($event) {
+                                                                                $event.preventDefault()
+                                                                                return _vm.submitStepOne($event)
                                                                             }
-                                                                        },
-                                                                        [
-                                                                            _vm._v(
-                                                                                "\n                                Proceed\n                            "
+                                                                        }
+                                                                    },
+                                                                    [
+                                                                        _c("h1", [_vm._v("Register")]),
+                                                                        _vm._v(" "),
+                                                                        _c("p", {staticClass: "text-muted"}, [
+                                                                            _vm._v("Create your account")
+                                                                        ]),
+                                                                        _vm._v(" "),
+                                                                        _c("span", [
+                                                                            _c("b", [_vm._v("Step 1:")]),
+                                                                            _vm._v(" Check your number.")
+                                                                        ]),
+                                                                        _vm._v(" "),
+                                                                        _c("vue-tel-input", {
+                                                                            staticClass: "mt-3",
+                                                                            attrs: {invalidMsg: _vm.error},
+                                                                            on: {validate: _vm.checkPhone}
+                                                                        }),
+                                                                        _vm._v(" "),
+                                                                        _vm.error
+                                                                            ? _c(
+                                                                                "span",
+                                                                                {
+                                                                                    staticClass:
+                                                                                        "text-danger text-sm font-sm text-center"
+                                                                                },
+                                                                                [_vm._v(_vm._s(_vm.error))]
                                                                             )
-                                                                        ]
-                                                                    )
-                                                                ],
-                                                                1
+                                                                            : _vm._e(),
+                                                                        _vm._v(" "),
+                                                                        _c(
+                                                                            "CButton",
+                                                                            {
+                                                                                staticClass: "mt-3",
+                                                                                attrs: {
+                                                                                    disabled: !_vm.validPhoneInput,
+                                                                                    block: "",
+                                                                                    color: "success",
+                                                                                    type: "submit"
+                                                                                }
+                                                                            },
+                                                                            [
+                                                                                _vm._v(
+                                                                                    "\n                                Proceed\n                            "
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    1
                                                                 )
                                                                 : _vm._e(),
                                                             _vm._v(" "),
                                                             _vm.registrationStep === 2
                                                                 ? _c(
-                                                                "CForm",
-                                                                {
-                                                                    on: {
-                                                                        submit: function ($event) {
-                                                                            $event.preventDefault()
-                                                                            return _vm.submitStepTwo($event)
-                                                                        }
-                                                                    }
-                                                                },
-                                                                [
-                                                                    _c("h1", [_vm._v("Register")]),
-                                                                    _vm._v(" "),
-                                                                    _c("p", {staticClass: "text-muted"}, [
-                                                                        _vm._v("Create your account")
-                                                                    ]),
-                                                                    _vm._v(" "),
-                                                                    _c("span", [
-                                                                        _c("b", [_vm._v("Step 2:")]),
-                                                                        _vm._v(" Verify your number.")
-                                                                    ]),
-                                                                    _vm._v(" "),
-                                                                    _vm.otp
-                                                                        ? _c(
-                                                                        "span",
-                                                                        {staticClass: "alert-info, my-2"},
-                                                                        [
-                                                                            _vm._v(
-                                                                                "A code was sent to the number, please add it below."
-                                                                            )
-                                                                        ]
-                                                                        )
-                                                                        : _vm._e(),
-                                                                    _vm._v(" "),
-                                                                    _c("CInput", {
-                                                                        staticClass: "mt-3",
-                                                                        attrs: {
-                                                                            autocomplete: "otp",
-                                                                            min: "100000",
-                                                                            placeholder: "Code",
-                                                                            prepend: "6",
-                                                                            type: "number"
-                                                                        },
-                                                                        on: {input: _vm.checkOtp},
-                                                                        model: {
-                                                                            value: _vm.form.otp,
-                                                                            callback: function ($$v) {
-                                                                                _vm.$set(_vm.form, "otp", $$v)
-                                                                            },
-                                                                            expression: "form.otp"
-                                                                        }
-                                                                    }),
-                                                                    _vm._v(" "),
-                                                                    _vm.validation.otp
-                                                                        ? _c(
-                                                                        "p",
-                                                                        {
-                                                                            staticClass: "alert-warning",
-                                                                            attrs: {id: "otpError"}
-                                                                        },
-                                                                        [
-                                                                            _vm._v(
-                                                                                "\n                                " +
-                                                                                _vm._s(_vm.validation.otp) +
-                                                                                "\n                            "
-                                                                            )
-                                                                        ]
-                                                                        )
-                                                                        : _vm._e(),
-                                                                    _vm._v(" "),
-                                                                    _c(
-                                                                        "CButton",
-                                                                        {
-                                                                            staticClass: "mt-3 float-left",
-                                                                            attrs: {color: "secondary"},
-                                                                            on: {
-                                                                                click: function ($event) {
-                                                                                    return _vm.setRegistrationStep(1)
-                                                                                }
+                                                                    "CForm",
+                                                                    {
+                                                                        on: {
+                                                                            submit: function ($event) {
+                                                                                $event.preventDefault()
+                                                                                return _vm.submitStepTwo($event)
                                                                             }
-                                                                        },
-                                                                        [
-                                                                            _vm._v(
-                                                                                "\n                                Back\n                            "
+                                                                        }
+                                                                    },
+                                                                    [
+                                                                        _c("h1", [_vm._v("Register")]),
+                                                                        _vm._v(" "),
+                                                                        _c("p", {staticClass: "text-muted"}, [
+                                                                            _vm._v("Create your account")
+                                                                        ]),
+                                                                        _vm._v(" "),
+                                                                        _c("span", [
+                                                                            _c("b", [_vm._v("Step 2:")]),
+                                                                            _vm._v(" Verify your number.")
+                                                                        ]),
+                                                                        _vm._v(" "),
+                                                                        _vm.otp
+                                                                            ? _c(
+                                                                                "span",
+                                                                                {staticClass: "alert-info, my-2"},
+                                                                                [
+                                                                                    _vm._v(
+                                                                                        "A code was sent to the number, please add it below."
+                                                                                    )
+                                                                                ]
                                                                             )
-                                                                        ]
-                                                                    ),
-                                                                    _vm._v(" "),
-                                                                    _c(
-                                                                        "CButton",
-                                                                        {
-                                                                            staticClass: "mt-3 float-right",
+                                                                            : _vm._e(),
+                                                                        _vm._v(" "),
+                                                                        _c("CInput", {
+                                                                            staticClass: "mt-3",
                                                                             attrs: {
-                                                                                disabled: !_vm.validOtpInput,
-                                                                                color: "success",
-                                                                                type: "submit"
+                                                                                autocomplete: "otp",
+                                                                                min: "100000",
+                                                                                placeholder: "Code",
+                                                                                prepend: "6",
+                                                                                type: "number"
+                                                                            },
+                                                                            on: {input: _vm.checkOtp},
+                                                                            model: {
+                                                                                value: _vm.form.otp,
+                                                                                callback: function ($$v) {
+                                                                                    _vm.$set(_vm.form, "otp", $$v)
+                                                                                },
+                                                                                expression: "form.otp"
                                                                             }
-                                                                        },
-                                                                        [
-                                                                            _vm._v(
-                                                                                "\n                                Proceed\n                            "
+                                                                        }),
+                                                                        _vm._v(" "),
+                                                                        _vm.validation.otp
+                                                                            ? _c(
+                                                                                "p",
+                                                                                {
+                                                                                    staticClass: "alert-warning",
+                                                                                    attrs: {id: "otpError"}
+                                                                                },
+                                                                                [
+                                                                                    _vm._v(
+                                                                                        "\n                                " +
+                                                                                        _vm._s(_vm.validation.otp) +
+                                                                                        "\n                            "
+                                                                                    )
+                                                                                ]
                                                                             )
-                                                                        ]
-                                                                    )
-                                                                ],
-                                                                1
+                                                                            : _vm._e(),
+                                                                        _vm._v(" "),
+                                                                        _c(
+                                                                            "CButton",
+                                                                            {
+                                                                                staticClass: "mt-3 float-left",
+                                                                                attrs: {color: "secondary"},
+                                                                                on: {
+                                                                                    click: function ($event) {
+                                                                                        return _vm.setRegistrationStep(1)
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            [
+                                                                                _vm._v(
+                                                                                    "\n                                Back\n                            "
+                                                                                )
+                                                                            ]
+                                                                        ),
+                                                                        _vm._v(" "),
+                                                                        _c(
+                                                                            "CButton",
+                                                                            {
+                                                                                staticClass: "mt-3 float-right",
+                                                                                attrs: {
+                                                                                    disabled: !_vm.validOtpInput,
+                                                                                    color: "success",
+                                                                                    type: "submit"
+                                                                                }
+                                                                            },
+                                                                            [
+                                                                                _vm._v(
+                                                                                    "\n                                Proceed\n                            "
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    1
                                                                 )
                                                                 : _vm._e(),
                                                             _vm._v(" "),
                                                             _vm.registrationStep === 3
                                                                 ? _c(
-                                                                "CForm",
-                                                                {
-                                                                    on: {
-                                                                        submit: function ($event) {
-                                                                            $event.preventDefault()
-                                                                            return _vm.submitStepFinal($event)
-                                                                        }
-                                                                    }
-                                                                },
-                                                                [
-                                                                    _c("h1", [_vm._v("Register")]),
-                                                                    _vm._v(" "),
-                                                                    _c("p", {staticClass: "text-muted"}, [
-                                                                        _vm._v("Create your account")
-                                                                    ]),
-                                                                    _vm._v(" "),
-                                                                    _c("CInput", {
-                                                                        attrs: {
-                                                                            autocomplete: "name",
-                                                                            placeholder: "Name"
-                                                                        },
-                                                                        on: {input: _vm.checkName},
-                                                                        scopedSlots: _vm._u(
-                                                                            [
-                                                                                {
-                                                                                    key: "prepend-content",
-                                                                                    fn: function () {
-                                                                                        return [
-                                                                                            _c("CIcon", {
-                                                                                                attrs: {name: "cil-user"}
-                                                                                            })
-                                                                                        ]
-                                                                                    },
-                                                                                    proxy: true
-                                                                                }
-                                                                            ],
-                                                                            null,
-                                                                            false,
-                                                                            3945887885
-                                                                        ),
-                                                                        model: {
-                                                                            value: _vm.form.name,
-                                                                            callback: function ($$v) {
-                                                                                _vm.$set(_vm.form, "name", $$v)
-                                                                            },
-                                                                            expression: "form.name"
-                                                                        }
-                                                                    }),
-                                                                    _vm._v(" "),
-                                                                    _vm.validation.name
-                                                                        ? _c(
-                                                                        "p",
-                                                                        {
-                                                                            staticClass: "alert-warning",
-                                                                            attrs: {id: "nameError"}
-                                                                        },
-                                                                        [
-                                                                            _vm._v(
-                                                                                "\n                                " +
-                                                                                _vm._s(_vm.validation.name) +
-                                                                                "\n                            "
-                                                                            )
-                                                                        ]
-                                                                        )
-                                                                        : _vm._e(),
-                                                                    _vm._v(" "),
-                                                                    _c("CInput", {
-                                                                        attrs: {
-                                                                            autocomplete: "email",
-                                                                            placeholder: "Email",
-                                                                            prepend: "@",
-                                                                            type: "email"
-                                                                        },
-                                                                        on: {input: _vm.checkEmail},
-                                                                        model: {
-                                                                            value: _vm.form.email,
-                                                                            callback: function ($$v) {
-                                                                                _vm.$set(_vm.form, "email", $$v)
-                                                                            },
-                                                                            expression: "form.email"
-                                                                        }
-                                                                    }),
-                                                                    _vm._v(" "),
-                                                                    _vm.validation.email
-                                                                        ? _c(
-                                                                        "p",
-                                                                        {
-                                                                            staticClass: "alert-warning",
-                                                                            attrs: {id: "emailError"}
-                                                                        },
-                                                                        [
-                                                                            _vm._v(
-                                                                                "\n                                " +
-                                                                                _vm._s(_vm.validation.email) +
-                                                                                "\n                            "
-                                                                            )
-                                                                        ]
-                                                                        )
-                                                                        : _vm._e(),
-                                                                    _vm._v(" "),
-                                                                    _c("CInput", {
-                                                                        attrs: {
-                                                                            autocomplete: "new-password",
-                                                                            placeholder: "Password",
-                                                                            type: "password"
-                                                                        },
-                                                                        on: {input: _vm.checkPassword},
-                                                                        scopedSlots: _vm._u(
-                                                                            [
-                                                                                {
-                                                                                    key: "prepend-content",
-                                                                                    fn: function () {
-                                                                                        return [
-                                                                                            _c("CIcon", {
-                                                                                                attrs: {
-                                                                                                    name: "cil-lock-locked"
-                                                                                                }
-                                                                                            })
-                                                                                        ]
-                                                                                    },
-                                                                                    proxy: true
-                                                                                }
-                                                                            ],
-                                                                            null,
-                                                                            false,
-                                                                            3300492400
-                                                                        ),
-                                                                        model: {
-                                                                            value: _vm.form.password,
-                                                                            callback: function ($$v) {
-                                                                                _vm.$set(_vm.form, "password", $$v)
-                                                                            },
-                                                                            expression: "form.password"
-                                                                        }
-                                                                    }),
-                                                                    _vm._v(" "),
-                                                                    _vm.validation.password
-                                                                        ? _c(
-                                                                        "p",
-                                                                        {
-                                                                            staticClass: "alert-warning",
-                                                                            attrs: {id: "passwordError"}
-                                                                        },
-                                                                        [
-                                                                            _vm._v(
-                                                                                "\n                                " +
-                                                                                _vm._s(_vm.validation.password) +
-                                                                                "\n                            "
-                                                                            )
-                                                                        ]
-                                                                        )
-                                                                        : _vm._e(),
-                                                                    _vm._v(" "),
-                                                                    _c("CInput", {
-                                                                        staticClass: "mb-4",
-                                                                        attrs: {
-                                                                            autocomplete: "new-password",
-                                                                            placeholder: "Repeat password",
-                                                                            type: "password"
-                                                                        },
-                                                                        on: {input: _vm.checkConfirmPassword},
-                                                                        scopedSlots: _vm._u(
-                                                                            [
-                                                                                {
-                                                                                    key: "prepend-content",
-                                                                                    fn: function () {
-                                                                                        return [
-                                                                                            _c("CIcon", {
-                                                                                                attrs: {
-                                                                                                    name: "cil-lock-locked"
-                                                                                                }
-                                                                                            })
-                                                                                        ]
-                                                                                    },
-                                                                                    proxy: true
-                                                                                }
-                                                                            ],
-                                                                            null,
-                                                                            false,
-                                                                            3300492400
-                                                                        ),
-                                                                        model: {
-                                                                            value: _vm.form.confirmPassword,
-                                                                            callback: function ($$v) {
-                                                                                _vm.$set(
-                                                                                    _vm.form,
-                                                                                    "confirmPassword",
-                                                                                    $$v
-                                                                                )
-                                                                            },
-                                                                            expression: "form.confirmPassword"
-                                                                        }
-                                                                    }),
-                                                                    _vm._v(" "),
-                                                                    _vm.validation.confirmPassword
-                                                                        ? _c(
-                                                                        "p",
-                                                                        {
-                                                                            staticClass: "alert-warning",
-                                                                            attrs: {id: "confirmPasswordError"}
-                                                                        },
-                                                                        [
-                                                                            _vm._v(
-                                                                                "\n                                " +
-                                                                                _vm._s(
-                                                                                    _vm.validation.confirmPassword
-                                                                                ) +
-                                                                                "\n                            "
-                                                                            )
-                                                                        ]
-                                                                        )
-                                                                        : _vm._e(),
-                                                                    _vm._v(" "),
-                                                                    _c(
-                                                                        "CButton",
-                                                                        {
-                                                                            attrs: {
-                                                                                disabled: !_vm.validForm,
-                                                                                block: "",
-                                                                                color: "success",
-                                                                                type: "submit"
+                                                                    "CForm",
+                                                                    {
+                                                                        on: {
+                                                                            submit: function ($event) {
+                                                                                $event.preventDefault()
+                                                                                return _vm.submitStepFinal($event)
                                                                             }
-                                                                        },
-                                                                        [
-                                                                            _vm._v(
-                                                                                "Create Account\n                            "
+                                                                        }
+                                                                    },
+                                                                    [
+                                                                        _c("h1", [_vm._v("Register")]),
+                                                                        _vm._v(" "),
+                                                                        _c("p", {staticClass: "text-muted"}, [
+                                                                            _vm._v("Create your account")
+                                                                        ]),
+                                                                        _vm._v(" "),
+                                                                        _c("CInput", {
+                                                                            attrs: {
+                                                                                autocomplete: "name",
+                                                                                placeholder: "Name"
+                                                                            },
+                                                                            on: {input: _vm.checkName},
+                                                                            scopedSlots: _vm._u(
+                                                                                [
+                                                                                    {
+                                                                                        key: "prepend-content",
+                                                                                        fn: function () {
+                                                                                            return [
+                                                                                                _c("CIcon", {
+                                                                                                    attrs: {name: "cil-user"}
+                                                                                                })
+                                                                                            ]
+                                                                                        },
+                                                                                        proxy: true
+                                                                                    }
+                                                                                ],
+                                                                                null,
+                                                                                false,
+                                                                                3945887885
+                                                                            ),
+                                                                            model: {
+                                                                                value: _vm.form.name,
+                                                                                callback: function ($$v) {
+                                                                                    _vm.$set(_vm.form, "name", $$v)
+                                                                                },
+                                                                                expression: "form.name"
+                                                                            }
+                                                                        }),
+                                                                        _vm._v(" "),
+                                                                        _vm.validation.name
+                                                                            ? _c(
+                                                                                "p",
+                                                                                {
+                                                                                    staticClass: "alert-warning",
+                                                                                    attrs: {id: "nameError"}
+                                                                                },
+                                                                                [
+                                                                                    _vm._v(
+                                                                                        "\n                                " +
+                                                                                        _vm._s(_vm.validation.name) +
+                                                                                        "\n                            "
+                                                                                    )
+                                                                                ]
                                                                             )
-                                                                        ]
-                                                                    )
-                                                                ],
-                                                                1
+                                                                            : _vm._e(),
+                                                                        _vm._v(" "),
+                                                                        _c("CInput", {
+                                                                            attrs: {
+                                                                                autocomplete: "email",
+                                                                                placeholder: "Email",
+                                                                                prepend: "@",
+                                                                                type: "email"
+                                                                            },
+                                                                            on: {input: _vm.checkEmail},
+                                                                            model: {
+                                                                                value: _vm.form.email,
+                                                                                callback: function ($$v) {
+                                                                                    _vm.$set(_vm.form, "email", $$v)
+                                                                                },
+                                                                                expression: "form.email"
+                                                                            }
+                                                                        }),
+                                                                        _vm._v(" "),
+                                                                        _vm.validation.email
+                                                                            ? _c(
+                                                                                "p",
+                                                                                {
+                                                                                    staticClass: "alert-warning",
+                                                                                    attrs: {id: "emailError"}
+                                                                                },
+                                                                                [
+                                                                                    _vm._v(
+                                                                                        "\n                                " +
+                                                                                        _vm._s(_vm.validation.email) +
+                                                                                        "\n                            "
+                                                                                    )
+                                                                                ]
+                                                                            )
+                                                                            : _vm._e(),
+                                                                        _vm._v(" "),
+                                                                        _c("CInput", {
+                                                                            attrs: {
+                                                                                autocomplete: "new-password",
+                                                                                placeholder: "Password",
+                                                                                type: "password"
+                                                                            },
+                                                                            on: {input: _vm.checkPassword},
+                                                                            scopedSlots: _vm._u(
+                                                                                [
+                                                                                    {
+                                                                                        key: "prepend-content",
+                                                                                        fn: function () {
+                                                                                            return [
+                                                                                                _c("CIcon", {
+                                                                                                    attrs: {
+                                                                                                        name: "cil-lock-locked"
+                                                                                                    }
+                                                                                                })
+                                                                                            ]
+                                                                                        },
+                                                                                        proxy: true
+                                                                                    }
+                                                                                ],
+                                                                                null,
+                                                                                false,
+                                                                                3300492400
+                                                                            ),
+                                                                            model: {
+                                                                                value: _vm.form.password,
+                                                                                callback: function ($$v) {
+                                                                                    _vm.$set(_vm.form, "password", $$v)
+                                                                                },
+                                                                                expression: "form.password"
+                                                                            }
+                                                                        }),
+                                                                        _vm._v(" "),
+                                                                        _vm.validation.password
+                                                                            ? _c(
+                                                                                "p",
+                                                                                {
+                                                                                    staticClass: "alert-warning",
+                                                                                    attrs: {id: "passwordError"}
+                                                                                },
+                                                                                [
+                                                                                    _vm._v(
+                                                                                        "\n                                " +
+                                                                                        _vm._s(_vm.validation.password) +
+                                                                                        "\n                            "
+                                                                                    )
+                                                                                ]
+                                                                            )
+                                                                            : _vm._e(),
+                                                                        _vm._v(" "),
+                                                                        _c("CInput", {
+                                                                            staticClass: "mb-4",
+                                                                            attrs: {
+                                                                                autocomplete: "new-password",
+                                                                                placeholder: "Repeat password",
+                                                                                type: "password"
+                                                                            },
+                                                                            on: {input: _vm.checkConfirmPassword},
+                                                                            scopedSlots: _vm._u(
+                                                                                [
+                                                                                    {
+                                                                                        key: "prepend-content",
+                                                                                        fn: function () {
+                                                                                            return [
+                                                                                                _c("CIcon", {
+                                                                                                    attrs: {
+                                                                                                        name: "cil-lock-locked"
+                                                                                                    }
+                                                                                                })
+                                                                                            ]
+                                                                                        },
+                                                                                        proxy: true
+                                                                                    }
+                                                                                ],
+                                                                                null,
+                                                                                false,
+                                                                                3300492400
+                                                                            ),
+                                                                            model: {
+                                                                                value: _vm.form.confirmPassword,
+                                                                                callback: function ($$v) {
+                                                                                    _vm.$set(
+                                                                                        _vm.form,
+                                                                                        "confirmPassword",
+                                                                                        $$v
+                                                                                    )
+                                                                                },
+                                                                                expression: "form.confirmPassword"
+                                                                            }
+                                                                        }),
+                                                                        _vm._v(" "),
+                                                                        _vm.validation.confirmPassword
+                                                                            ? _c(
+                                                                                "p",
+                                                                                {
+                                                                                    staticClass: "alert-warning",
+                                                                                    attrs: {id: "confirmPasswordError"}
+                                                                                },
+                                                                                [
+                                                                                    _vm._v(
+                                                                                        "\n                                " +
+                                                                                        _vm._s(
+                                                                                            _vm.validation.confirmPassword
+                                                                                        ) +
+                                                                                        "\n                            "
+                                                                                    )
+                                                                                ]
+                                                                            )
+                                                                            : _vm._e(),
+                                                                        _vm._v(" "),
+                                                                        _c(
+                                                                            "CButton",
+                                                                            {
+                                                                                attrs: {
+                                                                                    disabled: !_vm.validForm,
+                                                                                    block: "",
+                                                                                    color: "success",
+                                                                                    type: "submit"
+                                                                                }
+                                                                            },
+                                                                            [
+                                                                                _vm._v(
+                                                                                    "Create Account\n                            "
+                                                                                )
+                                                                            ]
+                                                                        )
+                                                                    ],
+                                                                    1
                                                                 )
                                                                 : _vm._e()
                                                         ],

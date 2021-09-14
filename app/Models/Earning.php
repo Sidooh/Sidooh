@@ -36,6 +36,6 @@ class Earning extends Model
     {
         return $this->hasOneThrough(User::class, Account::class);
 //        TODO: Test using select as well for data minimisation/optimisation
-//            ->select(['user_id', 'emailid', 'name']);
+//            ->select(['user_id', 'email', 'name']);
     }
 }

@@ -23,6 +23,7 @@ RUN apt-get install -y libc-client-dev libkrb5-dev \
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-install mysqli \
     && docker-php-ext-install zip \
+    && docker-php-ext-install intl \
     && docker-php-source delete
 
 # Clear cache

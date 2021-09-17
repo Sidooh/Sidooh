@@ -44,7 +44,7 @@ class SubscriptionPurchaseSuccess
         $nf = new NumberFormatter('en', NumberFormatter::ORDINAL);
         $limit = $nf->format($type->level_limit);
 
-        $type->title = "Sidooh Agent";
+//        $type->title = "Sidooh Agent";
 
         switch ($type->duration) {
             case 1:

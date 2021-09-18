@@ -79,7 +79,7 @@
         "super_product": 3,
         "options": {
             "1": {
-                "title": "Sidooh Agent Subscription",
+                "title": "Ksh365 Sidooh Agent Monthly Subscription Fee",
                 "type": "int",
                 "value": "1",
                 "next": "coming_soon"
@@ -264,7 +264,7 @@
     },
     "agent_intro": {
         "key": "agent_intro",
-        "title": "By registering as a Sidooh Agent through paying a monthly subscription fee, you will earn sales commissions on every airtime purchased from the platform by your referred customers and subagents.",
+        "title": "By registering as a Sidooh Agent through paying a monthly (Ksh365/month) subscription fee, you will earn sales commissions on every airtime purchased from the platform by your referred customers and subagents.",
         "options": {
             "1": {
                 "title": "Proceed to register as an Agent",
@@ -675,7 +675,7 @@
     },
     "pre_agent_onboarding_confirm": {
         "key": "pre_agent_onboarding_confirm",
-        "title": "Please confirm your details.\n\nName: {$name}\nAgent: {$subscription_type} @ {$subscription_amount_f}",
+        "title": "Please confirm your details.\n\nName: {$name}\nAgent: {$subscription_type} @ {$subscription_amount_f}/month",
         "options": {
             "1": {
                 "title": "Confirm",

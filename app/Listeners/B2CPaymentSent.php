@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\B2CPaymentSuccessEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Models\Earning;
 use App\Models\Payment;
 use App\Repositories\TransactionRepository;
 use Illuminate\Support\Facades\Log;
@@ -38,9 +39,17 @@ class B2CPaymentSent
         $transaction = $payment->payable;
         $account = $transaction->account;
 
+        $transactionCost = 30;
+
         $cAcc = $account->current_account;
-        $cAcc->out += $transaction->amount;
+        $cAcc->out += ($transaction->amount + $transactionCost);
         $cAcc->save();
+
+        $e = Earning::create([
+            'transaction_id' => $transaction->id,
+            'earnings' => $transactionCost,
+            'type' => 'SYSTEM',
+        ]);
 
         if ($payment->status == 'Complete')
             return;

@@ -162,7 +162,7 @@ class ProductRepository
 
         $sub = Subscription::create($subscription);
 
-        $transaction->status = 'success';
+        $transaction->status = 'completed';
         $transaction->save();
 
         $sub->save();
@@ -205,7 +205,7 @@ class ProductRepository
         $voucher->in += $transaction->amount;
         $voucher->save();
 
-        $transaction->status = 'success';
+        $transaction->status = 'completed';
         $transaction->save();
 
 

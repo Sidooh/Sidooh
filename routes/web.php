@@ -37,6 +37,7 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'as' => 'admin.'], f
 
     Route::apiResource('sub-investments', 'SubInvestmentController');
     Route::resource('user-notifications', 'UserNotificationController');
+    Route::apiResource('subscriptions', 'SubscriptionController');
 
 
 });

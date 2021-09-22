@@ -51,38 +51,38 @@ class DashboardRepository
 
         $totalYesterday = Payment::whereDate('created_at', Carbon::yesterday())->whereStatus('Complete')->sum('amount');
 
-        $todaySuccesfulPayments = isset($status['Complete']) ? $status['Complete']->groupBy(function ($item) {
-            return Carbon::parse($item->updated_at)->format('h:00');
-        }) : collect();
-//        if you wish to sum afterwards
-        $todaySuccesfulPayments = $todaySuccesfulPayments->mapWithKeys(function ($group, $key) {
-            return [
-                $key =>
-                    [
-                        'time' => $key, // $key is what we grouped by, it'll be constant by each  group of rows
-                        'total' => $group->sum('amount'),
-                        'count' => $group->count(),
-                    ]
-            ];
-        });
+//        $todaySuccesfulPayments = isset($status['Complete']) ? $status['Complete']->groupBy(function ($item) {
+//            return Carbon::parse($item->updated_at)->format('h:00');
+//        }) : collect();
+////        if you wish to sum afterwards
+//        $todaySuccesfulPayments = $todaySuccesfulPayments->mapWithKeys(function ($group, $key) {
+//            return [
+//                $key =>
+//                    [
+//                        'time' => $key, // $key is what we grouped by, it'll be constant by each  group of rows
+//                        'total' => $group->sum('amount'),
+//                        'count' => $group->count(),
+//                    ]
+//            ];
+//        });
 
-//        Can then do the same for failed and all payments
-//        Maybe we should create functions that we can them map to either...
-//        Should change the status to have all except complete
-        $todayFailedPayments = isset($status['Pending']) ? $status['Pending']->groupBy(function ($item) {
-            return Carbon::parse($item->updated_at)->format('h:00');
-        }) : collect();
-//        if you wish to sum afterwards
-        $todayFailedPayments = $todayFailedPayments->mapWithKeys(function ($group, $key) {
-            return [
-                $key =>
-                    [
-                        'time' => $key, // $key is what we grouped by, it'll be constant by each  group of rows
-                        'total' => $group->sum('amount'),
-                        'count' => $group->count(),
-                    ]
-            ];
-        });
+////        Can then do the same for failed and all payments
+////        Maybe we should create functions that we can them map to either...
+////        Should change the status to have all except complete
+//        $todayFailedPayments = isset($status['Pending']) ? $status['Pending']->groupBy(function ($item) {
+//            return Carbon::parse($item->updated_at)->format('h:00');
+//        }) : collect();
+////        if you wish to sum afterwards
+//        $todayFailedPayments = $todayFailedPayments->mapWithKeys(function ($group, $key) {
+//            return [
+//                $key =>
+//                    [
+//                        'time' => $key, // $key is what we grouped by, it'll be constant by each  group of rows
+//                        'total' => $group->sum('amount'),
+//                        'count' => $group->count(),
+//                    ]
+//            ];
+//        });
 
 
 //        return [
@@ -177,8 +177,8 @@ class DashboardRepository
         return [
             'totalToday' => $totalToday,
             'totalYesterday' => $totalYesterday,
-            'successfulPayments' => $todaySuccesfulPayments,
-            'failedPayments' => $todayFailedPayments,
+//            'successfulPayments' => $todaySuccesfulPayments,
+//            'failedPayments' => $todayFailedPayments,
 //            'totalPayments' => $todayFailedPayments,
 
             'totalAccountsToday' => $totalAccountsToday,

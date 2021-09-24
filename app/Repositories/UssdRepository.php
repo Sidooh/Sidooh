@@ -31,6 +31,7 @@ class UssdRepository
 
     public function processRefactored()
     {
+//        TODO: Check whether the following three are necessary
         error_reporting(0);
         header('Content-type: text/plain');
         set_time_limit(100);

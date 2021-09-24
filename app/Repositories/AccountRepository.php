@@ -11,7 +11,6 @@ use App\Models\CollectiveInvestment;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 use Propaganistas\LaravelPhone\PhoneNumber;

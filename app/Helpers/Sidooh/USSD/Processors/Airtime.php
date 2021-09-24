@@ -12,17 +12,6 @@ use Propaganistas\LaravelPhone\PhoneNumber;
 class Airtime extends Product
 {
 
-    /**
-     * @param UssdUser $user
-     * @param Screen $previousScreen
-     * @param Screen $screen
-     * @return Screen
-     */
-    public function process(UssdUser $user, Screen $previousScreen, Screen $screen)
-    {
-        return parent::process($user, $previousScreen, $screen);
-    }
-
 //    TODO: Can we move this to the parent class? as well as all the set methods below?
     protected function process_previous(Screen $previousScreen, Screen $screen)
     {

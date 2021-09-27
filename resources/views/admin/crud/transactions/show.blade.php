@@ -4,12 +4,14 @@
 
     <div class="card mb-3">
         <div class="bg-holder d-none d-lg-block bg-card"
-             style="background-image:url({{ asset('img/illustrations/corner-4.png') }});opacity: 0.7;"></div>
+             style="background-image:url({{ asset('img/illustrations/corner-4.png') }});opacity: 0.7;">
+        </div>
         <!--/.bg-holder-->
         <div class="card-body position-relative">
             <h5>Transaction Details: #{{ $transaction->id }}</h5>
             <p class="fs--1">{{ local_date($transaction->created_at, 'M d, Y, h:m A') }}</p>
-            <div><strong class="me-2">Status: </strong>
+            <div>
+                <strong class="me-2">Status: </strong>
                 {{--                TODO: Use status class to decide colour of pill instead of if statement--}}
 
                 {{--                <div class="badge rounded-pill badge-soft-success fs--2">--}}
@@ -36,6 +38,65 @@
                                     </div>
                             </div>
                     </div>
+
+                    <div class="dropdown font-sans-serif">
+                        <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end"
+                                type="button" id="dropdown0" data-bs-toggle="dropdown"
+                                data-boundary="window"
+                                aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span
+                                class="fas fa-ellipsis-h fs--1"></span></button>
+                        <div class="dropdown-menu dropdown-menu-end border py-2"
+                             aria-labelledby="dropdown0">
+
+                            <form method="POST"
+                                  action="{{ route('admin.transactions.refund', $transaction) }}">
+                                @csrf
+                                <button
+                                    class="dropdown-item"
+                                    type="submit">
+                                    <span class="fas fa-sync me-1" data-fa-transform="shrink-3"></span>
+                                    Refund
+                                </button>
+                            </form>
+
+                            <div class="dropdown-divider"></div>
+                            <form method="POST"
+                                  action="{{ route('admin.transactions.payments.status.mark_payment_complete', $transaction->payment) }}">
+                                @csrf
+                                <button
+                                    class="dropdown-item text-warning"
+                                    type="submit">
+                                    <span class="fas fa-correct me-1" data-fa-transform="shrink-3"></span>
+                                    Mark Payment Complete
+                                </button>
+                            </form>
+
+                            <form method="POST"
+                                  action="{{ route('admin.transactions.status.mark_complete', $transaction) }}">
+                                @csrf
+                                <button
+                                    class="dropdown-item text-warning"
+                                    type="submit">
+                                    <span class="fas fa-correct me-1" data-fa-transform="shrink-3"></span>
+                                    Mark Transaction Complete
+                                </button>
+                            </form>
+
+                            <div class="dropdown-divider"></div>
+                            <form method="POST"
+                                  action="{{ route('admin.transactions.status.mark_both_complete', $transaction) }}">
+                                @csrf
+                                <button
+                                    class="dropdown-item text-warning"
+                                    type="submit">
+                                    <span class="fas fa-correct me-1" data-fa-transform="shrink-3"></span>
+                                    Mark Both Complete
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+
             </div>
             <div class="card mb-3">
                 <div class="card-body">

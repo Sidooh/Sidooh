@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransactionStoreRequest;
 use App\Http\Resources\TransactionResource;
+use App\Models\Payment;
 use App\Models\Transaction;
 use App\Repositories\TransactionRepository;
 use Illuminate\Http\Request;
@@ -133,4 +135,105 @@ class TransactionController extends Controller
         return back();
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param Transaction $transaction
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function refund(Request $request, Transaction $transaction)
+    {
+        //
+//         Check transaction has airtime or payment is successful but airtime failed
+        if ($transaction->payment) {
+            if (mb_strtolower($transaction->payment->status) == 'complete') {
+                if ($transaction->airtime) {
+                    if ($transaction->airtime->errorMessage != 'None') {
+//                        TODO: Perform refund
+
+                        $account = $transaction->account;
+                        $phone = $account->phone;
+
+                        $amount = $transaction->amount;
+                        $date = $transaction->airtime->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
+
+                        $voucher = $transaction->account->voucher;
+                        $voucher->in += $amount;
+                        $voucher->save();
+
+                        $transaction->status = 'reimbursed';
+                        $transaction->save();
+
+                        $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$phone} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+
+                        (new AfricasTalkingApi())->sms($phone, $message);
+                    }
+                }
+            }
+        }
+
+        return back();
+
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param Transaction $transaction
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function markComplete(Request $request, Transaction $transaction)
+    {
+
+        if ($transaction->payment) {
+            if (mb_strtolower($transaction->payment->status) == 'complete') {
+
+                $transaction->status = 'completed';
+                $transaction->save();
+
+            }
+        }
+
+        return back();
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param Transaction $transaction
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function markPaymentComplete(Request $request, Payment $payment)
+    {
+        if (mb_strtolower($payment->status) != 'complete') {
+
+            $payment->status = 'Complete';
+            $payment->save();
+        }
+
+        return back();
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param Transaction $transaction
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function markBothComplete(Request $request, Transaction $transaction)
+    {
+
+        $this->markComplete($request, $transaction);
+        $this->markPaymentComplete($request, $transaction->payment);
+
+        return back();
+
+    }
 }

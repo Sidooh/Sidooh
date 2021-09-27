@@ -28,6 +28,12 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'as' => 'admin.'], f
     Route::apiResource('accounts', 'AccountController');
     Route::apiResource('transactions', 'TransactionController');
     Route::post('transactions/status/query', 'TransactionController@queryStatus')->name('transactions.status.query');
+    Route::post('transactions/{transaction}/refund', 'TransactionController@refund')->name('transactions.refund');
+    Route::post('transactions/{transaction}/mark-complete', 'TransactionController@markComplete')->name('transactions.status.mark_complete');
+    Route::post('payments/{payment}/mark-complete', 'TransactionController@markPaymentComplete')->name('transactions.payments.status.mark_payment_complete');
+    Route::post('transactions/{transaction}/mark-both-complete', 'TransactionController@markBothComplete')->name('transactions.status.mark_both_complete');
+
+
     Route::apiResource('referrals', 'ReferralController');
     Route::apiResource('earnings', 'EarningController');
     Route::apiResource('vouchers', 'VoucherController');

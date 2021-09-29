@@ -149,7 +149,8 @@ class TransactionController extends Controller
         if ($transaction->payment) {
             if (mb_strtolower($transaction->payment->status) == 'complete') {
                 if ($transaction->airtime) {
-                    if ($transaction->airtime->errorMessage != 'None') {
+                    if ($transaction->airtime->errorMessage != 'None'
+                        || ($transaction->airtime->response && $transaction->airtime->response->status == 'Failed')) {
 //                        TODO: Perform refund
 
                         $account = $transaction->account;

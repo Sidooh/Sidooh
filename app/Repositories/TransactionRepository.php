@@ -48,8 +48,7 @@ class TransactionRepository extends Model
 
             $transaction = $airtime_request->transaction;
 
-            $transaction->status = 'success';
-
+            $transaction->status = 'completed';
             $transaction->save();
 
             $transaction->payment->status = 'Complete';

@@ -52,6 +52,8 @@ class AirtimePurchaseSuccess
             $vtext = '';
         }
 
+        (new TransactionRepository())->statusUpdate($event->airtime_response);
+
         if ($phone != $sender) {
             $message = "You have purchased {$amount} airtime for {$phone} from your Sidooh account on {$date} using $method. You have received {$points_earned} cashback.$vtext";
 
@@ -67,7 +69,6 @@ class AirtimePurchaseSuccess
             (new AfricasTalkingApi())->sms($phone, $message);
         }
 
-        (new TransactionRepository())->statusUpdate($event->airtime_response);
     }
 
     public function getPointsEarned(float $discount)

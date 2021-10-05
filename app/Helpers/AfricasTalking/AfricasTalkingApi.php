@@ -4,6 +4,8 @@
 namespace App\Helpers\AfricasTalking;
 
 
+use GuzzleHttp\Exception\ServerException;
+
 class AfricasTalkingApi
 {
     /**
@@ -65,13 +67,36 @@ class AfricasTalkingApi
         $sms = $this->AT->sms();
 
 //        TODO: Should we add a try catch here to ensure message delivery or nah?
-        // Use the service
-        return $sms->send([
-            'from' => config('services.at.sms.from'),
-            'to' => $to,
-            'message' => $message,
-            'enqueue' => $enqueue
-        ]);
+
+        try {
+            // Use the service
+            return $sms->send([
+                'from' => config('services.at.sms.from'),
+                'to' => $to,
+                'message' => $message,
+                'enqueue' => $enqueue
+            ]);
+        } catch (ServerException $e) {
+//            TODO: Can we try send the message once more? and then should we throw error for sentry?
+            $sms->send([
+                'from' => config('services.at.sms.from'),
+                'to' => ['254714611696', '254711414987'],
+                'message' => "ERROR:SMS - Server error with AT",
+                'enqueue' => $enqueue
+            ]);
+
+//            throw $e;
+        } catch (\Exception $e) {
+            $sms->send([
+                'from' => config('services.at.sms.from'),
+                'to' => ['254714611696', '254711414987'],
+                'message' => "ERROR:SMS - Unidentified error with AT",
+                'enqueue' => $enqueue
+            ]);
+
+//            throw $e;
+        }
+
     }
 
     public function airtime(string $to, string $amount, string $currency = 'KES')

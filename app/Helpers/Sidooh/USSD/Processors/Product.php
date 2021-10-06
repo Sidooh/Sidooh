@@ -76,7 +76,7 @@ class Product
         }
     }
 
-    protected function process(UssdUser $user, Screen $previousScreen, Screen $screen)
+    public function process(UssdUser $user, Screen $previousScreen, Screen $screen)
     {
 //        $this->user = $user;
         $this->retrieveState();

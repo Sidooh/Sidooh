@@ -45,6 +45,7 @@ class Airtime extends Product
 
     private function set_user_number()
     {
+        $this->vars['{$class}'] = $this->get_class_name();
         $this->vars['{$product}'] = $this->get_class_name();
         $this->vars['{$my_number}'] = $this->phone;
         $this->vars['{$number}'] = $this->phone;
@@ -65,7 +66,8 @@ class Airtime extends Product
             $this->vars['{$amount}'] = $previousScreen->option->value;
 
 //        TODO: How can this computation be made dynamic to include ATs variable discount?
-        $this->vars['{$product}'] = $this->vars['{$product}'] . ' (which will earn you ' . $this->vars['{$amount}'] / 200 . ' points)';
+//        TODO: Change to $product_text in case of going back it doesn't concatenate forever.
+        $this->vars['{$product}'] = $this->vars['{$class}'] . ' (which will earn you ' . $this->vars['{$amount}'] / 200 . ' points)';
     }
 
     private function check_current_pin(Screen $previousScreen)

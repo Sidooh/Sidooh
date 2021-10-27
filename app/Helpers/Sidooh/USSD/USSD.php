@@ -16,6 +16,7 @@ use App\Helpers\Sidooh\USSD\Processors\Pre_Agent;
 use App\Helpers\Sidooh\USSD\Processors\Product;
 use App\Helpers\Sidooh\USSD\Processors\Referral;
 use App\Helpers\Sidooh\USSD\Processors\Subscription;
+use App\Helpers\Sidooh\USSD\Processors\Utility;
 use App\Helpers\Sidooh\USSD\Processors\Voucher;
 use App\Models\UssdUser;
 use Error;
@@ -138,6 +139,9 @@ class USSD
             case ProductTypes::PAY_MERCHANT:
                 $this->product = new Merchant($this->user, $this->sessionId);
                 break;
+            case ProductTypes::PAY_UTILITY:
+                $this->product = new Utility($this->user, $this->sessionId);
+                break;
             case ProductTypes::REFER:
                 $this->product = new Referral($this->user, $this->sessionId);
                 break;
@@ -183,8 +187,6 @@ class USSD
 
     public function getProduct($as_enum = false)
     {
-        error_log($this->product);
-
         if (!$as_enum)
             return $this->product;
 
@@ -202,6 +204,8 @@ class USSD
                 return ProductTypes::PAY_VOUCHER;
             else if ($this->product instanceof Merchant)
                 return ProductTypes::PAY_MERCHANT;
+            else if ($this->product instanceof Utility)
+                return ProductTypes::PAY_UTILITY;
             return ProductTypes::PAY;
         } else if ($this->product instanceof Referral)
             return ProductTypes::REFER;

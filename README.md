@@ -67,7 +67,7 @@ Coming soon
 
 #### 3. Set up Cloud SQL
 
-- Create an instance of mysql 8.0, 1vCPU, 3.75 GB Machine, and 10 GB SSD.
+- Create an instance of mysql 8.0, 1vCPU, 1.7 GB Machine, and 10 GB SSD.
 - Create a database and take note of the connection string
 
 #### 4. Set up Cloud Build

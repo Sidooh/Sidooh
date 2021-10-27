@@ -107,7 +107,6 @@ class ProductRepository
             $res->save();
 
             $this->fireAirtimePurchaseEvent($res, $all);
-
         }
     }
 

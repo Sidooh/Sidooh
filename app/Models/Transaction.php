@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Nabcellent\Kyanda\Models\KyandaRequest;
 
 class Transaction extends Model
 {
@@ -26,5 +27,10 @@ class Transaction extends Model
     public function payments()
     {
         return $this->morphMany(Payment::class, 'payable');
+    }
+
+    public function kyandaTransaction()
+    {
+        return $this->hasOne(KyandaRequest::class, 'relation_id');
     }
 }

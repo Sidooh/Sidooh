@@ -95,8 +95,78 @@
                 "type": "int",
                 "value": "3",
                 "next": "merchant"
+            },
+            "4": {
+                "title": "Utility(stima, maji, tv)",
+                "type": "int",
+                "value": "4",
+                "next": "utility"
             }
         }
+    },
+    "utility": {
+        "key": "utility",
+        "title": "Select provider:",
+        "options": {
+            "1": {
+                "title": "KPLC Prepaid",
+                "type": "int",
+                "value": "1",
+                "next": "utility_account_no"
+            },
+            "2": {
+                "title": "KPLC Postpaid",
+                "type": "int",
+                "value": "2",
+                "next": "utility_account_no"
+            },
+            "3": {
+                "title": "Nairobi Water",
+                "type": "int",
+                "value": "3",
+                "next": "utility_account_no"
+            },
+            "4": {
+                "title": "DSTV",
+                "type": "int",
+                "value": "4",
+                "next": "utility_account_no"
+            },
+            "5": {
+                "title": "ZUKU",
+                "type": "int",
+                "value": "5",
+                "next": "utility_account_no"
+            },
+            "6": {
+                "title": "GOTV",
+                "type": "int",
+                "value": "6",
+                "next": "utility_account_no"
+            },
+            "7": {
+                "title": "Startimes",
+                "type": "int",
+                "value": "7",
+                "next": "utility_account_no"
+            }
+        }
+    },
+    "utility_account_no": {
+        "key": "utility_account_no",
+        "title": "Enter account no:",
+        "type": "OPEN",
+        "next": "utility_amount",
+        "options": {},
+        "option_type": "MERCHANT_CODE"
+    },
+    "utility_amount": {
+        "key": "utility_amount",
+        "title": "Enter amount (Min. KSh100):",
+        "type": "OPEN",
+        "next": "payment_method",
+        "options": {},
+        "option_type": "MIN"
     },
     "voucher": {
         "key": "voucher",

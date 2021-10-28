@@ -7,7 +7,7 @@ skip_files:
 #  - dist
 #  - node_modules
 #  - vendor
-#  - "*.jar"
+#  - ^"*.jar"
 
 runtime_config:
   document_root: public

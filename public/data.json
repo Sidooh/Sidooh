@@ -97,7 +97,7 @@
                 "next": "merchant"
             },
             "4": {
-                "title": "Utility(stima, maji, tv)",
+                "title": "Utilities",
                 "type": "int",
                 "value": "4",
                 "next": "utility"

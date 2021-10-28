@@ -8,17 +8,7 @@ use App\Models\UssdUser;
 
 class Pay extends Product
 {
-    /**
-     * @param UssdUser $user
-     * @param Screen $previousScreen
-     * @param Screen $screen
-     * @return Screen
-     */
-    public function process(UssdUser $user, Screen $previousScreen, Screen $screen)
-    {
-        return parent::process($user, $previousScreen, $screen);
-    }
-
+//    TODO: Is this function necessary?
     public function getSubProduct($user, $sessionId, string $option)
     {
         error_log("----------------");
@@ -35,6 +25,10 @@ class Pay extends Product
             case "3":
                 error_log("Getting sub product 3");
                 return new Merchant($user, $sessionId);
+//                TODO: Check why this is not needed...
+//            case "4":
+//                error_log("Getting sub product 4");
+//                return new Utility($user, $sessionId);
             default:
                 return $this;
         }

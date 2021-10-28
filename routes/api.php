@@ -78,9 +78,11 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
 //    TODO: Remove this and reset back once Samerior update library
     Route::post('/payments/callbacks/result/{section?}', 'UssdController@b2cResult');
 
-    Route::post('/provider/{provider}', 'UssdController@setProvider');
-    Route::get('/provider', 'UssdController@getProvider');
+    Route::post('settings/provider/{provider}', 'UssdController@setProvider');
+    Route::get('settings/provider', 'UssdController@getProvider');
 
+    Route::post('settings/utilities', 'UssdController@enableUtilities');
+    Route::get('settings/utilities', 'UssdController@getUtilitiesStatus');
 
 });
 

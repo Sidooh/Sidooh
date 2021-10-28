@@ -3,7 +3,11 @@ env: flex
 
 # Ensure we skip ".env", which is only for local development
 skip_files:
-  - .env
+  - .git
+  - dist
+  - node_modules
+  - vendor
+  - "*.jar"
 
 runtime_config:
   document_root: public

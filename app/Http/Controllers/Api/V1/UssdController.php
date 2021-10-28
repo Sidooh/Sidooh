@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api\V1;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Http\Controllers\Controller;
 use App\Repositories\UssdRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 
 class UssdController extends Controller
@@ -129,4 +132,33 @@ class UssdController extends Controller
         );
     }
 
+    public function setProvider(string $provider, Request $request): array
+    {
+        var_dump(config('services.sidooh.provider'));
+
+        $array = Config::get('services');
+
+        $array['sidooh']['provider'] = $provider;
+
+        $data = var_export($array, 1);
+        if (File::put(app_path() . '/../config/services.php', "<?php\n return $data ;")) {
+            // Successful, return Redirect...
+
+            return [
+                "provider" => config('services.sidooh.provider')
+            ];
+        }
+
+        return ['error' => 'Could not update file'];
+    }
+
+    public function getProvider(Request $request): array
+    {
+        var_dump(config('services.sidooh.provider'));
+
+        return [
+            "provider" => config('services.sidooh.provider')
+        ];
+
+    }
 }

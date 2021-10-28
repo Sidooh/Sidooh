@@ -15,6 +15,9 @@ use App\Listeners\AirtimePurchaseFailed;
 use App\Listeners\AirtimePurchaseSuccess;
 use App\Listeners\B2CPaymentFailed;
 use App\Listeners\B2CPaymentSent;
+use App\Listeners\KyandaRequest;
+use App\Listeners\KyandaTransactionFailed;
+use App\Listeners\KyandaTransactionSuccess;
 use App\Listeners\MerchantPurchaseSuccess;
 use App\Listeners\QueueTimeoutListener;
 use App\Listeners\ReferralJoined;
@@ -27,6 +30,9 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
+use Nabcellent\Kyanda\Events\KyandaRequestEvent;
+use Nabcellent\Kyanda\Events\KyandaTransactionFailedEvent;
+use Nabcellent\Kyanda\Events\KyandaTransactionSuccessEvent;
 use Samerior\MobileMoney\Mpesa\Events\QueueTimeoutEvent;
 use Samerior\MobileMoney\Mpesa\Events\StkPushPaymentFailedEvent;
 use Samerior\MobileMoney\Mpesa\Events\StkPushPaymentSuccessEvent;
@@ -90,6 +96,18 @@ class EventServiceProvider extends ServiceProvider
 
         SubscriptionPurchaseEvent::class => [
             SubscriptionPurchaseSuccess::class
+        ],
+
+        KyandaRequestEvent::class => [
+            KyandaRequest::class
+        ],
+
+        KyandaTransactionSuccessEvent::class => [
+            KyandaTransactionSuccess::class
+        ],
+
+        KyandaTransactionFailedEvent::class => [
+            KyandaTransactionFailed::class
         ],
     ];
 

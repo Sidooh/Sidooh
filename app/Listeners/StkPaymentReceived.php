@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Helpers\Kyanda\KyandaApi;
 use App\Helpers\Sidooh\USSD\Entities\MpesaReferences;
 use App\Models\Payment;
 use App\Repositories\ProductRepository;
@@ -57,7 +58,10 @@ class StkPaymentReceived
                         'amount' => $stk->Amount
                     ];
 
-                (new ProductRepository())->airtime($p->payable, $airtime);
+                if (config('services.sidooh.provider') == 'kyanda')
+                    KyandaApi::airtime($p->payable, $airtime);
+                else
+                    (new ProductRepository())->airtime($p->payable, $airtime);
 
                 break;
 
@@ -86,6 +90,13 @@ class StkPaymentReceived
                 (new ProductRepository())->voucher($p->payable, $voucherDetails);
                 break;
 
+            case MpesaReferences::PAY_UTILITY:
+                $billDetails = [
+                    'account' => $other_phone[1],
+                    'amount' => $stk->Amount
+                ];
+                $provider = explode(" ", $stk->request->description)[0];
+                KyandaApi::bill($p->payable, $billDetails, $provider);
         }
 
 

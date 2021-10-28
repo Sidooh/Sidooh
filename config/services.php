@@ -51,7 +51,7 @@ return array(
                             'max_amount' => '70000',
                         ),
                 ),
-            'provider' => 'kyanda',
-            'utilities_enabled' => true,
+            'provider' => 'at',
+            'utilities_enabled' => false,
         ),
 );

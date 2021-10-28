@@ -148,29 +148,29 @@ class TransactionController extends Controller
 //         Check transaction has airtime or payment is successful but airtime failed
         if ($transaction->payment) {
             if (mb_strtolower($transaction->payment->status) == 'complete') {
-                if ($transaction->airtime) {
+                /*if ($transaction->airtime) {
                     if ($transaction->airtime->errorMessage != 'None'
-                        || ($transaction->airtime->response && $transaction->airtime->response->status == 'Failed')) {
+                        || ($transaction->airtime->response && $transaction->airtime->response->status == 'Failed')) {*/
 //                        TODO: Perform refund
 
                         $account = $transaction->account;
                         $phone = $account->phone;
 
-                        $amount = $transaction->amount;
-                        $date = $transaction->airtime->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
+                $amount = $transaction->amount;
+                $date = $transaction->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
 
-                        $voucher = $transaction->account->voucher;
-                        $voucher->in += $amount;
-                        $voucher->save();
+                $voucher = $transaction->account->voucher;
+                $voucher->in += $amount;
+                $voucher->save();
 
-                        $transaction->status = 'reimbursed';
-                        $transaction->save();
+                $transaction->status = 'reimbursed';
+                $transaction->save();
 
-                        $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$phone} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+                $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$phone} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
 
-                        (new AfricasTalkingApi())->sms($phone, $message);
-                    }
-                }
+                (new AfricasTalkingApi())->sms($phone, $message);
+                /*}
+            }*/
             }
         }
 

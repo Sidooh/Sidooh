@@ -52,5 +52,6 @@ return array(
                         ),
                 ),
             'provider' => 'kyanda',
+            'utilities_enabled' => true,
         ),
 );

@@ -13,10 +13,10 @@ class Utility extends Pay
 {
     protected function process_previous(Screen $previousScreen, Screen $screen)
     {
-        error_log("---------------- Utility process previous");
-        error_log($this->previousScreen->key);
-        error_log($screen->key);
-        error_log("---------------- ");
+//        error_log("---------------- Utility process previous");
+//        error_log($this->previousScreen->key);
+//        error_log($screen->key);
+//        error_log("---------------- ");
         switch ($this->previousScreen->key) {
             case "pay":
                 $this->set_init();
@@ -45,6 +45,13 @@ class Utility extends Pay
         $this->vars['{$product}'] = $this->get_class_name();
         $this->vars['{$number}'] = $this->phone;
         $this->vars['{$mpesa_number}'] = $this->phone;
+
+        if (!config('services.sidooh.utilities_enabled')) {
+            $this->screen->key = "coming_soon";
+            $this->screen->title = "Coming Soon.";
+            $this->screen->options = [];
+//            $this->screen->type = "OPEN";
+        }
     }
 
     private function set_utility()

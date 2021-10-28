@@ -134,14 +134,12 @@ class UssdController extends Controller
 
     public function setProvider(string $provider, Request $request): array
     {
-        var_dump(config('services.sidooh.provider'));
-
         $array = Config::get('services');
 
         $array['sidooh']['provider'] = $provider;
 
         $data = var_export($array, 1);
-        if (File::put(app_path() . '/../config/services.php', "<?php\n return $data ;")) {
+        if (File::put(config_path() . '/services.php', "<?php\n return $data ;")) {
             // Successful, return Redirect...
 
             return [
@@ -154,10 +152,36 @@ class UssdController extends Controller
 
     public function getProvider(Request $request): array
     {
-        var_dump(config('services.sidooh.provider'));
-
         return [
             "provider" => config('services.sidooh.provider')
+        ];
+
+    }
+
+    public function enableUtilities(Request $request): array
+    {
+        $currentConfig = config('services.sidooh.utilities_enabled');
+
+        $array = Config::get('services');
+
+        $array['sidooh']['utilities_enabled'] = !$currentConfig;
+
+        $data = var_export($array, 1);
+        if (File::put(app_path() . '/../config/services.php', "<?php\n return $data ;")) {
+            // Successful, return Redirect...
+
+            return [
+                "utilities_enabled" => config('services.sidooh.utilities_enabled')
+            ];
+        }
+
+        return ['error' => 'Could not update file'];
+    }
+
+    public function getUtilitiesStatus(Request $request): array
+    {
+        return [
+            "utilities_enabled" => config('services.sidooh.utilities_enabled')
         ];
 
     }

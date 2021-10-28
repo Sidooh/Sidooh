@@ -37,43 +37,53 @@ class KyandaTransactionSuccess
         Log::info('----------------- Kyanda Transaction Success ');
         Log::info($event->transaction->request->provider);
 
-        switch ($event->transaction->request->provider) {
+//                Update Transaction
+        $transaction = Transaction::find($event->transaction->request->relation_id);
+        (new TransactionRepository())->updateStatus($transaction, 'completed');
+
+        $method = $transaction->payment->subtype;
+
+        if ($method == 'VOUCHER') {
+            $bal = $transaction->account->voucher->balance;
+            $vtext = " New Voucher balance is KES$bal.";
+        } else {
+            $method = 'MPESA';
+            $vtext = '';
+        }
+
+        $code = config('services.at.ussd.code');
+
+        $destination = $event->transaction->destination;
+        $sender = $transaction->account->phone;
+
+        $amount = $transaction->amount;
+        $date = $event->transaction->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
+
+        $provider = $event->transaction->request->provider;
+
+        switch ($provider) {
+            case Providers::FAIBA:
             case Providers::SAFARICOM:
             case Providers::AIRTEL:
-            case Providers::FAIBA:
-            case Providers::EQUITEL:
             case Providers::TELKOM:
-//                Update Transaction
-                $transaction = Transaction::find($event->transaction->request->relation_id);
-                (new TransactionRepository())->updateStatus($transaction, 'completed');
+            case Providers::EQUITEL:
 
 //                Get Points Earned
-                $totalEarnings = .07 * $transaction->amount;
+                if ($provider == Providers::FAIBA)
+                    $totalEarnings = .09 * $transaction->amount;
+                elseif ($provider == Providers::EQUITEL)
+                    $totalEarnings = .05 * $transaction->amount;
+                else
+                    $totalEarnings = .06 * $transaction->amount;
+
                 $userEarnings = $this->getPointsEarned($totalEarnings);
 
 //                Update Earnings
                 event(new TransactionSuccessEvent($transaction, $totalEarnings));
 
+                $phone = ltrim(PhoneNumber::make($destination, 'KE')->formatE164(), '+');
+
 //                Send SMS
-
-                $phone = ltrim(PhoneNumber::make($event->transaction->destination, 'KE')->formatE164(), '+');
-                $sender = $transaction->account->phone;
-                $method = $transaction->payment->subtype;
-
-                $amount = $transaction->amount;
-                $date = $event->transaction->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
-
-                if ($method == 'VOUCHER') {
-                    $bal = $transaction->account->voucher->balance;
-                    $vtext = " New Voucher balance is KES$bal.";
-                } else {
-                    $method = 'MPESA';
-                    $vtext = '';
-                }
-
-                $code = config('services.at.ussd.code');
-
-
                 if ($phone != $sender) {
                     $message = "You have purchased {$amount} airtime for {$phone} from your Sidooh account on {$date} using $method. You have received {$userEarnings} cashback.$vtext";
 
@@ -92,13 +102,36 @@ class KyandaTransactionSuccess
                 break;
 
             case Providers::KPLC_POSTPAID:
+                //                Get Points Earned
+                $totalEarnings = .01 * $transaction->amount;
+                $userEarnings = $this->getPointsEarned($totalEarnings);
 
+//                Update Earnings
+                event(new TransactionSuccessEvent($transaction, $totalEarnings));
+
+//                Send SMS
+                $message = "You have made a payment to {$provider} - {$destination} of {$amount} from your Sidooh account on {$date} using $method. You have received {$userEarnings} cashback.$vtext";
+
+                (new AfricasTalkingApi())->sms($sender, $message);
 
                 break;
 
 
             case Providers::KPLC_PREPAID:
+//                Get Points Earned
+                $totalEarnings = .015 * $transaction->amount;
+                $userEarnings = $this->getPointsEarned($totalEarnings);
 
+//                Update Earnings
+                event(new TransactionSuccessEvent($transaction, $totalEarnings));
+
+//                Send SMS
+                $token = $event->transaction->details['one'];
+                $message = "You have made a payment to {$provider} - {$destination} of {$amount} from your Sidooh account on
+                 {$date} using $method. You have received {$userEarnings} cashback.$vtext\n\n
+                 {$token}";
+
+                (new AfricasTalkingApi())->sms($sender, $message);
 
                 break;
 
@@ -106,16 +139,47 @@ class KyandaTransactionSuccess
             case Providers::GOTV:
             case Providers::ZUKU:
             case Providers::STARTIMES:
+//                Get Points Earned
+                $totalEarnings = .0025 * $transaction->amount;
+                $userEarnings = $this->getPointsEarned($totalEarnings);
 
+//                Update Earnings
+                event(new TransactionSuccessEvent($transaction, $totalEarnings));
+
+//                Send SMS
+                $message = "You have made a payment to {$provider} - {$destination} of {$amount} from your Sidooh account on {$date} using $method. You have received {$userEarnings} cashback.$vtext";
+
+                (new AfricasTalkingApi())->sms($sender, $message);
 
                 break;
 
             case Providers::NAIROBI_WTR:
+                //                Get Points Earned
+                $totalEarnings = 5;
+                $userEarnings = $this->getPointsEarned($totalEarnings);
 
+//                Update Earnings
+                event(new TransactionSuccessEvent($transaction, $totalEarnings));
+
+//                Send SMS
+                $message = "You have made a payment to {$provider} - {$destination} of {$amount} from your Sidooh account on {$date} using $method. You have received {$userEarnings} cashback.$vtext";
+
+                (new AfricasTalkingApi())->sms($sender, $message);
 
                 break;
 
             case Providers::FAIBA_B:
+//                Get Points Earned
+                $totalEarnings = .09 * $transaction->amount;
+                $userEarnings = $this->getPointsEarned($totalEarnings);
+
+                //                Update Earnings
+                event(new TransactionSuccessEvent($transaction, $totalEarnings));
+
+//                Send SMS
+                $message = "You have purchased {$amount} bundles from your Sidooh account on {$date} using $method. You have received {$userEarnings} cashback.$vtext";
+
+                (new AfricasTalkingApi())->sms($sender, $message);
 
                 break;
 

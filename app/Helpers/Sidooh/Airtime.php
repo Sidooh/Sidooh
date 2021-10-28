@@ -154,9 +154,10 @@ class Airtime
             'amount' => $this->amount
         ];
 
-//        (new ProductRepository())->airtime($transaction, $airtime);
-
-        KyandaApi::airtime($transaction, $airtime);
+        if (config('services.sidooh.provider') == 'kyanda')
+            KyandaApi::airtime($transaction, $airtime);
+        else
+            (new ProductRepository())->airtime($transaction, $airtime);
 
     }
 }

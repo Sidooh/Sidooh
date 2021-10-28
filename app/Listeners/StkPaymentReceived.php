@@ -58,8 +58,10 @@ class StkPaymentReceived
                         'amount' => $stk->Amount
                     ];
 
-//                (new ProductRepository())->airtime($p->payable, $airtime);
-                KyandaApi::airtime($p->payable, $airtime);
+                if (config('services.sidooh.provider') == 'kyanda')
+                    KyandaApi::airtime($p->payable, $airtime);
+                else
+                    (new ProductRepository())->airtime($p->payable, $airtime);
 
                 break;
 

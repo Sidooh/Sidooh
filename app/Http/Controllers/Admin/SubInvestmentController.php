@@ -32,7 +32,7 @@ class SubInvestmentController extends Controller
     public function index()
     {
         //
-        $subInvestments = $this->subInvestment->latest()->get();
+        $subInvestments = $this->subInvestment->latest()->simplePaginate(30);
 
         return view('admin.crud.sub_investments.index', compact('subInvestments'));
     }

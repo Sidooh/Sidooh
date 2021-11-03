@@ -156,7 +156,7 @@ Run 5 terminals as follows:
       used to ssh into compute engine on GCP
 
 4. cloudsql terminal
-    - `./cloud_sql_proxy -instances=hoodis1:us-central1:sidooh=tcp:3309`
+    - `./cloud_sql_proxy -instances=hoodis2:us-central1:hoodis2=tcp:3309`
       used to connect to cloud sql instance on GCP. Needs gcloud installed
 
 5. Terminal

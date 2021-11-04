@@ -84,6 +84,9 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::post('settings/utilities', 'UssdController@enableUtilities');
     Route::get('settings/utilities', 'UssdController@getUtilitiesStatus');
 
+    Route::get('transactions/status/query', 'TransactionController@queryStatus')->name('transactions.status.query');
+
+
 });
 
 

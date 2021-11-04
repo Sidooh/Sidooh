@@ -36,7 +36,7 @@ class TransactionController extends Controller
     public function index()
     {
         //
-        $transactions = $this->transaction->latest()->simplePaginate(100);
+        $transactions = $this->transaction->latest()->simplePaginate(50);
 
         return view('admin.crud.transactions.index', compact('transactions'));
     }

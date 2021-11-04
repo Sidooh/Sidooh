@@ -32,7 +32,7 @@ class ReferralController extends Controller
     public function index()
     {
         //
-        $referrals = $this->referral->latest()->get();
+        $referrals = $this->referral->latest()->paginate(100);
 //
         return view('admin.crud.referrals.index', compact('referrals'));
     }

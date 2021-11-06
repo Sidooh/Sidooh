@@ -35,28 +35,28 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function queryMpesaStatus()
     {
         //
         $exitCode = Artisan::call('mpesa:query_status');
 
-        return back();
+        return response()->json(['Status' => $exitCode]);
     }
 
 
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function queryKyandaStatus()
     {
         //
         $exitCode = Artisan::call('kyanda:query_status');
 
-        return back();
+        return response()->json(['Status' => $exitCode]);
     }
 
 }

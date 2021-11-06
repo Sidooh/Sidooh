@@ -15,10 +15,10 @@ cron:
 
 
   - description: "hourly mpesa status query"
-      url: /api/v1/payments/mpesa/status/query
-      schedule: every hour
+    url: /api/v1/payments/mpesa/status/query
+    schedule: every hour
 
 
   - description: "hourly kyanda status query"
-      url: /api/v1/kyanda/status/query
-      schedule: every hour
+    url: /api/v1/kyanda/status/query
+    schedule: every hour

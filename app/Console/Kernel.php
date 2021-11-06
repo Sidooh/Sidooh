@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Nabcellent\Kyanda\Console\TransactionStatusCommand;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,6 +17,8 @@ class Kernel extends ConsoleKernel
         //
 //        Commands\GenerateMpesaToken::class
 //        Commands\QueryAirtimeStatus::class
+//    TODO: Remove this once library is updated
+        TransactionStatusCommand::class
     ];
 
     /**

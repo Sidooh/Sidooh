@@ -47,7 +47,7 @@ class KyandaRequest
 
         $amount = $transaction->amount;
 
-        if (!in_array($event->request->status, ['0000', '1100'])) {
+        if (!in_array($event->request->status_code, ['0000', '1100'])) {
             try {
                 (new AfricasTalkingApi())->sms(['254714611696', '254711414987'], "KY_ERR:{$event->request->provider}\n{$event->request->message}\n{$transaction->account->phone} - $date");
                 Log::info("Kyanda Failure SMS Sent");

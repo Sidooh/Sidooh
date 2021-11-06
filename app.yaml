@@ -18,7 +18,7 @@ env_variables:
   APP_STORAGE: /tmp
   VIEW_COMPILED_PATH: /tmp
   APP_TIMEZONE: Africa/Nairobi
-  APP_URL: https://master-dot-hoodis1.uc.r.appspot.com
+  APP_URL: https://master-dot-hoodis3.uc.r.appspot.com
 
 
   CACHE_DRIVER: file
@@ -28,7 +28,7 @@ env_variables:
   DB_DATABASE: sidooh
   DB_USERNAME: root
   DB_PASSWORD: root
-  DB_SOCKET: "/cloudsql/hoodis1:us-central1:sidooh"
+  DB_SOCKET: "/cloudsql/hoodis3:us-central1:hoodis"
 
 
   MAIL_MAILER: smtp
@@ -66,10 +66,13 @@ env_variables:
 
   SIDOOH_TAGLINE: "Sidooh, Makes You Money with Every Purchase."
 
+  KYANDA_API_KEY: 04c83876101c48a4b083bf01812c2349
+  KYANDA_MERCHANT_ID: sidooh
+
 
 # Use the connection name obtained when configuring your Cloud SQL instance.
 beta_settings:
-  cloud_sql_instances: "hoodis1:us-central1:sidooh"
+  cloud_sql_instances: "hoodis3:us-central1:hoodis"
 
 # App engine resources
 manual_scaling:

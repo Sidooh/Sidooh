@@ -2131,16 +2131,16 @@
         },
         {
             "name": "nabcellent/laravel-kyanda",
-            "version": "v1.9.5",
+            "version": "v1.9.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nabcellent/laravel-kyanda.git",
-                "reference": "7d2b375345d28e8937f0d452ced44261efb9c81b"
+                "reference": "32e157aa509753d9d57aa450afb717df66e458dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nabcellent/laravel-kyanda/zipball/7d2b375345d28e8937f0d452ced44261efb9c81b",
-                "reference": "7d2b375345d28e8937f0d452ced44261efb9c81b",
+                "url": "https://api.github.com/repos/Nabcellent/laravel-kyanda/zipball/32e157aa509753d9d57aa450afb717df66e458dd",
+                "reference": "32e157aa509753d9d57aa450afb717df66e458dd",
                 "shasum": ""
             },
             "require": {
@@ -2197,9 +2197,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Nabcellent/laravel-kyanda/issues",
-                "source": "https://github.com/Nabcellent/laravel-kyanda/tree/v1.9.5"
+                "source": "https://github.com/Nabcellent/laravel-kyanda/tree/v1.9.6"
             },
-            "time": "2021-10-30T12:20:52+00:00"
+            "time": "2021-11-06T07:57:28+00:00"
         },
         {
             "name": "nesbot/carbon",

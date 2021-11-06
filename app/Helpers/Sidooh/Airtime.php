@@ -140,7 +140,7 @@ class Airtime
 
         $payment = new Payment([
             'amount' => $this->amount,
-            'status' => 'Pending',
+            'status' => 'Complete',
             'type' => 'SIDOOH',
             'subtype' => 'VOUCHER',
             'payment_id' => $voucher->id
@@ -154,10 +154,10 @@ class Airtime
             'amount' => $this->amount
         ];
 
-        if (config('services.sidooh.provider') == 'kyanda')
-            KyandaApi::airtime($transaction, $airtime);
-        else
+        if (config('services.sidooh.provider') == 'at')
             (new ProductRepository())->airtime($transaction, $airtime);
+        else
+            KyandaApi::airtime($transaction, $airtime);
 
     }
 }

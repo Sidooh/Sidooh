@@ -2,10 +2,14 @@
 
 namespace App\Listeners;
 
+use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Models\Transaction;
+use App\Repositories\TransactionRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
-use Nabcellent\Kyanda\Events\KyandaTransactionSuccessEvent;
+use Nabcellent\Kyanda\Events\KyandaTransactionFailedEvent;
+use Nabcellent\Kyanda\Library\Providers;
 
 class KyandaTransactionFailed
 {
@@ -22,14 +26,77 @@ class KyandaTransactionFailed
     /**
      * Handle the event.
      *
-     * @param KyandaTransactionSuccessEvent $event
+     * @param KyandaTransactionFailedEvent $event
      * @return void
      */
-    public function handle(KyandaTransactionSuccessEvent $event)
+    public function handle(KyandaTransactionFailedEvent $event)
     {
         //
         Log::info('----------------- Kyanda Transaction Failed ');
         Log::error($event->transaction);
+
+
+        //                Update Transaction
+        $transaction = Transaction::find($event->transaction->request->relation_id);
+        (new TransactionRepository())->updateStatus($transaction, 'Failed');
+
+//        $method = $transaction->payment->subtype;
+
+//        $code = config('services.at.ussd.code');
+
+        $destination = $event->transaction->destination;
+        $sender = $transaction->account->phone;
+
+        $amount = $transaction->amount;
+        $date = $event->transaction->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
+
+        $provider = $event->transaction->request->provider;
+
+        switch ($provider) {
+            case Providers::FAIBA:
+            case Providers::SAFARICOM:
+            case Providers::AIRTEL:
+            case Providers::TELKOM:
+            case Providers::EQUITEL:
+
+                $voucher = $transaction->account->voucher;
+                $voucher->in += $amount;
+                $voucher->save();
+
+                $transaction->status = 'reimbursed';
+                $transaction->save();
+
+                $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+                (new AfricasTalkingApi())->sms($sender, $message);
+
+                break;
+
+            case Providers::KPLC_POSTPAID:
+
+
+                break;
+
+
+            case Providers::KPLC_PREPAID:
+
+                break;
+
+            case Providers::DSTV:
+            case Providers::GOTV:
+            case Providers::ZUKU:
+            case Providers::STARTIMES:
+
+                break;
+
+            case Providers::NAIROBI_WTR:
+
+                break;
+
+            case Providers::FAIBA_B:
+
+                break;
+
+        }
 
     }
 }

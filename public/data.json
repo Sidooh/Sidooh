@@ -66,7 +66,7 @@
                 "next": "airtime_amount_v2"
             },
             "2": {
-                "title": "Other",
+                "title": "Other Number",
                 "type": "int",
                 "value": "2",
                 "next": "other_number"

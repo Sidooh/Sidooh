@@ -67,7 +67,14 @@ class Airtime extends Product
 
 //        TODO: How can this computation be made dynamic to include ATs variable discount?
 //        TODO: Change to $product_text in case of going back it doesn't concatenate forever.
-        $this->vars['{$product}'] = $this->vars['{$class}'] . ' (which will earn you ' . $this->vars['{$amount}'] / 200 . ' points)';
+        $this->vars['{$product}'] = $this->vars['{$class}'] . ' (which will earn you ' . $this->getPointsEarned($this->vars['{$amount}']) . ' points)';
+    }
+
+
+//    TODO: Refactor this to external file?
+    public function getPointsEarned(float $amount)
+    {
+        return $amount * .06 * .1;
     }
 
     private function check_current_pin(Screen $previousScreen)

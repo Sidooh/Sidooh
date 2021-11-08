@@ -187,9 +187,10 @@ class KyandaTransactionSuccess
 
     }
 
+//    TODO: Refactor function to helper file?
     public function getPointsEarned(float $discount): string
     {
-        $e = $discount * .75;
+        $e = $discount * config('services.sidooh.earnings.users_percentage');
         return 'KES' . $e / 6;
     }
 }

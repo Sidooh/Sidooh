@@ -71,9 +71,10 @@ class AirtimePurchaseSuccess
 
     }
 
+//    TODO: Refactor this to external file?
     public function getPointsEarned(float $discount)
     {
-        $e = $discount * .75;
+        $e = $discount * config('services.sidooh.earnings.users_percentage');
         return 'KES' . $e / 6;
     }
 }

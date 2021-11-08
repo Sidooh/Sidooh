@@ -36,7 +36,7 @@ class EarningRepository extends Model
 
         $acc = $transaction->account;
 
-        $groupEarnings = round($earnings * .75, 4);
+        $groupEarnings = round($earnings * config('services.sidooh.earnings.users_percentage'), 4);
 
         $userEarnings = round($groupEarnings / 6, 4);
 

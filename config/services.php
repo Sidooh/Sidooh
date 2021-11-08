@@ -40,6 +40,9 @@ return array(
         ),
     'sidooh' =>
         array(
+            'earnings' => [
+                'users_percentage' => .6
+            ],
             'tagline' => 'Sidooh, Makes You Money with Every Purchase.',
             'mpesa' =>
                 array(

@@ -14,11 +14,11 @@ cron:
     schedule: every day 00:00
 
 
-  - description: "hourly mpesa status query"
-    url: /api/v1/payments/mpesa/status/query
-    schedule: every hour
+  #  - description: "hourly mpesa status query"
+  #    url: /api/v1/payments/mpesa/status/query
+  #    schedule: every 1 hour
 
 
-  - description: "hourly kyanda status query"
+  - description: "3 hours kyanda status query"
     url: /api/v1/kyanda/status/query
-    schedule: every hour
+    schedule: every 3 hours

@@ -62,7 +62,7 @@ class Utility
     public function __construct($phone, int $option, int $amount, int $accountNumber, string $method = PaymentMethods::MPESA)
     {
         $this->phone = ltrim(PhoneNumber::make($phone, 'KE')->formatE164(), '+');
-        $this->amount = 10 ?? $amount;
+        $this->amount = $amount;
         $this->accountNumber = $accountNumber;
         $this->method = $method;
 

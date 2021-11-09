@@ -126,10 +126,10 @@ class KyandaTransactionSuccess
                 event(new TransactionSuccessEvent($transaction, $totalEarnings));
 
 //                Send SMS
-                $token = $event->transaction->details['one'];
+                $details = (object)$event->transaction->details;
                 $message = "You have made a payment to {$provider} - {$destination} of {$amount} from your Sidooh account on
-                 {$date} using $method. You have received {$userEarnings} cashback.$vtext\n\n
-                 {$token}";
+                 {$date} using $method. You have received {$userEarnings} cashback.$vtext\n
+                 Tokens: {$details->tokens}\nUnits: {$details->units}";
 
                 (new AfricasTalkingApi())->sms($sender, $message);
 

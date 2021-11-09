@@ -39,7 +39,7 @@ WORKDIR /home/app
 COPY . /home/app
 
 # Run composer install
-RUN composer install --ignore-platform-reqs
+RUN composer install --ignore-platform-reqs -o -a
 
 # Install package
 #RUN php artisan passport:install

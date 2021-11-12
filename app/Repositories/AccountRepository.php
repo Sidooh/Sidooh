@@ -434,4 +434,31 @@ class AccountRepository extends Model
         return $rate;
     }
 
+    public function accountWithUtilityAccountsByProvider(string $phone, string $provider)
+    {
+        return $this->wherePhone(ltrim($phone, '+'))->with(['utility_accounts' => function ($q) use ($provider) {
+            $q->whereProvider($provider)->take(3)->latest();
+        }])->first();
+    }
+
+    function syncUtilityAccounts(Account $account, string $provider, string $number)
+    {
+
+//        TODO: How and when should we limit and to what number the users churches. Does it affect church user counts?
+        $uA = $account->utility_accounts()->whereProvider($provider)->latest()->take(3)->get();
+
+        if (count($uA) >= 3)
+            return null;
+
+        $exists = $uA->firstWhere('utility_number', $number);
+
+        if ($exists)
+            return null;
+
+        $utility = $account->utility_accounts()->create(['utility_number' => $number, 'provider' => $provider]);
+
+
+        return $utility;
+
+    }
 }

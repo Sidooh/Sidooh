@@ -40,10 +40,6 @@ class KyandaTransactionFailed
         $transaction = Transaction::find($event->transaction->request->relation_id);
         (new TransactionRepository())->updateStatus($transaction, 'Failed');
 
-//        $method = $transaction->payment->subtype;
-
-//        $code = config('services.at.ussd.code');
-
         $destination = $event->transaction->destination;
         $sender = $transaction->account->phone;
 
@@ -52,19 +48,19 @@ class KyandaTransactionFailed
 
         $provider = $event->transaction->request->provider;
 
+        $voucher = $transaction->account->voucher;
+        $voucher->in += $amount;
+        $voucher->save();
+
+        $transaction->status = 'reimbursed';
+        $transaction->save();
+
         switch ($provider) {
             case Providers::FAIBA:
             case Providers::SAFARICOM:
             case Providers::AIRTEL:
             case Providers::TELKOM:
             case Providers::EQUITEL:
-
-                $voucher = $transaction->account->voucher;
-                $voucher->in += $amount;
-                $voucher->save();
-
-                $transaction->status = 'reimbursed';
-                $transaction->save();
 
                 $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
                 (new AfricasTalkingApi())->sms($sender, $message);
@@ -74,25 +70,40 @@ class KyandaTransactionFailed
             case Providers::KPLC_POSTPAID:
 
 
-                break;
-
+//                $message = "Sorry! We could not complete your payment to {$provider} of KES{$amount} for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+//                (new AfricasTalkingApi())->sms($sender, $message);
+//
+//                break;
 
             case Providers::KPLC_PREPAID:
 
-                break;
+//                $message = "Sorry! We could not complete your payment to {$provider} of KES{$amount} for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+//                (new AfricasTalkingApi())->sms($sender, $message);
+//
+//                break;
 
             case Providers::DSTV:
             case Providers::GOTV:
             case Providers::ZUKU:
             case Providers::STARTIMES:
 
-                break;
+//                $message = "Sorry! We could not complete your payment to {$provider} of KES{$amount} for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+//                (new AfricasTalkingApi())->sms($sender, $message);
+//
+//                break;
 
             case Providers::NAIROBI_WTR:
 
-                break;
+//                $message = "Sorry! We could not complete your payment to {$provider} of KES{$amount} for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+//                (new AfricasTalkingApi())->sms($sender, $message);
+//
+//                break;
 
             case Providers::FAIBA_B:
+
+
+                $message = "Sorry! We could not complete your payment to {$provider} of KES{$amount} for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+                (new AfricasTalkingApi())->sms($sender, $message);
 
                 break;
 

@@ -2,10 +2,9 @@
 
 namespace App\Listeners;
 
-use App\Events\TransactionSuccessEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Models\Transaction;
-use App\Repositories\TransactionRepository;
+use App\Repositories\AccountRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
@@ -83,6 +82,24 @@ class KyandaRequest
             }
 
             (new AfricasTalkingApi())->sms($phone, $message);
+
+        }
+
+        switch ($event->request->provider) {
+            case Providers::SAFARICOM:
+            case Providers::AIRTEL:
+            case Providers::FAIBA:
+            case Providers::EQUITEL:
+            case Providers::TELKOM:
+            case Providers::FAIBA_B:
+
+                break;
+
+            default:
+
+                $number = explode(" - ", $transaction->description)[1];
+
+                (new AccountRepository())->syncUtilityAccounts($account, $event->request->provider, $number);
 
         }
 

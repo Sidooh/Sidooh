@@ -178,11 +178,10 @@ class UssdController extends Controller
         return ['error' => 'Could not update file'];
     }
 
-    public function getUtilitiesStatus(Request $request): array
+    public function getUtilitiesStatus(Request $request)
     {
         return [
             "utilities_enabled" => config('services.sidooh.utilities_enabled')
         ];
-
     }
 }

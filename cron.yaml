@@ -1,24 +1,24 @@
 cron:
-  - description: "daily interest calculations"
-    url: /api/v1/investment/interest/calculate
-    schedule: every day 00:00
+#  - description: "daily interest calculations"
+#    url: /api/v1/investment/interest/calculate
+#    schedule: every day 00:00
+#
+#
+#  - description: "monthly interest allocation"
+#    url: /api/v1/investment/interest/allocate
+#    schedule: 1 of month 00:00
+#
+#
+#  - description: "daily subscription validation"
+#    url: /api/v1/jobs/subscriptions/deactivate
+#    schedule: every day 00:00
 
 
-  - description: "monthly interest allocation"
-    url: /api/v1/investment/interest/allocate
-    schedule: 1 of month 00:00
+#  - description: "hourly mpesa status query"
+#    url: /api/v1/payments/mpesa/status/query
+#    schedule: every 1 hour
 
 
-  - description: "daily subscription validation"
-    url: /api/v1/jobs/subscriptions/deactivate
-    schedule: every day 00:00
-
-
-  #  - description: "hourly mpesa status query"
-  #    url: /api/v1/payments/mpesa/status/query
-  #    schedule: every 1 hour
-
-
-  - description: "3 hours kyanda status query"
-    url: /api/v1/kyanda/status/query
-    schedule: every 3 hours
+#  - description: "3 hours kyanda status query"
+#    url: /api/v1/kyanda/status/query
+#    schedule: every 3 hours

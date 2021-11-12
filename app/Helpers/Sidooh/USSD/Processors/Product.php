@@ -149,4 +149,10 @@ class Product
                 return null;
         }
     }
+
+    public function addVars(string $key, string $value)
+    {
+        $this->vars[$key] = $value;
+        $this->saveState();
+    }
 }

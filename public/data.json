@@ -112,42 +112,54 @@
                 "title": "KPLC Prepaid",
                 "type": "int",
                 "value": "1",
-                "next": "utility_account_no"
+                "next": "utility_account_select"
             },
             "2": {
                 "title": "KPLC Postpaid",
                 "type": "int",
                 "value": "2",
-                "next": "utility_account_no"
+                "next": "utility_account_select"
             },
             "3": {
                 "title": "Nairobi Water",
                 "type": "int",
                 "value": "3",
-                "next": "utility_account_no"
+                "next": "utility_account_select"
             },
             "4": {
                 "title": "DSTV",
                 "type": "int",
                 "value": "4",
-                "next": "utility_account_no"
+                "next": "utility_account_select"
             },
             "5": {
                 "title": "ZUKU",
                 "type": "int",
                 "value": "5",
-                "next": "utility_account_no"
+                "next": "utility_account_select"
             },
             "6": {
                 "title": "GOTV",
                 "type": "int",
                 "value": "6",
-                "next": "utility_account_no"
+                "next": "utility_account_select"
             },
             "7": {
                 "title": "Startimes",
                 "type": "int",
                 "value": "7",
+                "next": "utility_account_select"
+            }
+        }
+    },
+    "utility_account_select": {
+        "key": "utility_account_select",
+        "title": "Select account:",
+        "options": {
+            "5": {
+                "title": "Enter Other Account",
+                "type": "int",
+                "value": "5",
                 "next": "utility_account_no"
             }
         }

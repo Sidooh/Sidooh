@@ -4,9 +4,9 @@
 namespace App\Helpers\Sidooh\USSD\Processors;
 
 
+use App\Helpers\Sidooh\USSD\Entities\Option;
 use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
-use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
 
 class Utility extends Pay
@@ -23,6 +23,9 @@ class Utility extends Pay
                 break;
             case "utility":
                 $this->set_utility();
+                break;
+            case "utility_account_select":
+                $this->set_selected_account_number();
                 break;
             case "utility_account_no":
                 $this->set_account_number();
@@ -59,6 +62,73 @@ class Utility extends Pay
         $this->vars['{$option}'] = $this->previousScreen->option->value;
 
         $this->vars['{$product}'] = 'to ' . $this->previousScreen->option->title;
+
+        $option = null;
+
+        switch ($this->vars['{$option}']) {
+            case 1:
+                $option = Providers::KPLC_PREPAID;
+                break;
+            case 2:
+                $option = Providers::KPLC_POSTPAID;
+                break;
+            case 3:
+                $option = Providers::NAIROBI_WTR;
+                break;
+            case 4:
+                $option = Providers::DSTV;
+                break;
+            case 5:
+                $option = Providers::ZUKU;
+                break;
+            case 6:
+                $option = Providers::GOTV;
+                break;
+            case 7:
+                $option = Providers::STARTIMES;
+                break;
+        }
+
+        $account = (new AccountRepository())->accountWithUtilityAccountsByProvider($this->phone, $option);
+
+        if ($account->utility_accounts->isNotEmpty()) {
+            var_dump("Entered account");
+            $varUtilityAccountOpts = array();
+            $utilityAccountOptions = array();
+            $counter = 1;
+
+            foreach ($account->utility_accounts as $uA) {
+                $option = (new Option())->create($uA->utility_number, 'int', $counter, 'utility_amount');
+                array_push($utilityAccountOptions, $option);
+
+                $varUtilityAccountOpts[$counter] = $uA->id;
+                $counter += 1;
+            }
+
+            array_push($utilityAccountOptions, ...$this->screen->options);
+            $this->screen->options = $utilityAccountOptions;
+
+            $this->addVars('{$utility_account_options}', json_encode($varUtilityAccountOpts));
+
+        } else {
+            $this->screen->title .= "\n\n No accounts saved, please add account below.\n";
+            $this->screen->options[0]->title = "Enter account no.";
+        }
+    }
+
+    private function set_selected_account_number()
+    {
+        $selectedUtilityAccount = $this->previousScreen->option->value;
+        $utilityAccountOptions = json_decode($this->vars['{$utility_account_options}'], true);
+
+        if (in_array($selectedUtilityAccount, array_keys($utilityAccountOptions))) {
+
+            $this->vars['{$account_number}'] = $utilityAccountOptions[$selectedUtilityAccount];
+
+            $this->vars['{$my_number}'] = $this->phone;
+            $this->vars['{$number}'] = $this->vars['{$account_number}'];
+        }
+
     }
 
     private function set_account_number()

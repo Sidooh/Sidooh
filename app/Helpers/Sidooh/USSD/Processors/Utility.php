@@ -101,7 +101,7 @@ class Utility extends Pay
                 $option = (new Option())->create($uA->utility_number, 'int', $counter, 'utility_amount');
                 array_push($utilityAccountOptions, $option);
 
-                $varUtilityAccountOpts[$counter] = $uA->id;
+                $varUtilityAccountOpts[$counter] = $uA->utility_number;
                 $counter += 1;
             }
 

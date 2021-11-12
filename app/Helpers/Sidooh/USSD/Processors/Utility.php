@@ -8,6 +8,7 @@ use App\Helpers\Sidooh\USSD\Entities\Option;
 use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
 use App\Repositories\AccountRepository;
+use Nabcellent\Kyanda\Library\Providers;
 
 class Utility extends Pay
 {
@@ -92,7 +93,6 @@ class Utility extends Pay
         $account = (new AccountRepository())->accountWithUtilityAccountsByProvider($this->phone, $option);
 
         if ($account->utility_accounts->isNotEmpty()) {
-            var_dump("Entered account");
             $varUtilityAccountOpts = array();
             $utilityAccountOptions = array();
             $counter = 1;

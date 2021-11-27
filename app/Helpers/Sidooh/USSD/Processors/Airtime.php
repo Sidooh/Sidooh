@@ -3,9 +3,9 @@
 
 namespace App\Helpers\Sidooh\USSD\Processors;
 
+use App\Helpers\Sidooh\USSD\Entities\Option;
 use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
-use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
@@ -19,26 +19,32 @@ class Airtime extends Product
             case "main_menu":
                 $this->set_user_number();
                 break;
+            case "airtime":
+                $this->set_airtime();
+                break;
+            case "other_number_select":
+                $this->set_selected_airtime_number();
+                break;
             case "other_number":
-                $this->set_other_number($previousScreen);
+                $this->set_other_number();
                 break;
             case "airtime_amount":
-                $this->set_amount($previousScreen);
+                $this->set_amount();
                 break;
             case "airtime_amount_v2":
-                $this->set_amount($previousScreen, $version = 2);
+                $this->set_amount(2);
                 break;
             case "payment_method":
-                $this->set_payment_method($previousScreen);
+                $this->set_payment_method();
                 break;
             case "payment_pin_confirmation":
-                $this->check_current_pin($previousScreen);
+                $this->check_current_pin();
                 break;
             case "payment_confirmation":
-                $this->set_payment_confirmation($previousScreen, $screen);
+                $this->set_payment_confirmation();
                 break;
             case "other_number_mpesa":
-                $this->set_payment_number($previousScreen);
+                $this->set_payment_number();
                 break;
         }
     }
@@ -52,18 +58,67 @@ class Airtime extends Product
         $this->vars['{$mpesa_number}'] = $this->phone;
     }
 
-    private function set_other_number(Screen $previousScreen)
+    private function set_airtime()
     {
-        $this->vars['{$other_number}'] = $previousScreen->option_string;
-        $this->vars['{$number}'] = $previousScreen->option_string;
+        $selected = $this->previousScreen->option->value;
+
+        if ($selected != "2") {
+            return;
+        }
+
+        $account = (new AccountRepository())->accountWithAirtimeAccounts($this->phone);
+
+        if ($account->airtime_accounts->isNotEmpty()) {
+            $varAirtimeAccountOpts = array();
+            $airtimeAccountOptions = array();
+            $counter = 1;
+
+            foreach ($account->airtime_accounts as $uA) {
+                $option = (new Option())->create($uA->airtime_number, 'int', $counter, 'airtime_amount_v2');
+                array_push($airtimeAccountOptions, $option);
+
+                $varAirtimeAccountOpts[$counter] = $uA->airtime_number;
+                $counter += 1;
+            }
+
+            array_push($airtimeAccountOptions, ...$this->screen->options);
+            $this->screen->options = $airtimeAccountOptions;
+
+            $this->addVars('{$airtime_account_options}', json_encode($varAirtimeAccountOpts));
+
+        } else {
+            $this->screen->title .= "\n\n No numbers saved, please add number below.\n";
+//            $this->screen->options[0]->title = "Enter other no.";
+        }
+
     }
 
-    private function set_amount(Screen $previousScreen, $version = 1)
+    private function set_selected_airtime_number()
+    {
+        $selectedAirtimeAccount = $this->previousScreen->option->value;
+        $airtimeAccountOptions = json_decode($this->vars['{$airtime_account_options}'], true);
+
+        if ($airtimeAccountOptions && in_array($selectedAirtimeAccount, array_keys($airtimeAccountOptions))) {
+
+            $this->vars['{$airtime_number}'] = $airtimeAccountOptions[$selectedAirtimeAccount];
+
+            $this->vars['{$my_number}'] = $this->phone;
+            $this->vars['{$number}'] = $this->vars['{$airtime_number}'];
+        }
+    }
+
+    private function set_other_number()
+    {
+        $this->vars['{$other_number}'] = $this->previousScreen->option_string;
+        $this->vars['{$number}'] = $this->previousScreen->option_string;
+    }
+
+    private function set_amount($version = 1)
     {
         if ($version == 2)
-            $this->vars['{$amount}'] = $previousScreen->option_string;
+            $this->vars['{$amount}'] = $this->previousScreen->option_string;
         else
-            $this->vars['{$amount}'] = $previousScreen->option->value;
+            $this->vars['{$amount}'] = $this->previousScreen->option->value;
 
 //        TODO: How can this computation be made dynamic to include ATs variable discount?
 //        TODO: Change to $product_text in case of going back it doesn't concatenate forever.
@@ -77,14 +132,14 @@ class Airtime extends Product
         return $amount * .06 * .1;
     }
 
-    private function check_current_pin(Screen $previousScreen)
+    private function check_current_pin()
     {
         $acc = (new AccountRepository)->findByPhone($this->phone);
 
         if ($acc)
             if ($acc->pin) {
-//                if (!Hash::check($previousScreen->option_string, $res->pin)) {
-                if ($previousScreen->option_string !== $acc->pin) {
+//                if (!Hash::check($this->previousScreen->option_string, $res->pin)) {
+                if ($this->previousScreen->option_string !== $acc->pin) {
                     $this->screen->title = "Sorry, but the pin does not match. Please call us if you have forgotten your PIN";
                     $this->screen->type = 'END';
                 } else {
@@ -102,9 +157,9 @@ class Airtime extends Product
         return null;
     }
 
-    private function set_payment_method(Screen $previousScreen)
+    private function set_payment_method()
     {
-        $method = $this->methods($previousScreen->option->value);
+        $method = $this->methods($this->previousScreen->option->value);
         $this->vars['{$payment_method}'] = $method;
         $method_text = $method;
 
@@ -145,14 +200,14 @@ class Airtime extends Product
         $this->vars['{$payment_method_text}'] = $method_text;
     }
 
-    private function set_payment_confirmation(Screen $previousScreen, Screen $screen)
+    private function set_payment_confirmation()
     {
 //        TODO: Check if MPESA method selected set number to be user number
     }
 
-    private function set_payment_number(Screen $previousScreen)
+    private function set_payment_number()
     {
-        $this->vars['{$mpesa_number}'] = ltrim(PhoneNumber::make($previousScreen->option_string, 'KE')->formatE164(), '+');
+        $this->vars['{$mpesa_number}'] = ltrim(PhoneNumber::make($this->previousScreen->option_string, 'KE')->formatE164(), '+');
         $this->vars['{$payment_method_text}'] = $this->vars['{$payment_method}'] . ' ' . $this->vars['{$mpesa_number}'];
     }
 

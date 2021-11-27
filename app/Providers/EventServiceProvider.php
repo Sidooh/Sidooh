@@ -33,9 +33,9 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Nabcellent\Kyanda\Events\KyandaRequestEvent;
 use Nabcellent\Kyanda\Events\KyandaTransactionFailedEvent;
 use Nabcellent\Kyanda\Events\KyandaTransactionSuccessEvent;
-use Samerior\MobileMoney\Mpesa\Events\QueueTimeoutEvent;
-use Samerior\MobileMoney\Mpesa\Events\StkPushPaymentFailedEvent;
-use Samerior\MobileMoney\Mpesa\Events\StkPushPaymentSuccessEvent;
+use DrH\Mpesa\Events\QueueTimeoutEvent;
+use DrH\Mpesa\Events\StkPushPaymentFailedEvent;
+use DrH\Mpesa\Events\StkPushPaymentSuccessEvent;
 
 class EventServiceProvider extends ServiceProvider
 {

@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use Samerior\MobileMoney\Mpesa\Database\Entities\MpesaBulkPaymentResponse;
+use DrH\Mpesa\Database\Entities\MpesaBulkPaymentResponse;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;

@@ -13,24 +13,24 @@
         "ext-json": "*",
         "ext-openssl": "*",
         "africastalking/africastalking": "^3.0",
+        "drh/mpesa": "^1.0",
+        "facade/ignition": "^2.3",
         "fideloper/proxy": "^4.0",
-        "guzzlehttp/guzzle": "^6.5",
+        "fruitcake/laravel-cors": "^2.0",
+        "guzzlehttp/guzzle": "^7.4",
         "karriere/json-decoder": "^3.1",
-        "laravel/framework": "^6.2",
+        "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "mratiebatie/laravel-repositories": "^1.0",
         "nabcellent/laravel-kyanda": "^1.9",
+        "nunomaduro/collision": "^5.0",
         "propaganistas/laravel-phone": "^4.2",
-        "samerior/mobile-money": "^2.1",
         "sentry/sentry-laravel": "^2.6",
-        "staudenmeir/laravel-adjacency-list": "^1.0"
+        "staudenmeir/laravel-adjacency-list": "^1.8"
     },
     "require-dev": {
-        "facade/ignition": "^1.4",
-        "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
-        "nunomaduro/collision": "^3.0",
-        "phpunit/phpunit": "^8.0"
+        "phpunit/phpunit": "^9.0"
     },
     "config": {
         "optimize-autoloader": true,

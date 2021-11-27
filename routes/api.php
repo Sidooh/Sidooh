@@ -71,7 +71,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::get('services/test/transaction', 'UssdController@transaction')->name('services.test.transaction');
     Route::post('services/test/stk', 'UssdController@stk')->name('services.test.stk');
     Route::post('services/test/b2c', 'UssdController@b2c')->name('services.test.b2c');
-    Route::post('services/sms/bulk', 'UssdController@sms')->name('services.test.sms');
+    Route::post('services/sms/bulk', 'UssdController@sms')->name('services.test.sms.bulk');
 
     Route::post('testb2c', 'UssdController@test');
 
@@ -81,8 +81,10 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::post('settings/provider/{provider}', 'UssdController@setProvider');
     Route::get('settings/provider', 'UssdController@getProvider');
 
+    Route::get('settings/redis', 'UssdController@getRedisStatus');
     Route::post('settings/utilities', 'UssdController@enableUtilities');
     Route::get('settings/utilities', 'UssdController@getUtilitiesStatus');
+
 
     Route::get('payments/mpesa/status/query', 'TransactionController@queryMpesaStatus')->name('payments.mpesa.status.query');
     Route::get('kyanda/status/query', 'TransactionController@queryKyandaStatus')->name('kyanda.status.query');

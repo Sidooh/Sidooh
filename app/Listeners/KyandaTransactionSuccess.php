@@ -127,9 +127,8 @@ class KyandaTransactionSuccess
 
 //                Send SMS
                 $details = (object)$event->transaction->details;
-                $message = "You have made a payment to {$provider} - {$destination} of {$amount} from your Sidooh account on
-                 {$date} using $method. You have received {$userEarnings} cashback.$vtext\n
-                 Tokens: {$details->tokens}\nUnits: {$details->units}";
+                $message = "You have made a payment to {$provider} - {$destination} of {$amount} from your Sidooh account on {$date} using $method. You have received {$userEarnings} cashback.$vtext";
+                $message .= "\nTokens: {$details->tokens}\nUnits: {$details->units}";
 
                 (new AfricasTalkingApi())->sms($sender, $message);
 

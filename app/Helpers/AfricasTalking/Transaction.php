@@ -6,7 +6,7 @@ namespace App\Helpers\AfricasTalking;
 
 class Transaction extends \AfricasTalking\SDK\Service
 {
-    public function check($parameters, $options = [])
+    public function check($parameters): array
     {
         if (empty($parameters['transactionId'])) {
             return $this->error("transactionId must be specified");

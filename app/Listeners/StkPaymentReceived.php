@@ -7,7 +7,7 @@ use App\Helpers\Sidooh\USSD\Entities\MpesaReferences;
 use App\Models\Payment;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Log;
-use Samerior\MobileMoney\Mpesa\Events\StkPushPaymentSuccessEvent;
+use DrH\Mpesa\Events\StkPushPaymentSuccessEvent;
 
 class StkPaymentReceived
 {

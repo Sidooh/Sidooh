@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 use MrAtiebatie\Repository;
 use Samerior\MobileMoney\Mpesa\Database\Entities\MpesaBulkPaymentResponse;
 
@@ -41,6 +42,11 @@ class UssdRepository
         $serviceCode = $_REQUEST["serviceCode"];
         $phoneNumber = $_REQUEST["phoneNumber"];
         $text = $_REQUEST["text"];   //
+
+        if (empty($phoneNumber)) {
+            Log::error("Ussd Phone Number Request is empty");
+            return Response::json("Could not process request.", 422);
+        }
 
 //        $data = ['phone' => $phoneNumber, 'text' => $text, 'service_code' => $serviceCode, 'session_id' => $sessionId];
 

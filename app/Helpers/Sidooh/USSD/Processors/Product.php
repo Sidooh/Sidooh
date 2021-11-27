@@ -7,8 +7,8 @@ namespace App\Helpers\Sidooh\USSD\Processors;
 use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
 use App\Models\UssdUser;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Support\Facades\Storage;
+use App\Models\UssdVars;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use libphonenumber\NumberParseException;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
@@ -49,20 +49,37 @@ class Product
 
     private function retrieveState()
     {
+//        try {
+//            $this->vars = json_decode(Storage::get($this->sessionId . '_vars.txt'), true);
+//        } catch (FileNotFoundException $e) {
+//            return null;
+//        }
+
+
         try {
-            $this->vars = json_decode(Storage::get($this->sessionId . '_vars.txt'), true);
-        } catch (FileNotFoundException $e) {
+            $ussdVars = UssdVars::whereSession($this->sessionId)->firstOrFail();
+            $this->vars = $ussdVars->vars;
+        } catch (ModelNotFoundException $e) {
             return null;
         }
     }
 
-    private function saveState()
+    private
+    function saveState()
     {
-        $contents = json_encode($this->vars);
-        Storage::put($this->sessionId . '_vars.txt', $contents);
+//        $contents = json_encode($this->vars);
+//        Storage::put($this->sessionId . '_vars.txt', $contents);
+
+        UssdVars::updateOrCreate(
+            ["session" => $this->sessionId],
+            [
+                "session" => $this->sessionId,
+                "vars" => $this->vars
+            ]);
     }
 
-    public function getSubProduct(UssdUser $user, string $sessionId, string $option)
+    public
+    function getSubProduct(UssdUser $user, string $sessionId, string $option)
     {
         return $this;
     }
@@ -76,7 +93,8 @@ class Product
         }
     }
 
-    public function process(UssdUser $user, Screen $previousScreen, Screen $screen)
+    public
+    function process(UssdUser $user, Screen $previousScreen, Screen $screen)
     {
 //        $this->user = $user;
         $this->retrieveState();
@@ -103,7 +121,8 @@ class Product
      * @param Screen $screen
      * @return Product
      */
-    protected function setScreens(Screen $previousScreen, Screen $screen)
+    protected
+    function setScreens(Screen $previousScreen, Screen $screen)
     {
         $this->previousScreen = $previousScreen;
         $this->screen = $screen;
@@ -111,7 +130,8 @@ class Product
         return $this;
     }
 
-    protected function translateScreens()
+    protected
+    function translateScreens()
     {
         foreach ($this->screen as $key => $value) {
             if (is_string($this->screen->$key)) {
@@ -125,16 +145,32 @@ class Product
         }
     }
 
-    private function unsetState()
+    private
+    function unsetState()
     {
+        UssdVars::whereSession($this->sessionId)->delete();
+
 //        Storage::delete($this->sessionId . '_vars.txt');
+
+//        try {
+//            Redis::delete($this->sessionId . '_vars');
+//        } catch (TypeError | RedisException $e) {
+//            try {
+//                Storage::delete($this->sessionId . '_vars.txt');
+//            } catch (FileNotFoundException $e) {
+//                return;
+//            }
+//        }
+
+
     }
 
     /**
      * @param $value
      * @return mixed
      */
-    protected function methods(int $value)
+    protected
+    function methods(int $value)
     {
         switch ($value) {
             case 1:
@@ -150,7 +186,8 @@ class Product
         }
     }
 
-    public function addVars(string $key, string $value)
+    public
+    function addVars(string $key, string $value)
     {
         $this->vars[$key] = $value;
         $this->saveState();

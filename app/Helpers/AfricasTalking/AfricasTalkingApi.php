@@ -99,7 +99,7 @@ class AfricasTalkingApi
 
     }
 
-    public function airtime(string $to, string $amount, string $currency = 'KES')
+    public function airtime(string $to, string $amount, string $currency = 'KES'): array
     {
         $this->initialize_app('airtime');
 
@@ -119,7 +119,7 @@ class AfricasTalkingApi
 
     }
 
-    public function transactionStatus(string $transactionId)
+    public function transactionStatus(string $transactionId): array
     {
         $this->initialize_app('airtime');
 

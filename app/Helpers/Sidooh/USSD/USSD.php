@@ -18,13 +18,18 @@ use App\Helpers\Sidooh\USSD\Processors\Referral;
 use App\Helpers\Sidooh\USSD\Processors\Subscription;
 use App\Helpers\Sidooh\USSD\Processors\Utility;
 use App\Helpers\Sidooh\USSD\Processors\Voucher;
+use App\Models\UssdState;
 use App\Models\UssdUser;
 use Error;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use Karriere\JsonDecoder\JsonDecoder;
 use libphonenumber\NumberParseException;
 use Propaganistas\LaravelPhone\PhoneNumber;
+use RedisException;
+use TypeError;
 
 class USSD
 {
@@ -98,17 +103,37 @@ class USSD
     private function retrieveState(): ?Screen
     {
         error_log("retrieveState");
+
+//        try {
+//            $contents = Storage::get($this->sessionId . '_state.txt');
+//        } catch (FileNotFoundException $e) {
+//            return null;
+//        }
+
         try {
-            $contents = Storage::get($this->sessionId . '_state.txt');
-        } catch (FileNotFoundException $e) {
+            $decodedData = UssdState::whereSession($this->sessionId)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
             return null;
         }
 
-        $decodedData = json_decode($contents, true);
+//        try {
+//            $contents = Redis::get($this->sessionId . '_state');
+//        } catch (TypeError|RedisException $e) {
+//            try {
+//                $contents = Storage::get($this->sessionId . '_state.txt');
+//            } catch (FileNotFoundException $e) {
+//                return null;
+//            }
+//        }
 
-        $this->setProduct($decodedData[0]);
+//        $decodedData = json_decode($contents, true);
 
-        $jsonData = json_encode($decodedData[1]);
+//        $this->setProduct($decodedData[0]);
+//
+//        $jsonData = json_encode($decodedData[1]);
+        $this->setProduct($decodedData->ussd_product);
+
+        $jsonData = json_encode($decodedData->screen_path);
 
         $jsonDecoder = new JsonDecoder();
         $jsonDecoder->register(new ScreenTransformer());
@@ -163,8 +188,6 @@ class USSD
 
     private function setScreen(Screen $screen, bool $keep_state = true)
     {
-//        error_log("setScreen: " . $screen->key . " - " . $screen->type ?? "No type!");
-
         if ($keep_state && "GENESIS" !== ($screen->type ?? false)) {
             $prev = $this->screen ?? null;
             $this->screen = $screen;
@@ -173,16 +196,28 @@ class USSD
             $this->screen = $screen;
         }
 
-//        error_log($screen);
-
         $this->saveState();
     }
 
     private function saveState()
     {
         error_log("saveState");
-        $contents = json_encode([$this->getProduct(true), $this->screen]);
-        Storage::put($this->sessionId . '_state.txt', $contents);
+//        $contents = json_encode([$this->getProduct(true), $this->screen]);
+//        Storage::put($this->sessionId . '_state.txt', $contents);
+
+        UssdState::updateOrCreate(
+            ["session" => $this->sessionId],
+            [
+                "ussd_product" => $this->getProduct(true),
+                "screen_path" => $this->screen
+            ]);
+
+//        try {
+//            $contents = UssdState::whereSession($this->sessionId)->firstOrFail();
+//        } catch (ModelNotFoundException $e) {
+//            return null;
+//        }
+
     }
 
     public function getProduct($as_enum = false)
@@ -259,7 +294,8 @@ class USSD
     {
         error_log("unsetState");
         Storage::delete($this->sessionId . '_state.txt');
-//        Storage::delete($this->sessionId . '_vars.txt');
+
+        UssdState::whereSession($this->sessionId)->delete();
     }
 
     private function addResponseFooter($message)

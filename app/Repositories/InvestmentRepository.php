@@ -129,7 +129,7 @@ class InvestmentRepository extends Model
             }
 
             try {
-                (new AfricasTalkingApi())->sms(['254714611696', '254711414987'], "STATUS:INVESTMENT\nAllocating Interest.");
+                (new AfricasTalkingApi())->sms(['254714611696', '254711414987', '254721309253'], "STATUS:INVESTMENT\nAllocating Interest.");
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
             }

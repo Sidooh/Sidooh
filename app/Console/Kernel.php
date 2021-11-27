@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
 //        Commands\GenerateMpesaToken::class
 //        Commands\QueryAirtimeStatus::class
 //    TODO: Remove this once library is updated
-        TransactionStatusCommand::class
+//        TransactionStatusCommand::class
     ];
 
     /**
@@ -34,27 +34,27 @@ class Kernel extends ConsoleKernel
 //        $schedule->command('mpesa:generateToken')
 //            ->cron('55 * * * *')->withoutOverlapping();
 
-        $schedule->command('mpesa:query_status')
-            ->everyFiveMinutes()
-            ->withoutOverlapping(5)
-            ->sendOutputTo('storage/logs/command.log')
+//        $schedule->command('mpesa:query_status')
+//            ->everyFiveMinutes()
+//            ->withoutOverlapping(5)
+//            ->sendOutputTo('storage/logs/command.log')
+////            ->emailOutputOnFailure('sidserviceske@gmail.com')
+//            ->runInBackground();
+//
+//        $schedule->command('airtime:status')
+////            ->everyMinute()
+//            ->withoutOverlapping()
+//            ->sendOutputTo('storage/logs/command.log')
+////            ->emailOutputOnFailure('sidserviceske@gmail.com')
+//            ->runInBackground();
+//
+//        $schedule->command('sidooh:invest')
+//            ->daily()
+//            ->withoutOverlapping()
+//            ->sendOutputTo('storage/logs/command.log')
 //            ->emailOutputOnFailure('sidserviceske@gmail.com')
-            ->runInBackground();
-
-        $schedule->command('airtime:status')
-//            ->everyMinute()
-            ->withoutOverlapping()
-            ->sendOutputTo('storage/logs/command.log')
-//            ->emailOutputOnFailure('sidserviceske@gmail.com')
-            ->runInBackground();
-
-        $schedule->command('sidooh:invest')
-            ->daily()
-            ->withoutOverlapping()
-            ->sendOutputTo('storage/logs/command.log')
-            ->emailOutputOnFailure('sidserviceske@gmail.com')
-//            ->emailOutputTo('sidserviceske@gmail.com')
-            ->runInBackground();
+////            ->emailOutputTo('sidserviceske@gmail.com')
+//            ->runInBackground();
     }
 
     /**

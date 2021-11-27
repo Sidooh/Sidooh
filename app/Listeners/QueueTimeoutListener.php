@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use Illuminate\Support\Facades\Log;
-use Samerior\MobileMoney\Mpesa\Events\QueueTimeoutEvent;
+use DrH\Mpesa\Events\QueueTimeoutEvent;
 
 class QueueTimeoutListener
 {

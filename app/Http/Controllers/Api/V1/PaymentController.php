@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Helpers\Sidooh\B2B\B2B;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
@@ -10,8 +9,6 @@ use App\Repositories\PaymentRepository;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Mpesa;
-use Samerior\MobileMoney\Mpesa\Library\Core;
 
 class PaymentController extends Controller
 {
@@ -105,17 +102,4 @@ class PaymentController extends Controller
         //
     }
 
-    public function b2b(Request $request)
-    {
-        $b2b = new B2B(new Core(new Client(['http_errors' => false,])), new \Samerior\MobileMoney\Mpesa\Repositories\Mpesa());
-        $res = $b2b->send('123454', 100, 'Trial b2b');
-
-//        $res = mpesa_send('600000', 100, 'Trial b2b');
-//        $mpesa  = new Mpesa();
-//
-//        $res = $mpesa->b2b('10000','BusinessPayBill','60000','4','4','paytest','cool');
-
-        return $res;
-
-    }
 }

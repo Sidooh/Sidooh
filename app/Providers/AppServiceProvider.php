@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Helpers\Safaricom\Mpesa;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,9 +15,6 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
-        $this->app->bind('mpesa-api', function () {
-            return new Mpesa();
-        });
     }
 
     /**
@@ -29,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        Schema::defaultStringLength(191);
+//        Schema::defaultStringLength(191);
     }
 }

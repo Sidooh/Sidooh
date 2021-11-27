@@ -12,7 +12,7 @@ use App\Models\Transaction;
 use App\Repositories\AccountRepository;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Log;
-use Samerior\MobileMoney\Mpesa\Exceptions\MpesaException;
+use DrH\Mpesa\Exceptions\MpesaException;
 
 class Subscription
 {

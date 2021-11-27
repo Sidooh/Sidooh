@@ -85,19 +85,20 @@ class KyandaRequest
 
         }
 
+        $number = explode(" - ", $transaction->description)[1];
+
         switch ($event->request->provider) {
-            case Providers::SAFARICOM:
+//            case Providers::SAFARICOM: //Most likely number accessing. Need to bulletproof this logic though by checking number against user
             case Providers::AIRTEL:
             case Providers::FAIBA:
             case Providers::EQUITEL:
             case Providers::TELKOM:
-            case Providers::FAIBA_B:
+                (new AccountRepository())->syncAirtimeAccounts($account, $event->request->provider, $number);
 
                 break;
 
             default:
 
-                $number = explode(" - ", $transaction->description)[1];
 
                 (new AccountRepository())->syncUtilityAccounts($account, $event->request->provider, $number);
 

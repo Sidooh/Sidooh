@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Log;
-use Samerior\MobileMoney\Mpesa\Events\StkPushPaymentFailedEvent;
+use DrH\Mpesa\Events\StkPushPaymentFailedEvent;
 
 class StkPaymentFailed
 {

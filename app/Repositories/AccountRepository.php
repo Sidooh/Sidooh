@@ -316,7 +316,7 @@ class AccountRepository extends Model
         }
 
         try {
-            (new AfricasTalkingApi())->sms(['254711414987'], "STATUS:INVESTMENT\nCalculating Interest.");
+            (new AfricasTalkingApi())->sms(['254711414987', '254721309253'], "STATUS:INVESTMENT\nCalculating Interest.");
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
@@ -461,4 +461,34 @@ class AccountRepository extends Model
         return $utility;
 
     }
+
+
+    public function accountWithAirtimeAccounts(string $phone)
+    {
+        return $this->wherePhone(ltrim($phone, '+'))->with(['airtime_accounts' => function ($q) {
+            $q->take(3)->latest();
+        }])->first();
+    }
+
+    function syncAirtimeAccounts(Account $account, string $provider, string $number)
+    {
+
+//        TODO: How and when should we limit and to what number the users churches. Does it affect church user counts?
+        $uA = $account->airtime_accounts()->latest()->take(3)->get();
+
+        if (count($uA) >= 3)
+            return null;
+
+        $exists = $uA->firstWhere('airtime_number', $number);
+
+        if ($exists)
+            return null;
+
+        $airtimeAcc = $account->airtime_accounts()->create(['airtime_number' => $number, 'provider' => $provider]);
+
+
+        return $airtimeAcc;
+
+    }
+
 }

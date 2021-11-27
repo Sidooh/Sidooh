@@ -106,6 +106,11 @@ class Account extends Model
         return $this->hasMany(UtilityAccount::class);
     }
 
+    public function airtime_accounts()
+    {
+        return $this->hasMany(AirtimeAccount::class);
+    }
+
     /**
      * Scope a query to only include active subscriptions.
      *

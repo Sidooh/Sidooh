@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sidooh-depl
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sidooh-depl
+
+  template:
+    metadata:
+      labels:
+        app: sidooh-depl
+
+    spec:
+      #      hostNetwork: true
+      containers:
+        - name: sidooh
+          image: eu.gcr.io/ticketing-dev-332909/sidooh
+#          envFrom:
+#            - secretRef:
+#                name: prod-secrets
+#          env:
+#            - name: APP_ENV
+#              value: production
+#            - name: DB_DATABASE
+#              value: sidooh
+#            - name: DB_HOST
+#              value: host.minikube.internal
+#            - name: REDIS_HOST
+#              value: host.minikube.internal
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sidooh-srv
+
+spec:
+  type: NodePort
+  selector:
+    app: sidooh-depl
+
+  ports:
+    - name: sidooh
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+

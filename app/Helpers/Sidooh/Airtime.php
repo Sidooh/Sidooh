@@ -11,6 +11,7 @@ use App\Models\Payment;
 use App\Models\Transaction;
 use App\Repositories\AccountRepository;
 use App\Repositories\ProductRepository;
+use DrH\Mpesa\Exceptions\MpesaException;
 use Illuminate\Support\Facades\Log;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
@@ -74,7 +75,12 @@ class Airtime
         $description = $targetNumber ? "Airtime Purchase - $targetNumber" : "Airtime Purchase";
         $number = $mpesaNumber ?? $this->phone;
 
-        $stkResponse = mpesa_request($number, $this->amount, MpesaReferences::AIRTIME, $description);
+        try {
+            $stkResponse = mpesa_request($number, $this->amount, MpesaReferences::AIRTIME, $description);
+        } catch (MpesaException $e) {
+//            TODO: Inform customer of issue?
+            Log::critical($e);
+        }
 
 //        error_log(json_encode($stkResponse));
 

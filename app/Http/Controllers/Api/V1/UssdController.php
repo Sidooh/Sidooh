@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 class UssdController extends Controller
 {
@@ -182,6 +183,15 @@ class UssdController extends Controller
     {
         return [
             "utilities_enabled" => config('services.sidooh.utilities_enabled')
+        ];
+    }
+
+    public function getRedisStatus(Request $request)
+    {
+        Redis::set("TEST", $request);
+
+        return [
+            "TEST" => Redis::get("TEST")
         ];
     }
 }

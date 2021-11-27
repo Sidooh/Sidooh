@@ -121,14 +121,13 @@ class Utility extends Pay
         $selectedUtilityAccount = $this->previousScreen->option->value;
         $utilityAccountOptions = json_decode($this->vars['{$utility_account_options}'], true);
 
-        if (in_array($selectedUtilityAccount, array_keys($utilityAccountOptions))) {
+        if ($utilityAccountOptions && in_array($selectedUtilityAccount, array_keys($utilityAccountOptions))) {
 
             $this->vars['{$account_number}'] = $utilityAccountOptions[$selectedUtilityAccount];
 
             $this->vars['{$my_number}'] = $this->phone;
             $this->vars['{$number}'] = $this->vars['{$account_number}'];
         }
-
     }
 
     private function set_account_number()

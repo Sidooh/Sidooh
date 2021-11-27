@@ -1,0 +1,25 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./k8s/*
+
+    hooks:
+      after:
+        - container:
+            command: [ "sh", "-c", "php artisan optimize" ]
+            containerName: sidooh # use a glob pattern to prefix-match the container name and pod name for deployments, stateful-sets, etc.
+            podName: sidooh-depl*
+
+build:
+  #  local:
+  #    push: false
+
+  googleCloudBuild:
+    projectId: ticketing-dev-332909
+
+  artifacts:
+    - image: eu.gcr.io/ticketing-dev-332909/sidooh
+      context: ../
+

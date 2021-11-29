@@ -92,7 +92,7 @@ class Utility extends Pay
 
         $account = (new AccountRepository())->accountWithUtilityAccountsByProvider($this->phone, $option);
 
-        if ($account->utility_accounts->isNotEmpty()) {
+        if ($account->utility_accounts && $account->utility_accounts->isNotEmpty()) {
             $varUtilityAccountOpts = array();
             $utilityAccountOptions = array();
             $counter = 1;

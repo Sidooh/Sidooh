@@ -179,7 +179,7 @@ class Utility
 
         $payment = new Payment([
             'amount' => $this->amount,
-            'status' => 'Pending',
+            'status' => 'Complete',
             'type' => 'SIDOOH',
             'subtype' => 'VOUCHER',
             'payment_id' => $voucher->id

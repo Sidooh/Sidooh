@@ -68,7 +68,7 @@ class Airtime extends Product
 
         $account = (new AccountRepository())->accountWithAirtimeAccounts($this->phone);
 
-        if ($account->airtime_accounts->isNotEmpty()) {
+        if ($account->airtime_accounts && $account->airtime_accounts->isNotEmpty()) {
             $varAirtimeAccountOpts = array();
             $airtimeAccountOptions = array();
             $counter = 1;

@@ -21,15 +21,11 @@ use App\Helpers\Sidooh\USSD\Processors\Voucher;
 use App\Models\UssdState;
 use App\Models\UssdUser;
 use Error;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use Karriere\JsonDecoder\JsonDecoder;
 use libphonenumber\NumberParseException;
 use Propaganistas\LaravelPhone\PhoneNumber;
-use RedisException;
-use TypeError;
 
 class USSD
 {
@@ -453,7 +449,7 @@ class USSD
             case "MIN|AIRTIME":
                 return $this->validate_amount_min($value, 20);
             case "MIN|WITHDRAW":
-                return $this->validate_amount_min($value, 10);
+                return $this->validate_amount_min($value, 20);
             case "PIN":
                 return $this->validate_PIN($value);
             case "NUMBER":

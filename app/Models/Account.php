@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Account extends Model
@@ -101,12 +102,12 @@ class Account extends Model
         return $this->hasOne(Merchant::class);
     }
 
-    public function utility_accounts()
+    public function utility_accounts(): HasMany
     {
         return $this->hasMany(UtilityAccount::class);
     }
 
-    public function airtime_accounts()
+    public function airtime_accounts(): HasMany
     {
         return $this->hasMany(AirtimeAccount::class);
     }

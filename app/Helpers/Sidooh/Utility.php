@@ -11,6 +11,7 @@ use App\Models\Payment;
 use App\Models\Transaction;
 use App\Repositories\AccountRepository;
 use App\Repositories\ProductRepository;
+use DrH\Mpesa\Exceptions\MpesaException;
 use Illuminate\Support\Facades\Log;
 use Nabcellent\Kyanda\Library\Providers;
 use Propaganistas\LaravelPhone\PhoneNumber;
@@ -115,7 +116,13 @@ class Utility
         $description = $this->option . " Payment - $this->accountNumber";
         $number = $mpesaNumber ?? $this->phone;
 
-        $stkResponse = mpesa_request($number, $this->amount, MpesaReferences::PAY_UTILITY, $description);
+        try {
+            $stkResponse = mpesa_request($number, $this->amount, MpesaReferences::PAY_UTILITY, $description);
+        } catch (MpesaException $e) {
+//            TODO: Inform customer of issue?
+            Log::critical($e);
+            return;
+        }
 
         $accountRep = new AccountRepository();
         $account = $accountRep->create([

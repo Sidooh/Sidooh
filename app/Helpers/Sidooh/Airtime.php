@@ -80,6 +80,7 @@ class Airtime
         } catch (MpesaException $e) {
 //            TODO: Inform customer of issue?
             Log::critical($e);
+            return;
         }
 
 //        error_log(json_encode($stkResponse));

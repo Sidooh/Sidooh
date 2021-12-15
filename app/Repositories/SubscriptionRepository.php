@@ -7,6 +7,9 @@ use App\Models\Subscription;
 use Illuminate\Database\Eloquent\Model;
 use MrAtiebatie\Repository;
 
+/**
+ * @mixin IdeHelperSubscriptionRepository
+ */
 class SubscriptionRepository extends Model
 {
     use Repository;

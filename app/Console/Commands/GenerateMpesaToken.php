@@ -26,8 +26,7 @@ class GenerateMpesaToken extends Command
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -36,13 +35,11 @@ class GenerateMpesaToken extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle(): void {
         //
         $client = new MpesaClient();
         $token = $client->getAccessToken();
 
         $this->info('Token retrieved: ' . $token);
-
     }
 }

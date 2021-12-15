@@ -8,6 +8,9 @@ use App\Models\SubAccount;
 use Illuminate\Database\Eloquent\Model;
 use MrAtiebatie\Repository;
 
+/**
+ * @mixin IdeHelperSubAccountRepository
+ */
 class SubAccountRepository extends Model
 {
     use Repository;

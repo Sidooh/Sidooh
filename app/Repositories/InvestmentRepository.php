@@ -8,6 +8,9 @@ use App\Models\CollectiveInvestment;
 use Illuminate\Database\Eloquent\Model;
 use MrAtiebatie\Repository;
 
+/**
+ * @mixin IdeHelperInvestmentRepository
+ */
 class InvestmentRepository extends Model
 {
     use Repository;

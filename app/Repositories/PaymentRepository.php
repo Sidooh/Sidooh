@@ -7,6 +7,9 @@ use App\Models\Payment;
 use Illuminate\Database\Eloquent\Model;
 use MrAtiebatie\Repository;
 
+/**
+ * @mixin IdeHelperPaymentRepository
+ */
 class PaymentRepository extends Model
 {
     use Repository;

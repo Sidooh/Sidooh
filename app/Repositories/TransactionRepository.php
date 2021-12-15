@@ -5,12 +5,15 @@ namespace App\Repositories;
 
 use App\Events\TransactionSuccessEvent;
 use App\Models\Account;
-use App\Models\Transaction;
 use App\Models\AirtimeResponse;
+use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 
+/**
+ * @mixin IdeHelperTransactionRepository
+ */
 class TransactionRepository extends Model
 {
     use Repository;

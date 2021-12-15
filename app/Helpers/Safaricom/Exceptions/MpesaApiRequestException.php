@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Helpers\Safaricom;
+namespace App\Helpers\Safaricom\Exceptions;
 
 
 use Exception;

@@ -7,6 +7,9 @@ use App\Models\SubInvestment;
 use Illuminate\Database\Eloquent\Model;
 use MrAtiebatie\Repository;
 
+/**
+ * @mixin IdeHelperSubInvestmentRepository
+ */
 class SubInvestmentRepository extends Model
 {
     use Repository;

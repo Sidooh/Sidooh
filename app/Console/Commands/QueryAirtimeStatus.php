@@ -33,8 +33,7 @@ class QueryAirtimeStatus extends Command
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->AT = new AfricasTalkingApi();
     }
@@ -44,20 +43,19 @@ class QueryAirtimeStatus extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle() {
         //
 //        TODO: Will we need both statuses? ['Sent', 'Queued']
         $transactions = AirtimeResponse::whereStatus('Sent')->get();
         $success = $errors = [];
 
-        foreach ($transactions as $transaction) {
+        foreach($transactions as $transaction) {
             try {
                 $results = $this->AT->transactionStatus($transaction->requestID);
 
                 $resp = [
                     'requestId' => $transaction->requestID,
-                    'status' => $results['data']->status,
+                    'status'    => $results['data']->status,
                 ];
 
                 $success[$transaction->requestID] = $results['data']->status;
@@ -71,6 +69,5 @@ class QueryAirtimeStatus extends Command
 
         $results = ['total' => count($transactions), 'successful' => $success, 'errors' => $errors];
         dd($results);
-
     }
 }

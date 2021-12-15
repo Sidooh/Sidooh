@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
+use DrH\Mpesa\Database\Entities\MpesaBulkPaymentRequest;
+use DrH\Mpesa\Database\Entities\MpesaStkRequest;
 use Illuminate\Database\Eloquent\Model;
-use Samerior\MobileMoney\Mpesa\Database\Entities\MpesaBulkPaymentRequest;
-use Samerior\MobileMoney\Mpesa\Database\Entities\MpesaStkRequest;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+/**
+ * @mixin IdeHelperPayment
+ */
 class Payment extends Model
 {
     //
@@ -33,17 +38,17 @@ class Payment extends Model
         return "{$this->type} {$this->subtype}";
     }
 
-    public function payable(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    public function payable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function stkRequest(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function stkRequest(): HasOne
     {
         return $this->hasOne(MpesaStkRequest::class, 'id', 'payment_id');
     }
 
-    public function b2cRequest(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function b2cRequest(): HasOne
     {
         return $this->hasOne(MpesaBulkPaymentRequest::class, 'id', 'payment_id');
     }

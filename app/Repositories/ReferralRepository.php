@@ -10,6 +10,9 @@ use MrAtiebatie\Repository;
 use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
+/**
+ * @mixin IdeHelperReferralRepository
+ */
 class ReferralRepository extends Model
 {
     use Repository;

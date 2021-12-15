@@ -82,6 +82,8 @@ class TransactionController extends Controller
                 ->where('ConversationID', $transaction->payment->b2cRequest->conversation_id)->first();
         }
 
+//        dd($transaction);
+
 //        return new TransactionResource($transaction);
 
         return view('admin.crud.transactions.show', compact('transaction'));

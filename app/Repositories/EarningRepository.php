@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 
+/**
+ * @mixin IdeHelperEarningRepository
+ */
 class EarningRepository extends Model
 {
     use Repository;

@@ -9,6 +9,9 @@ use MrAtiebatie\Repository;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
+/**
+ * @mixin IdeHelperVoucherRepository
+ */
 class VoucherRepository extends Model
 {
     use Repository;

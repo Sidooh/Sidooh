@@ -4,9 +4,13 @@
 namespace App\Helpers\Sidooh\B2B;
 
 
+use DrH\Mpesa\Database\Entities\MpesaBulkPaymentRequest;
+use DrH\Mpesa\Exceptions\MpesaException;
+use DrH\Mpesa\Library\ApiCore;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\ServerException;
-use Samerior\MobileMoney\Mpesa\Exceptions\MpesaException;
-use Samerior\MobileMoney\Mpesa\Library\ApiCore;
+use Illuminate\Database\Eloquent\Model;
+use function config;
 
 /**
  * Class BulkSender
@@ -65,28 +69,27 @@ class B2B extends ApiCore
 
     /**
      * @param string|null $paybill
-     * @param int|null $amount
+     * @param int|null    $amount
      * @param string|null $remarks
-     * @return mixed
-     * @throws \Samerior\MobileMoney\Mpesa\Exceptions\MpesaException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return MpesaBulkPaymentRequest|Model
+     * @throws GuzzleException
      * @throws MpesaException
      */
-    public function send($paybill = null, $amount = null, $remarks = null)
+    public function send(string $paybill = null, $amount = null, $remarks = null)
     {
         $body = [
-            'Initiator' => \config('samerior.mpesa.b2b.initiator'),
-            'SecurityCredential' => \config('samerior.mpesa.b2c.security_credential'),
+            'Initiator' => config('samerior.mpesa.b2b.initiator'),
+            'SecurityCredential' => config('samerior.mpesa.b2c.security_credential'),
             'CommandID' => 'BusinessPayBill', //BusinessPayBill, MerchantToMerchantTransfer, MerchantTransferFromMerchantToWorking, MerchantServicesMMFAccountTransfer, AgencyFloatAdvance
             'SenderIdentifierType' => 4,
             'RecieverIdentifierType' => 4,
             'Amount' => $amount ?: $this->amount,
-            'PartyA' => \config('samerior.mpesa.b2b.short_code'),
+            'PartyA' => config('samerior.mpesa.b2b.short_code'),
             'PartyB' => $paybill ?: $this->paybill,
             'AccountReference' => "12",
             'Remarks' => $remarks ?: $this->remarks,
-            'QueueTimeOutURL' => \config('samerior.mpesa.b2b.timeout_url') . 'b2b',
-            'ResultURL' => \config('samerior.mpesa.b2b.result_url') . 'b2b',
+            'QueueTimeOutURL' => config('samerior.mpesa.b2b.timeout_url') . 'b2b',
+            'ResultURL' => config('samerior.mpesa.b2b.result_url') . 'b2b',
         ];
 
         error_log(implode(' | ', $body));

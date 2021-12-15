@@ -27,8 +27,7 @@ class Invest extends Command
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -37,8 +36,7 @@ class Invest extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle(): void {
         //
         $results = (new AccountRepository())->invest();
 
@@ -47,8 +45,5 @@ class Invest extends Command
 
 
         $this->info($x);
-
-        return;
-
     }
 }

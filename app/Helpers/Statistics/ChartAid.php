@@ -2,6 +2,7 @@
 
 namespace App\Helpers\Statistics;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use JetBrains\PhpStorm\ArrayShape;
@@ -37,7 +38,7 @@ class ChartAid
             };
         }
 
-        $date = (new Carbon)->setTimezone('Africa/Nairobi');
+        $date = new Carbon;
 
         $data = collect();
         for($i = 0; $i < $frequencyCount; $i++) {
@@ -89,7 +90,7 @@ class ChartAid
         };
     }
 
-    public function parseCarbonDate($time): Carbon {
+    public function parseCarbonDate($time): Carbon|CarbonImmutable {
         return match ($this->frequency) {
             'weekly' => Carbon::now()->setISODate(now()->year, $time),
             'yearly' => Carbon::createFromDate($time),
@@ -98,7 +99,7 @@ class ChartAid
         };
     }
 
-    public function getLabelName(Carbon $date): int|string {
+    public function getLabelName(Carbon|CarbonImmutable $date): int|string {
         if($this->frequency === 'yearly') {
             if($date->isCurrentYear()) {
                 $name = 'This year';
@@ -127,9 +128,9 @@ class ChartAid
             }
         } else if($this->frequency === 'daily') {
             if($date->isCurrentHour()) {
-                $name = 'Within the hour';
+                $name = 'Current hour';
             } else if($date->isLastHour()) {
-                $name = 'An hour ago';
+                $name = 'Last hour';
             } else {
                 $name = $date->format('Hi \h\r\s');
             }

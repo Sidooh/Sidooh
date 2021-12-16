@@ -7,22 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Support\Carbon;
 
 /**
  * @mixin IdeHelperTransaction
  */
 class Transaction extends Model
 {
-
-    public function getCreatedAtAttribute($value): bool|Carbon {
-
-        $date = Carbon::createFromFormat('Y-m-d H:i:s', $value, 'UTC');
-        $date->setTimezone('Africa/Nairobi');
-
-        return $date;
-    }
-
     public function account(): BelongsTo {
         return $this->belongsTo(Account::class);
     }

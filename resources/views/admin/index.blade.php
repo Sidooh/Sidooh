@@ -24,16 +24,6 @@
     }
     ?>
 
-    {{--    <div class="card shadow-lg">--}}
-    {{--        <div class="card-header d-flex justify-content-between">--}}
-    {{--            <h5>Revenue</h5>--}}
-    {{--            <div class="chart-config select d-flex align-items-center"></div>--}}
-    {{--        </div>--}}
-    {{--        <div class="card-body">--}}
-    {{--            <div data-chart-name="revenue" id="revenue-chart" style="height: 300px;"></div>--}}
-    {{--        </div>--}}
-    {{--    </div>--}}
-
     <div class="card rounded-3 overflow-hidden mb-3">
         <div class="card-body bg-line-chart-gradient">
             <div class="row align-items-center g-0">
@@ -43,14 +33,13 @@
                         Yesterday <span id="total-yesterday" class="opacity-50">0</span>
                     </p>
                 </div>
-                <div class="col-auto d-none d-sm-flex align-items-center">
+                <div class="col-auto d-none d-sm-flex align-items-center chart-config select">
                     <button class="btn btn-sm btn-outline-light me-2 refresh-chart" type="button" title="Update Chart">
                         <i class="fas fa-sync"></i>
                     </button>
-                    <select class="form-select form-select-sm" id="dashboard-chart-select" aria-label="">
-                        <option value="all">All Payments</option>
+                    <select class="form-select form-select-sm" id="chart-status" aria-label="">
                         <option value="successful" selected="selected">Successful Payments</option>
-                        <option value="failed">Failed Payments</option>
+                        <option value="other">Other Payments</option>
                     </select>
                 </div>
             </div>
@@ -58,38 +47,6 @@
         </div>
     </div>
 
-    {{--<div class="card rounded-3 overflow-hidden mb-3">
-        <div class="card-body bg-line-chart-gradient">
-            <div class="row align-items-center g-0">
-                <div class="col light">
-                    <h4 class="text-white mb-0">Today <span id="total-today">0</span></h4>
-                    <p class="fs--1 fw-semi-bold text-white">
-                        Yesterday <span id="total-yesterday" class="opacity-50">0</span>
-                    </p>
-                </div>
-                <div class="col-auto d-none d-sm-flex align-items-center">
-                    <button class="btn btn-sm btn-outline-light me-2 refresh-chart" type="button" title="Update Chart">
-                        <i class="fas fa-sync"></i>
-                    </button>
-                    <select class="form-select form-select-sm" id="dashboard-chart-select" aria-label="">
-                        <option value="all">All Payments</option>
-                        <option value="successful" selected="selected">Successful Payments</option>
-                        <option value="failed">Failed Payments</option>
-                    </select>
-                </div>
-            </div>
-            <canvas class="mw-100 rounded" id="chart-line" width="1618" height="375" aria-label="Line chart"
-                    role="img"></canvas>
-        </div>
-    </div>--}}
-    {{--    <div class="card bg-light mb-3">--}}
-    {{--        <div class="card-body p-3">--}}
-    {{--            <p class="fs--1 mb-0"><a href="javascript:void(0)><span class="fas fa-exchange-alt me-2"--}}
-    {{--                                                     data-fa-transform="rotate-90"></span>A payout for--}}
-    {{--                    <strong>$921.42 </strong>was deposited 13 days ago</a>. Your next deposit is expected on <strong>Tuesday,--}}
-    {{--                    March 13.</strong></p>--}}
-    {{--        </div>--}}
-    {{--    </div>--}}
     <div class="row g-3 mb-3">
         <div class="col-sm-6 col-md-4">
             <div class="card overflow-hidden" style="min-width: 12rem">
@@ -284,12 +241,6 @@
                             <span
                                 class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span>
                         </a>
-                        {{--                        TODO: Find a way to collapse as well --}}
-                        {{--                        <a class="fw-semi-bold" href="javascript:void(0)--}}
-                        {{--                           data-list-view="10">--}}
-                        {{--                            <span class="fas fa-angle-left ms-1" data-fa-transform="down-1"></span>--}}
-                        {{--                            Collapse--}}
-                        {{--                        </a>--}}
                     </p>
                 </div>
                 <div class="col-auto d-flex">
@@ -483,83 +434,7 @@
                     <h5 class="text-white">Total Users Today</h5>
                     <div class="real-time-user display-1 fw-normal text-white" id="total-users-today">0</div>
                 </div>
-                {{--                <div class="card-body text-white fs--1 light">--}}
-                {{--                    <p class="border-bottom pb-2" style="border-color: rgba(255, 255, 255, 0.15) !important">Page views--}}
-                {{--                        per second</p>--}}
-                {{--                    <canvas class="max-w-100" id="real-time-user" width="10" height="4"></canvas>--}}
-                {{--                    <div class="list-group-flush mt-4">--}}
-                {{--                        <div--}}
-                {{--                            class="list-group-item bg-transparent d-flex justify-content-between px-0 py-1 fw-semi-bold border-top-0"--}}
-                {{--                            style="border-color: rgba(255, 255, 255, 0.15)">--}}
-                {{--                            <p class="mb-0">Top Active Pages</p>--}}
-                {{--                            <p class="mb-0">Active Users</p>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="list-group-item bg-transparent d-flex justify-content-between px-0 py-1"--}}
-                {{--                             style="border-color: rgba(255, 255, 255, 0.05)">--}}
-                {{--                            <p class="mb-0">/bootstrap-themes/</p>--}}
-                {{--                            <p class="mb-0">3</p>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="list-group-item bg-transparent d-flex justify-content-between px-0 py-1"--}}
-                {{--                             style="border-color: rgba(255, 255, 255, 0.05)">--}}
-                {{--                            <p class="mb-0">/tags/html5/</p>--}}
-                {{--                            <p class="mb-0">3</p>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="list-group-item bg-transparent d-xxl-flex justify-content-between px-0 py-1 d-none"--}}
-                {{--                             style="border-color: rgba(255, 255, 255, 0.05)">--}}
-                {{--                            <p class="mb-0">/</p>--}}
-                {{--                            <p class="mb-0">2</p>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="list-group-item bg-transparent d-xxl-flex justify-content-between px-0 py-1 d-none"--}}
-                {{--                             style="border-color: rgba(255, 255, 255, 0.05)">--}}
-                {{--                            <p class="mb-0">/preview/falcon/dashboard/</p>--}}
-                {{--                            <p class="mb-0">2</p>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="list-group-item bg-transparent d-flex justify-content-between px-0 py-1"--}}
-                {{--                             style="border-color: rgba(255, 255, 255, 0.05)">--}}
-                {{--                            <p class="mb-0">/100-best-themes...all-time/</p>--}}
-                {{--                            <p class="mb-0">1</p>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
-                {{--                <div class="card-footer text-end bg-transparent border-top light"--}}
-                {{--                     style="border-color: rgba(255, 255, 255, 0.15) !important"><a class="text-white" href="javascript:void(0)>Real-time--}}
-                {{--                        report<span class="fa fa-chevron-right ms-1 fs--1"></span></a></div>--}}
             </div>
-        </div>
-        <div class="col-lg-8 ps-lg-2">
-            {{--            <div class="card h-100 mt-3 mt-lg-0">--}}
-            {{--                <div class="card-header bg-light d-flex flex-between-center">--}}
-            {{--                    <h5 class="mb-0">Active users</h5>--}}
-            {{--                    <div class="dropdown font-sans-serif btn-reveal-trigger">--}}
-            {{--                        <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal"--}}
-            {{--                                type="button" id="modules" data-bs-toggle="dropdown" data-boundary="viewport"--}}
-            {{--                                aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span>--}}
-            {{--                        </button>--}}
-            {{--                        <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="modules"><a--}}
-            {{--                                class="dropdown-item" href="javascript:void(0)>Edit</a><a class="dropdown-item" href="javascript:void(0)>Move</a><a--}}
-            {{--                                class="dropdown-item" href="javascript:void(0)>Resize</a>--}}
-            {{--                            <div class="dropdown-divider"></div>--}}
-            {{--                            <a class="dropdown-item text-warning" href="javascript:void(0)>Archive</a><a--}}
-            {{--                                class="dropdown-item text-danger" href="javascript:void(0)>Delete</a>--}}
-            {{--                        </div>--}}
-            {{--                    </div>--}}
-            {{--                </div>--}}
-            {{--                <div class="card-body h-100 p-0">--}}
-            {{--                    <div class="h-100 bg-white" id="map" style="min-height: 300px;"></div>--}}
-            {{--                </div>--}}
-            {{--                <div class="card-footer bg-light">--}}
-            {{--                    <div class="row justify-content-between">--}}
-            {{--                        <div class="col-auto"><select class="form-select form-select-sm">--}}
-            {{--                                <option value="week" selected="selected">Last 7 days</option>--}}
-            {{--                                <option value="month">Last month</option>--}}
-            {{--                                <option value="year">Last year</option>--}}
-            {{--                            </select></div>--}}
-            {{--                        <div class="col-auto"><a class="btn btn-falcon-default btn-sm" href="javascript:void(0)><span--}}
-            {{--                                    class="d-none d-sm-inline-block me-1">Location</span>overview<span--}}
-            {{--                                    class="fa fa-chevron-right ms-1 fs--1"></span></a></div>--}}
-            {{--                    </div>--}}
-            {{--                </div>--}}
-            {{--            </div>--}}
         </div>
     </div>
 
@@ -572,7 +447,7 @@
     <script src="{{ asset('js/dashboard.js') }}"></script>
 
     <script>
-        const chart = new Chartisan({
+        const revenueChart = new Chartisan({
             el: '#revenue-chart',
             url: "@chart('revenue')",
             hooks: new ChartisanHooks()

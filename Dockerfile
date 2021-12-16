@@ -1,5 +1,5 @@
 # PHP image
-FROM php:7.4-apache
+FROM php:8.0-apache
 
 # Install systme libraries
 RUN apt-get update -y && apt-get install -y \
@@ -49,7 +49,3 @@ EXPOSE 8080
 
 # Run server
 CMD php artisan serve --host=0.0.0.0 --port=8080
-
-
-
-

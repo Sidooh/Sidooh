@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\Statistics\ChartAid;
-use App\Helpers\Statistics\Frequency;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\Models\Transaction;
@@ -11,8 +9,8 @@ use App\Models\UssdLog;
 use App\Repositories\DashboardRepository;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
+use JetBrains\PhpStorm\ArrayShape;
 
 class DashboardController extends Controller
 {
@@ -32,48 +30,24 @@ class DashboardController extends Controller
      *
      * @return View|Application
      */
-    public function index(Request $request): View|Application {
-//        Transaction::inRandomOrder()->take(100)->get()->each(function(Transaction $transaction) {
-//            $minutes = now()->diffInMinutes(now()->startOfDay());
-//
-//            $transaction->created_at = now()->subMinutes(mt_rand(0, $minutes));
-//            $transaction->save();
-//        });
-
-//        dd(Transaction::first()->created_at);
-
-//        $this->statistics($request);
-
+    public function index(): View|Application {
         $data = $this->dashboard->statistics();
 
         return view('admin.index', compact('data'));
     }
 
-    public function statistics($request): array {
-        $frequency = Frequency::tryFrom((string)$request->input('frequency')) ?? Frequency::DAILY;
-
-        $chartAid = new ChartAid($frequency, 'sum', 'amount');
-
-        $yesterday = Transaction::select(['created_at', 'amount'])->whereBetween('created_at', [
-            Carbon::yesterday()->startOfDay(),
-            Carbon::yesterday()->endOfDay()
-        ])->whereStatus('completed')->get()->groupBy(function($item) use ($chartAid) {
-            return $chartAid->chartDateFormat($item->created_at);
-        });
-
-        $today = Transaction::select(['created_at', 'amount'])->whereBetween('created_at', [
-            Carbon::today()->startOfDay()->timezone('Africa/Nairobi'),
-            Carbon::today()->endOfDay()->timezone('Africa/Nairobi')
-        ])->whereStatus('completed')->get()->groupBy(function($item) use ($chartAid) {
-            return $chartAid->chartDateFormat($item->created_at);
-        });
-
-//        dd($today);
-
-        $todayHrs = now()->diffInHours(now()->startOfDay());
-        ['labels' => $labels, 'datasets' => $datasetsYesterday] = $chartAid->chartDataSet($yesterday, 24);
-        ['datasets' => $datasetsToday] = $chartAid->chartDataSet($today, $todayHrs);
-
+    #[ArrayShape([
+        'totalToday'             => "int|mixed",
+        'totalYesterday'         => "int|mixed",
+        'totalAccountsToday'     => "int",
+        'totalAccounts'          => "int",
+        'totalTransactionsToday' => "int",
+        'totalTransactions'      => "int",
+        'totalRevenueToday'      => "mixed",
+        'totalRevenue'           => "mixed",
+        'totalUsersToday'        => "int"
+    ])]
+    public function statistics(): array {
         //        2nd: Get total customers, Transactions, Revenue
         $totalAccounts = Account::count();
         $totalAccountsToday = Account::whereDate('created_at', Carbon::today())->count();
@@ -92,15 +66,15 @@ class DashboardController extends Controller
         $usersToday = UssdLog::whereDate('updated_at', Carbon::today())->distinct()->count('phone');
 
         return [
-            'totalToday'          => Transaction::whereStatus('completed')
+            'totalToday'     => Transaction::whereStatus('completed')
                 ->whereDate('created_at', Carbon::today())
                 ->sum('amount'),
-            'totalYesterday'      => Transaction::whereStatus('completed')
+            'totalYesterday' => Transaction::whereStatus('completed')
                 ->whereDate('created_at', Carbon::yesterday())
                 ->sum('amount'),
 
             'totalAccountsToday' => $totalAccountsToday,
-            'totalAccounts'        => $totalAccounts,
+            'totalAccounts'      => $totalAccounts,
 
             'totalTransactionsToday' => $totalTransactionsToday,
             'totalTransactions'      => $totalTransactions,

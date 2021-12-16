@@ -7,7 +7,7 @@ namespace App\Charts;
 use App\Helpers\Statistics\ChartAid;
 use App\Helpers\Statistics\Frequency;
 use App\Models\Transaction;
-use Carbon\CarbonImmutable;
+use Carbon\Carbon;
 use Chartisan\PHP\Chartisan;
 use ConsoleTVs\Charts\BaseChart;
 use Illuminate\Http\Request;
@@ -28,33 +28,41 @@ class RevenueChart extends BaseChart
      * and never a string or an array.
      */
     public function handler(Request $request): Chartisan {
-        $carbon = (new CarbonImmutable)->setTimezone('Africa/Nairobi');
-
         $frequency = Frequency::tryFrom((string)$request->input('frequency')) ?? Frequency::DAILY;
+        $status = $request->input('paymentStatus', 'successful');
+
+        $whereStatus = match ($status) {
+            'successful' => ['completed'],
+            default => ['success', 'failed', 'pending', 'reimbursed'],
+        };
 
         $chartAid = new ChartAid($frequency, 'sum', 'amount');
 
         $yesterday = Transaction::select(['created_at', 'amount'])->whereBetween('created_at', [
-            $carbon::yesterday()->startOfDay(),
-            $carbon::yesterday()->endOfDay()
-        ])->whereIn('status', ['completed', 'success'])->get()->groupBy(function($item) use ($chartAid) {
+            Carbon::yesterday()->startOfDay(),
+            Carbon::yesterday()->endOfDay()
+        ])->whereIn('status', $whereStatus)->get()->groupBy(function($item) use ($chartAid) {
             return $chartAid->chartDateFormat($item->created_at);
         });
 
         $today = Transaction::select(['created_at', 'amount'])->whereBetween('created_at', [
-            $carbon::today()->startOfDay(),
-            $carbon::today()->endOfDay()
-        ])->whereIn('status', ['completed', 'success'])->get()->groupBy(function($item) use ($chartAid) {
+            Carbon::today()->startOfDay(),
+            Carbon::today()->endOfDay()
+        ])->whereIn('status', $whereStatus)->get()->groupBy(function($item) use ($chartAid) {
             return $chartAid->chartDateFormat($item->created_at);
         });
 
-        $todayHrs = now()->diffInHours($carbon->startOfDay());
-        ['labels' => $labels, 'datasets' => $datasetsYesterday] = $chartAid->chartDataSet($yesterday, 24);
+        $todayHrs = now()->diffInHours(now()->startOfDay());
         ['datasets' => $datasetsToday] = $chartAid->chartDataSet($today, $todayHrs + 1);
+        $revenueYesterday = $chartAid->chartDataSet(
+            $yesterday, $frequency->value === 'daily'
+            ? 24
+            : null
+        );
 
         return Chartisan::build()
-            ->labels($labels)
+            ->labels($revenueYesterday['labels'])
             ->dataset('Today', $datasetsToday)
-            ->dataset('Yesterday', $datasetsYesterday);
+            ->dataset('Yesterday', $revenueYesterday['datasets']);
     }
 }

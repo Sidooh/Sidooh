@@ -24,14 +24,12 @@
         <div class="navbar-vertical-content scrollbar">
             <ul class="navbar-nav flex-column mb-3" id="navbarVerticalNav">
                 <li class="nav-item">
-                    <!-- label-->
                     <div class="row navbar-vertical-label-wrapper mb-2">
                         <div class="col-auto navbar-vertical-label">Dashboard</div>
                         <div class="col ps-0">
                             <hr class="mb-0 navbar-vertical-divider"/>
                         </div>
                     </div>
-                    <!-- parent pages-->
                     <a class="nav-link" href="{{ route('admin.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-chart-pie"></span></span><span class="nav-link-text ps-1">Home</span>
@@ -39,20 +37,17 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <!-- label-->
                     <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
                         <div class="col-auto navbar-vertical-label">User Management</div>
                         <div class="col ps-0">
                             <hr class="mb-0 navbar-vertical-divider"/>
                         </div>
                     </div>
-                    <!-- parent pages-->
                     <a class="nav-link" href="{{ route('admin.users.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-users"></span></span><span
                                 class="nav-link-text ps-1">Users</span></div>
                     </a>
-                    <!-- parent pages-->
                     <a class="nav-link" href="{{ route('admin.accounts.index') }}"
                        role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
@@ -60,7 +55,6 @@
                                 class="nav-link-text ps-1">Accounts</span>
                         </div>
                     </a>
-                    <!-- parent pages-->
                     <a class="nav-link" href="{{ route('admin.referrals.index') }}"
                        role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
@@ -70,14 +64,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <!-- label-->
                     <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
                         <div class="col-auto navbar-vertical-label">Transactions</div>
                         <div class="col ps-0">
                             <hr class="mb-0 navbar-vertical-divider"/>
                         </div>
                     </div>
-                    <!-- parent pages-->
                     <a class="nav-link" href="{{ route('admin.transactions.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-globe"></span></span><span
@@ -94,14 +86,12 @@
                 </li>
 
                 <li class="nav-item">
-                    <!-- label-->
                     <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
                         <div class="col-auto navbar-vertical-label">Agents</div>
                         <div class="col ps-0">
                             <hr class="mb-0 navbar-vertical-divider"/>
                         </div>
                     </div>
-                    <!-- parent pages-->
                     <a class="nav-link" href="{{ route('admin.subscriptions.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-globe"></span></span><span
@@ -118,14 +108,12 @@
                 </li>
 
                 <li class="nav-item">
-                    <!-- label-->
                     <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
                         <div class="col-auto navbar-vertical-label">Finances</div>
                         <div class="col ps-0">
                             <hr class="mb-0 navbar-vertical-divider"/>
                         </div>
                     </div>
-                    <!-- parent pages-->
                     <a class="nav-link" href="{{ route('admin.vouchers.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-ticket-alt"></span></span><span
@@ -153,36 +141,31 @@
                 </li>
 
                 <li class="nav-item">
-                    <!-- label-->
-                    <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
-                        <div class="col-auto navbar-vertical-label">Analytics</div>
-                        <div class="col ps-0">
-                            <hr class="mb-0 navbar-vertical-divider"/>
-                        </div>
-                    </div>
-                    <!-- parent pages-->
-                    <a class="nav-link" href="#" role="button">
-                        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
-                                    class="fas fa-ticket-alt"></span></span><span
-                                class="nav-link-text ps-1">Coming Soon</span>
-                        </div>
-                    </a>
-
-                </li>
-
-                <li class="nav-item">
-                    <!-- label-->
                     <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
                         <div class="col-auto navbar-vertical-label">Notifications</div>
                         <div class="col ps-0">
                             <hr class="mb-0 navbar-vertical-divider"/>
                         </div>
                     </div>
-                    <!-- parent pages-->
                     <a class="nav-link" href="{{ route('admin.user-notifications.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-envelope"></span></span><span
                                 class="nav-link-text ps-1">User Notifications</span>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+                        <div class="col-auto navbar-vertical-label">Analytics</div>
+                        <div class="col ps-0">
+                            <hr class="mb-0 navbar-vertical-divider"/>
+                        </div>
+                    </div>
+                    <a class="nav-link" href="#" role="button">
+                        <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                                    class="fas fa-ticket-alt"></span></span><span
+                                class="nav-link-text ps-1">Coming Soon</span>
                         </div>
                     </a>
 

@@ -15,10 +15,9 @@
                         class="toggle-line"></span></span></button>
         </div>
         <a class="navbar-brand" href="{{ route('admin.index') }}">
-            <div class="d-flex align-items-center py-3"><img class="me-2"
-                                                             src="{{ asset('img/illustrations/sidooh.png') }}"
-                                                             alt="" width="40"/>
-                <span class="font-sans-serif">Sidooh</span></div>
+            <div class="d-flex align-items-center py-3">
+                <img class="me-2" src="{{ asset('images/logo.png') }}" alt="" style="width: 100%"/>
+            </div>
         </a>
     </div>
     <div class="collapse navbar-collapse" id="navbarVerticalCollapse">
@@ -202,7 +201,7 @@
             aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span
                 class="toggle-line"></span></span></button>
     <a class="navbar-brand me-1 me-sm-3" href="{{ route('admin.index') }}">
-        <div class="d-flex align-items-center"><img class="me-2" src="../assets/img/illustrations/sidooh.png" alt=""
+        <div class="d-flex align-items-center"><img class="me-2" src="{{ asset('images/logo.png') }}" alt=""
                                                     width="40"/><span class="font-sans-serif">sidooh</span></div>
     </a>
     {{--    <div class="collapse navbar-collapse scrollbar" id="navbarStandard">--}}

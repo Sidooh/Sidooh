@@ -22,7 +22,8 @@
         "laravel/ui": "^3.4",
         "mratiebatie/laravel-repositories": "^1.0",
         "propaganistas/laravel-phone": "^4.3",
-        "staudenmeir/laravel-adjacency-list": "^1.9"
+        "staudenmeir/laravel-adjacency-list": "^1.9",
+        "consoletvs/charts": "7.*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
@@ -32,11 +33,6 @@
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.0"
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true
     },
     "extra": {
         "laravel": {

@@ -357,10 +357,10 @@ var utils = {
 
 /* -------------------------------------------------------------------------- */
 
-var detectorInit = function detectorInit() {
-    var _window = window,
+let detectorInit = function detectorInit() {
+    let _window = window,
         is = _window.is;
-    var html = document.querySelector('html');
+    let html = document.querySelector('html');
     is.opera() && addClass(html, 'opera');
     is.mobile() && addClass(html, 'mobile');
     is.firefox() && addClass(html, 'firefox');

@@ -21,14 +21,14 @@ use App\Listeners\StkPaymentReceived;
 use App\Listeners\SubscriptionPurchaseSuccess;
 use App\Listeners\TransactionSuccess;
 use App\Listeners\VoucherPurchaseSuccess;
+use DrH\Mpesa\Events\B2cPaymentFailedEvent;
+use DrH\Mpesa\Events\B2cPaymentSuccessEvent;
+use DrH\Mpesa\Events\QueueTimeoutEvent;
+use DrH\Mpesa\Events\StkPushPaymentFailedEvent;
+use DrH\Mpesa\Events\StkPushPaymentSuccessEvent;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Samerior\MobileMoney\Mpesa\Events\B2cPaymentFailedEvent;
-use Samerior\MobileMoney\Mpesa\Events\B2cPaymentSuccessEvent;
-use Samerior\MobileMoney\Mpesa\Events\QueueTimeoutEvent;
-use Samerior\MobileMoney\Mpesa\Events\StkPushPaymentFailedEvent;
-use Samerior\MobileMoney\Mpesa\Events\StkPushPaymentSuccessEvent;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -101,5 +101,14 @@ class EventServiceProvider extends ServiceProvider
         parent::boot();
 
         //
+    }
+
+    /**
+     * Determine if events and listeners should be automatically discovered.
+     *
+     * @return bool
+     */
+    public function shouldDiscoverEvents(): bool {
+        return true;
     }
 }

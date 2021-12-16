@@ -21,14 +21,14 @@
                                                   type="radio" value="light" data-theme-control="theme"/><label
                                 class="btn d-inline-block btn-navbar-style fs--1" for="themeSwitcherLight"> <span
                                     class="hover-overlay mb-2 rounded d-block"><img class="img-fluid img-prototype mb-0"
-                                                                                    src="{{ asset('img/generic/falcon-mode-default.jpg') }}"
+                                                                                    src="{{ asset('images/generic/falcon-mode-default.jpg') }}"
                                                                                     alt=""/></span><span
                                     class="label-text">Light</span></label></div>
                         <div class="col-6"><input class="btn-check" id="themeSwitcherDark" name="theme-color"
                                                   type="radio" value="dark" data-theme-control="theme"/><label
                                 class="btn d-inline-block btn-navbar-style fs--1" for="themeSwitcherDark"> <span
                                     class="hover-overlay mb-2 rounded d-block"><img class="img-fluid img-prototype mb-0"
-                                                                                    src="{{ asset('img/generic/falcon-mode-dark.jpg') }}"
+                                                                                    src="{{ asset('images/generic/falcon-mode-dark.jpg') }}"
                                                                                     alt=""/></span><span
                                     class="label-text"> Dark</span></label></div>
                     </div>
@@ -48,7 +48,7 @@
                 {{--                </div>--}}
                 {{--                <hr/>--}}
                 <div class="d-flex justify-content-between">
-                    <div class="d-flex align-items-start"><img class="me-2" src="{{ asset('img/icons/arrows-h.svg') }}"
+                    <div class="d-flex align-items-start"><img class="me-2" src="{{ asset('images/icons/arrows-h.svg') }}"
                                                                width="20" alt=""/>
                         <div class="flex-1">
                             <h5 class="fs-0">Fluid Layout</h5>
@@ -92,25 +92,25 @@
                                                   name="navbarStyle" value="transparent"
                                                   data-theme-control="navbarStyle"/><label
                                 class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-transparent"> <img
-                                    class="img-fluid img-prototype" src="{{ asset('img/generic/default.png') }}"
+                                    class="img-fluid img-prototype" src="{{ asset('images/generic/default.png') }}"
                                     alt=""/><span class="label-text"> Transparent</span></label></div>
                         <div class="col-6"><input class="btn-check" id="navbar-style-inverted" type="radio"
                                                   name="navbarStyle" value="inverted" data-theme-control="navbarStyle"/><label
                                 class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-inverted"> <img
-                                    class="img-fluid img-prototype" src="{{ asset('img/generic/inverted.png') }}"
+                                    class="img-fluid img-prototype" src="{{ asset('images/generic/inverted.png') }}"
                                     alt=""/><span class="label-text"> Inverted</span></label></div>
                         <div class="col-6"><input class="btn-check" id="navbar-style-card" type="radio"
                                                   name="navbarStyle" value="card"
                                                   data-theme-control="navbarStyle"/><label
                                 class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-card"> <img
-                                    class="img-fluid img-prototype" src="{{ asset('img/generic/card.png') }}"
+                                    class="img-fluid img-prototype" src="{{ asset('images/generic/card.png') }}"
                                     alt=""/><span
                                     class="label-text"> Card</span></label></div>
                         <div class="col-6"><input class="btn-check" id="navbar-style-vibrant" type="radio"
                                                   name="navbarStyle" value="vibrant"
                                                   data-theme-control="navbarStyle"/><label
                                 class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-vibrant"> <img
-                                    class="img-fluid img-prototype" src="{{ asset('img/generic/vibrant.png') }}"
+                                    class="img-fluid img-prototype" src="{{ asset('images/generic/vibrant.png') }}"
                                     alt=""/><span class="label-text"> Vibrant</span></label></div>
                     </div>
                 </div>

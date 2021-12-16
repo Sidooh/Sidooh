@@ -1,17 +1,67 @@
 @extends('admin.layouts.app')
 
 @section('content')
+    <?php
+    function statusPill(string $status): array {
+        return match (strtolower($status)) {
+            'complete', 'completed', 'success' => [
+                'icon'  => 'check',
+                'color' => 'success'
+            ],
+            'failed' => [
+                'icon'  => 'ban',
+                'color' => 'warning'
+            ],
+            'pending' => [
+                'icon'  => 'redo',
+                'color' => 'primary'
+            ],
+            default => [
+                'icon'  => 'stream',
+                'color' => 'secondary'
+            ]
+        };
+    }
+    ?>
 
     <div class="card rounded-3 overflow-hidden mb-3">
         <div class="card-body bg-line-chart-gradient">
             <div class="row align-items-center g-0">
                 <div class="col light">
-                    <h4 class="text-white mb-0">Today {{ format_cur($data['totalToday']) }}</h4>
-                    <p class="fs--1 fw-semi-bold text-white">Yesterday <span
-                            class="opacity-50">{{ format_cur($data['totalYesterday']) }}</span></p>
+                    <h4 class="text-white mb-0">Today <span id="total-today">0</span></h4>
+                    <p class="fs--1 fw-semi-bold text-white">
+                        Yesterday <span id="total-yesterday" class="opacity-50">0</span>
+                    </p>
                 </div>
-                <div class="col-auto d-none d-sm-block">
-                    <select class="form-select form-select-sm mb-3" id="dashboard-chart-select">
+                <div class="col-auto d-none d-sm-flex align-items-center">
+                    <button class="btn btn-sm btn-outline-light me-2 refresh-chart" type="button" title="Update Chart">
+                        <i class="fas fa-sync"></i>
+                    </button>
+                    <select class="form-select form-select-sm" id="dashboard-chart-select" aria-label="">
+                        <option value="all">All Payments</option>
+                        <option value="successful" selected="selected">Successful Payments</option>
+                        <option value="failed">Failed Payments</option>
+                    </select>
+                </div>
+            </div>
+            <div id="revenue-chart" style="height: 170px;"></div>
+        </div>
+    </div>
+
+    <div class="card rounded-3 overflow-hidden mb-3">
+        <div class="card-body bg-line-chart-gradient">
+            <div class="row align-items-center g-0">
+                <div class="col light">
+                    <h4 class="text-white mb-0">Today <span id="total-today">0</span></h4>
+                    <p class="fs--1 fw-semi-bold text-white">
+                        Yesterday <span id="total-yesterday" class="opacity-50">0</span>
+                    </p>
+                </div>
+                <div class="col-auto d-none d-sm-flex align-items-center">
+                    <button class="btn btn-sm btn-outline-light me-2 refresh-chart" type="button" title="Update Chart">
+                        <i class="fas fa-sync"></i>
+                    </button>
+                    <select class="form-select form-select-sm" id="dashboard-chart-select" aria-label="">
                         <option value="all">All Payments</option>
                         <option value="successful" selected="selected">Successful Payments</option>
                         <option value="failed">Failed Payments</option>
@@ -24,7 +74,7 @@
     </div>
     {{--    <div class="card bg-light mb-3">--}}
     {{--        <div class="card-body p-3">--}}
-    {{--            <p class="fs--1 mb-0"><a href="#!"><span class="fas fa-exchange-alt me-2"--}}
+    {{--            <p class="fs--1 mb-0"><a href="javascript:void(0)><span class="fas fa-exchange-alt me-2"--}}
     {{--                                                     data-fa-transform="rotate-90"></span>A payout for--}}
     {{--                    <strong>$921.42 </strong>was deposited 13 days ago</a>. Your next deposit is expected on <strong>Tuesday,--}}
     {{--                    March 13.</strong></p>--}}
@@ -34,7 +84,7 @@
         <div class="col-sm-6 col-md-4">
             <div class="card overflow-hidden" style="min-width: 12rem">
                 <div class="bg-holder bg-card"
-                     style="background-image:url( {{ asset('img/illustrations/corner-1.png') }} );"></div>
+                     style="background-image:url( {{ asset('images/icons/spot-illustrations/corner-1.png') }} );"></div>
                 <!--/.bg-holder-->
                 <div class="card-body position-relative">
                     <h6>Accounts<span
@@ -51,7 +101,7 @@
         <div class="col-sm-6 col-md-4">
             <div class="card overflow-hidden" style="min-width: 12rem">
                 <div class="bg-holder bg-card"
-                     style="background-image:url( {{ asset('img/illustrations/corner-2.png') }} );"></div>
+                     style="background-image:url( {{ asset('images/icons/spot-illustrations/corner-2.png') }} );"></div>
                 <!--/.bg-holder-->
                 <div class="card-body position-relative">
                     <h6>Transactions<span
@@ -69,7 +119,7 @@
         <div class="col-md-4">
             <div class="card overflow-hidden" style="min-width: 12rem">
                 <div class="bg-holder bg-card"
-                     style="background-image:url( {{ asset('img/illustrations/corner-3.png') }} );"></div>
+                     style="background-image:url( {{ asset('images/icons/spot-illustrations/corner-3.png') }} );"></div>
                 <!--/.bg-holder-->
                 <div class="card-body position-relative">
                     <h6>Revenue<span
@@ -120,7 +170,7 @@
                     <tr>
                         <th>
                             <div class="form-check mb-0 d-flex align-items-center">
-                                <input class="form-check-input"
+                                <input class="form-check-input" aria-label
                                        id="checkbox-bulk-purchases-select"
                                        type="checkbox"
                                        data-bulk-select='{"body":"table-purchase-body","actions":"table-purchases-actions","replacedElement":"table-purchases-replace-element"}'/>
@@ -139,11 +189,10 @@
                     </thead>
                     <tbody class="list" id="table-purchase-body">
                     @foreach($data['pendingTransactions'] as $transaction)
-
                         <tr class="btn-reveal-trigger">
                             <td class="align-middle" style="width: 28px;">
                                 <div class="form-check mb-0 d-flex align-items-center">
-                                    <input class="form-check-input"
+                                    <input class="form-check-input" aria-label
                                            type="checkbox"
                                            id="recent-purchase-{{ $transaction->id }}"
                                            data-bulk-select-row="data-bulk-select-row"/>
@@ -163,46 +212,28 @@
                             <td class="align-middle text-center fs-0 white-space-nowrap payment">
 
                                 @if($transaction->payment)
-                                    @if(strtolower($transaction->payment->status) === 'complete')
-                                        <span class="badge badge rounded-pill badge-soft-success">
-                                            <span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span>
+                                    <?php
+                                    $payment = statusPill($transaction->payment->status)
+                                    ?>
 
-                                    @elseif(strtolower($transaction->payment->status) === 'failed')
-                                                <span class="badge badge rounded-pill badge-soft-warning">
-                                            <span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span>
+                                    <span class="badge badge rounded-pill d-block badge-soft-{{ $payment['color'] }}">
+										<?= ucwords($transaction->payment->status) ?>
+										<span class="ms-1 fas fa-{{ $payment['icon'] }}"
+                                              data-fa-transform="shrink-2"></span>
+									</span>
 
-                                    @elseif(strtolower($transaction->payment->status) === 'pending')
-                                                        <span class="badge badge rounded-pill badge-soft-primary">
-                                            <span class="ms-1 fas fa-redo" data-fa-transform="shrink-2"></span>
-                                    @else
-                                                                <span
-                                                                    class="badge badge rounded-pill badge-soft-secondary">
-                                            <span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span>
-
-                                    @endif
-                                                                    {{ $transaction->payment->status }}
-                                    </span>
-                                    @endif
+                                @endif
                             </td>
                             <td class="align-middle text-center fs-0 white-space-nowrap payment">
 
-                                @if(strtolower($transaction->status) === 'completed' || strtolower($transaction->status) === 'success')
-                                    <span class="badge badge rounded-pill badge-soft-success">
-                                        <span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span>
+                                <?php
+                                $status = statusPill($transaction->status)
+                                ?>
 
-                                @elseif(strtolower($transaction->status) === 'failed')
-                                            <span class="badge badge rounded-pill badge-soft-warning">
-                                        <span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span>
-
-                                @elseif(strtolower($transaction->status) === 'pending')
-                                                    <span class="badge badge rounded-pill badge-soft-primary">
-                                        <span class="ms-1 fas fa-redo" data-fa-transform="shrink-2"></span>
-                                @else
-                                                            <span class="badge badge rounded-pill badge-soft-secondary">
-                                        <span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span>
-
-                                @endif
-                                                                {{ $transaction->status }}
+                                <span class="badge badge rounded-pill d-block badge-soft-{{ $status['color'] }}">
+                                    <?= ucwords($transaction->status) ?>
+                                    <span class="ms-1 fas fa-{{ $status['icon'] }}"
+                                          data-fa-transform="shrink-2"></span>
                                 </span>
                             </td>
                             <td class="align-middle text-end date">{{ local_date($transaction->updated_at, 'd/m/Y H:i') }}</td>
@@ -216,17 +247,14 @@
                                             class="fas fa-ellipsis-h fs--1"></span></button>
                                     <div class="dropdown-menu dropdown-menu-end border py-2"
                                          aria-labelledby="dropdown0">
+                                        <a class="dropdown-item"
+                                           href="{{ route('admin.transactions.show', $transaction) }}">View</a>
+                                        <a class="dropdown-item" href="javascript:void(0)">Edit</a>
                                         <a
-                                            class="dropdown-item"
-                                            href="{{ route('admin.transactions.show', $transaction) }}">View</a>
-                                        <a
-                                            class="dropdown-item"
-                                            href="#!">Edit</a>
-                                        <a
-                                            class="dropdown-item" href="#!">Refund</a>
+                                            class="dropdown-item" href="javascript:void(0)">Refund</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item text-warning" href="#!">Archive</a><a
-                                            class="dropdown-item text-danger" href="#!">Delete</a>
+                                        <a class="dropdown-item text-warning" href="javascript:void(0)">Archive</a><a
+                                            class="dropdown-item text-danger" href="javascript:void(0)">Delete</a>
                                     </div>
                                 </div>
                             </td>
@@ -247,13 +275,13 @@
                               data-list-info="data-list-info"> </span>
                         <span
                             class="d-none d-sm-inline-block me-2">&mdash;  </span>
-                        <a class="fw-semi-bold" href="#!"
+                        <a class="fw-semi-bold" href="javascript:void(0)"
                            data-list-view="*">View all
                             <span
                                 class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span>
                         </a>
                         {{--                        TODO: Find a way to collapse as well --}}
-                        {{--                        <a class="fw-semi-bold" href="#!"--}}
+                        {{--                        <a class="fw-semi-bold" href="javascript:void(0)--}}
                         {{--                           data-list-view="10">--}}
                         {{--                            <span class="fas fa-angle-left ms-1" data-fa-transform="down-1"></span>--}}
                         {{--                            Collapse--}}
@@ -317,7 +345,7 @@
                     <tr>
                         <th>
                             <div class="form-check mb-0 d-flex align-items-center">
-                                <input class="form-check-input"
+                                <input class="form-check-input" aria-label
                                        id="checkbox-bulk-purchases-select"
                                        type="checkbox"
                                        data-bulk-select='{"body":"table-purchase-body","actions":"table-purchases-actions","replacedElement":"table-purchases-replace-element"}'/>
@@ -340,7 +368,7 @@
                         <tr class="btn-reveal-trigger">
                             <td class="align-middle" style="width: 28px;">
                                 <div class="form-check mb-0 d-flex align-items-center">
-                                    <input class="form-check-input"
+                                    <input class="form-check-input" aria-label
                                            type="checkbox"
                                            id="recent-purchase-{{ $transaction->id }}"
                                            data-bulk-select-row="data-bulk-select-row"/>
@@ -360,46 +388,28 @@
                             <td class="align-middle text-center fs-0 white-space-nowrap payment">
 
                                 @if($transaction->payment)
-                                    @if(strtolower($transaction->payment->status) === 'complete')
-                                        <span class="badge badge rounded-pill badge-soft-success">
-                                            <span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span>
+                                    <?php
+                                    $payment = statusPill($transaction->payment->status)
+                                    ?>
 
-                                    @elseif(strtolower($transaction->payment->status) === 'failed')
-                                                <span class="badge badge rounded-pill badge-soft-warning">
-                                            <span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span>
+                                    <span class="badge badge rounded-pill d-block badge-soft-{{ $payment['color'] }}">
+										<?= ucwords($transaction->payment->status) ?>
+										<span class="ms-1 fas fa-{{ $payment['icon'] }}"
+                                              data-fa-transform="shrink-2"></span>
+									</span>
 
-                                    @elseif(strtolower($transaction->payment->status) === 'pending')
-                                                        <span class="badge badge rounded-pill badge-soft-primary">
-                                            <span class="ms-1 fas fa-redo" data-fa-transform="shrink-2"></span>
-                                    @else
-                                                                <span
-                                                                    class="badge badge rounded-pill badge-soft-secondary">
-                                            <span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span>
-
-                                    @endif
-                                                                    {{ $transaction->payment->status }}
-                                    </span>
-                                    @endif
+                                @endif
                             </td>
                             <td class="align-middle text-center fs-0 white-space-nowrap payment">
 
-                                @if(strtolower($transaction->status) === 'completed' || strtolower($transaction->status) === 'success')
-                                    <span class="badge badge rounded-pill badge-soft-success">
-                                        <span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span>
+                                <?php
+                                $status = statusPill($transaction->status)
+                                ?>
 
-                                @elseif(strtolower($transaction->status) === 'failed')
-                                            <span class="badge badge rounded-pill badge-soft-warning">
-                                        <span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span>
-
-                                @elseif(strtolower($transaction->status) === 'pending')
-                                                    <span class="badge badge rounded-pill badge-soft-primary">
-                                        <span class="ms-1 fas fa-redo" data-fa-transform="shrink-2"></span>
-                                @else
-                                                            <span class="badge badge rounded-pill badge-soft-secondary">
-                                        <span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span>
-
-                                @endif
-                                                                {{ $transaction->status }}
+                                <span class="badge badge rounded-pill d-block badge-soft-{{ $status['color'] }}">
+                                    <?= ucwords($transaction->status) ?>
+                                    <span class="ms-1 fas fa-{{ $status['icon'] }}"
+                                          data-fa-transform="shrink-2"></span>
                                 </span>
                             </td>
                             <td class="align-middle text-end date">{{ local_date($transaction->updated_at, 'd/m/Y H:i') }}</td>
@@ -413,17 +423,13 @@
                                             class="fas fa-ellipsis-h fs--1"></span></button>
                                     <div class="dropdown-menu dropdown-menu-end border py-2"
                                          aria-labelledby="dropdown0">
-                                        <a
-                                            class="dropdown-item"
-                                            href="{{ route('admin.transactions.show', $transaction ) }}">View</a>
-                                        <a
-                                            class="dropdown-item"
-                                            href="#!">Edit</a>
-                                        <a
-                                            class="dropdown-item" href="#!">Refund</a>
+                                        <a class="dropdown-item"
+                                           href="{{ route('admin.transactions.show', $transaction ) }}">View</a>
+                                        <a class="dropdown-item" href="javascript:void(0)">Edit</a>
+                                        <a class="dropdown-item" href="javascript:void(0)">Refund</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item text-warning" href="#!">Archive</a><a
-                                            class="dropdown-item text-danger" href="#!">Delete</a>
+                                        <a class="dropdown-item text-warning" href="javascript:void(0)">Archive</a>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0)">Delete</a>
                                     </div>
                                 </div>
                             </td>
@@ -444,13 +450,13 @@
                               data-list-info="data-list-info"> </span>
                         <span
                             class="d-none d-sm-inline-block me-2">&mdash;  </span>
-                        <a class="fw-semi-bold" href="#!"
+                        <a class="fw-semi-bold" href="javascript:void(0)"
                            data-list-view="*">View all
                             <span
                                 class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span>
                         </a>
                         {{--                        TODO: Find a way to collapse as well --}}
-                        {{--                        <a class="fw-semi-bold" href="#!"--}}
+                        {{--                        <a class="fw-semi-bold" href="javascript:void(0)--}}
                         {{--                           data-list-view="10">--}}
                         {{--                            <span class="fas fa-angle-left ms-1" data-fa-transform="down-1"></span>--}}
                         {{--                            Collapse--}}
@@ -514,7 +520,7 @@
                 {{--                    </div>--}}
                 {{--                </div>--}}
                 {{--                <div class="card-footer text-end bg-transparent border-top light"--}}
-                {{--                     style="border-color: rgba(255, 255, 255, 0.15) !important"><a class="text-white" href="#!">Real-time--}}
+                {{--                     style="border-color: rgba(255, 255, 255, 0.15) !important"><a class="text-white" href="javascript:void(0)>Real-time--}}
                 {{--                        report<span class="fa fa-chevron-right ms-1 fs--1"></span></a></div>--}}
             </div>
         </div>
@@ -528,11 +534,11 @@
             {{--                                aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span>--}}
             {{--                        </button>--}}
             {{--                        <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="modules"><a--}}
-            {{--                                class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Move</a><a--}}
-            {{--                                class="dropdown-item" href="#!">Resize</a>--}}
+            {{--                                class="dropdown-item" href="javascript:void(0)>Edit</a><a class="dropdown-item" href="javascript:void(0)>Move</a><a--}}
+            {{--                                class="dropdown-item" href="javascript:void(0)>Resize</a>--}}
             {{--                            <div class="dropdown-divider"></div>--}}
-            {{--                            <a class="dropdown-item text-warning" href="#!">Archive</a><a--}}
-            {{--                                class="dropdown-item text-danger" href="#!">Delete</a>--}}
+            {{--                            <a class="dropdown-item text-warning" href="javascript:void(0)>Archive</a><a--}}
+            {{--                                class="dropdown-item text-danger" href="javascript:void(0)>Delete</a>--}}
             {{--                        </div>--}}
             {{--                    </div>--}}
             {{--                </div>--}}
@@ -546,7 +552,7 @@
             {{--                                <option value="month">Last month</option>--}}
             {{--                                <option value="year">Last year</option>--}}
             {{--                            </select></div>--}}
-            {{--                        <div class="col-auto"><a class="btn btn-falcon-default btn-sm" href="#!"><span--}}
+            {{--                        <div class="col-auto"><a class="btn btn-falcon-default btn-sm" href="javascript:void(0)><span--}}
             {{--                                    class="d-none d-sm-inline-block me-1">Location</span>overview<span--}}
             {{--                                    class="fa fa-chevron-right ms-1 fs--1"></span></a></div>--}}
             {{--                    </div>--}}
@@ -559,81 +565,45 @@
 
 @section('js')
 
+    <!-- Charting library -->
+    <script src="https://unpkg.com/chart.js@^2.9.3/dist/Chart.min.js"></script>
+    <!-- Chartisan -->
+    <script src="https://unpkg.com/@chartisan/chartjs@^2.1.0/dist/chartisan_chartjs.umd.js"></script>
+    <script src="{{ asset('js/dashboard.js') }}"></script>
+
     <script>
-        /* -------------------------------------------------------------------------- */
-
-        /*                                 Line Chart                                 */
-
-        /* -------------------------------------------------------------------------- */
-
-
-        var chartLinePaymentInit = function chartLinePaymentInit() {
-            /*-----------------------------------------------
-            |   Helper functions and Data
-            -----------------------------------------------*/
-            var chartData = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 2, 3, 8, 4, 6, 2, 6, 4, 3, 3, 8, 3, 2, 7, 9, 5, 0, 2, 8, 8, 4, 1, 9, 7];
-            var labels = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM', '7:00 PM', '8:00 PM'];
-            /*-----------------------------------------------
-            |   Line Chart
-            -----------------------------------------------*/
-
-            var chartLine = document.getElementById('chart-line');
-
-            if (chartLine) {
-                var _document$querySelect;
-
-                var getChartBackground = function getChartBackground(chart) {
-                    var ctx = chart.getContext('2d');
-
-                    if (localStorage.getItem('theme') === 'light') {
-                        var _gradientFill = ctx.createLinearGradient(0, 0, 0, 250);
-
-                        _gradientFill.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
-
-                        _gradientFill.addColorStop(1, 'rgba(255, 255, 255, 0)');
-
-                        return _gradientFill;
-                    }
-
-                    var gradientFill = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
-                    gradientFill.addColorStop(0, utils.rgbaColor(utils.getColors().primary, 0.5));
-                    gradientFill.addColorStop(1, 'transparent');
-                    return gradientFill;
-                };
-
-                var dashboardLineChart = utils.newChart(chartLine, {
+        const chart = new Chartisan({
+            el: '#revenue-chart',
+            url: "@chart('revenue')",
+            hooks: new ChartisanHooks()
+                .responsive()
+                .beginAtZero()
+                .datasets([{
                     type: 'line',
-                    data: {
-                        labels: labels.map(function (label) {
-                            return label.substring(0, label.length - 3);
-                        }),
-                        datasets: [{
-                            borderWidth: 2,
-                            data: chartData.map(function (d) {
-                                return (d * 3.14).toFixed(2);
-                            }),
-                            borderColor: localStorage.getItem('theme') === 'dark' ? utils.getColors().primary : utils.settings.chart.borderColor,
-                            backgroundColor: getChartBackground(chartLine)
-                        }]
-                    },
+                    fill: true,
+                    backgroundColor: gradientColor([255, 255, 255]),
+                    // borderColor: `#ffffff`,
+                }])
+                .tooltip({
+                    mode: 'x-axis',
+                    xPadding: 20,
+                    yPadding: 10,
+                    displayColors: false,
+                    callbacks: {
+                        label: (tooltipItem, data) => {
+                            let dataset = data.datasets[tooltipItem.datasetIndex];
+                            let currentValue = dataset.data[tooltipItem.index];
+
+                            return new Intl.NumberFormat('en-GB', {
+                                style: 'currency',
+                                currency: 'KES'
+                            }).format(currentValue)
+                        }
+                    }
+                })
+                .legend({display: false})
+                .options({
                     options: {
-                        legend: {
-                            display: false
-                        },
-                        tooltips: {
-                            mode: 'x-axis',
-                            xPadding: 20,
-                            yPadding: 10,
-                            displayColors: false,
-                            callbacks: {
-                                label: function label(tooltipItem) {
-                                    return "".concat(labels[tooltipItem.index], " - ").concat(tooltipItem.yLabel, " KES");
-                                },
-                                title: function title() {
-                                    return null;
-                                }
-                            }
-                        },
                         hover: {
                             mode: 'label'
                         },
@@ -654,53 +624,16 @@
                                 }
                             }],
                             yAxes: [{
-                                display: false
+                                show: false,
+                                display: false,
+                                gridLines: {
+                                    display: false,
+                                    show: false
+                                }
                             }]
                         }
                     }
-                });
-                (_document$querySelect = document.querySelector('#dashboard-chart-select')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.addEventListener('change', function (e) {
-                    var LineDB = {
-                        all: [4, 1, 6, 2, 7, 12, 4, 6, 5, 4, 5, 10].map(function (d) {
-                            return (d * 3.14).toFixed(2);
-                        }),
-                        successful: [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8].map(function (d) {
-                            return (d * 3.14).toFixed(2);
-                        }),
-                        failed: [1, 0, 2, 1, 2, 1, 1, 0, 0, 1, 0, 2].map(function (d) {
-                            return (d * 3.14).toFixed(2);
-                        })
-                    };
-                    dashboardLineChart.data.datasets[0].data = LineDB[e.target.value];
-                    dashboardLineChart.update();
-                }); // change chart color on theme change
-
-                var changeChartThemeColor = function changeChartThemeColor(borderColor) {
-                    dashboardLineChart.data.datasets[0].borderColor = borderColor;
-                    dashboardLineChart.data.datasets[0].backgroundColor = getChartBackground(chartLine);
-                    dashboardLineChart.update();
-                }; // event trigger
-
-
-                var themeController = document.body;
-                themeController.addEventListener('clickControl', function (_ref13) {
-                    var _ref13$detail = _ref13.detail,
-                        control = _ref13$detail.control,
-                        value = _ref13$detail.value;
-
-                    if (control === 'theme') {
-                        if (value === 'dark') {
-                            changeChartThemeColor(utils.getColors().primary);
-                        } else {
-                            changeChartThemeColor(utils.settings.chart.borderColor);
-                        }
-                    }
-                });
-            }
-        };
-
-        docReady(chartLinePaymentInit);
-
+                })
+        });
     </script>
-
 @endsection

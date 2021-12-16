@@ -1,6 +1,7 @@
 <!-- ===============================================-->
 <!--    JavaScripts-->
 <!-- ===============================================-->
+<script src="{{ asset('vendors/jquery/jquery.js') }}"></script>
 <script src="{{ asset('vendors/popper/popper.min.js') }}"></script>
 <script src="{{ asset('vendors/bootstrap/bootstrap.min.js') }}"></script>
 <script src="{{ asset('vendors/anchorjs/anchor.min.js') }}"></script>
@@ -12,6 +13,7 @@
 <script src="{{ asset('vendors/countup/countUp.umd.js') }}"></script>
 <script src="{{ asset('vendors/fontawesome/all.min.js') }}"></script>
 <script src="{{ asset('vendors/lodash/lodash.min.js') }}"></script>
-<script src="{{ asset('polyfill.io/v3/polyfill.min58be.js?features=window.scroll') }}"></script>
 <script src="{{ asset('vendors/list.js/list.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="{{ asset('js/theme.js') }}"></script>
+<script src="{{ asset('js/helpers.js') }}"></script>

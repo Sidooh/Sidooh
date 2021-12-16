@@ -12,9 +12,9 @@
 <main class="main" id="top">
     <div class="container" data-layout="container">
         <script>
-            var isFluid = JSON.parse(localStorage.getItem('isFluid'));
+            let isFluid = JSON.parse(localStorage.getItem('isFluid'));
             if (isFluid) {
-                var container = document.querySelector('[data-layout]');
+                let container = document.querySelector('[data-layout]');
                 container.classList.remove('container');
                 container.classList.add('container-fluid');
             }

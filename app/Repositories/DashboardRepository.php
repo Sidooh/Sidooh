@@ -35,20 +35,37 @@ class DashboardRepository
                 }
             ])
             ->with([
-                'payment' => function($query) {
+                'payment' => function ($query) {
                     return $query->select(['payable_id', 'status']);
                 }
             ])
             ->select(['id', 'description', 'account_id', 'amount', 'status', 'updated_at'])
             ->latest()
-            ->limit(16)
+            ->limit(50)
             ->get();
 
 
-        $pendingTransactions = $transactions->filter(fn ($transaction) => $transaction->status == 'pending');
+//        TODO: Bring back once sorted older pending txs
+//        $pendingTransactions = $transactions->filter(fn ($transaction) => $transaction->status == 'pending');
+
+        $pendingTransactions = Transaction::whereType('PAYMENT')
+            ->with([
+                'account' => function ($query) {
+                    return $query->select(['id', 'phone', 'user_id'])->with(['user:id,name']);
+                }
+            ])
+            ->with([
+                'payment' => function ($query) {
+                    return $query->select(['payable_id', 'status']);
+                }
+            ])
+            ->select(['id', 'description', 'account_id', 'amount', 'status', 'updated_at'])
+            ->latest()
+            ->whereStatus('pending')
+            ->get();
 
         return [
-            'recentTransactions'  => $transactions,
+            'recentTransactions' => $transactions,
             'pendingTransactions' => $pendingTransactions,
         ];
     }

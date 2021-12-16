@@ -161,3 +161,5 @@ Run 5 terminals as follows:
 
 5. Terminal
     - local terminal for all other commands
+
+CloudRun gcloud builds submit --config infra/cloudrun/cloudbuild.yaml .

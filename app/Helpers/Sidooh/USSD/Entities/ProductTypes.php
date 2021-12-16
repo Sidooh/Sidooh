@@ -17,5 +17,6 @@ abstract class ProductTypes extends BasicEnum
     const PRE_AGENT_REGISTER = 6.1;
     const AGENT_REGISTER = 6.2;
     const ACCOUNT = 7;
+    const PAY_UTILITY = 3.4;
 }
 

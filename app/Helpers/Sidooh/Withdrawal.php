@@ -4,11 +4,15 @@
 namespace App\Helpers\Sidooh;
 
 
+use App\Helpers\Sidooh\USSD\Entities\PaymentMethods;
+use App\Models\Payment;
 use App\Models\SubscriptionType;
 use App\Models\Transaction;
 use App\Repositories\AccountRepository;
 use App\Repositories\ProductRepository;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class Withdrawal
 {
@@ -20,11 +24,11 @@ class Withdrawal
     protected $phone;
 
     /**
-     * Withdrawal type.
+     * Withdrawal amount.
      *
-     * @var String
+     * @var integer
      */
-    protected $type;
+    protected int $amount;
 
     /**
      * Withdraw method.
@@ -39,49 +43,75 @@ class Withdrawal
      * @param $phone
      * @param string $method
      */
-    public function __construct($phone, $method = 'MPESA')
+    public function __construct($amount, $phone, $method = PaymentMethods::MPESA)
     {
-        $this->phone = $phone;
+        $this->amount = $amount;
+        $this->phone = ltrim(PhoneNumber::make($phone, 'KE')->formatE164(), '+');
         $this->method = $method;
     }
 
 //    TODO: Add Assert checks
-    public function withdraw($amount, $mpesaNumber = null)
+    public function withdraw($targetNumber = null)
     {
-        Log::info('====== Withdrawal ======');
+        Log::info("====== Withdrawal ($this->method) ======");
+        Log::info("$this->phone - $targetNumber");
 
-        $description = $mpesaNumber ? "Withdrawal - $mpesaNumber" : "Withdrawal";
+        switch ($this->method) {
+            case PaymentMethods::MPESA:
+                $this->mpesa($targetNumber);
+                break;
+//            case PaymentMethods::VOUCHER:
+//                $this->voucher($targetNumber);
+//                break;
+        }
+
+
+    }
+
+    public function mpesa($mpesaNumber = null)
+    {
         $number = $mpesaNumber ?? $this->phone;
 
-        $b2c = mpesa_send($number, $amount, $description);
+        $description = $mpesaNumber ? "Withdrawal - $mpesaNumber" : "Withdrawal";
 
-        Log::info($b2c);
+        if (config('services.sidooh.mpesa.env') == 'local') {
+            $number = config('services.sidooh.mpesa.b2c.phone');
+        }
 
-        $accountRep = new AccountRepository();
-        $account = $accountRep->findByPhone($this->phone);
+        $b2c = mpesa_send($number, $this->amount, $description);
 
-        $productRep = new ProductRepository();
-        $product = $productRep->store(['name' => 'Withdrawal']);
+//        Log::info($b2c);
 
-        $transaction = new Transaction();
 
-        $transaction->amount = $amount;
-        $transaction->type = 'WITHDRAWAL';
-        $transaction->description = 'Withdrawal of Points';
-        $transaction->account_id = $account->id;
-        $transaction->product_id = $product->id;
+        DB::transaction(function () use ($mpesaNumber, $b2c) {
 
-        $transaction->save();
-//
-//        $payment = new Payment([
-//            'amount' => (int)$this->type->amount,
-//            'status' => 'Pending',
-//            'type' => 'MPESA',
-//            'subtype' => 'STK',
-//            'payment_id' => $stkResponse->id
-//        ]);
-//
-//        $transaction->payment()->save($payment);
+            $accountRep = new AccountRepository();
+            $account = $accountRep->findByPhone($this->phone);
+
+            $productRep = new ProductRepository();
+            $product = $productRep->store(['name' => 'Withdrawal']);
+
+            $transaction = new Transaction();
+
+            $transaction->amount = $this->amount;
+            $transaction->type = 'WITHDRAWAL';
+            $transaction->description = $mpesaNumber ? "Withdrawal of Points - $mpesaNumber" : "Withdrawal of Points";
+            $transaction->account_id = $account->id;
+            $transaction->product_id = $product->id;
+
+            $transaction->save();
+
+            $payment = new Payment([
+                'amount' => $this->amount,
+                'status' => 'Pending',
+                'type' => 'MPESA',
+                'subtype' => 'B2C',
+                'payment_id' => $b2c->id
+            ]);
+
+            $transaction->payment()->save($payment);
+
+        }, 3);
 
     }
 

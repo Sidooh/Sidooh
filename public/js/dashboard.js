@@ -24,8 +24,8 @@ const chartConfigSelects = () => {
 // $('.chart-config.select').append(chartConfigSelects())
 
 axios.get(`/admin/statistics`).then(({data}) => {
-    InitCountUp(document.getElementById('total-today'), data.totalToday, {prefix: 'KSH.'})
-    InitCountUp(document.getElementById('total-yesterday'), data.totalYesterday, {prefix: 'KSH.'})
+    InitCountUp(document.getElementById('total-today'), data.totalToday, {prefix: 'KES '})
+    InitCountUp(document.getElementById('total-yesterday'), data.totalYesterday, {prefix: 'KES '})
     InitCountUp(document.getElementById('total-accounts'), data.totalAccounts)
     InitCountUp(document.getElementById('total-accounts-today'), data.totalAccountsToday)
     InitCountUp(document.getElementById('total-transactions'), data.totalTransactions)

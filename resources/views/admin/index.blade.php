@@ -470,7 +470,7 @@
                                 displayColors: false,
                                 callbacks: {
                                     label: (tooltipItem, data) => {
-                                        return `${data.datasets[tooltipItem.datasetIndex].label} - @KSH.${tooltipItem.yLabel}`;
+                                        return `${data.datasets[tooltipItem.datasetIndex].label} - @KES ${tooltipItem.yLabel}`;
                                     }
                                 }
                             },

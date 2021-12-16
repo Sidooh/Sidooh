@@ -55,10 +55,10 @@ class Pre_Agent extends AgentMain
         $this->vars['{$mpesa_number}'] = $this->phone;
 
         $this->vars['{$subscription_type}'] = "Sidooh Agent";
-        $this->vars['{$subscription_amount}'] = 4350;
-        $this->vars['{$subscription_amount_f}'] = '4,350';
+        $this->vars['{$subscription_amount}'] = 365;
+        $this->vars['{$subscription_amount_f}'] = 'Ksh 365';
         $this->vars['{$level_limit}'] = 5;
-        $this->vars['{$period}'] = "1 YEAR";
+        $this->vars['{$period}'] = "1 MONTH";
 
 
         $res = (new AccountRepository)->findByPhone($this->phone);
@@ -81,10 +81,12 @@ class Pre_Agent extends AgentMain
                 $this->screen->title = "Dear {$name}, you are already subscribed to $subscription valid until $subdate.";
 
                 if ($res->active_subscription->subscription_type->duration == 1) {
-                    $option = $this->screen->options[0];
-                    $option->next = "pre_agent_onboarding_category";
+//                    $option = $this->screen->options[0];
+//                    $option->next = "pre_agent_onboarding_category";
+//
+//                    $this->vars['{$name}'] = $name;
 
-                    $this->vars['{$name}'] = $name;
+                    $this->screen->options = [];
 
                 } else {
                     if ($res->active_subscription->subscription_type->level_limit == 3) {

@@ -12,7 +12,7 @@ use App\Models\Transaction;
 use App\Repositories\AccountRepository;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Log;
-use Samerior\MobileMoney\Mpesa\Exceptions\MpesaException;
+use DrH\Mpesa\Exceptions\MpesaException;
 
 class Subscription
 {
@@ -69,6 +69,7 @@ class Subscription
     {
         Log::info("====== Subscription Purchase ($this->method) ======");
 
+
         switch ($this->method) {
             case PaymentMethods::MPESA:
                 $this->mpesa($targetNumber, $mpesaNumber);
@@ -96,6 +97,9 @@ class Subscription
                 break;
             case 475:
                 $reference = MpesaReferences::AGENT_REGISTER_ASPIRING;
+                break;
+            case 365:
+                $reference = MpesaReferences::AGENT_REGISTER;
                 break;
         }
 

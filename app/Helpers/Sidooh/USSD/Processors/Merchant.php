@@ -99,7 +99,7 @@ class Merchant extends Pay
                 $bal = $acc->voucher->balance;
 
                 if ($bal == 0 || $bal < (int)$this->vars['{$amount}']) {
-                    $this->screen->title = "Sorry but your Voucher Balance is insufficient";
+                    $this->screen->title = "Sorry, your voucher balance is insufficient. Please top-up your Sidooh Voucher to continue enjoying the service.";
                     $this->screen->type = 'END';
                 }
 

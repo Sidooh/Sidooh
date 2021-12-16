@@ -45,9 +45,9 @@ class Account extends Product
                     $this->set_kyc_details();
                 }
                 break;
-//            case "kyc_details_pin":
-//                $this->set_pin_title($previousScreen);
-//                break;
+            case "kyc_details":
+                $this->check_pin_exists($previousScreen);
+                break;
             case "kyc_details_name":
                 $this->set_name($previousScreen);
                 break;
@@ -64,6 +64,12 @@ class Account extends Product
             case "kyc_update_confirm_pin":
             case "kyc_details_current_pin":
                 $this->check_current_pin($previousScreen);
+                break;
+
+            case "confirm_pin_withdraw":
+                if ($this->check_current_pin($previousScreen)) {
+                    $this->set_earnings($previousScreen);
+                }
                 break;
 
             case "confirm_pin":
@@ -230,10 +236,10 @@ class Account extends Product
             if ($acc->pin) {
 //                if (!Hash::check($previousScreen->option_string, $res->pin)) {
                 if ($previousScreen->option_string !== $acc->pin) {
-//                    $this->screen->title = "Sorry, but the pin does not match. Please call us if you have forgotten your PIN";
-//                    $this->screen->type = 'END';
-                    $this->screen = $this->previousScreen;
-                    $this->screen->title = "Woiii";
+                    $this->screen->title = "Sorry, but the pin does not match. Please call us if you have forgotten your PIN";
+                    $this->screen->type = 'END';
+//                    $this->screen = $this->previousScreen;
+//                    $this->screen->title = "Woiii";
                 } else {
                     return $acc;
                 }
@@ -247,6 +253,18 @@ class Account extends Product
         }
 
         return null;
+    }
+
+
+    private function check_pin_exists(Screen $previousScreen)
+    {
+        $acc = (new AccountRepository)->findByPhone($this->phone);
+
+        if ($acc)
+            if ($acc->pin) {
+                unset($this->screen->options[0]);
+            }
+
     }
 
     private function set_earnings(Screen $previousScreen)
@@ -264,7 +282,7 @@ class Account extends Product
             $this->vars['{$spi}'] = $ibal;
             $this->vars['{$sb}'] = 0;
             $this->vars['{$sbi}'] = 0;
-            $this->vars['{$wp}'] = $cbal > 50 ? $cbal - 50 : 0;
+            $this->vars['{$wp}'] = $cbal > 100 ? $cbal - 50 : 0;
             $this->vars['{$vb}'] = number_format($acc->voucher->balance);
 
         }
@@ -287,7 +305,7 @@ class Account extends Product
                 $this->vars['{$spi}'] = $ibal;
                 $this->vars['{$sb}'] = 0;
                 $this->vars['{$sbi}'] = 0;
-                $this->vars['{$wp}'] = $cbal > 50 ? $cbal - 50 : 0;
+                $this->vars['{$wp}'] = $cbal > 100 ? $cbal - 50 : 0;
 
                 if ($this->vars['{$wp}'] == 0) {
                     $this->screen->title = "Sorry but your Withdrawable Balance is 0";
@@ -318,10 +336,10 @@ class Account extends Product
 
                 $this->vars['{$spb}'] = $bal;
                 $this->vars['{$sbb}'] = 0;
-                $this->vars['{$wb}'] = $bal > 50 ? $bal - 50 : 0;
+                $this->vars['{$wb}'] = $bal > 100 ? $bal - 50 : 0;
 
                 if ($this->vars['{$wb}'] == 0) {
-                    $this->screen->title = "Sorry but your Withdrawable Balance is 0";
+                    $this->screen->title = "Sorry, your Withdrawable Balance is 0. The minimum account balance required to withdraw is 100. ";
                     $this->screen->type = 'END';
                 }
 
@@ -339,8 +357,15 @@ class Account extends Product
 
     private function set_points(Screen $previousScreen)
     {
-        $this->vars['{$points}'] = $previousScreen->option_string;
-        $this->vars['{$amount}'] = $previousScreen->option_string;
+        if ($previousScreen->option_string > $this->vars['{$wp}']) {
+            $this->vars['{$points}'] = (int)floor($this->vars['{$wp}']);
+            $this->screen->title = "Points selected are more than available. We will withdraw " . $this->vars['{$points}'] . " points.\n" . $this->screen->title;
+        } else {
+            $this->vars['{$points}'] = $previousScreen->option_string;
+        }
+
+        $this->vars['{$amount}'] = $this->vars['{$points}'];
+
     }
 
     private function set_account_type(Screen $previousScreen)
@@ -409,10 +434,10 @@ class Account extends Product
                 $bal = $acc->merchant->balance;
 
                 $this->vars['{$mb}'] = $bal;
-                $this->vars['{$wb}'] = $bal > 50 ? $bal - 50 : 0;
+                $this->vars['{$wb}'] = $bal > 100 ? $bal - 50 : 0;
 
                 if ($this->vars['{$wb}'] == 0) {
-                    $this->screen->title = "Sorry, your Withdrawable Balance is 0. The minimum account balance required to withdraw is 50. ";
+                    $this->screen->title = "Sorry, your Withdrawable Balance is 0. The minimum account balance required to withdraw is 100. ";
                     $this->screen->type = 'END';
                 }
 
@@ -532,7 +557,7 @@ class Account extends Product
         $phone = $this->vars['{$my_number}'];
 //
         $name = $this->vars['{$name}'];
-        $email = $this->vars['{$email}'];
+        $email = $this->vars['{$email}'] ?? $this->vars['{$my_number}'] . "@sid.ooh";
         $pass = $this->vars['{$email}'] . '5!D00h';
         $pin = $this->vars['{$confirm_pin}'];
 
@@ -543,7 +568,7 @@ class Account extends Product
 
         $user = $acc->user;
 
-        if (!$acc->user)
+        if (!$user) {
             $user = User::firstOrCreate(
                 [
                     'username' => $phone,
@@ -556,8 +581,13 @@ class Account extends Product
                     'password' => Hash::make($pass)
                 ]);
 
-        $acc->user()->associate($user);
+            $acc->user_id = $user->id;
+//            $acc->user()->associate($user);
+//            $acc->save();
+        }
+
         $acc->save();
+
     }
 
     private function updateProfile()
@@ -570,9 +600,32 @@ class Account extends Product
 
         $user = $acc->user;
 
-        $user->name = $name;
+        if (!$user) {
+            $email = empty($this->vars['{$email}']) ? $this->vars['{$my_number}'] . "@sid.ooh" : $this->vars['{$email}'];
+            $pass = $this->vars['{$email}'] . '5!D00h';
 
-        $user->save();
+            $user = User::firstOrCreate(
+                [
+                    'username' => $phone,
+                ],
+                [
+                    'name' => $name,
+                    'username' => $phone,
+                    'id_number' => $phone,
+                    'email' => $email,
+                    'password' => Hash::make($pass)
+                ]);
+
+            $acc->user()->associate($user);
+            $acc->save();
+
+        } else {
+
+            $user->name = $name;
+
+            $user->save();
+        }
+
     }
 
     private function createMerchant()
@@ -631,11 +684,15 @@ class Account extends Product
         error_log("-- Redeem");
 
         $amount = $this->vars['{$amount}'];
-        $phoneNumber = $this->vars['{$my_number}'];
+        $phone = $this->vars['{$my_number}'];
         $target = $this->vars['{$to_number}'];
         $method = $this->vars['{$acc_type}'];
 
-        (new \App\Helpers\Sidooh\Withdrawal($target, $method))->withdraw($amount);
+        if ($phone === $target)
+            (new \App\Helpers\Sidooh\Withdrawal($amount, $phone, $method))->withdraw();
+        else
+            (new \App\Helpers\Sidooh\Withdrawal($amount, $phone, $method))->withdraw($target);
     }
+
 
 }

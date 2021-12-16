@@ -16,10 +16,12 @@ use App\Helpers\Sidooh\USSD\Processors\Pre_Agent;
 use App\Helpers\Sidooh\USSD\Processors\Product;
 use App\Helpers\Sidooh\USSD\Processors\Referral;
 use App\Helpers\Sidooh\USSD\Processors\Subscription;
+use App\Helpers\Sidooh\USSD\Processors\Utility;
 use App\Helpers\Sidooh\USSD\Processors\Voucher;
+use App\Models\UssdState;
 use App\Models\UssdUser;
 use Error;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use Karriere\JsonDecoder\JsonDecoder;
 use libphonenumber\NumberParseException;
@@ -97,17 +99,37 @@ class USSD
     private function retrieveState(): ?Screen
     {
         error_log("retrieveState");
+
+//        try {
+//            $contents = Storage::get($this->sessionId . '_state.txt');
+//        } catch (FileNotFoundException $e) {
+//            return null;
+//        }
+
         try {
-            $contents = Storage::get($this->sessionId . '_state.txt');
-        } catch (FileNotFoundException $e) {
+            $decodedData = UssdState::whereSession($this->sessionId)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
             return null;
         }
 
-        $decodedData = json_decode($contents, true);
+//        try {
+//            $contents = Redis::get($this->sessionId . '_state');
+//        } catch (TypeError|RedisException $e) {
+//            try {
+//                $contents = Storage::get($this->sessionId . '_state.txt');
+//            } catch (FileNotFoundException $e) {
+//                return null;
+//            }
+//        }
 
-        $this->setProduct($decodedData[0]);
+//        $decodedData = json_decode($contents, true);
 
-        $jsonData = json_encode($decodedData[1]);
+//        $this->setProduct($decodedData[0]);
+//
+//        $jsonData = json_encode($decodedData[1]);
+        $this->setProduct($decodedData->ussd_product);
+
+        $jsonData = json_encode($decodedData->screen_path);
 
         $jsonDecoder = new JsonDecoder();
         $jsonDecoder->register(new ScreenTransformer());
@@ -138,6 +160,9 @@ class USSD
             case ProductTypes::PAY_MERCHANT:
                 $this->product = new Merchant($this->user, $this->sessionId);
                 break;
+            case ProductTypes::PAY_UTILITY:
+                $this->product = new Utility($this->user, $this->sessionId);
+                break;
             case ProductTypes::REFER:
                 $this->product = new Referral($this->user, $this->sessionId);
                 break;
@@ -159,8 +184,6 @@ class USSD
 
     private function setScreen(Screen $screen, bool $keep_state = true)
     {
-//        error_log("setScreen: " . $screen->key . " - " . $screen->type ?? "No type!");
-
         if ($keep_state && "GENESIS" !== ($screen->type ?? false)) {
             $prev = $this->screen ?? null;
             $this->screen = $screen;
@@ -169,22 +192,32 @@ class USSD
             $this->screen = $screen;
         }
 
-//        error_log($screen);
-
         $this->saveState();
     }
 
     private function saveState()
     {
         error_log("saveState");
-        $contents = json_encode([$this->getProduct(true), $this->screen]);
-        Storage::put($this->sessionId . '_state.txt', $contents);
+//        $contents = json_encode([$this->getProduct(true), $this->screen]);
+//        Storage::put($this->sessionId . '_state.txt', $contents);
+
+        UssdState::updateOrCreate(
+            ["session" => $this->sessionId],
+            [
+                "ussd_product" => $this->getProduct(true),
+                "screen_path" => $this->screen
+            ]);
+
+//        try {
+//            $contents = UssdState::whereSession($this->sessionId)->firstOrFail();
+//        } catch (ModelNotFoundException $e) {
+//            return null;
+//        }
+
     }
 
     public function getProduct($as_enum = false)
     {
-        error_log($this->product);
-
         if (!$as_enum)
             return $this->product;
 
@@ -202,6 +235,8 @@ class USSD
                 return ProductTypes::PAY_VOUCHER;
             else if ($this->product instanceof Merchant)
                 return ProductTypes::PAY_MERCHANT;
+            else if ($this->product instanceof Utility)
+                return ProductTypes::PAY_UTILITY;
             return ProductTypes::PAY;
         } else if ($this->product instanceof Referral)
             return ProductTypes::REFER;
@@ -255,7 +290,8 @@ class USSD
     {
         error_log("unsetState");
         Storage::delete($this->sessionId . '_state.txt');
-//        Storage::delete($this->sessionId . '_vars.txt');
+
+        UssdState::whereSession($this->sessionId)->delete();
     }
 
     private function addResponseFooter($message)
@@ -412,6 +448,8 @@ class USSD
                 return $this->validate_amount_min($value, 100);
             case "MIN|AIRTIME":
                 return $this->validate_amount_min($value, 20);
+            case "MIN|WITHDRAW":
+                return $this->validate_amount_min($value, 20);
             case "PIN":
                 return $this->validate_PIN($value);
             case "NUMBER":
@@ -419,6 +457,14 @@ class USSD
 
                 if ($phone != false && $phone != $this->validate_number($this->product->phone)) {
                     return true;
+                }
+                return false;
+            case "MPESA":
+                $phone = $this->validate_number($value);
+
+                if ($phone != false && $phone != $this->validate_number($this->product->phone)) {
+                    if (preg_match('(^(?:\+?254|0)?((?:(?:7(?:(?:[01249][0-9])|(?:5[789])|(?:6[89])))|(?:1(?:[1][0-5])))[0-9]{6})$)', $phone))
+                        return true;
                 }
                 return false;
             case "BUSINESS_NUMBER":

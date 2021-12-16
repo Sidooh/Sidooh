@@ -57,7 +57,7 @@ class DashboardController extends Controller
         $totalTransactionsToday = Transaction::whereDate('created_at', Carbon::today())->count();
 
         //        TODO: Need to standardize transaction statuses
-        $transactions = Transaction::whereStatus(['completed', 'success'])->whereType('PAYMENT')->get();
+        $transactions = Transaction::whereStatus('completed')->whereType('PAYMENT')->get();
 
         $totalRevenue = $transactions->sum('amount');
         $totalRevenueToday = $transactions->filter(fn($item) => $item->created_at->isToday())->sum('amount');
@@ -65,6 +65,7 @@ class DashboardController extends Controller
         //        4th: Get current active users
         $usersToday = UssdLog::whereDate('updated_at', Carbon::today())->distinct()->count('phone');
 
+//        TODO: Get all transactions after yesterday, then filter yesterday and today in code
         return [
             'totalToday'     => Transaction::whereStatus('completed')
                 ->whereDate('created_at', Carbon::today())

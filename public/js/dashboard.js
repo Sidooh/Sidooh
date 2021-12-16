@@ -1,3 +1,28 @@
+const globalHooks = () => {
+    return new ChartisanHooks()
+        .responsive()
+        .legend({position: 'bottom'})
+}
+
+let getChartBackground = function getChartBackground(chart) {
+    let ctx = chart.getContext('2d');
+
+    if (localStorage.getItem('theme') === 'light') {
+        let _gradientFill = ctx.createLinearGradient(0, 0, 0, 250);
+
+        _gradientFill.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
+
+        _gradientFill.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+        return _gradientFill;
+    }
+
+    let gradientFill = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
+    gradientFill.addColorStop(0, utils.rgbaColor(utils.getColors().primary, 0.5));
+    gradientFill.addColorStop(1, 'transparent');
+    return gradientFill;
+};
+
 /* -------------------------------------------------------------------------- */
 /*                                 Line Chart                                 */
 /* -------------------------------------------------------------------------- */
@@ -7,25 +32,6 @@ let chartLinePaymentInit = (chartData) => {
 
     if (chartLine) {
         let _document$querySelect;
-
-        let getChartBackground = function getChartBackground(chart) {
-            let ctx = chart.getContext('2d');
-
-            if (localStorage.getItem('theme') === 'light') {
-                let _gradientFill = ctx.createLinearGradient(0, 0, 0, 250);
-
-                _gradientFill.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
-
-                _gradientFill.addColorStop(1, 'rgba(255, 255, 255, 0)');
-
-                return _gradientFill;
-            }
-
-            let gradientFill = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
-            gradientFill.addColorStop(0, utils.rgbaColor(utils.getColors().primary, 0.5));
-            gradientFill.addColorStop(1, 'transparent');
-            return gradientFill;
-        };
 
         let dashboardLineChart = utils.newChart(chartLine, {
             type: 'line',
@@ -81,6 +87,7 @@ let chartLinePaymentInit = (chartData) => {
                 }
             }
         });
+
         (_document$querySelect = document.querySelector('#dashboard-chart-select')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.addEventListener('change', function (e) {
             let LineDB = {
                 all: [4, 1, 6, 2, 7, 12, 4, 6, 5, 4, 5, 10].map(function (d) {
@@ -103,7 +110,6 @@ let chartLinePaymentInit = (chartData) => {
             dashboardLineChart.update();
         }; // event trigger
 
-
         let themeController = document.body;
         themeController.addEventListener('clickControl', function (_ref13) {
             let _ref13$detail = _ref13.detail,
@@ -121,18 +127,24 @@ let chartLinePaymentInit = (chartData) => {
     }
 };
 
-axios.get(`/admin/charts`).then(({data}) => {
+axios.get(`/admin/statistics`).then(({data}) => {
     console.log(data)
 
-    InitCountUp(document.getElementById('total-today'), data.total_today, {prefix: 'KSH.'})
-    InitCountUp(document.getElementById('total-yesterday'), data.total_yesterday, {prefix: 'KSH.'})
+    InitCountUp(document.getElementById('total-today'), data.totalToday, {prefix: 'KSH.'})
+    InitCountUp(document.getElementById('total-yesterday'), data.totalYesterday, {prefix: 'KSH.'})
+    InitCountUp(document.getElementById('total-accounts'), data.totalAccounts)
+    InitCountUp(document.getElementById('total-accounts-today'), data.totalAccountsToday)
+    InitCountUp(document.getElementById('total-transactions'), data.totalTransactions)
+    InitCountUp(document.getElementById('total-transactions-today'), data.totalTransactionsToday)
+    InitCountUp(document.getElementById('total-revenue'), data.totalRevenue)
+    InitCountUp(document.getElementById('total-revenue-today'), data.totalRevenueToday)
+    InitCountUp(document.getElementById('total-users-today'), data.totalUsersToday)
 
     chartLinePaymentInit(data.main)
 })
 
 $(document).on('click', '.refresh-chart', function () {
-    const chartName = $(this).closest('.card-header').siblings().children().first().data('chartName'),
-        chartInstance = chart[chartName];
+    const chartName = $(this).closest('.card-header').siblings().children().first().data('chartName');
 
-    chartInstance.update()
+    chart.update()
 })

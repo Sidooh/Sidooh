@@ -36,7 +36,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('/admin')->name('admin.')->group(function() {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
-    Route::get('/charts', [DashboardController::class, 'charts'])->name('charts');
+    Route::get('/statistics', [DashboardController::class, 'statistics'])->name('statistics');
 
     Route::resources([
         'user-notifications' => UserNotificationController::class,

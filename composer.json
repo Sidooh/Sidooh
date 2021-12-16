@@ -23,7 +23,8 @@
         "mratiebatie/laravel-repositories": "^1.0",
         "propaganistas/laravel-phone": "^4.3",
         "staudenmeir/laravel-adjacency-list": "^1.9",
-        "consoletvs/charts": "7.*"
+        "consoletvs/charts": "7.*",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

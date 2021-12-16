@@ -17,12 +17,11 @@ window.InitCountUp = (node, endVal, data = {}, roundWithSuffix = false) => {
     !countUp.error ? countUp.start() : console.error(countUp.error);
 }
 
-window.gradientColor = rgbColor => {
+window.chartGradient = rgbColor => {
     let rgb = rgbColor.join()
     let gradient = document.createElement('canvas').getContext('2d').createLinearGradient(0, 0, 0, 400);
 
-    gradient.addColorStop(0, `rgba(${rgb}, 1)`);
-    gradient.addColorStop(0.5, `rgba(${rgb}, .5)`);
+    gradient.addColorStop(0, `rgba(${rgb}, .5)`);
     gradient.addColorStop(1, `rgba(${rgb}, 0)`);
 
     return gradient;

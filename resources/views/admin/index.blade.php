@@ -24,6 +24,16 @@
     }
     ?>
 
+    {{--    <div class="card shadow-lg">--}}
+    {{--        <div class="card-header d-flex justify-content-between">--}}
+    {{--            <h5>Revenue</h5>--}}
+    {{--            <div class="chart-config select d-flex align-items-center"></div>--}}
+    {{--        </div>--}}
+    {{--        <div class="card-body">--}}
+    {{--            <div data-chart-name="revenue" id="revenue-chart" style="height: 300px;"></div>--}}
+    {{--        </div>--}}
+    {{--    </div>--}}
+
     <div class="card rounded-3 overflow-hidden mb-3">
         <div class="card-body bg-line-chart-gradient">
             <div class="row align-items-center g-0">
@@ -44,11 +54,11 @@
                     </select>
                 </div>
             </div>
-            <div id="revenue-chart" style="height: 170px;"></div>
+            <div id="revenue-chart" style="height: 250px;"></div>
         </div>
     </div>
 
-    <div class="card rounded-3 overflow-hidden mb-3">
+    {{--<div class="card rounded-3 overflow-hidden mb-3">
         <div class="card-body bg-line-chart-gradient">
             <div class="row align-items-center g-0">
                 <div class="col light">
@@ -71,7 +81,7 @@
             <canvas class="mw-100 rounded" id="chart-line" width="1618" height="375" aria-label="Line chart"
                     role="img"></canvas>
         </div>
-    </div>
+    </div>--}}
     {{--    <div class="card bg-light mb-3">--}}
     {{--        <div class="card-body p-3">--}}
     {{--            <p class="fs--1 mb-0"><a href="javascript:void(0)><span class="fas fa-exchange-alt me-2"--}}
@@ -88,11 +98,9 @@
                 <!--/.bg-holder-->
                 <div class="card-body position-relative">
                     <h6>Accounts<span
-                            class="badge badge-soft-warning rounded-pill ms-2">{{ $data['totalAccountsToday'] }}</span>
+                            class="badge badge-soft-warning rounded-pill ms-2" id="total-accounts-today">0</span>
                     </h6>
-                    <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif text-warning"
-                         data-countup='{"endValue":{{ $data['totalAccounts'] }},"decimalPlaces":0,"suffix":""}'>0
-                    </div>
+                    <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif text-warning" id="total-accounts">0</div>
                     <a class="fw-semi-bold fs--1 text-nowrap" href="{{ route('admin.accounts.index') }}">See all<span
                             class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
                 </div>
@@ -104,12 +112,10 @@
                      style="background-image:url( {{ asset('images/icons/spot-illustrations/corner-2.png') }} );"></div>
                 <!--/.bg-holder-->
                 <div class="card-body position-relative">
-                    <h6>Transactions<span
-                            class="badge badge-soft-info rounded-pill ms-2">{{ $data['totalTransactionsToday'] }}</span>
+                    <h6>Transactions
+                        <span class="badge badge-soft-info rounded-pill ms-2" id="total-transactions-today">0</span>
                     </h6>
-                    <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif text-info"
-                         data-countup='{"endValue":{{ $data['totalTransactions'] }},"decimalPlaces":0,"suffix":""}'>0
-                    </div>
+                    <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif text-info" id="total-transactions">0</div>
                     <a class="fw-semi-bold fs--1 text-nowrap" href="{{ route('admin.transactions.index', ['all']) }}">All
                         transactions<span
                             class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
@@ -122,12 +128,10 @@
                      style="background-image:url( {{ asset('images/icons/spot-illustrations/corner-3.png') }} );"></div>
                 <!--/.bg-holder-->
                 <div class="card-body position-relative">
-                    <h6>Revenue<span
-                            class="badge badge-soft-success rounded-pill ms-2">{{ $data['totalRevenueToday'] }}</span>
+                    <h6>
+                        Revenue <span class="badge badge-soft-success rounded-pill ms-2" id="total-revenue-today">0</span>
                     </h6>
-                    <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif"
-                         data-countup='{"endValue":{{ $data['totalRevenue'] }},"prefix":"KES "}'>0
-                    </div>
+                    <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif" id="total-revenue">0</div>
                     <a class="fw-semi-bold fs--1 text-nowrap" href="#">Statistics<span
                             class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
                 </div>
@@ -477,9 +481,7 @@
             <div class="card h-100 bg-line-chart-gradient">
                 <div class="card-header bg-transparent light">
                     <h5 class="text-white">Total Users Today</h5>
-                    <div class="real-time-user display-1 fw-normal text-white"
-                         data-countup='{"endValue":{{ $data['totalUsersToday'] }}}'>0
-                    </div>
+                    <div class="real-time-user display-1 fw-normal text-white" id="total-users-today">0</div>
                 </div>
                 {{--                <div class="card-body text-white fs--1 light">--}}
                 {{--                    <p class="border-bottom pb-2" style="border-color: rgba(255, 255, 255, 0.15) !important">Page views--}}
@@ -565,10 +567,8 @@
 
 @section('js')
 
-    <!-- Charting library -->
-    <script src="https://unpkg.com/chart.js@^2.9.3/dist/Chart.min.js"></script>
-    <!-- Chartisan -->
-    <script src="https://unpkg.com/@chartisan/chartjs@^2.1.0/dist/chartisan_chartjs.umd.js"></script>
+    <script src="{{ asset('vendors/chartisan/chart.min.js') }}"></script>
+    <script src="{{ asset('vendors/chartisan/chartisan.umd.js') }}"></script>
     <script src="{{ asset('js/dashboard.js') }}"></script>
 
     <script>
@@ -576,14 +576,75 @@
             el: '#revenue-chart',
             url: "@chart('revenue')",
             hooks: new ChartisanHooks()
+                .custom(({data, merge, server}) => {
+                    return merge(data, {
+                        data: {
+                            datasets: [{
+                                borderColor: localStorage.getItem('theme') === 'dark' ? utils.getColors().primary : utils.settings.chart.borderColor,
+                                borderWidth: 2,
+                            }]
+                        },
+                        options: {
+                            legend: {
+                                display: false
+                            },
+                            tooltips: {
+                                mode: 'x-axis',
+                                xPadding: 20,
+                                yPadding: 10,
+                                displayColors: false,
+                                callbacks: {
+                                    label: (tooltipItem, data) => {
+                                        return `${data.datasets[tooltipItem.datasetIndex].label} - @KSH.${tooltipItem.yLabel}`;
+                                    }
+                                }
+                            },
+                            hover: {
+                                mode: 'label'
+                            },
+                            scales: {
+                                xAxes: [{
+                                    scaleLabel: {
+                                        show: true,
+                                        labelString: 'Month'
+                                    },
+                                    ticks: {
+                                        fontColor: utils.rgbaColor('#fff', 0.7),
+                                        fontStyle: 600
+                                    },
+                                    gridLines: {
+                                        color: utils.rgbaColor('#fff', 0.1),
+                                        zeroLineColor: utils.rgbaColor('#fff', 0.1),
+                                        lineWidth: 1
+                                    }
+                                }],
+                                yAxes: [{
+                                    display: false
+                                }]
+                            }
+                        }
+                    })
+                })
                 .responsive()
+                .datasets([
+                    {
+                        label: 'today',
+                        type: 'line', fill: true,
+                        backgroundColor: chartGradient([255, 255, 225]),
+                        borderColor: localStorage.getItem('theme') === 'dark' ? utils.getColors().primary : utils.settings.chart.borderColor,
+                        borderWidth: 2,
+                    }, {
+                        label: 'yesterday',
+                        type: 'line', fill: true,
+                        backgroundColor: chartGradient([170, 10, 10]),
+                        borderColor: `rgb(170, 10, 10)`,
+                        borderWidth: 2,
+                    }
+                ])
+            /*hooks: new ChartisanHooks()
+                .responsive()
+                .legend({display: false})
                 .beginAtZero()
-                .datasets([{
-                    type: 'line',
-                    fill: true,
-                    backgroundColor: gradientColor([255, 255, 255]),
-                    // borderColor: `#ffffff`,
-                }])
                 .tooltip({
                     mode: 'x-axis',
                     xPadding: 20,
@@ -601,7 +662,13 @@
                         }
                     }
                 })
-                .legend({display: false})
+                .datasets([{
+                    type: 'line',
+                    fill: true,
+                    backgroundColor: gradientColor([255, 255, 255]),
+                    borderColor: localStorage.getItem('theme') === 'dark' ? utils.getColors().primary : utils.settings.chart.borderColor,
+                    borderWidth: 2
+                }])
                 .options({
                     options: {
                         hover: {
@@ -633,7 +700,7 @@
                             }]
                         }
                     }
-                })
+                })*/
         });
     </script>
 @endsection

@@ -5,8 +5,6 @@ namespace App\Repositories;
 
 use App\Models\Account;
 use App\Models\Transaction;
-use App\Models\UssdLog;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use MrAtiebatie\Repository;
 
@@ -29,22 +27,6 @@ class DashboardRepository
     }
 
     public function statistics(): array {
-//        2nd: Get total customers, Transactions, Revenue
-        $totalAccounts = Account::count();
-        $totalAccountsToday = Account::whereDate('created_at', Carbon::today())->count();
-
-//        Do the exact same for transactions and revenue
-        $totalTransactions = Transaction::count();
-        $totalTransactionsToday = Transaction::whereDate('created_at', Carbon::today())->count();
-
-
-//        and revenue is slightly different
-//        TODO: Need to standardize transaction statuses
-        $transactions = Transaction::whereStatus(['completed', 'success'])->whereType('PAYMENT')->get();
-
-        $totalRevenue = $transactions->sum('amount');
-        $totalRevenueToday = $transactions->filter(fn($item) => $item->created_at->isToday())->sum('amount');
-
 //        Try and get only specific fields...
         $transactions = Transaction::whereType('PAYMENT')
             ->with([
@@ -79,23 +61,9 @@ class DashboardRepository
             ->whereStatus('pending')
             ->get();
 
-//        4th: Get current active users
-        $usersToday = UssdLog::whereDate('updated_at', Carbon::today())->distinct()->count('phone');
-
         return [
-            'totalAccountsToday' => $totalAccountsToday,
-            'totalAccounts'      => $totalAccounts,
-
-            'totalTransactionsToday' => $totalTransactionsToday,
-            'totalTransactions'      => $totalTransactions,
-
-            'totalRevenueToday' => $totalRevenueToday,
-            'totalRevenue'      => $totalRevenue,
-
             'recentTransactions'  => $transactions,
             'pendingTransactions' => $pendingTransactions,
-
-            'totalUsersToday' => $usersToday,
         ];
     }
 }

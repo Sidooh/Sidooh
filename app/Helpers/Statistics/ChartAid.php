@@ -8,44 +8,39 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class ChartAid
 {
-    private mixed $aggregateType;
-    /**
-     * @var mixed|null
-     */
-    private mixed $aggregateColumn;
     /**
      * @var mixed|string
      */
     private string $frequency;
     private Collection $models;
 
-    //  Aggregate Types - count, sum
-    public function __construct(Frequency $frequency, string $aggregateType = 'count', string $aggregateColumn = null) {
+    public function __construct(Frequency $frequency, private string $aggregateType = 'count', private ?string $aggregateColumn = null) {
         $this->frequency = $frequency->value;
-        $this->aggregateType = $aggregateType;
-        $this->aggregateColumn = $aggregateColumn;
     }
 
 
     /**
      * @param Collection $models
+     * @param null       $frequencyCount
      * @return array
      */
     #[ArrayShape(['labels' => "array", 'datasets' => "array"])]
-    public function chartDataSet(Collection $models): array {
+    public function chartDataSet(Collection $models, $frequencyCount = null): array {
         $this->models = $models;
 
-        $freqCount = match ($this->frequency) {
-            'yearly', 'daily' => 12,
-            'weekly' => 4,
-            'monthly' => 3,
-            default => 7
-        };
+        if(is_null($frequencyCount)) {
+            $frequencyCount = match ($this->frequency) {
+                'yearly', 'daily' => 12,
+                'weekly' => 4,
+                'monthly' => 3,
+                default => 7
+            };
+        }
 
-        $date = new Carbon;
+        $date = (new Carbon)->setTimezone('Africa/Nairobi');
 
         $data = collect();
-        for($i = 0; $i < $freqCount; $i++) {
+        for($i = 0; $i < $frequencyCount; $i++) {
             $dateString = self::chartDateFormat($date);
 
             $data[$dateString] = $this->aggregate($dateString);

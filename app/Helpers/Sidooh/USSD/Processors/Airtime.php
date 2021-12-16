@@ -103,6 +103,7 @@ class Airtime extends Product
             $this->vars['{$airtime_number}'] = $airtimeAccountOptions[$selectedAirtimeAccount];
 
             $this->vars['{$my_number}'] = $this->phone;
+            $this->vars['{$other_number}'] = $this->vars['{$airtime_number}'];
             $this->vars['{$number}'] = $this->vars['{$airtime_number}'];
         }
     }

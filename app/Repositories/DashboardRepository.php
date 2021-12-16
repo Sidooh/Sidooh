@@ -45,21 +45,7 @@ class DashboardRepository
             ->get();
 
 
-        $pendingTransactions = Transaction::whereType('PAYMENT')
-            ->with([
-                'account' => function($query) {
-                    return $query->select(['id', 'phone', 'user_id'])->with(['user:id,name']);
-                }
-            ])
-            ->with([
-                'payment' => function($query) {
-                    return $query->select(['payable_id', /*'payable_type',*/ 'status']);
-                }
-            ])
-            ->select(['id', 'description', 'account_id', 'amount', 'status', 'updated_at'])
-            ->latest()
-            ->whereStatus('pending')
-            ->get();
+        $pendingTransactions = $transactions->filter(fn ($transaction) => $transaction->status == 'pending');
 
         return [
             'recentTransactions'  => $transactions,

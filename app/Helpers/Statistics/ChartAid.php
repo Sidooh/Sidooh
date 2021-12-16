@@ -94,7 +94,7 @@ class ChartAid
         return match ($this->frequency) {
             'weekly' => Carbon::now()->setISODate(now()->year, $time),
             'yearly' => Carbon::createFromDate($time),
-            'daily' => Carbon::createFromTime($time),
+            'daily' => Carbon::createFromTime($time, tz: 'Africa/Nairobi'),
             default => Carbon::parse($time)
         };
     }

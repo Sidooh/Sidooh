@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace App\Charts;
 
+use App\Facades\LocalCarbon;
 use App\Helpers\Statistics\ChartAid;
 use App\Helpers\Statistics\Frequency;
 use App\Models\Transaction;
-use Carbon\Carbon;
 use Chartisan\PHP\Chartisan;
 use ConsoleTVs\Charts\BaseChart;
 use Illuminate\Http\Request;
@@ -21,6 +21,7 @@ class RevenueChart extends BaseChart
      * name will be used.
      */
     public ?string $routeName = 'revenue';
+    public string $timezone = 'Africa/Nairobi';
 
     /**
      * Handles the HTTP request for the given chart.
@@ -39,20 +40,20 @@ class RevenueChart extends BaseChart
         $chartAid = new ChartAid($frequency, 'sum', 'amount');
 
         $yesterday = Transaction::select(['created_at', 'amount'])->whereBetween('created_at', [
-            Carbon::yesterday()->startOfDay(),
-            Carbon::yesterday()->endOfDay()
+            LocalCarbon::yesterday()->startOfDay()->utc(),
+            LocalCarbon::yesterday()->endOfDay()->utc()
         ])->whereIn('status', $whereStatus)->get()->groupBy(function($item) use ($chartAid) {
             return $chartAid->chartDateFormat($item->created_at);
         });
 
         $today = Transaction::select(['created_at', 'amount'])->whereBetween('created_at', [
-            Carbon::today()->startOfDay(),
-            Carbon::today()->endOfDay()
+            LocalCarbon::today()->startOfDay()->utc(),
+            LocalCarbon::today()->endOfDay()->utc()
         ])->whereIn('status', $whereStatus)->get()->groupBy(function($item) use ($chartAid) {
             return $chartAid->chartDateFormat($item->created_at);
         });
 
-        $todayHrs = now()->diffInHours(now()->startOfDay());
+        $todayHrs = LocalCarbon::now()->diffInHours(LocalCarbon::now()->startOfDay());
         ['datasets' => $datasetsToday] = $chartAid->chartDataSet($today, $todayHrs + 1);
         $revenueYesterday = $chartAid->chartDataSet(
             $yesterday, $frequency->value === 'daily'

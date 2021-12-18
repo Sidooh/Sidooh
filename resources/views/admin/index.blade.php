@@ -516,66 +516,6 @@
                         borderWidth: 2,
                     }
                 ])
-            /*hooks: new ChartisanHooks()
-                .responsive()
-                .legend({display: false})
-                .beginAtZero()
-                .tooltip({
-                    mode: 'x-axis',
-                    xPadding: 20,
-                    yPadding: 10,
-                    displayColors: false,
-                    callbacks: {
-                        label: (tooltipItem, data) => {
-                            let dataset = data.datasets[tooltipItem.datasetIndex];
-                            let currentValue = dataset.data[tooltipItem.index];
-
-                            return new Intl.NumberFormat('en-GB', {
-                                style: 'currency',
-                                currency: 'KES'
-                            }).format(currentValue)
-                        }
-                    }
-                })
-                .datasets([{
-                    type: 'line',
-                    fill: true,
-                    backgroundColor: gradientColor([255, 255, 255]),
-                    borderColor: localStorage.getItem('theme') === 'dark' ? utils.getColors().primary : utils.settings.chart.borderColor,
-                    borderWidth: 2
-                }])
-                .options({
-                    options: {
-                        hover: {
-                            mode: 'label'
-                        },
-                        scales: {
-                            xAxes: [{
-                                scaleLabel: {
-                                    show: true,
-                                    labelString: 'Month'
-                                },
-                                ticks: {
-                                    fontColor: utils.rgbaColor('#fff', 0.7),
-                                    fontStyle: 600
-                                },
-                                gridLines: {
-                                    color: utils.rgbaColor('#fff', 0.1),
-                                    zeroLineColor: utils.rgbaColor('#fff', 0.1),
-                                    lineWidth: 1
-                                }
-                            }],
-                            yAxes: [{
-                                show: false,
-                                display: false,
-                                gridLines: {
-                                    display: false,
-                                    show: false
-                                }
-                            }]
-                        }
-                    }
-                })*/
         });
     </script>
 @endsection

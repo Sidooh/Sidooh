@@ -17,13 +17,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register() {
-        //
-//        TODO: What is this???
-        $this->app->bind('mpesa-api', function() {
-            return new Mpesa();
-        });
-    }
+    public function register() {}
 
     /**
      * Bootstrap any application services.

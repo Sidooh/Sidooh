@@ -127,10 +127,10 @@
     <ul class="navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
 
         {{--        TODO: Return notifications --}}
-        <li class="nav-item dropdown"><a class="nav-link pe-0" id="navbarDropdownUser" href="#" role="button"
-                                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <li class="nav-item dropdown">
+            <a class="nav-link pe-0" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="avatar avatar-xl">
-                    <img class="rounded-circle" src="{{ asset('images/team/3-thumb.png') }}" alt=""/>
+                    <img class="rounded-circle" src="{{ asset('images/team/2.jpg') }}" alt=""/>
                 </div>
             </a>
             <div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">

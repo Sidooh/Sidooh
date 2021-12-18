@@ -14,9 +14,12 @@ class ChartAid
      */
     private string $frequency;
     private Collection $models;
+    private CarbonImmutable $CARBON;
 
     public function __construct(Frequency $frequency, private string $aggregateType = 'count', private ?string $aggregateColumn = null) {
         $this->frequency = $frequency->value;
+
+        $this->CARBON = new CarbonImmutable(tz: 'Africa/Nairobi');
     }
 
 
@@ -93,9 +96,9 @@ class ChartAid
     public function parseCarbonDate($time): Carbon|CarbonImmutable {
         return match ($this->frequency) {
             'weekly' => Carbon::now()->setISODate(now()->year, $time),
-            'yearly' => Carbon::createFromDate($time),
+            'yearly' => Carbon::createFromDate($time, tz: 'Africa/Nairobi'),
             'daily' => Carbon::createFromTime($time, tz: 'Africa/Nairobi'),
-            default => Carbon::parse($time)
+            default => Carbon::parse($time, 'Africa/Nairobi')
         };
     }
 
@@ -150,22 +153,26 @@ class ChartAid
 
     /** chart   */
     public function chartDateFormat($date): string {
+        $carbonDate = Carbon::parse($date)->timezone('Africa/Nairobi');
+
         return match ($this->frequency) {
-            'yearly' => Carbon::parse($date)->format('Y'),
-            'monthly' => Carbon::parse($date)->format('Y-m'),
-            'weekly' => Carbon::parse($date)->format('W'),
-            'daily' => Carbon::parse($date)->format('H'),
-            default => Carbon::parse($date)->toDateString()
+            'yearly' => $carbonDate->format('Y'),
+            'monthly' => $carbonDate->format('Y-m'),
+            'weekly' => $carbonDate->format('W'),
+            'daily' => $carbonDate->format('H'),
+            default => $carbonDate->toDateString()
         };
     }
 
-    public function chartStartDate(): Carbon {
+    public function chartStartDate(): Carbon|CarbonImmutable {
+        $carbonDate = now('Africa/Nairobi');
+
         return match ($this->frequency) {
-            'yearly' => now()->subYear(),
-            'monthly' => now()->subMonths(3),
-            'weekly' => now()->subWeeks(4),
-            'daily' => now()->startOfDay(),
-            default => now()->subWeek()
+            'yearly' => $carbonDate->subYear(),
+            'monthly' => $carbonDate->subMonths(3),
+            'weekly' => $carbonDate->subWeeks(4),
+            'daily' => $carbonDate->startOfDay(),
+            default => $carbonDate->subWeek()
         };
     }
 }

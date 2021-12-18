@@ -8,7 +8,6 @@
 //use Domain\Products\States\Order\Rejected;
 //use Domain\Products\States\Order\Shipped;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Cache;
 
 //use Illuminate\Support\Facades\Http;
 
@@ -32,11 +31,9 @@ use Illuminate\Support\Facades\Cache;
 //    }
 //}
 
-if (!function_exists('format_cur')) {
-    function format_cur(float $value, int $decimals = 0, string $currency = 'KES')
-    {
-        if ($value < 1 & $decimals == 0)
-            $decimals = 1;
+if(!function_exists('format_cur')) {
+    function format_cur(float $value, int $decimals = 0, string $currency = 'KES') {
+        if($value < 1 & $decimals == 0) $decimals = 1;
 
         $fmt = numfmt_create('en', NumberFormatter::CURRENCY);
         $fmt->setAttribute(NumberFormatter::FRACTION_DIGITS, $decimals);
@@ -45,60 +42,23 @@ if (!function_exists('format_cur')) {
     }
 }
 
-if (!function_exists('local_date')) {
+if(!function_exists('local_date')) {
     /**
      * Format a date to the users local timezone with an optional format
-     * @param Carbon|string $date
-     * @param string $format
      *
-     * @return mixed
+     * @param string|Carbon $date
+     * @param string        $format
+     * @return string|null
      */
-    function local_date($date, string $format = 'n/j/Y')
-    {
-        if (!$date)
-            return null;
+    function local_date(Carbon|string $date, string $format = 'n/j/Y'): ?string {
+        if(!$date) return null;
 
-        if (!$date instanceof Carbon) {
+        if(!$date instanceof Carbon) {
             $date = new Carbon($date);
         }
 
-//        if (session('timezone')) {
         $date->setTimezone(session('timezone') ?? 'Africa/Nairobi');
-//        }
 
         return $date->format($format);
     }
 }
-
-
-//if (! function_exists('get_state')) {
-//    function get_state(string $status) {
-//        switch (strtoupper($status)) {
-//            case "ACCEPTED":
-//                return Accepted::class;
-//
-//            case "CANCELLED":
-//                return Cancelled::class;
-//
-//            case "DISPUTED":
-//                return Disputed::class;
-//
-//            case "REFUNDED":
-//                return Refunded::class;
-//
-//            case "REJECTED":
-//                return Rejected::class;
-//
-//            case "SHIPPED":
-//                return Shipped::class;
-//
-//            case "ORDERED":
-//                return [Ordered::class];
-//
-//            default:
-//                return [Ordered::class, Accepted::class, Cancelled::class, Disputed::class, Refunded::class, Rejected::class, Shipped::class];
-//        }
-//    }
-//}
-
-?>

@@ -42,7 +42,7 @@ Route::prefix('/admin')->name('admin.')->group(function() {
         'user-notifications' => UserNotificationController::class,
     ]);
 
-    Route::apiResources([
+    Route::resources([
         'users'                  => UserController::class,
         'accounts'               => AccountController::class,
         'transactions'           => TransactionController::class,

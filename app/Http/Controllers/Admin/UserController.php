@@ -19,8 +19,7 @@ class UserController extends Controller
      *
      * @param UserRepository $user
      */
-    public function __construct(UserRepository $user)
-    {
+    public function __construct(UserRepository $user) {
         $this->user = $user;
     }
 
@@ -29,22 +28,10 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|Response|\Illuminate\View\View
      */
-    public function index()
-    {
-        //
+    public function index() {
         $users = $this->user->latest()->get();
 
         return view('admin.crud.users.index', compact('users'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -53,9 +40,7 @@ class UserController extends Controller
      * @param AccountStoreRequest $request
      * @return AccountResource
      */
-    public function store(AccountStoreRequest $request)
-    {
-        //
+    public function store(AccountStoreRequest $request) {
         return new AccountResource($this->account->store($request));
     }
 
@@ -65,56 +50,8 @@ class UserController extends Controller
      * @param Account $account
      * @return AccountResource
      */
-    public function show(Account $account)
-    {
-//        //
-//        Log::info($account->parent);
-////        Log::info($account->parentAndSelf);
-//        $account['level_' . '1' . '_ancestors'] = $account->ancestors()->whereDepth('>=', -1)->get();
-//        Log::info($account->ancestors);
-////        Log::info($account->ancestorsAndSelf);
-//        Log::info($account->siblings);
-////        Log::info($account->siblingsAndSelf);
-//        Log::info($account->children);
-////        Log::info($account->childrenAndSelf);
-//        Log::info($account->descendants);
-////        Log::info($account->descendantsAndSelf);
-
+    public function show(Account $account): AccountResource {
         return new AccountResource($account);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Account $account
-     * @return Response
-     */
-    public function edit(Account $account)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param Account $account
-     * @return Response
-     */
-    public function update(Request $request, Account $account)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Account $account
-     * @return Response
-     */
-    public function destroy(Account $account)
-    {
-        //
     }
 
     /**
@@ -123,9 +60,7 @@ class UserController extends Controller
      * @param Account $account
      * @return AccountResource
      */
-    public function referrals(Account $account)
-    {
-        //
+    public function referrals(Account $account) {
         return new AccountResource($this->account->with(['pending_referrals', 'active_referrals'])->find($account->id));
     }
 
@@ -136,9 +71,7 @@ class UserController extends Controller
      * @param Account $account
      * @return AccountResource
      */
-    public function referrer(Request $request, Account $account)
-    {
-        //
+    public function referrer(Request $request, Account $account) {
 
         return new AccountResource($this->account->getReferrer($account, $request->query('level'), $request->query('subscribed')));
     }
@@ -149,9 +82,7 @@ class UserController extends Controller
      * @param Account $account
      * @return AccountResource
      */
-    public function subscriptions(Account $account)
-    {
-        //
+    public function subscriptions(Account $account) {
         return new AccountResource($this->account->with(['active_subscription'])->find($account->id));
     }
 
@@ -161,9 +92,7 @@ class UserController extends Controller
      * @param Account $account
      * @return AccountResource
      */
-    public function vouchers(Account $account)
-    {
-        //
+    public function vouchers(Account $account) {
         return new AccountResource($account->vouchers());
     }
 
@@ -173,9 +102,7 @@ class UserController extends Controller
      * @param Account $account
      * @return AccountResource
      */
-    public function earnings(Account $account)
-    {
-        //
+    public function earnings(Account $account) {
         return new AccountResource($this->account->earningsSummary($account->phone));
     }
 
@@ -185,23 +112,18 @@ class UserController extends Controller
      * @param Account $account
      * @return AccountResource
      */
-    public function earningsReport(Account $account)
-    {
-        //
-
+    public function earningsReport(Account $account) {
         return $this->account->earningsReport($account->phone);
         return new AccountResource($this->account->earningsReport($account->phone));
     }
 
-//    /**
-//     * Display the specified resource.
-//     *
-//     * @param Account $account
-//     * @return AccountResource
-//     */
-    public function subAccounts(Account $account)
-    {
-        //
+    /**
+     * Display the specified resource.
+     *
+     * @param Account $account
+     * @return AccountResource
+     */
+    public function subAccounts(Account $account): AccountResource {
         return new AccountResource($this->account->invest());
     }
 

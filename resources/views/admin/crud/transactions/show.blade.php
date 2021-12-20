@@ -39,15 +39,13 @@
                             </div>
                     </div>
 
-                    @if($transaction->payment->subtype == 'STK')
+                    @if(strtolower($transaction->status) === 'pending' && strtolower($transaction->payment->status) === 'complete')
                         <div class="dropdown font-sans-serif">
                             <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end"
-                                    type="button" id="dropdown0" data-bs-toggle="dropdown"
-                                    data-boundary="window"
+                                    type="button" id="dropdown0" data-bs-toggle="dropdown" data-boundary="window"
                                     aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span
                                     class="fas fa-ellipsis-h fs--1"></span></button>
-                            <div class="dropdown-menu dropdown-menu-end border py-2"
-                                 aria-labelledby="dropdown0">
+                            <div class="dropdown-menu dropdown-menu-end border py-2">
 
                                 <form method="POST"
                                       action="{{ route('admin.transactions.refund', $transaction) }}">

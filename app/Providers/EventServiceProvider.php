@@ -24,8 +24,12 @@ use App\Listeners\ReferralJoined;
 use App\Listeners\StkPaymentFailed;
 use App\Listeners\StkPaymentReceived;
 use App\Listeners\SubscriptionPurchaseSuccess;
+use App\Listeners\TandaRequestFailed;
+use App\Listeners\TandaRequestSuccess;
 use App\Listeners\TransactionSuccess;
 use App\Listeners\VoucherPurchaseSuccess;
+use DrH\Tanda\Events\TandaRequestFailedEvent;
+use DrH\Tanda\Events\TandaRequestSuccessEvent;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -50,14 +54,13 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         StkPushPaymentSuccessEvent::class => [
-            StkPaymentReceived::class,// your listening class
+            StkPaymentReceived::class,
         ],
 
         StkPushPaymentFailedEvent::class => [
-            StkPaymentFailed::class, //your listening classs
+            StkPaymentFailed::class,
         ],
 
-//        TODO: Change these 2 B2C events once Samerior update library
         B2CPaymentSuccessEvent::class => [
             B2CPaymentSent::class
         ],
@@ -109,6 +112,14 @@ class EventServiceProvider extends ServiceProvider
         KyandaTransactionFailedEvent::class => [
             KyandaTransactionFailed::class
         ],
+
+        TandaRequestSuccessEvent::class => [
+            TandaRequestSuccess::class
+        ],
+
+        TandaRequestFailedEvent::class => [
+            TandaRequestFailed::class
+        ]
     ];
 
     /**

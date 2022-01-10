@@ -11,9 +11,10 @@ use App\Events\SubscriptionPurchaseEvent;
 use App\Events\SubscriptionPurchaseFailedEvent;
 use App\Events\VoucherPurchaseEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Helpers\Kyanda\KyandaApi;
+use App\Helpers\Tanda\TandaApi;
 use App\Models\AirtimeRequest;
 use App\Models\AirtimeResponse;
-use App\Models\Earning;
 use App\Models\Merchant;
 use App\Models\Product;
 use App\Models\Subscription;
@@ -51,51 +52,88 @@ class ProductRepository
         return $prod;
     }
 
-    public function airtime(Transaction $transaction, array $array): AirtimeRequest
+    /**
+     * @throws \Exception
+     */
+    public function utility(Transaction $transaction, array $billDetails, string $provider): void
+    {
+        switch (config('services.sidooh.utilities_provider')) {
+            case 'KYANDA':
+                KyandaApi::bill($transaction, $billDetails, $provider);
+                break;
+
+            case 'TANDA':
+                TandaApi::bill($transaction, $billDetails, $provider);
+                break;
+
+            default:
+                throw new \Exception('No provider provided for utility purchase');
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function airtime(Transaction $transaction, array $airtimeData): void
     {
         if ($transaction->airtime)
             exit;
 
-        $response = (new AfricasTalkingApi())->airtime($array['phone'], $array['amount']);
 
-        $response = $this->object_to_array($response);
+        switch (config('services.sidooh.utilities_provider')) {
+            case 'AT':
+                $response = (new AfricasTalkingApi())->airtime($airtimeData['phone'], $airtimeData['amount']);
 
-        $req = AirtimeRequest::create($response['data']);
+                $response = $this->object_to_array($response);
 
-        $req->transaction()->associate($transaction);
+                $req = AirtimeRequest::create($response['data']);
 
-        DB::transaction(function () use ($req, $response) {
-            $req->save();
+                $req->transaction()->associate($transaction);
 
-            $req->responses()->createMany($response['data']['responses']);
+                DB::transaction(function () use ($req, $response) {
+                    $req->save();
 
-        });
+                    $req->responses()->createMany($response['data']['responses']);
 
-        if ($response['data']['errorMessage'] != "None") {
-//            TODO: Modify event to accept request instead of response
-//            event(new AirtimePurchaseFailedEvent($response));
+                });
 
-//            TODO: Once above is modified, the following code won't be needed.
-            $account = $req->transaction->account;
-            $amount = $req->transaction->amount;
-            $phone = $account->phone;
-            $date = $req->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
+                if ($response['data']['errorMessage'] != "None") {
+                    //            TODO: Modify event to accept request instead of response
+                    //            event(new AirtimePurchaseFailedEvent($response));
 
-//            TODO: Can we add a counter to try 3 times before accepting it as failed?
-            $voucher = $account->voucher;
-            $voucher->in += $amount;
-            $voucher->save();
+                    //            TODO: Once above is modified, the following code won't be needed.
+                    $account = $req->transaction->account;
+                    $amount = $req->transaction->amount;
+                    $phone = $account->phone;
+                    $date = $req->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
 
-            $transaction->status = 'reimbursed';
-            $transaction->save();
+                    //            TODO: Can we add a counter to try 3 times before accepting it as failed?
+                    $voucher = $account->voucher;
+                    $voucher->in += $amount;
+                    $voucher->save();
 
-//        TODO:: Send sms notification
-            $message = "Sorry! We could not complete your airtime purchase for {$phone} worth {$amount} on {$date}. We have credited your voucher {$amount} and your balance is now {$voucher->balance}.";
+                    $transaction->status = 'reimbursed';
+                    $transaction->save();
 
-            (new AfricasTalkingApi())->sms($phone, $message);
+                    //        TODO:: Send sms notification
+                    $message = "Sorry! We could not complete your airtime purchase for {$phone} worth {$amount} on {$date}. We have credited your voucher {$amount} and your balance is now {$voucher->balance}.";
+
+                    (new AfricasTalkingApi())->sms($phone, $message);
+                }
+
+                break;
+
+            case 'KYANDA':
+                KyandaApi::airtime($transaction, $airtimeData);
+                break;
+
+            case 'TANDA':
+                TandaApi::airtime($transaction, $airtimeData);
+                break;
+
+            default:
+                throw new \Exception('No provider provided for airtime purchase');
         }
-
-        return $req;
 
     }
 

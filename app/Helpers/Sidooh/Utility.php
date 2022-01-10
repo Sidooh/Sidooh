@@ -200,7 +200,8 @@ class Utility
             'amount' => $this->amount
         ];
 
-        KyandaApi::bill($transaction, $bill, $this->option, 700000000);
+        (new ProductRepository())->utility($transaction, $bill, $this->option);
+
     }
 
 }

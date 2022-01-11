@@ -973,16 +973,16 @@
         },
         {
             "name": "drh/laravel-tanda",
-            "version": "v1.1.0",
+            "version": "v1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DrH97/laravel-tanda.git",
-                "reference": "d9f7b89f350cf615113369d022af139306328ad9"
+                "reference": "2c56bf87268892948d2cd7213d2e48a96b735bd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DrH97/laravel-tanda/zipball/d9f7b89f350cf615113369d022af139306328ad9",
-                "reference": "d9f7b89f350cf615113369d022af139306328ad9",
+                "url": "https://api.github.com/repos/DrH97/laravel-tanda/zipball/2c56bf87268892948d2cd7213d2e48a96b735bd5",
+                "reference": "2c56bf87268892948d2cd7213d2e48a96b735bd5",
                 "shasum": ""
             },
             "require": {
@@ -1031,9 +1031,9 @@
             ],
             "support": {
                 "issues": "https://github.com/DrH97/laravel-tanda/issues",
-                "source": "https://github.com/DrH97/laravel-tanda/tree/v1.1.0"
+                "source": "https://github.com/DrH97/laravel-tanda/tree/v1.1.2"
             },
-            "time": "2022-01-10T14:48:19+00:00"
+            "time": "2022-01-11T14:02:24+00:00"
         },
         {
             "name": "drh/mpesa",

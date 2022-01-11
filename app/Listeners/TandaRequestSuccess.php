@@ -124,9 +124,9 @@ class TandaRequestSuccess
                 event(new TransactionSuccessEvent($transaction, $totalEarnings));
 
 //                Send SMS
-                $details = (object)$event->request->result;
+                $details = $event->request->result;
                 $message = "You have made a payment to {$provider} - {$destination} of {$amount} from your Sidooh account on {$date} using $method. You have received {$userEarnings} cashback.$vtext";
-                $message .= "\nTokens: {$details->tokens}\nUnits: {$details->units}";
+                $message .= "\nTokens: {$details[0]['value']}\nUnits: {$details[1]['value']}";
 
                 NotificationRepository::sendSMS([$sender], $message);
 

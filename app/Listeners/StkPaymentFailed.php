@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Models\Payment;
+use App\Repositories\NotificationRepository;
 use Illuminate\Support\Facades\Log;
 use DrH\Mpesa\Events\StkPushPaymentFailedEvent;
 
@@ -48,6 +49,7 @@ class StkPaymentFailed
 //        TODO: Can we inform the user of the actual issue?
         $message = "Sorry! We failed to complete your transaction. No amount was deducted from your account. We apologize for the inconvenience. Please try again.";
 
-        (new AfricasTalkingApi())->sms($stk->request->phone, $message);
+        NotificationRepository::sendSMS([$stk->request->phone], $message);
+
     }
 }

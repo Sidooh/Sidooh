@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\AirtimePurchaseFailedEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Repositories\NotificationRepository;
 use Illuminate\Support\Facades\Log;
 
 class AirtimePurchaseFailed
@@ -57,7 +58,7 @@ class AirtimePurchaseFailed
 //        TODO:: Send sms notification
         $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$phone} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
 
-        (new AfricasTalkingApi())->sms($phone, $message);
+        NotificationRepository::sendSMS([$phone], $message);
 
     }
 }

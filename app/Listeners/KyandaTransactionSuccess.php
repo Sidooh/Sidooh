@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\TransactionSuccessEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Models\Transaction;
+use App\Repositories\NotificationRepository;
 use App\Repositories\TransactionRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -87,16 +88,17 @@ class KyandaTransactionSuccess
                 if ($phone != $sender) {
                     $message = "You have purchased {$amount} airtime for {$phone} from your Sidooh account on {$date} using $method. You have received {$userEarnings} cashback.$vtext";
 
-                    (new AfricasTalkingApi())->sms($sender, $message);
+                    NotificationRepository::sendSMS([$sender], $message);
+
 
                     $message = "Congratulations! You have received {$amount} airtime from Sidooh account {$sender} on {$date}. Sidooh Makes You Money with Every Purchase.\n\nDial $code NOW for FREE on your Safaricom line to BUY AIRTIME & START EARNING from your purchases.";
 
-                    (new AfricasTalkingApi())->sms($phone, $message);
+                    NotificationRepository::sendSMS([$phone], $message);
                 } else {
 
                     $message = "You have purchased {$amount} airtime from your Sidooh account on {$date} using $method. You have received {$userEarnings} cashback.$vtext";
 
-                    (new AfricasTalkingApi())->sms($phone, $message);
+                    NotificationRepository::sendSMS([$phone], $message);
                 }
 
                 break;
@@ -112,7 +114,7 @@ class KyandaTransactionSuccess
 //                Send SMS
                 $message = "You have made a payment to {$provider} - {$destination} of {$amount} from your Sidooh account on {$date} using $method. You have received {$userEarnings} cashback.$vtext";
 
-                (new AfricasTalkingApi())->sms($sender, $message);
+                NotificationRepository::sendSMS([$sender], $message);
 
                 break;
 
@@ -130,7 +132,7 @@ class KyandaTransactionSuccess
                 $message = "You have made a payment to {$provider} - {$destination} of {$amount} from your Sidooh account on {$date} using $method. You have received {$userEarnings} cashback.$vtext";
                 $message .= "\nTokens: {$details->tokens}\nUnits: {$details->units}";
 
-                (new AfricasTalkingApi())->sms($sender, $message);
+                NotificationRepository::sendSMS([$sender], $message);
 
                 break;
 
@@ -148,7 +150,7 @@ class KyandaTransactionSuccess
 //                Send SMS
                 $message = "You have made a payment to {$provider} - {$destination} of {$amount} from your Sidooh account on {$date} using $method. You have received {$userEarnings} cashback.$vtext";
 
-                (new AfricasTalkingApi())->sms($sender, $message);
+            NotificationRepository::sendSMS([$sender], $message);
 
                 break;
 
@@ -163,7 +165,7 @@ class KyandaTransactionSuccess
 //                Send SMS
                 $message = "You have made a payment to {$provider} - {$destination} of {$amount} from your Sidooh account on {$date} using $method. You have received {$userEarnings} cashback.$vtext";
 
-                (new AfricasTalkingApi())->sms($sender, $message);
+                NotificationRepository::sendSMS([$sender], $message);
 
                 break;
 
@@ -178,7 +180,7 @@ class KyandaTransactionSuccess
 //                Send SMS
                 $message = "You have purchased {$amount} bundles from your Sidooh account on {$date} using $method. You have received {$userEarnings} cashback.$vtext";
 
-                (new AfricasTalkingApi())->sms($sender, $message);
+                NotificationRepository::sendSMS([$sender], $message);
 
                 break;
 

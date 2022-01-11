@@ -3,6 +3,7 @@
 namespace App\Helpers\SidoohNotify;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class SidoohNotify
 {
@@ -11,7 +12,7 @@ class SidoohNotify
     {
         $url = config('services.sidooh.services.notify.url');
 
-        Http::retry(3)->post(
+        $response = Http::retry(3)->post(
             $url,
             [
                 "channel" => "sms",
@@ -19,6 +20,11 @@ class SidoohNotify
                 "content" => $message
             ]
         );
+
+        Log::info('----------------- Sidooh SMS Notification sent', [
+            'id' => $response->json()['_id']
+        ]);
+
     }
 
 }

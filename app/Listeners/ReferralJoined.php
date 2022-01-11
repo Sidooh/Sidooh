@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\ReferralJoinedEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Repositories\NotificationRepository;
 
 class ReferralJoined
 {
@@ -34,6 +35,6 @@ class ReferralJoined
         $message .= "Show them how to buy airtime from Sidooh so as to unlock your earnings. ";
         $message .= "The more friends you invite to Sidooh, the more you earn.";
 
-        (new AfricasTalkingApi())->sms($accPhone, $message);
+        NotificationRepository::sendSMS([$accPhone], $message);
     }
 }

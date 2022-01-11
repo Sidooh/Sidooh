@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\B2CPaymentFailedEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Models\Payment;
+use App\Repositories\NotificationRepository;
 use Illuminate\Support\Facades\Log;
 
 class B2CPaymentFailed
@@ -33,13 +34,12 @@ class B2CPaymentFailed
 
         Log::info('----------------- B2C Payment Failed (' . $b2c->ResultDesc . ')');
 
-
         $payment = Payment::wherePaymentId($event->bulkPaymentResponse->request->id)->whereSubtype('B2C')->firstOrFail();
         $transaction = $payment->payable;
         $account = $transaction->account;
 
         $message = "Sorry! We failed to complete your withdrawal transaction. No amount was deducted from your account. We apologize for the inconvenience. Please try again.";
 
-        (new AfricasTalkingApi())->sms($account->phone, $message);
+        NotificationRepository::sendSMS([$account->phone], $message);
     }
 }

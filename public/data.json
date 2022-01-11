@@ -245,7 +245,7 @@
         "next": "merchant_payment_method",
         "options": {
             "1": {
-                "title": "Voucher (${voucher_balance})",
+                "title": "Voucher ({$voucher_balance})",
                 "type": "int",
                 "value": "1",
                 "next": "merchant_payment_confirmation"
@@ -985,7 +985,7 @@
                 "next": "payment_confirmation"
             },
             "2": {
-                "title": "VOUCHER",
+                "title": "VOUCHER ({$voucher_balance})",
                 "type": "int",
                 "value": "2",
                 "next": "payment_pin_confirmation"

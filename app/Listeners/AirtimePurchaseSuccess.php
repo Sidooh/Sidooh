@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\AirtimePurchaseSuccessEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Repositories\NotificationRepository;
 use App\Repositories\TransactionRepository;
 use Illuminate\Support\Facades\Log;
 
@@ -57,16 +58,16 @@ class AirtimePurchaseSuccess
         if ($phone != $sender) {
             $message = "You have purchased {$amount} airtime for {$phone} from your Sidooh account on {$date} using $method. You have received {$points_earned} cashback.$vtext";
 
-            (new AfricasTalkingApi())->sms($sender, $message);
+            NotificationRepository::sendSMS([$sender], $message);
 
             $message = "Congratulations! You have received {$amount} airtime from Sidooh account {$sender} on {$date}. Sidooh Makes You Money with Every Purchase.\n\nDial $code NOW for FREE on your Safaricom line to BUY AIRTIME & START EARNING from your purchases.";
 
-            (new AfricasTalkingApi())->sms($phone, $message);
+            NotificationRepository::sendSMS([$phone], $message);
         } else {
 
             $message = "You have purchased {$amount} airtime from your Sidooh account on {$date} using $method. You have received {$points_earned} cashback.$vtext";
 
-            (new AfricasTalkingApi())->sms($phone, $message);
+            NotificationRepository::sendSMS([$phone], $message);
         }
 
     }

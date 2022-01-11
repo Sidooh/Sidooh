@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Models\Transaction;
+use App\Repositories\NotificationRepository;
 use App\Repositories\TransactionRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -62,8 +63,8 @@ class KyandaTransactionFailed
             case Providers::TELKOM:
             case Providers::EQUITEL:
 
-                $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
-                (new AfricasTalkingApi())->sms($sender, $message);
+            $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+            NotificationRepository::sendSMS([$sender], $message);
 
                 break;
 
@@ -102,10 +103,11 @@ class KyandaTransactionFailed
             case Providers::FAIBA_B:
 
 
-                $message = "Sorry! We could not complete your payment to {$provider} of KES{$amount} for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
-                (new AfricasTalkingApi())->sms($sender, $message);
+            $message = "Sorry! We could not complete your payment to {$provider} of KES{$amount} for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
 
-                break;
+            NotificationRepository::sendSMS([$sender], $message);
+
+            break;
 
         }
 

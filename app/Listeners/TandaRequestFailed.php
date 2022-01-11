@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Helpers\SidoohNotify\SidoohNotify;
 use App\Models\Transaction;
+use App\Repositories\NotificationRepository;
 use App\Repositories\TransactionRepository;
 use DrH\Tanda\Events\TandaRequestFailedEvent;
 use DrH\Tanda\Library\Providers;
@@ -33,9 +34,10 @@ class TandaRequestFailed
     public function handle(TandaRequestFailedEvent $event)
     {
         //
-        Log::info('----------------- Tanda Request Failed ');
-        Log::error($event->request);
-
+        Log::info('----------------- Tanda Request Failed ', [
+            'id' => $event->request->id,
+            'message' => $event->request->message
+        ]);
 
         //                Update Transaction
         $transaction = Transaction::find($event->request->relation_id);
@@ -64,11 +66,7 @@ class TandaRequestFailed
 
                 $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
 
-                if (config('services.sidooh.services.notify.enabled', false)) {
-                    SidoohNotify::sendSMSNotification([$sender], $message);
-                } else {
-                    (new AfricasTalkingApi())->sms($sender, $message);
-                }
+            NotificationRepository::sendSMS([$sender], $message);
 
                 break;
 
@@ -99,8 +97,8 @@ class TandaRequestFailed
 
             case Providers::NAIROBI_WTR:
 
-                $message = "Sorry! We could not complete your payment to {$provider} of KES{$amount} for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
-                (new AfricasTalkingApi())->sms($sender, $message);
+            $message = "Sorry! We could not complete your payment to {$provider} of KES{$amount} for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+            NotificationRepository::sendSMS([$sender], $message);
 //
 //                break;
 

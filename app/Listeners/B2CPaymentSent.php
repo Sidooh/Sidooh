@@ -6,6 +6,7 @@ use App\Events\B2CPaymentSuccessEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Models\Earning;
 use App\Models\Payment;
+use App\Repositories\NotificationRepository;
 use App\Repositories\TransactionRepository;
 use Illuminate\Support\Facades\Log;
 
@@ -79,15 +80,15 @@ class B2CPaymentSent
         if (count($other_phone) > 1) {
             $message = "You have redeemed KES{$amount} for $method {$other_phone[1]} from your Sidooh account on {$date}. Your current account balance is $cbal.";
 
-            (new AfricasTalkingApi())->sms($account->phone, $message);
+            NotificationRepository::sendSMS([$account->phone], $message);
 
             $message = "Congratulations! You have received $method KES{$amount} from Sidooh account {$account->phone} on {$date}. Sidooh Makes You Money with Every Purchase.\n\nDial $code NOW for FREE on your Safaricom line to BUY AIRTIME & START EARNING from your purchases.";
 
-            (new AfricasTalkingApi())->sms($other_phone[1], $message);
+            NotificationRepository::sendSMS([$other_phone[1]], $message);
         } else {
             $message = "You have redeemed KES{$amount} from your Sidooh account on {$date} to $method. Your current account balance is $cbal.";
 
-            (new AfricasTalkingApi())->sms($account->phone, $message);
+            NotificationRepository::sendSMS([$account->phone], $message);
         }
 
 

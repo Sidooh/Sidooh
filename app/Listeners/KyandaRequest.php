@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Models\Transaction;
 use App\Repositories\AccountRepository;
+use App\Repositories\NotificationRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
@@ -48,7 +49,9 @@ class KyandaRequest
 
         if (!in_array($event->request->status_code, ['0000', '1100'])) {
             try {
-                (new AfricasTalkingApi())->sms(['254714611696', '254711414987'], "KY_ERR:{$event->request->provider}\n{$event->request->message}\n{$transaction->account->phone} - $date");
+                $message = "KY_ERR:{$event->request->provider}\n{$event->request->message}\n{$transaction->account->phone} - $date";
+
+                NotificationRepository::sendSMS(['254714611696', '254711414987'], $message);
                 Log::info("Kyanda Failure SMS Sent");
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
@@ -82,6 +85,8 @@ class KyandaRequest
             }
 
             (new AfricasTalkingApi())->sms($phone, $message);
+            NotificationRepository::sendSMS([$phone], $message);
+
 
         }
 
@@ -98,7 +103,6 @@ class KyandaRequest
                 break;
 
             default:
-
 
                 (new AccountRepository())->syncUtilityAccounts($account, $event->request->provider, $number);
 

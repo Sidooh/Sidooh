@@ -82,7 +82,6 @@ class USSD
             $acc = \App\Models\Account::wherePhone(ltrim($this->user->phone, '+'))->first();
             if ($acc->user) {
                 $vars['{$name}'] = ' ' . explode(' ', $acc->user->name)[0];
-
             } else {
                 $vars['{$name}'] = '';
             }
@@ -90,6 +89,13 @@ class USSD
             $this->setScreen($this->screens['main_menu'], false);
 
             $this->screen->title = strtr($this->screen->title, $vars);
+
+            if ($acc) {
+                $voucherBalance = 'KSh' . number_format($acc->voucher->balance);
+                $this->product->addVars('{$voucher_balance}', $voucherBalance);
+            } else {
+                $this->product->addVars('{$voucher_balance}', 0);
+            }
 
         }
 

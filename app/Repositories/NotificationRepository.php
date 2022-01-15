@@ -7,12 +7,12 @@ use App\Helpers\SidoohNotify\SidoohNotify;
 
 class NotificationRepository
 {
-    public static function sendSMS(array $to, string $message)
+    public static function sendSMS(array $to, string $message): array
     {
         if (config('services.sidooh.services.notify.enabled', false)) {
-            SidoohNotify::sendSMSNotification($to, $message);
+            return SidoohNotify::sendSMSNotification($to, $message);
         } else {
-            (new AfricasTalkingApi())->sms($to, $message);
+            return (new AfricasTalkingApi())->sms($to, $message);
         }
     }
 }

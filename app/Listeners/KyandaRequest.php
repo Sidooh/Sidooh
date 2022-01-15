@@ -2,17 +2,13 @@
 
 namespace App\Listeners;
 
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Models\Transaction;
 use App\Repositories\AccountRepository;
 use App\Repositories\NotificationRepository;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 use Nabcellent\Kyanda\Events\KyandaRequestEvent;
 use Nabcellent\Kyanda\Events\KyandaTransactionSuccessEvent;
 use Nabcellent\Kyanda\Library\Providers;
-use Propaganistas\LaravelPhone\PhoneNumber;
 
 class KyandaRequest
 {
@@ -84,9 +80,7 @@ class KyandaRequest
 
             }
 
-            (new AfricasTalkingApi())->sms($phone, $message);
             NotificationRepository::sendSMS([$phone], $message);
-
 
         }
 

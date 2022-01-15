@@ -78,12 +78,14 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
 //    TODO: Remove this and reset back once Samerior update library
     Route::post('/payments/callbacks/result/{section?}', 'UssdController@b2cResult');
 
-    Route::post('settings/provider/{provider}', 'UssdController@setProvider');
-    Route::get('settings/provider', 'UssdController@getProvider');
+    Route::post('settings/provider/utilities/{provider}', 'UssdController@setUtilitiesProvider');
+    Route::get('settings/provider/utilities', 'UssdController@getUtilitiesProvider');
 
     Route::get('settings/redis', 'UssdController@getRedisStatus');
     Route::post('settings/utilities', 'UssdController@enableUtilities');
     Route::get('settings/utilities', 'UssdController@getUtilitiesStatus');
+    Route::post('settings/sms', 'UssdController@enableSmsProvider');
+    Route::get('settings/sms', 'UssdController@getSmsProviderStatus');
 
 
     Route::get('payments/mpesa/status/query', 'TransactionController@queryMpesaStatus')->name('payments.mpesa.status.query');

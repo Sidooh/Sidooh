@@ -4,11 +4,11 @@
 namespace App\Helpers\Sidooh;
 
 
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Models\Account;
 use App\Models\Payment;
 use App\Models\Transaction;
 use App\Repositories\AccountRepository;
+use App\Repositories\NotificationRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\TransactionRepository;
 use Carbon\Carbon;
@@ -224,7 +224,7 @@ class Report
 
     private function send($msg)
     {
-        return (new AfricasTalkingApi())->sms($this->phone, $msg);
+        NotificationRepository::sendSMS([$this->phone], $msg);
     }
 
     public function generateJson()

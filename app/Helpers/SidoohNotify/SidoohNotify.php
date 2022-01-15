@@ -8,8 +8,13 @@ use Illuminate\Support\Facades\Log;
 class SidoohNotify
 {
 
-    public static function sendSMSNotification(array $to, string $message): void
+    public static function sendSMSNotification(array $to, string $message): array
     {
+        Log::info('----------------- Sidooh SMS Notification', [
+            'to' => $to,
+            'message' => $message
+        ]);
+
         $url = config('services.sidooh.services.notify.url');
 
         $response = Http::retry(3)->post(
@@ -24,6 +29,8 @@ class SidoohNotify
         Log::info('----------------- Sidooh SMS Notification sent', [
             'id' => $response->json()['_id']
         ]);
+
+        return $response->json();
 
     }
 

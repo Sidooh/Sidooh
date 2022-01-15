@@ -3,7 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\AirtimePurchaseFailedEvent;
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Repositories\NotificationRepository;
 use Illuminate\Support\Facades\Log;
 
@@ -33,7 +32,7 @@ class AirtimePurchaseFailed
         Log::info($event->airtime_response);
 //        Adding failed airtime alert
         try {
-            (new AfricasTalkingApi())->sms(['254714611696', '254711414987', '254721309253'], "ERROR:AIRTIME\n{$event->airtime_response->phoneNumber}");
+            NotificationRepository::sendSMS(['254714611696', '254711414987', '254721309253'], "ERROR:AIRTIME\n{$event->airtime_response->phoneNumber}");
             Log::info("Airtime Failure SMS Sent");
         } catch (\Exception $e) {
             Log::error($e->getMessage());

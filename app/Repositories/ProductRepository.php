@@ -118,7 +118,7 @@ class ProductRepository
                     //        TODO:: Send sms notification
                     $message = "Sorry! We could not complete your airtime purchase for {$phone} worth {$amount} on {$date}. We have credited your voucher {$amount} and your balance is now {$voucher->balance}.";
 
-                    (new AfricasTalkingApi())->sms($phone, $message);
+                    NotificationRepository::sendSMS([$phone], $message);
                 }
 
                 break;

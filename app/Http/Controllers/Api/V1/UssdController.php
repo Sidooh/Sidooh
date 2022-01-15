@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Http\Controllers\Controller;
+use App\Repositories\NotificationRepository;
 use App\Repositories\UssdRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redis;
 
 class UssdController extends Controller
 {
@@ -58,13 +58,11 @@ class UssdController extends Controller
     /**
      * Test sending of sms
      *
-     * @return string
+     * @return array
      */
     public function sms()
     {
-
-        return (new AfricasTalkingApi())->sms(request()->recipients, request()->message);
-
+        return NotificationRepository::sendSMS(request()->recipients, request()->message);
     }
 
     /**
@@ -133,28 +131,28 @@ class UssdController extends Controller
         );
     }
 
-    public function setProvider(string $provider, Request $request): array
+    public function setUtilitiesProvider(string $provider, Request $request): array
     {
         $array = Config::get('services');
 
-        $array['sidooh']['provider'] = $provider;
+        $array['sidooh']['utilities_provider'] = strtoupper($provider);
 
         $data = var_export($array, 1);
         if (File::put(config_path() . '/services.php', "<?php\n return $data ;")) {
             // Successful, return Redirect...
 
             return [
-                "provider" => config('services.sidooh.provider')
+                "provider" => config('services.sidooh.utilities_provider')
             ];
         }
 
         return ['error' => 'Could not update file'];
     }
 
-    public function getProvider(Request $request): array
+    public function getUtilitiesProvider(Request $request): array
     {
         return [
-            "provider" => config('services.sidooh.provider')
+            "provider" => config('services.sidooh.utilities_provider')
         ];
 
     }
@@ -186,12 +184,31 @@ class UssdController extends Controller
         ];
     }
 
-    public function getRedisStatus(Request $request)
+    public function enableSmsProvider(Request $request): array
     {
-        Redis::set("TEST", $request);
+        $currentConfig = config('services.sidooh.services.notify.enabled');
 
+        $array = Config::get('services');
+
+        $array['sidooh']['services']['notify']['enabled'] = !$currentConfig;
+
+        $data = var_export($array, 1);
+        if (File::put(app_path() . '/../config/services.php', "<?php\n return $data ;")) {
+            // Successful, return Redirect...
+
+            return [
+                "notify.enabled" => config('services.sidooh.services.notify.enabled')
+            ];
+        }
+
+        return ['error' => 'Could not update file'];
+    }
+
+    public function getSmsProviderStatus(Request $request): array
+    {
         return [
-            "TEST" => Redis::get("TEST")
+            "notify.enabled" => config('services.sidooh.services.notify.enabled')
         ];
+
     }
 }

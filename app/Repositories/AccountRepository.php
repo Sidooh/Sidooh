@@ -4,7 +4,6 @@
 namespace App\Repositories;
 
 use App\Events\ReferralJoinedEvent;
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Helpers\Sidooh\Report;
 use App\Models\Account;
 use App\Models\CollectiveInvestment;
@@ -316,7 +315,7 @@ class AccountRepository extends Model
         }
 
         try {
-            (new AfricasTalkingApi())->sms(['254711414987', '254721309253'], "STATUS:INVESTMENT\nCalculating Interest.");
+            NotificationRepository::sendSMS(['254711414987', '254721309253'], "STATUS:INVESTMENT\nCalculating Interest.");
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
@@ -409,7 +408,7 @@ class AccountRepository extends Model
             Log::info('Sending sms.');
 
             try {
-                (new AfricasTalkingApi())->sms(['254714611696', '254711414987'], "STATUS:INVESTMENT\nAllocating Interest. $counter accounts updated.");
+                NotificationRepository::sendSMS(['254714611696', '254711414987'], "STATUS:INVESTMENT\nAllocating Interest. $counter accounts updated.");
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
             }

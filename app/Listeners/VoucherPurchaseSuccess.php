@@ -3,7 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\VoucherPurchaseEvent;
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Repositories\NotificationRepository;
 use Illuminate\Support\Facades\Log;
 
@@ -44,7 +43,6 @@ class VoucherPurchaseSuccess
         $message .= "worth Ksh{$amount} on {$date}.\n\n";
         $message .= config('services.sidooh.tagline');
 
-        (new AfricasTalkingApi())->sms($phone, $message);
         NotificationRepository::sendSMS([$phone], $message);
 
     }

@@ -3,12 +3,12 @@
 namespace App\Helpers\Sidooh\USSD\Processors;
 
 
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Helpers\Sidooh\USSD\Entities\Option;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
 use App\Models\User;
 use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
+use App\Repositories\NotificationRepository;
 use App\Repositories\ReferralRepository;
 use Illuminate\Support\Facades\Hash;
 
@@ -280,6 +280,6 @@ class Referral extends Product
         $message .= "out of which 80% is then automatically saved and invested to generate extra income for you. ";
         $message .= "Dial $code NOW for FREE on your Safaricom line to buy airtime & start earning from your purchases.";
 
-        (new AfricasTalkingApi())->sms($phone, $message);
+        NotificationRepository::sendSMS([$phone], $message);
     }
 }

@@ -4,7 +4,6 @@
 namespace App\Repositories;
 
 
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Models\Account;
 use App\Models\CollectiveInvestment;
 use Illuminate\Database\Eloquent\Model;
@@ -129,7 +128,7 @@ class InvestmentRepository extends Model
             }
 
             try {
-                (new AfricasTalkingApi())->sms(['254714611696', '254711414987', '254721309253'], "STATUS:INVESTMENT\nAllocating Interest.");
+                NotificationRepository::sendSMS(['254714611696', '254711414987', '254721309253'], "STATUS:INVESTMENT\nAllocating Interest.");
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
             }

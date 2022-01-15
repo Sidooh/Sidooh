@@ -56,7 +56,7 @@ return array(
                         ),
                 ),
             'utilities_enabled' => true,
-            'utilities_provider' => 'TANDA',
+            'utilities_provider' => 'KYANDA',
             'services' =>
                 array(
                     'notify' =>

@@ -135,12 +135,12 @@ class USSD
 //        $jsonData = json_encode($decodedData[1]);
         $this->setProduct($decodedData->ussd_product);
 
-        $jsonData = json_encode($decodedData->screen_path);
+//        $jsonData = json_encode($decodedData->screen_path);
 
         $jsonDecoder = new JsonDecoder();
         $jsonDecoder->register(new ScreenTransformer());
 
-        return $jsonDecoder->decode($jsonData, Screen::class);
+        return $jsonDecoder->decode($decodedData->screen_path, Screen::class);
     }
 
     private function setProduct($value)
@@ -204,14 +204,14 @@ class USSD
     private function saveState()
     {
         error_log("saveState");
-//        $contents = json_encode([$this->getProduct(true), $this->screen]);
+        $contents = json_encode($this->screen);
 //        Storage::put($this->sessionId . '_state.txt', $contents);
 
         UssdState::updateOrCreate(
             ["session" => $this->sessionId],
             [
                 "ussd_product" => $this->getProduct(true),
-                "screen_path" => $this->screen
+                "screen_path" => $contents
             ]);
 
 //        try {

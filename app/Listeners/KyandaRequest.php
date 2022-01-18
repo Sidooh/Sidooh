@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Helpers\SidoohNotify\EventTypes;
 use App\Models\Transaction;
 use App\Repositories\AccountRepository;
 use App\Repositories\NotificationRepository;
@@ -47,7 +48,7 @@ class KyandaRequest
             try {
                 $message = "KY_ERR:{$event->request->provider}\n{$event->request->message}\n{$transaction->account->phone} - $date";
 
-                NotificationRepository::sendSMS(['254714611696', '254711414987'], $message);
+                NotificationRepository::sendSMS(['254714611696', '254711414987'], $message, EventTypes::ERROR_ALERT);
                 Log::info("Kyanda Failure SMS Sent");
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
@@ -80,14 +81,16 @@ class KyandaRequest
 
             }
 
-            NotificationRepository::sendSMS([$phone], $message);
+            NotificationRepository::sendSMS([$phone], $message, EventTypes::SP_REQUEST_FAILURE);
 
         }
 
         $number = explode(" - ", $transaction->description)[1];
 
         switch ($event->request->provider) {
-//            case Providers::SAFARICOM: //Most likely number accessing. Need to bulletproof this logic though by checking number against user
+            case Providers::SAFARICOM: //Most likely number accessing. Need to bulletproof this logic though by checking number against user
+                break;
+
             case Providers::AIRTEL:
             case Providers::FAIBA:
             case Providers::EQUITEL:

@@ -5,6 +5,7 @@ namespace App\Helpers\Sidooh\USSD\Processors;
 
 use App\Helpers\Sidooh\USSD\Entities\Option;
 use App\Helpers\Sidooh\USSD\Entities\Screen;
+use App\Helpers\SidoohNotify\EventTypes;
 use App\Models\User;
 use App\Models\UssdUser;
 use App\Repositories\AccountRepository;
@@ -280,6 +281,6 @@ class Referral extends Product
         $message .= "out of which 80% is then automatically saved and invested to generate extra income for you. ";
         $message .= "Dial $code NOW for FREE on your Safaricom line to buy airtime & start earning from your purchases.";
 
-        NotificationRepository::sendSMS([$phone], $message);
+        NotificationRepository::sendSMS([$phone], $message, EventTypes::REFERRAL_INVITE);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 use App\Events\ReferralJoinedEvent;
 use App\Helpers\Sidooh\Report;
+use App\Helpers\SidoohNotify\EventTypes;
 use App\Models\Account;
 use App\Models\CollectiveInvestment;
 use Carbon\Carbon;
@@ -315,7 +316,7 @@ class AccountRepository extends Model
         }
 
         try {
-            NotificationRepository::sendSMS(['254711414987', '254721309253'], "STATUS:INVESTMENT\nCalculating Interest.");
+            NotificationRepository::sendSMS(['254711414987', '254721309253'], "STATUS:INVESTMENT\nCalculating Interest.", EventTypes::STATUS_UPDATE);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
@@ -408,7 +409,7 @@ class AccountRepository extends Model
             Log::info('Sending sms.');
 
             try {
-                NotificationRepository::sendSMS(['254714611696', '254711414987'], "STATUS:INVESTMENT\nAllocating Interest. $counter accounts updated.");
+                NotificationRepository::sendSMS(['254714611696', '254711414987'], "STATUS:INVESTMENT\nAllocating Interest. $counter accounts updated.", EventTypes::STATUS_UPDATE);
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
             }

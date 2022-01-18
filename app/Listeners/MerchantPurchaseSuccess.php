@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Events\MerchantPurchaseEvent;
 use App\Events\TransactionSuccessEvent;
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Helpers\SidoohNotify\EventTypes;
 use App\Repositories\NotificationRepository;
 use Illuminate\Support\Facades\Log;
 
@@ -47,13 +47,13 @@ class MerchantPurchaseSuccess
         $message .= " on {$date}. New VOUCHER balance is {$account->voucher->balance}.\n\n";
         $message .= "Sidooh, Earns you money on every purchase.";
 
-        NotificationRepository::sendSMS([$phone], $message);
+        NotificationRepository::sendSMS([$phone], $message, EventTypes::MERCHANT_PAYMENT);
 
         $message = "SIDOOH transaction confirmed. You have received Ksh{$amount} from {$account->user->name} {$phone}";
         $message .= " on {$date}. New Account balance is {$merchant->balance}.\n\n";
         $message .= "Sidooh, Earns you money on every purchase.";
 
-        NotificationRepository::sendSMS([$mPhone], $message);
+        NotificationRepository::sendSMS([$mPhone], $message, EventTypes::MERCHANT_PAYMENT);
 
         $amount = $event->transaction->amount * .025 <= 250 ? $event->transaction->amount * .025 : 250;
 

@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\B2CPaymentSuccessEvent;
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Helpers\SidoohNotify\EventTypes;
 use App\Models\Earning;
 use App\Models\Payment;
 use App\Repositories\NotificationRepository;
@@ -80,15 +80,15 @@ class B2CPaymentSent
         if (count($other_phone) > 1) {
             $message = "You have redeemed KES{$amount} for $method {$other_phone[1]} from your Sidooh account on {$date}. Your current account balance is $cbal.";
 
-            NotificationRepository::sendSMS([$account->phone], $message);
+            NotificationRepository::sendSMS([$account->phone], $message, EventTypes::WITHDRAWAL_PAYMENT);
 
             $message = "Congratulations! You have received $method KES{$amount} from Sidooh account {$account->phone} on {$date}. Sidooh Makes You Money with Every Purchase.\n\nDial $code NOW for FREE on your Safaricom line to BUY AIRTIME & START EARNING from your purchases.";
 
-            NotificationRepository::sendSMS([$other_phone[1]], $message);
+            NotificationRepository::sendSMS([$other_phone[1]], $message, EventTypes::WITHDRAWAL_PAYMENT);
         } else {
             $message = "You have redeemed KES{$amount} from your Sidooh account on {$date} to $method. Your current account balance is $cbal.";
 
-            NotificationRepository::sendSMS([$account->phone], $message);
+            NotificationRepository::sendSMS([$account->phone], $message, EventTypes::WITHDRAWAL_PAYMENT);
         }
 
 

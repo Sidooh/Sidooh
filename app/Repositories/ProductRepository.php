@@ -12,6 +12,7 @@ use App\Events\SubscriptionPurchaseFailedEvent;
 use App\Events\VoucherPurchaseEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Helpers\Kyanda\KyandaApi;
+use App\Helpers\SidoohNotify\EventTypes;
 use App\Helpers\Tanda\TandaApi;
 use App\Models\AirtimeRequest;
 use App\Models\AirtimeResponse;
@@ -118,7 +119,7 @@ class ProductRepository
                     //        TODO:: Send sms notification
                     $message = "Sorry! We could not complete your airtime purchase for {$phone} worth {$amount} on {$date}. We have credited your voucher {$amount} and your balance is now {$voucher->balance}.";
 
-                    NotificationRepository::sendSMS([$phone], $message);
+                    NotificationRepository::sendSMS([$phone], $message, EventTypes::AIRTIME_PURCHASE_FAILURE);
                 }
 
                 break;

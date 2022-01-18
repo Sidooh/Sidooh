@@ -2,15 +2,12 @@
 
 namespace App\Listeners;
 
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
-use App\Helpers\SidoohNotify\SidoohNotify;
+use App\Helpers\SidoohNotify\EventTypes;
 use App\Models\Transaction;
 use App\Repositories\NotificationRepository;
 use App\Repositories\TransactionRepository;
 use DrH\Tanda\Events\TandaRequestFailedEvent;
 use DrH\Tanda\Library\Providers;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 
 class TandaRequestFailed
@@ -66,7 +63,7 @@ class TandaRequestFailed
 
                 $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
 
-            NotificationRepository::sendSMS([$sender], $message);
+            NotificationRepository::sendSMS([$sender], $message, EventTypes::AIRTIME_PURCHASE_FAILURE);
 
                 break;
 
@@ -98,7 +95,7 @@ class TandaRequestFailed
             case Providers::NAIROBI_WTR:
 
             $message = "Sorry! We could not complete your payment to {$provider} of KES{$amount} for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
-            NotificationRepository::sendSMS([$sender], $message);
+            NotificationRepository::sendSMS([$sender], $message, EventTypes::UTILITY_PAYMENT_FAILURE);
 //
 //                break;
 

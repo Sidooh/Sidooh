@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\B2CPaymentFailedEvent;
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Helpers\SidoohNotify\EventTypes;
 use App\Models\Payment;
 use App\Repositories\NotificationRepository;
 use Illuminate\Support\Facades\Log;
@@ -40,6 +40,6 @@ class B2CPaymentFailed
 
         $message = "Sorry! We failed to complete your withdrawal transaction. No amount was deducted from your account. We apologize for the inconvenience. Please try again.";
 
-        NotificationRepository::sendSMS([$account->phone], $message);
+        NotificationRepository::sendSMS([$account->phone], $message, EventTypes::WITHDRAWAL_FAILURE);
     }
 }

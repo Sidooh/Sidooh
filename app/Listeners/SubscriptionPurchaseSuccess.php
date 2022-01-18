@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\SubscriptionPurchaseEvent;
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Helpers\SidoohNotify\EventTypes;
 use App\Repositories\NotificationRepository;
 use Illuminate\Support\Facades\Log;
 use NumberFormatter;
@@ -65,6 +65,6 @@ class SubscriptionPurchaseSuccess
 
         $message .= config('services.sidooh.tagline');
 
-        NotificationRepository::sendSMS([$phone], $message);
+        NotificationRepository::sendSMS([$phone], $message, EventTypes::SUBSCRIPTION_PAYMENT);
     }
 }

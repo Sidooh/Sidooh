@@ -8,9 +8,10 @@ use Illuminate\Support\Facades\Log;
 class SidoohNotify
 {
 
-    public static function sendSMSNotification(array $to, string $message): array
+    public static function sendSMSNotification(array $to, string $message, string $eventType): array
     {
         Log::info('----------------- Sidooh SMS Notification', [
+            'eventType' => $eventType,
             'to' => $to,
             'message' => $message
         ]);
@@ -21,6 +22,7 @@ class SidoohNotify
             $url,
             [
                 "channel" => "sms",
+                "event_type" => $eventType,
                 "destination" => $to,
                 "content" => $message
             ]

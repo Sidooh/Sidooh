@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Helpers\SidoohNotify\EventTypes;
 use App\Models\Payment;
 use App\Repositories\NotificationRepository;
-use Illuminate\Support\Facades\Log;
 use DrH\Mpesa\Events\StkPushPaymentFailedEvent;
+use Illuminate\Support\Facades\Log;
 
 class StkPaymentFailed
 {
@@ -49,7 +49,7 @@ class StkPaymentFailed
 //        TODO: Can we inform the user of the actual issue?
         $message = "Sorry! We failed to complete your transaction. No amount was deducted from your account. We apologize for the inconvenience. Please try again.";
 
-        NotificationRepository::sendSMS([$stk->request->phone], $message);
+        NotificationRepository::sendSMS([$stk->request->phone], $message, EventTypes::PAYMENT_FAILURE);
 
     }
 }

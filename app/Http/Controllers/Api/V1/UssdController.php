@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Helpers\SidoohNotify\EventTypes;
 use App\Http\Controllers\Controller;
 use App\Repositories\NotificationRepository;
 use App\Repositories\UssdRepository;
@@ -62,7 +63,7 @@ class UssdController extends Controller
      */
     public function sms()
     {
-        return NotificationRepository::sendSMS(request()->recipients, request()->message);
+        return NotificationRepository::sendSMS(request()->recipients, request()->message, EventTypes::TEST);
     }
 
     /**

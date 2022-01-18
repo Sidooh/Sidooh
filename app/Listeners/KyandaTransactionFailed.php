@@ -2,12 +2,10 @@
 
 namespace App\Listeners;
 
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Helpers\SidoohNotify\EventTypes;
 use App\Models\Transaction;
 use App\Repositories\NotificationRepository;
 use App\Repositories\TransactionRepository;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 use Nabcellent\Kyanda\Events\KyandaTransactionFailedEvent;
 use Nabcellent\Kyanda\Library\Providers;
@@ -64,7 +62,7 @@ class KyandaTransactionFailed
             case Providers::EQUITEL:
 
             $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
-            NotificationRepository::sendSMS([$sender], $message);
+            NotificationRepository::sendSMS([$sender], $message, EventTypes::AIRTIME_PURCHASE_FAILURE);
 
                 break;
 
@@ -105,7 +103,7 @@ class KyandaTransactionFailed
 
             $message = "Sorry! We could not complete your payment to {$provider} of KES{$amount} for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
 
-            NotificationRepository::sendSMS([$sender], $message);
+            NotificationRepository::sendSMS([$sender], $message, EventTypes::UTILITY_PAYMENT_FAILURE);
 
             break;
 

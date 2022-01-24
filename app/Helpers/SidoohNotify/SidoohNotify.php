@@ -16,7 +16,7 @@ class SidoohNotify
             'message' => $message
         ]);
 
-        $url = config('services.sidooh.services.notify.url');
+        $url = env('SIDOOH_NOTIFY_URL');
 
         $response = Http::retry(3)->post(
             $url,

@@ -62,7 +62,7 @@ return array(
                     'notify' =>
                         array(
                             'enabled' => true,
-                            'url' => 'http://sidooh-notify.herokuapp.com/api/notifications',
+                            'url' => 'https://hoodis-notify.herokuapp.com/api/notifications',
                         ),
                 ),
         ),

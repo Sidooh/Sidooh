@@ -20,23 +20,23 @@ return [
      */
     'multi_tenancy' => env('MPESA_MULTI_TENANCY', false),
     /*
-   |--------------------------------------------------------------------------
-   | Cache credentials
-   |--------------------------------------------------------------------------
-   |
-   | If you decide to cache credentials, they will be kept in your app cache
-   | configuration for sometime. Reducing the need for many requests for
-   | generating credentials
-   |
-   */
+    |--------------------------------------------------------------------------
+    | Cache credentials
+    |--------------------------------------------------------------------------
+    |
+    | If you decide to cache credentials, they will be kept in your app cache
+    | configuration for sometime. Reducing the need for many requests for
+    | generating credentials
+    |
+    */
     'cache_credentials' => false,
     /*
-   |--------------------------------------------------------------------------
-   | C2B array
-   |--------------------------------------------------------------------------
-   |
-   | If you are accepting payments enter application details and shortcode info
-   |
+    |--------------------------------------------------------------------------
+    | C2B array
+    |--------------------------------------------------------------------------
+    |
+    | If you are accepting payments enter application details and shortcode info
+    |
    */
     'c2b' => [
         /*

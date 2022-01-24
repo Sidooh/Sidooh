@@ -164,6 +164,9 @@
 
                     @if($transaction->payment->type == 'MPESA')
                         <div class="card mb-3">
+                            <div class="card-header pb-0">
+                                <h5 class="fs-0">Payment - {{ $transaction->payment->type }}</h5>
+                            </div>
                             <div class="card-body">
                                 <div class="table-responsive fs--1">
                                     <table class="table table-striped border-bottom">
@@ -255,6 +258,9 @@
 
                     @if($transaction->airtime)
                         <div class="card mb-3">
+                            <div class="card-header pb-0">
+                                <h5 class="fs-0">Airtime - AT</h5>
+                            </div>
                             <div class="card-body">
                                 <div class="table-responsive fs--1">
                                     <table class="table table-striped border-bottom">
@@ -307,12 +313,15 @@
 
                     @if($transaction->request)
                         <div class="card mb-3">
+                            <div class="card-header pb-0">
+                                <h5 class="fs-0">Transaction - Tanda</h5>
+                            </div>
                             <div class="card-body">
                                 <div class="table-responsive fs--1">
                                     <table class="table table-striped border-bottom">
                                         <thead class="bg-200 text-900">
                                         <tr>
-                                            <th class="border-0">ID</th>
+                                            <th class="border-0">Reference (Receipt No.)</th>
                                             <th class="border-0">Amount</th>
                                             <th class="border-0">Provider</th>
                                             <th class="border-0">Destination</th>
@@ -326,9 +335,10 @@
                                         <tbody>
                                         <tr class="border-200">
                                             <td class="align-middle">
-                                                {{ $transaction->request->id }}
-                                                {{--                                                <br>--}}
-                                                {{--                                                <span class="text-info">({{ $transaction->request->receipt_number }})</span>--}}
+                                                {{ $transaction->request->request_id }}
+                                                <br>
+                                                <span
+                                                    class="text-sm-center">({{ $transaction->request->receipt_number }})</span>
                                             </td>
                                             <td class="align-middle">{{ $transaction->request->amount }}</td>
                                             <td class="align-middle">{{ $transaction->request->provider }}</td>

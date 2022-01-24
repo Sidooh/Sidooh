@@ -9,7 +9,6 @@ use App\Models\Payment;
 use App\Models\Transaction;
 use App\Repositories\TransactionRepository;
 use DrH\Mpesa\Database\Entities\MpesaBulkPaymentResponse;
-use DrH\Tanda\Models\TandaRequest;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -17,7 +16,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
-use phpDocumentor\Reflection\Types\Collection;
 
 class TransactionController extends Controller
 {
@@ -72,21 +70,21 @@ class TransactionController extends Controller
      * Display the specified resource.
      *
      * @param Transaction $transaction
-     * @return View|Factory|Application|Collection
+     * @return View|Factory|Application
      */
-    public function show(Transaction $transaction): View|Factory|Application|TandaRequest
+    public function show(Transaction $transaction): View|Factory|Application
     {
-//        return $transaction->request;
         $transaction->load(['account']);
 //
-        if ($transaction->payment->subtype == 'STK')
-            $transaction->load(['payment.stkRequest.response']);
-        elseif ($transaction->payment->subtype == 'B2C') {
-            $transaction->load(['payment.b2cRequest']);
+        if ($transaction->payment)
+            if ($transaction->payment->subtype == 'STK')
+                $transaction->load(['payment.stkRequest.response']);
+            elseif ($transaction->payment->subtype == 'B2C') {
+                $transaction->load(['payment.b2cRequest']);
 
-            $transaction->payment->b2cRequest->response = MpesaBulkPaymentResponse::with('data')
-                ->where('ConversationID', $transaction->payment->b2cRequest->conversation_id)->first();
-        }
+                $transaction->payment->b2cRequest->response = MpesaBulkPaymentResponse::with('data')
+                    ->where('ConversationID', $transaction->payment->b2cRequest->conversation_id)->first();
+            }
 
 //        dd($transaction);
 

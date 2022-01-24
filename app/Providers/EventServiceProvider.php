@@ -26,6 +26,8 @@ use DrH\Mpesa\Events\B2cPaymentSuccessEvent;
 use DrH\Mpesa\Events\QueueTimeoutEvent;
 use DrH\Mpesa\Events\StkPushPaymentFailedEvent;
 use DrH\Mpesa\Events\StkPushPaymentSuccessEvent;
+use DrH\Tanda\Events\TandaRequestFailedEvent;
+use DrH\Tanda\Events\TandaRequestSuccessEvent;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -89,6 +91,14 @@ class EventServiceProvider extends ServiceProvider
         SubscriptionPurchaseEvent::class => [
             SubscriptionPurchaseSuccess::class
         ],
+
+        TandaRequestSuccessEvent::class => [
+            TandaRequestSuccess::class
+        ],
+
+        TandaRequestFailedEvent::class => [
+            TandaRequestFailed::class
+        ]
     ];
 
     /**

@@ -25,7 +25,7 @@ use App\Http\Controllers\Admin\UserNotificationController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\HomeController;
 
-Route::get('/', function() {
+Route::get('/', function () {
     return view('welcome');
 });
 
@@ -34,7 +34,7 @@ Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
-Route::prefix('/admin')->name('admin.')->group(function() {
+Route::prefix('/admin')->name('admin.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
     Route::get('/statistics', [DashboardController::class, 'statistics'])->name('statistics');
 
@@ -43,16 +43,16 @@ Route::prefix('/admin')->name('admin.')->group(function() {
     ]);
 
     Route::resources([
-        'users'                  => UserController::class,
-        'accounts'               => AccountController::class,
-        'transactions'           => TransactionController::class,
-        'referrals'              => ReferralController::class,
-        'earnings'               => EarningController::class,
-        'vouchers'               => VoucherController::class,
-        'sub-accounts'           => SubAccountController::class,
+        'users' => UserController::class,
+        'accounts' => AccountController::class,
+        'transactions' => TransactionController::class,
+        'referrals' => ReferralController::class,
+        'earnings' => EarningController::class,
+        'vouchers' => VoucherController::class,
+        'sub-accounts' => SubAccountController::class,
         'collective-investments' => CollectiveInvestmentController::class,
-        'sub-investments'        => SubInvestmentController::class,
-        'subscriptions'          => SubscriptionController::class,
+        'sub-investments' => SubInvestmentController::class,
+        'subscriptions' => SubscriptionController::class,
     ]);
 
     Route::post('transactions/status/query', [TransactionController::class, 'queryStatus'])
@@ -60,8 +60,11 @@ Route::prefix('/admin')->name('admin.')->group(function() {
     Route::post('transactions/{transaction}/refund', [TransactionController::class, 'refund'])
         ->name('transactions.refund');
     Route::post('transactions/{transaction}/mark-complete', [TransactionController::class, 'markComplete'])->name(
-        'transactions.status.mark_complete'
-    );
+        'transactions.status.mark_complete');
+
+    Route::post('transactions/request/status/query', [TransactionController::class, 'queryRequestStatus'])
+        ->name('transactions.request.status.query');
+
     Route::post('payments/{payment}/mark-complete', [TransactionController::class, 'markPaymentComplete'])
         ->name('transactions.payments.status.mark_payment_complete');
     Route::post('transactions/{transaction}/mark-both-complete', [TransactionController::class, 'markBothComplete'])

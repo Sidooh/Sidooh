@@ -4,15 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TransactionStoreRequest;
 use App\Http\Resources\TransactionResource;
 use App\Models\Payment;
 use App\Models\Transaction;
 use App\Repositories\TransactionRepository;
+use DrH\Mpesa\Database\Entities\MpesaBulkPaymentResponse;
+use DrH\Tanda\Models\TandaRequest;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
-use Samerior\MobileMoney\Mpesa\Database\Entities\MpesaBulkPaymentResponse;
+use phpDocumentor\Reflection\Types\Collection;
 
 class TransactionController extends Controller
 {
@@ -67,10 +72,11 @@ class TransactionController extends Controller
      * Display the specified resource.
      *
      * @param Transaction $transaction
-     * @return TransactionResource
+     * @return View|Factory|Application|Collection
      */
-    public function show(Transaction $transaction)
+    public function show(Transaction $transaction): View|Factory|Application|TandaRequest
     {
+//        return $transaction->request;
         $transaction->load(['account']);
 //
         if ($transaction->payment->subtype == 'STK')
@@ -126,13 +132,25 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function queryStatus()
     {
         //
-
         $exitCode = Artisan::call('mpesa:query_status');
+
+        return back();
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return RedirectResponse
+     */
+    public function queryRequestStatus()
+    {
+        //
+        $exitCode = Artisan::call('tanda:query_status');
 
         return back();
     }
@@ -142,7 +160,7 @@ class TransactionController extends Controller
      *
      * @param Request $request
      * @param Transaction $transaction
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function refund(Request $request, Transaction $transaction)
     {
@@ -150,29 +168,28 @@ class TransactionController extends Controller
 //         Check transaction has airtime or payment is successful but airtime failed
         if ($transaction->payment) {
             if (mb_strtolower($transaction->payment->status) == 'complete') {
-                /*if ($transaction->airtime) {
-                    if ($transaction->airtime->errorMessage != 'None'
-                        || ($transaction->airtime->response && $transaction->airtime->response->status == 'Failed')) {*/
+                if ($transaction->request) {
+                    if (!in_array($transaction->request->status, ['000000', '000001'])) {
 //                        TODO: Perform refund
 
                         $account = $transaction->account;
                         $phone = $account->phone;
 
-                $amount = $transaction->amount;
-                $date = $transaction->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
+                        $amount = $transaction->amount;
+                        $date = $transaction->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
 
-                $voucher = $transaction->account->voucher;
-                $voucher->in += $amount;
-                $voucher->save();
+                        $voucher = $transaction->account->voucher;
+                        $voucher->in += $amount;
+                        $voucher->save();
 
-                $transaction->status = 'reimbursed';
-                $transaction->save();
+                        $transaction->status = 'reimbursed';
+                        $transaction->save();
 
-                $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$phone} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+                        $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$phone} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
 
-                (new AfricasTalkingApi())->sms($phone, $message);
-                /*}
-            }*/
+                        (new AfricasTalkingApi())->sms($phone, $message);
+                    }
+                }
             }
         }
 
@@ -186,7 +203,7 @@ class TransactionController extends Controller
      *
      * @param Request $request
      * @param Transaction $transaction
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function markComplete(Request $request, Transaction $transaction)
     {
@@ -209,7 +226,7 @@ class TransactionController extends Controller
      *
      * @param Request $request
      * @param Transaction $transaction
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function markPaymentComplete(Request $request, Payment $payment)
     {
@@ -228,7 +245,7 @@ class TransactionController extends Controller
      *
      * @param Request $request
      * @param Transaction $transaction
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function markBothComplete(Request $request, Transaction $transaction)
     {

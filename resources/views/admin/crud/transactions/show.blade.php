@@ -303,6 +303,73 @@
                                 </div>
                             </div>
                         </div>
+                    @endif
+
+                    @if($transaction->request)
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="table-responsive fs--1">
+                                    <table class="table table-striped border-bottom">
+                                        <thead class="bg-200 text-900">
+                                        <tr>
+                                            <th class="border-0">ID</th>
+                                            <th class="border-0">Amount</th>
+                                            <th class="border-0">Provider</th>
+                                            <th class="border-0">Destination</th>
+                                            <th class="border-0">Message</th>
+                                            <th class="border-0 text-center">Status</th>
+                                            <th class="border-0">Date</th>
+                                            <th class="border-0">Extra</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr class="border-200">
+                                            <td class="align-middle">
+                                                {{ $transaction->request->id }}
+                                                {{--                                                <br>--}}
+                                                {{--                                                <span class="text-info">({{ $transaction->request->receipt_number }})</span>--}}
+                                            </td>
+                                            <td class="align-middle">{{ $transaction->request->amount }}</td>
+                                            <td class="align-middle">{{ $transaction->request->provider }}</td>
+
+                                            <td class="align-middle">{{ $transaction->request->destination }}</td>
+                                            <td class="align-middle">{{ $transaction->request->message }}</td>
+                                            <td class="align-middle text-center">{{ $transaction->request->status }}</td>
+                                            <td class="align-middle">{{ local_date($transaction->request->last_modified, 'M d, Y, h:m A') }}</td>
+
+                                            <td>
+                                                @if ($transaction->request->result)
+                                                    @forelse($transaction->request->result as $value)
+                                                        <div>
+                                                            {{ $value['label'] }} - {{ $value['value'] }}
+                                                        </div>
+                                                    @empty
+
+                                                    @endforelse
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($transaction->request->status === '000001')
+                                                    <form method="POST"
+                                                          action="{{ route('admin.transactions.request.status.query') }}">
+                                                        @csrf
+                                                        <button
+                                                            class="btn btn-sm rounded-pill me-1 mb-1"
+                                                            type="submit">
+                                                            <span class="fas fa-sync me-1"
+                                                                  data-fa-transform="shrink-3"></span>Check Status
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            </td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
     @endif
 
 @endsection

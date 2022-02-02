@@ -87,7 +87,7 @@ class Airtime extends Product
             $this->addVars('{$airtime_account_options}', json_encode($varAirtimeAccountOpts));
 
         } else {
-            $this->screen->title .= "\n\n No numbers saved, please add number below.\n";
+            $this->screen->title .= "\n\n No numbers saved. Select option below to add number.\n";
 //            $this->screen->options[0]->title = "Enter other no.";
         }
 

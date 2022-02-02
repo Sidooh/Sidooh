@@ -111,7 +111,7 @@ class Utility extends Pay
             $this->addVars('{$utility_account_options}', json_encode($varUtilityAccountOpts));
 
         } else {
-            $this->screen->title .= "\n\n No accounts saved, please add account below.\n";
+            $this->screen->title .= "\n\n No accounts saved. Select option below to add account.\n";
             $this->screen->options[0]->title = "Enter account no.";
         }
     }

@@ -29,7 +29,7 @@ class SidoohNotify
         );
 
         Log::info('----------------- Sidooh SMS Notification sent', [
-            'id' => $response->json()['_id']
+            'id' => $response->json()['id']
         ]);
 
         return $response->json();

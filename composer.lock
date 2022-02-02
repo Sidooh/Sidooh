@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "52921a12b96d11c5ba3f63dc5f131581",
+    "content-hash": "2604e10bb5f74c83b9821da7985b5c9c",
     "packages": [
         {
             "name": "africastalking/africastalking",
@@ -960,16 +960,16 @@
         },
         {
             "name": "drh/mpesa",
-            "version": "v1.0.1",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DrH97/mpesa.git",
-                "reference": "4ed892480c60a42ae58a52545cada8e629a5206f"
+                "reference": "cf86e3bf48e159c33583d60150a5857df5a01068"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DrH97/mpesa/zipball/4ed892480c60a42ae58a52545cada8e629a5206f",
-                "reference": "4ed892480c60a42ae58a52545cada8e629a5206f",
+                "url": "https://api.github.com/repos/DrH97/mpesa/zipball/cf86e3bf48e159c33583d60150a5857df5a01068",
+                "reference": "cf86e3bf48e159c33583d60150a5857df5a01068",
                 "shasum": ""
             },
             "require": {
@@ -1025,9 +1025,9 @@
             ],
             "support": {
                 "issues": "https://github.com/DrH97/mpesa/issues",
-                "source": "https://github.com/DrH97/mpesa/tree/v1.0.1"
+                "source": "https://github.com/DrH97/mpesa/tree/v1.1.1"
             },
-            "time": "2021-09-08T21:07:56+00:00"
+            "time": "2022-01-25T08:58:43+00:00"
         },
         {
             "name": "egulias/email-validator",

@@ -14,7 +14,7 @@
         "ext-openssl": "*",
         "africastalking/africastalking": "^3.0",
         "drh/laravel-tanda": "^1.1",
-        "drh/mpesa": "^1.0",
+        "drh/mpesa": "^1.1",
         "facade/ignition": "^2.3",
         "fideloper/proxy": "^4.0",
         "fruitcake/laravel-cors": "^2.0",

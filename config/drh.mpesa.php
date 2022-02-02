@@ -54,11 +54,19 @@ return [
         /*
          * Your receiving paybill or till umber
          */
-        'short_code' => env('MPESA_STK_SHORTCODE'),
+        'short_code' => env('MPESA_C2B_SHORTCODE'),
+        /*
+         * Transaction type based on shortcode business type
+         */
+        'transaction_type' => env('MPESA_C2B_TRANSACTION_TYPE', 'CustomerPayBillOnline'),
+        /*
+         * Optional Till number if different from shortcode
+         */
+        'party_b' => env('MPESA_C2B_PARTY_B'),
         /*
          * Passkey , requested from mpesa
          */
-        'passkey' => env('MPESA_STK_PASS_KEY'),
+        'passkey' => env('MPESA_C2B_PASS_KEY'),
         /*
          * --------------------------------------------------------------------------------------
          * Callbacks:

@@ -80,8 +80,6 @@ class Withdrawal
 
         $b2c = mpesa_send($number, $this->amount, $description);
 
-//        Log::info($b2c);
-
 
         DB::transaction(function () use ($mpesaNumber, $b2c) {
 

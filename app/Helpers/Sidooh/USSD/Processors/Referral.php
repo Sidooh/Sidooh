@@ -277,9 +277,10 @@ class Referral extends Product
             $user .= ' - ' . ucwords($acc->user->name);
 
         $message = "Hi, {$user} has invited you to try out Sidooh, ";
-        $message .= "a digital platform that gives you cash refunds on every airtime you purchase from the platform, ";
-        $message .= "out of which 80% is then automatically saved and invested to generate extra income for you. ";
-        $message .= "Dial $code NOW for FREE on your Safaricom line to buy airtime & start earning from your purchases.";
+        $message .= "a digital platform that gives you loyalty points on every item you purchase and pay for through ";
+        $message .= "the platform. After which, the earned loyalty points are automatically saved and then invested in ";
+        $message .= "secure financial assets like Treasury Bills & Bonds so as to generate extra income for you.";
+        $message .= "Dial $code NOW for FREE on your Safaricom line to buy airtime & start investing using your points.";
 
         NotificationRepository::sendSMS([$phone], $message, EventTypes::REFERRAL_INVITE);
     }

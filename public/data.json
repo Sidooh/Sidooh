@@ -109,7 +109,7 @@
         "title": "Select provider:",
         "options": {
             "1": {
-                "title": "KPLC Prepaid",
+                "title": "KPLC Tokens",
                 "type": "int",
                 "value": "1",
                 "next": "utility_account_select"

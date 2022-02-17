@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\AfricasTalking\AfricasTalkingApi;
+use App\Helpers\SidoohNotify\EventTypes;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\TransactionResource;
 use App\Models\Payment;
 use App\Models\Transaction;
+use App\Repositories\NotificationRepository;
 use App\Repositories\TransactionRepository;
 use DrH\Mpesa\Database\Entities\MpesaBulkPaymentResponse;
 use Illuminate\Contracts\Foundation\Application;
@@ -45,28 +45,6 @@ class TransactionController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param TransactionStoreRequest $request
-     * @return TransactionResource
-     */
-    public function store(TransactionStoreRequest $request)
-    {
-        //
-        return new TransactionResource($this->transaction->store($request));
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param Transaction $transaction
@@ -86,45 +64,7 @@ class TransactionController extends Controller
                     ->where('ConversationID', $transaction->payment->b2cRequest->conversation_id)->first();
             }
 
-//        dd($transaction);
-
-//        return new TransactionResource($transaction);
-
         return view('admin.crud.transactions.show', compact('transaction'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Transaction $transaction
-     * @return Response
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param Transaction $transaction
-     * @return Response
-     */
-    public function update(Request $request, Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Transaction $transaction
-     * @return Response
-     */
-    public function destroy(Transaction $transaction)
-    {
-        //
     }
 
     /**
@@ -170,23 +110,10 @@ class TransactionController extends Controller
                     if (!in_array($transaction->request->status, ['000000', '000001'])) {
 //                        TODO: Perform refund
 
-                        $account = $transaction->account;
-                        $phone = $account->phone;
-
-                        $amount = $transaction->amount;
-                        $date = $transaction->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
-
-                        $voucher = $transaction->account->voucher;
-                        $voucher->in += $amount;
-                        $voucher->save();
-
-                        $transaction->status = 'reimbursed';
-                        $transaction->save();
-
-                        $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$phone} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
-
-                        (new AfricasTalkingApi())->sms($phone, $message);
+                        $this->performRefund($transaction);
                     }
+                } else {
+                    $this->performRefund($transaction);
                 }
             }
         }
@@ -253,5 +180,29 @@ class TransactionController extends Controller
 
         return back();
 
+    }
+
+    private function performRefund(Transaction $transaction)
+    {
+        $account = $transaction->account;
+        $phone = $account->phone;
+
+        $amount = $transaction->amount;
+        $date = $transaction->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
+
+        $voucher = $transaction->account->voucher;
+        $voucher->in += $amount;
+        $voucher->save();
+
+        $transaction->status = 'reimbursed';
+        $transaction->save();
+
+        $description = explode(" - ", $transaction->description);
+        $destination = count($description) > 1 ? " for " . $description[1] : "";
+        $description = $description[0];
+
+        $message = "Sorry! We could not complete your KES{$amount} {$description}{$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+
+        NotificationRepository::sendSMS([$phone], $message, EventTypes::VOUCHER_REFUND);
     }
 }

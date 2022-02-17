@@ -2,6 +2,7 @@
 
 namespace App\Helpers\SidoohNotify;
 
+
 use App\Helpers\Sidooh\USSD\Entities\BasicEnum;
 
 abstract class EventTypes extends BasicEnum

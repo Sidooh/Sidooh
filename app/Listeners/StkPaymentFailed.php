@@ -47,7 +47,10 @@ class StkPaymentFailed
         $p->payable->save();
 
 //        TODO: Can we inform the user of the actual issue?
-        $message = "Sorry! We failed to complete your transaction. No amount was deducted from your account. We apologize for the inconvenience. Please try again.";
+        $message = match ($stk->ResultCode) {
+            1 => "You have insufficient Mpesa Balance for this transaction. Kindly top up your Mpesa and try again.",
+            default => "Sorry! We failed to complete your transaction. No amount was deducted from your account. We apologize for the inconvenience. Please try again.",
+        };
 
         NotificationRepository::sendSMS([$stk->request->phone], $message, EventTypes::PAYMENT_FAILURE);
 

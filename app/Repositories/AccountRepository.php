@@ -316,7 +316,12 @@ class AccountRepository extends Model
         }
 
         try {
-            NotificationRepository::sendSMS(['254711414987', '254721309253'], "STATUS:INVESTMENT\nCalculating Interest.", EventTypes::STATUS_UPDATE);
+            $totalAccounts = count($accounts);
+            NotificationRepository::sendSMS(
+                ['254714611696', '254711414987', '254721309253'],
+                "STATUS:INVESTMENT\nCalculating Interest.\n\nCredited ${$totalAccounts} accounts.",
+                EventTypes::STATUS_UPDATE
+            );
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
@@ -366,6 +371,7 @@ class AccountRepository extends Model
 //        TODO: Will be done every month for those investments that have matured...
         Log::info('----------------- Interest Allocation');
 
+//        TODO: Filter interest accounts balance on db fetch rather than loop(ln 384 below)
         $accs = Account::with(['current_account', 'savings_account', 'interest_account'])->get();
         $allocated = collect();
         Log::info(count($accs) . ' accounts to be allocated.');
@@ -373,7 +379,6 @@ class AccountRepository extends Model
 //        DB::beginTransaction();
 
         try {
-            $counter = 0;
             foreach ($accs as $acc) {
                 if ($acc->interest_account && $acc->interest_account->balance > 0) {
                     Log::info($acc->id . ' -> ' . $acc->interest_account->balance);
@@ -390,7 +395,6 @@ class AccountRepository extends Model
                     $acc->savings_account->save();
                     $acc->interest_account->save();
 
-                    $counter++;
                     $allocated->add($acc);
                 }
             }
@@ -405,11 +409,15 @@ class AccountRepository extends Model
 
 //        DB::commit();
 
-        if (count($allocated) > 0) {
+        $allocatedCount = count($allocated);
+        if ($allocatedCount > 0) {
             Log::info('Sending sms.');
 
             try {
-                NotificationRepository::sendSMS(['254714611696', '254711414987'], "STATUS:INVESTMENT\nAllocating Interest. $counter accounts updated.", EventTypes::STATUS_UPDATE);
+                NotificationRepository::sendSMS(
+                    ['254714611696', '254711414987', '254721309253'],
+                    "STATUS:INVESTMENT\nAllocating Interest. $allocatedCount accounts updated.",
+                    EventTypes::STATUS_UPDATE);
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
             }

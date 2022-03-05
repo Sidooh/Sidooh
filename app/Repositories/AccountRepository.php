@@ -319,7 +319,7 @@ class AccountRepository extends Model
             $totalAccounts = count($accounts);
             NotificationRepository::sendSMS(
                 ['254714611696', '254711414987', '254721309253'],
-                "STATUS:INVESTMENT\nCalculating Interest.\n\nCredited ${$totalAccounts} accounts.",
+                "STATUS:INVESTMENT\nCalculating Interest.\n\nCredited {$totalAccounts} accounts.",
                 EventTypes::STATUS_UPDATE
             );
         } catch (\Exception $e) {

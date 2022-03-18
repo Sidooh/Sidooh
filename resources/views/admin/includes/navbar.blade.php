@@ -125,8 +125,8 @@
         </li>
     </ul>
     <ul class="navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
+        @include('admin.includes.waffle')
 
-        {{--        TODO: Return notifications --}}
         <li class="nav-item dropdown">
             <a class="nav-link pe-0" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="avatar avatar-xl">
@@ -135,7 +135,9 @@
             </a>
             <div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
                 <div class="bg-white dark__bg-1000 rounded-2 py-2">
-                    <a class="dropdown-item fw-bold text-warning" href="#"><span class="fas fa-user me-1"></span><span>Profile</span></a>
+                    <a class="dropdown-item fw-bold text-warning" href="#">
+                        <span class="fas fa-user me-1"></span><span>Sidooh</span>
+                    </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Profile &amp; account</a>
                     <div class="dropdown-divider"></div>

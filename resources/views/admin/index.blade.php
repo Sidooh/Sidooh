@@ -39,8 +39,11 @@
                         <i class="fas fa-sync"></i>
                     </button>
                     <select class="form-select form-select-sm" id="chart-status" aria-label="">
-                        <option value="successful" selected="selected">Successful Payments</option>
-                        <option value="other">Other Payments</option>
+                        <option value="all">All</option>
+                        <option value="completed" selected>Completed</option>
+                        <option value="reimbursed">Reimbursed</option>
+                        <option value="pending">Pending</option>
+                        <option value="failed">Failed</option>
                     </select>
                 </div>
             </div>

@@ -11,6 +11,25 @@ use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 /**
+ * App\Repositories\ReferralRepository
+ *
+ * @property int $id
+ * @property int $referee_phone
+ * @property string $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $account_id
+ * @property int|null $referee_id
+ * @method static \Illuminate\Database\Eloquent\Builder|ReferralRepository newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ReferralRepository newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ReferralRepository query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ReferralRepository whereAccountId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ReferralRepository whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ReferralRepository whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ReferralRepository whereRefereeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ReferralRepository whereRefereePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ReferralRepository whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ReferralRepository whereUpdatedAt($value)
  * @mixin IdeHelperReferralRepository
  */
 class ReferralRepository extends Model

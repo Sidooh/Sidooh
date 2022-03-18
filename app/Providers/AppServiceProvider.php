@@ -2,7 +2,13 @@
 
 namespace App\Providers;
 
+use App\Charts\AccountsTimeSeries;
+use App\Charts\CumulativeAccounts;
+use App\Charts\CumulativeRevenue;
+use App\Charts\CumulativeTransactions;
 use App\Charts\RevenueChart;
+use App\Charts\RevenueTimeSeries;
+use App\Charts\TransactionsTimeSeries;
 use App\Helpers\Safaricom\Mpesa;
 use ConsoleTVs\Charts\Registrar as Charts;
 use Illuminate\Support\Carbon;
@@ -39,7 +45,13 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $charts->register([
-            RevenueChart::class
+            RevenueChart::class,
+            RevenueTimeSeries::class,
+            AccountsTimeSeries::class,
+            CumulativeAccounts::class,
+            CumulativeTransactions::class,
+            CumulativeRevenue::class,
+            TransactionsTimeSeries::class
         ]);
     }
 }

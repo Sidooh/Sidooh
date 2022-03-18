@@ -4,13 +4,15 @@ declare(strict_types = 1);
 
 namespace App\Charts;
 
-use App\Facades\LocalCarbon;
+use App\Enums\Status;
 use App\Helpers\Statistics\ChartAid;
 use App\Helpers\Statistics\Frequency;
 use App\Models\Transaction;
 use Chartisan\PHP\Chartisan;
 use ConsoleTVs\Charts\BaseChart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use LocalCarbon;
 
 class RevenueChart extends BaseChart
 {
@@ -21,20 +23,23 @@ class RevenueChart extends BaseChart
      * name will be used.
      */
     public ?string $routeName = 'revenue';
-    public string $timezone = 'Africa/Nairobi';
 
     /**
      * Handles the HTTP request for the given chart.
      * It must always return an instance of Chartisan
      * and never a string or an array.
      */
-    public function handler(Request $request): Chartisan {
+    public function handler(Request $request): Chartisan
+    {
         $frequency = Frequency::tryFrom((string)$request->input('frequency')) ?? Frequency::DAILY;
         $status = $request->input('paymentStatus', 'successful');
 
         $whereStatus = match ($status) {
-            'successful' => ['completed'],
-            default => ['success', 'failed', 'pending', 'reimbursed'],
+            'completed' => ['COMPLETED'],
+            'reimbursed' => ['REIMBURSED'],
+            'pending' => ['PENDING'],
+            'failed' => ['FAILED'],
+            default => Arr::pluck(Status::cases(), 'name'),
         };
 
         $chartAid = new ChartAid($frequency, 'sum', 'amount');

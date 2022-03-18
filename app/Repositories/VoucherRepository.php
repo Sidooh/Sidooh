@@ -10,6 +10,23 @@ use Propaganistas\LaravelPhone\PhoneNumber;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
+ * App\Repositories\VoucherRepository
+ *
+ * @property int $id
+ * @property string $in
+ * @property string $out
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $account_id
+ * @method static \Illuminate\Database\Eloquent\Builder|VoucherRepository newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|VoucherRepository newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|VoucherRepository query()
+ * @method static \Illuminate\Database\Eloquent\Builder|VoucherRepository whereAccountId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VoucherRepository whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VoucherRepository whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VoucherRepository whereIn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VoucherRepository whereOut($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VoucherRepository whereUpdatedAt($value)
  * @mixin IdeHelperVoucherRepository
  */
 class VoucherRepository extends Model

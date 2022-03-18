@@ -9,6 +9,27 @@ use Illuminate\Database\Eloquent\Model;
 use MrAtiebatie\Repository;
 
 /**
+ * App\Repositories\InvestmentRepository
+ *
+ * @property int $id
+ * @property string $amount
+ * @property string|null $interest_rate
+ * @property string|null $interest
+ * @property string $investment_date
+ * @property string|null $maturity_date
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|InvestmentRepository newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|InvestmentRepository newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|InvestmentRepository query()
+ * @method static \Illuminate\Database\Eloquent\Builder|InvestmentRepository whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvestmentRepository whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvestmentRepository whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvestmentRepository whereInterest($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvestmentRepository whereInterestRate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvestmentRepository whereInvestmentDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvestmentRepository whereMaturityDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvestmentRepository whereUpdatedAt($value)
  * @mixin IdeHelperInvestmentRepository
  */
 class InvestmentRepository extends Model

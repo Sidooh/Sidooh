@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\Statistics\ChartAid;
+use App\Helpers\Statistics\Frequency;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\Models\Transaction;
@@ -11,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\View\View;
 use JetBrains\PhpStorm\ArrayShape;
+use LocalCarbon;
 
 class DashboardController extends Controller
 {
@@ -21,8 +24,11 @@ class DashboardController extends Controller
      *
      * @param DashboardRepository $dashboard
      */
-    public function __construct(DashboardRepository $dashboard) {
+    public function __construct(DashboardRepository $dashboard)
+    {
         $this->dashboard = $dashboard;
+
+//        $this->factory();
     }
 
     /**
@@ -30,7 +36,8 @@ class DashboardController extends Controller
      *
      * @return View|Application
      */
-    public function index(): View|Application {
+    public function index(): View|Application
+    {
         $data['data'] = $this->dashboard->statistics();
 
         return view('admin.index', $data);
@@ -41,8 +48,8 @@ class DashboardController extends Controller
      *
      * @return View|Application
      */
-    public function analytics(): View|Application {
-
+    public function analytics(): View|Application
+    {
         return view('admin.analytics', []);
     }
 
@@ -57,7 +64,8 @@ class DashboardController extends Controller
         'totalRevenue'           => "mixed",
         'totalUsersToday'        => "int"
     ])]
-    public function statistics(): array {
+    public function statistics(): array
+    {
         //        2nd: Get total customers, Transactions, Revenue
         $totalAccounts = Account::count();
         $totalAccountsToday = Account::whereDate('created_at', Carbon::today())->count();
@@ -95,5 +103,53 @@ class DashboardController extends Controller
 
             'totalUsersToday' => $usersToday,
         ];
+    }
+
+
+    public function factory()
+    {
+        $frequency = Frequency::tryFrom('daily') ?? Frequency::DAILY;
+        $chartAid = new ChartAid($frequency);
+
+        $data = Account::select(['created_at'])->whereBetween('created_at', [
+            LocalCarbon::today()->startOfDay()->utc(),
+            LocalCarbon::today()->endOfDay()->utc()
+        ])->get()->groupBy(function($item) use ($chartAid) {
+            return $chartAid->chartDateFormat($item->created_at);
+        });
+
+        $hrs = LocalCarbon::now()->diffInHours(LocalCarbon::now()->startOfDay());
+        [
+            'datasets' => $dataset,
+            'labels' => $labels,
+        ] = $chartAid->chartDataSet($data, $hrs + 1);
+
+        dd($labels, $dataset);
+
+        /**_________________________________    ACCOUNTS FACTORY
+         */
+        /*$accounts = Account::get()->map(fn($accounts) => [
+            ...$accounts->toArray(),
+            "created_at" => Carbon::now()->subHours(mt_rand(0, 24)),
+            "updated_at" => $accounts->updated_at
+        ])->toArray();
+
+        Account::upsert($accounts, ["id"], ["created_at"]);
+
+        dd($accounts);*/
+
+        /**_________________________________    TRANSACTIONS FACTORY
+         */
+        /*$transactions = Transaction::limit(mt_rand(70, 130))->get()->map(fn($transaction) => [
+            ...$transaction->toArray(),
+            "created_at" => Carbon::now()->subHours(mt_rand(0, 24)),
+            "updated_at" => $transaction->updated_at
+        ])->toArray();
+
+        Transaction::upsert($transactions, ["id"], ["created_at"]);
+
+        dd($transactions);
+
+        Transaction::whereStatus('failed')->update(['status' => 'FAILED']);*/
     }
 }

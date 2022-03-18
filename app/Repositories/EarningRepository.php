@@ -12,6 +12,27 @@ use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 
 /**
+ * App\Repositories\EarningRepository
+ *
+ * @property int $id
+ * @property string|null $aggregate_transactions
+ * @property string $earnings
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $account_id
+ * @property int $transaction_id
+ * @property string $type
+ * @method static \Illuminate\Database\Eloquent\Builder|EarningRepository newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|EarningRepository newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|EarningRepository query()
+ * @method static \Illuminate\Database\Eloquent\Builder|EarningRepository whereAccountId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EarningRepository whereAggregateTransactions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EarningRepository whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EarningRepository whereEarnings($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EarningRepository whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EarningRepository whereTransactionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EarningRepository whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EarningRepository whereUpdatedAt($value)
  * @mixin IdeHelperEarningRepository
  */
 class EarningRepository extends Model

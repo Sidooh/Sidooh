@@ -6,6 +6,28 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * App\Models\SubAccount
+ *
+ * @property int $id
+ * @property string $type
+ * @property string $in
+ * @property string $out
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $account_id
+ * @property-read \App\Models\Account $account
+ * @property-read mixed $balance
+ * @method static Builder|SubAccount newModelQuery()
+ * @method static Builder|SubAccount newQuery()
+ * @method static Builder|SubAccount query()
+ * @method static Builder|SubAccount type($type)
+ * @method static Builder|SubAccount whereAccountId($value)
+ * @method static Builder|SubAccount whereCreatedAt($value)
+ * @method static Builder|SubAccount whereId($value)
+ * @method static Builder|SubAccount whereIn($value)
+ * @method static Builder|SubAccount whereOut($value)
+ * @method static Builder|SubAccount whereType($value)
+ * @method static Builder|SubAccount whereUpdatedAt($value)
  * @mixin IdeHelperSubAccount
  */
 class SubAccount extends Model

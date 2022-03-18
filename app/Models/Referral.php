@@ -7,6 +7,31 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * App\Models\Referral
+ *
+ * @property int $id
+ * @property int $referee_phone
+ * @property string $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $account_id
+ * @property int|null $referee_id
+ * @property-read \App\Models\Account|null $account
+ * @property-read \App\Models\Account $referrer
+ * @method static Builder|Referral active()
+ * @method static Builder|Referral expired()
+ * @method static Builder|Referral newModelQuery()
+ * @method static Builder|Referral newQuery()
+ * @method static Builder|Referral pending()
+ * @method static Builder|Referral query()
+ * @method static Builder|Referral timeActive()
+ * @method static Builder|Referral whereAccountId($value)
+ * @method static Builder|Referral whereCreatedAt($value)
+ * @method static Builder|Referral whereId($value)
+ * @method static Builder|Referral whereRefereeId($value)
+ * @method static Builder|Referral whereRefereePhone($value)
+ * @method static Builder|Referral whereStatus($value)
+ * @method static Builder|Referral whereUpdatedAt($value)
  * @mixin IdeHelperReferral
  */
 class Referral extends Model

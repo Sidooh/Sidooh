@@ -9,6 +9,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.0",
+        "drh/laravel-tanda": "dev-red.dev",
+        "drh/mpesa": "dev-main",
         "ext-intl": "*",
         "ext-json": "*",
         "ext-openssl": "*",

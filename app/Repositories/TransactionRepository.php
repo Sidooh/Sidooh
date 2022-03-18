@@ -12,6 +12,29 @@ use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 
 /**
+ * App\Repositories\TransactionRepository
+ *
+ * @property int $id
+ * @property float $amount
+ * @property string $status
+ * @property string $type
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $account_id
+ * @property int|null $product_id
+ * @method static \Illuminate\Database\Eloquent\Builder|TransactionRepository newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|TransactionRepository newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|TransactionRepository query()
+ * @method static \Illuminate\Database\Eloquent\Builder|TransactionRepository whereAccountId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransactionRepository whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransactionRepository whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransactionRepository whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransactionRepository whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransactionRepository whereProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransactionRepository whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransactionRepository whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TransactionRepository whereUpdatedAt($value)
  * @mixin IdeHelperTransactionRepository
  */
 class TransactionRepository extends Model

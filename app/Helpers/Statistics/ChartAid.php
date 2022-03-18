@@ -14,12 +14,14 @@ class ChartAid
      */
     private string $frequency;
     private Collection $models;
-    private CarbonImmutable $CARBON;
+    private string $aggregateType;
+    private ?string $aggregateColumn;
 
-    public function __construct(Frequency $frequency, private string $aggregateType = 'count', private ?string $aggregateColumn = null) {
+    public function __construct(Frequency $frequency, string $aggregateType = 'count', ?string $aggregateColumn = null)
+    {
         $this->frequency = $frequency->value;
-
-        $this->CARBON = new CarbonImmutable(tz: 'Africa/Nairobi');
+        $this->aggregateType = $aggregateType;
+        $this->aggregateColumn = $aggregateColumn;
     }
 
 
@@ -29,7 +31,8 @@ class ChartAid
      * @return array
      */
     #[ArrayShape(['labels' => "array", 'datasets' => "array"])]
-    public function chartDataSet(Collection $models, $frequencyCount = null): array {
+    public function chartDataSet(Collection $models, $frequencyCount = null): array
+    {
         $this->models = $models;
 
         if(is_null($frequencyCount)) {
@@ -82,7 +85,8 @@ class ChartAid
         ];
     }
 
-    public function aggregate($dateString): int {
+    public function aggregate($dateString): int
+    {
         return match ($this->aggregateType) {
             'sum' => isset($this->models[$dateString])
                 ? $this->models[$dateString]->sum($this->aggregateColumn)
@@ -93,7 +97,8 @@ class ChartAid
         };
     }
 
-    public function parseCarbonDate($time): Carbon|CarbonImmutable {
+    public function parseCarbonDate($time): Carbon|CarbonImmutable
+    {
         return match ($this->frequency) {
             'weekly' => Carbon::now()->setISODate(now()->year, $time),
             'yearly' => Carbon::createFromDate($time, tz: 'Africa/Nairobi'),
@@ -102,7 +107,8 @@ class ChartAid
         };
     }
 
-    public function getLabelName(Carbon|CarbonImmutable $date): int|string {
+    public function getLabelName(Carbon|CarbonImmutable $date): int|string
+    {
         if($this->frequency === 'yearly') {
             if($date->isCurrentYear()) {
                 $name = 'This year';
@@ -152,7 +158,8 @@ class ChartAid
 
 
     /** chart   */
-    public function chartDateFormat($date): string {
+    public function chartDateFormat($date): string
+    {
         $carbonDate = Carbon::parse($date)->timezone('Africa/Nairobi');
 
         return match ($this->frequency) {
@@ -164,7 +171,8 @@ class ChartAid
         };
     }
 
-    public function chartStartDate(): Carbon|CarbonImmutable {
+    public function chartStartDate(): Carbon|CarbonImmutable
+    {
         $carbonDate = now('Africa/Nairobi');
 
         return match ($this->frequency) {

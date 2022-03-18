@@ -23,8 +23,5 @@ yarn-error.log
 
 *.tmp
 
-/.run
 /y.hide
-_ide_helper.php
-_ide_helper_models.php
-.phpstorm.meta.php
+localhost.sql

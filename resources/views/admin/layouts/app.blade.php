@@ -84,7 +84,5 @@
 @include('admin.includes.settings')
 
 @include('admin.includes.scripts')
-@yield('js')
-
 </body>
 </html>

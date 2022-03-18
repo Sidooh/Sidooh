@@ -25,7 +25,8 @@
         <div class="navbar-vertical-content scrollbar">
             <ul class="navbar-nav flex-column mb-3" id="navbarVerticalNav">
                 <li class="nav-item">
-                    <a class="nav-link dropdown-indicator" href="#dashboard" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="dashboard">
+                    <a class="nav-link dropdown-indicator" href="#dashboard" role="button" data-bs-toggle="collapse"
+                       aria-expanded="true" aria-controls="dashboard">
                         <div class="d-flex align-items-center">
                             <span class="nav-link-icon">
                                 <span class="fas fa-chart-pie"></span>
@@ -35,14 +36,16 @@
                     </a>
                     <ul class="nav collapse show" id="dashboard">
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{ route('admin.index') }}" data-bs-toggle="" aria-expanded="false">
+                            <a class="nav-link {{ nav_link_active('admin.index') }}" href="{{ route('admin.index') }}"
+                               data-bs-toggle="" aria-expanded="false">
                                 <div class="d-flex align-items-center">
                                     <span class="nav-link-text ps-1">Home</span>
                                 </div>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.analytics') }}" data-bs-toggle="" aria-expanded="false">
+                            <a class="nav-link {{ nav_link_active('admin.analytics') }}"
+                               href="{{ route('admin.analytics') }}" data-bs-toggle="" aria-expanded="false">
                                 <div class="d-flex align-items-center">
                                     <span class="nav-link-text ps-1">Analytics</span>
                                 </div>
@@ -57,19 +60,22 @@
                             <hr class="mb-0 navbar-vertical-divider"/>
                         </div>
                     </div>
-                    <a class="nav-link" href="{{ route('admin.users.index') }}" role="button">
+                    <a class="nav-link {{ nav_link_active('admin.users.index') }}"
+                       href="{{ route('admin.users.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-users"></span></span><span
                                 class="nav-link-text ps-1">Users</span></div>
                     </a>
-                    <a class="nav-link" href="{{ route('admin.accounts.index') }}"
+                    <a class="nav-link {{ nav_link_active('admin.accounts.index') }}"
+                       href="{{ route('admin.accounts.index') }}"
                        role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-mobile-alt"></span></span><span
                                 class="nav-link-text ps-1">Accounts</span>
                         </div>
                     </a>
-                    <a class="nav-link" href="{{ route('admin.referrals.index') }}"
+                    <a class="nav-link {{ nav_link_active('admin.referrals.index') }}"
+                       href="{{ route('admin.referrals.index') }}"
                        role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-redo"></span></span><span
@@ -84,13 +90,15 @@
                             <hr class="mb-0 navbar-vertical-divider"/>
                         </div>
                     </div>
-                    <a class="nav-link" href="{{ route('admin.transactions.index') }}" role="button">
+                    <a class="nav-link {{ nav_link_active('admin.transactions.index') }}"
+                       href="{{ route('admin.transactions.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-globe"></span></span><span
                                 class="nav-link-text ps-1">All transactions</span>
                         </div>
                     </a>
-                    <a class="nav-link" href="{{ route('admin.earnings.index') }}" role="button">
+                    <a class="nav-link {{ nav_link_active('admin.earnings.index') }}"
+                       href="{{ route('admin.earnings.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-money-bill-wave"></span></span><span
                                 class="nav-link-text ps-1">Earnings</span>
@@ -106,7 +114,8 @@
                             <hr class="mb-0 navbar-vertical-divider"/>
                         </div>
                     </div>
-                    <a class="nav-link" href="{{ route('admin.subscriptions.index') }}" role="button">
+                    <a class="nav-link {{ nav_link_active('admin.subscriptions.index') }}"
+                       href="{{ route('admin.subscriptions.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-globe"></span></span><span
                                 class="nav-link-text ps-1">Subscriptions</span>
@@ -127,25 +136,29 @@
                             <hr class="mb-0 navbar-vertical-divider"/>
                         </div>
                     </div>
-                    <a class="nav-link" href="{{ route('admin.vouchers.index') }}" role="button">
+                    <a class="nav-link {{ nav_link_active('admin.vouchers.index') }}"
+                       href="{{ route('admin.vouchers.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-ticket-alt"></span></span><span
                                 class="nav-link-text ps-1">Vouchers</span>
                         </div>
                     </a>
-                    <a class="nav-link" href="{{ route('admin.sub-accounts.index') }}" role="button">
+                    <a class="nav-link {{ nav_link_active('admin.sub-accounts.index') }}"
+                       href="{{ route('admin.sub-accounts.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-user"></span></span><span
                                 class="nav-link-text ps-1">Sub Accounts</span>
                         </div>
                     </a>
-                    <a class="nav-link" href="{{ route('admin.collective-investments.index') }}" role="button">
+                    <a class="nav-link {{ nav_link_active('admin.collective-investments.index') }}"
+                       href="{{ route('admin.collective-investments.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-money-check"></span></span><span
                                 class="nav-link-text ps-1">Collective Investments</span>
                         </div>
                     </a>
-                    <a class="nav-link" href="{{ route('admin.sub-investments.index') }}" role="button">
+                    <a class="nav-link {{ nav_link_active('admin.sub-investments.index') }}"
+                       href="{{ route('admin.sub-investments.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-piggy-bank"></span></span><span
                                 class="nav-link-text ps-1">Sub Investments</span>
@@ -160,7 +173,8 @@
                             <hr class="mb-0 navbar-vertical-divider"/>
                         </div>
                     </div>
-                    <a class="nav-link" href="{{ route('admin.user-notifications.index') }}" role="button">
+                    <a class="nav-link {{ nav_link_active('admin.user-notifications.index') }}"
+                       href="{{ route('admin.user-notifications.index') }}" role="button">
                         <div class="d-flex align-items-center"><span class="nav-link-icon"><span
                                     class="fas fa-envelope"></span></span><span
                                 class="nav-link-text ps-1">User Notifications</span>

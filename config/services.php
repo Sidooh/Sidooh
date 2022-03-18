@@ -57,7 +57,7 @@ return [
         'services'           => [
             'notify_dashboard'   => [
                 'enabled' => true,
-                'url'     => 'https://sidooh-notify-dashboard.herokuapp.com',
+                'url'     => 'https://notify-dashboard-cnwsrirpua-uc.a.run.app',
             ],
         ],
     ]

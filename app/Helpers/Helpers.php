@@ -32,7 +32,8 @@ use Carbon\Carbon;
 //}
 
 if(!function_exists('format_cur')) {
-    function format_cur(float $value, int $decimals = 0, string $currency = 'KES') {
+    function format_cur(float $value, int $decimals = 0, string $currency = 'KES')
+    {
         if($value < 1 & $decimals == 0) $decimals = 1;
 
         $fmt = numfmt_create('en', NumberFormatter::CURRENCY);
@@ -50,7 +51,8 @@ if(!function_exists('local_date')) {
      * @param string        $format
      * @return string|null
      */
-    function local_date(Carbon|string $date, string $format = 'n/j/Y'): ?string {
+    function local_date(Carbon|string $date, string $format = 'n/j/Y'): ?string
+    {
         if(!$date) return null;
 
         if(!$date instanceof Carbon) {
@@ -60,5 +62,14 @@ if(!function_exists('local_date')) {
         $date->setTimezone(session('timezone') ?? 'Africa/Nairobi');
 
         return $date->format($format);
+    }
+}
+
+if(!function_exists('nav_link_active')) {
+    function nav_link_active($pattern): string
+    {
+        return Route::is($pattern)
+            ? 'active'
+            : '';
     }
 }

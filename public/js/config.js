@@ -2,21 +2,19 @@
 
 /* -------------------------------------------------------------------------- */
 
-/*                           Navbar vertical config                           */
+/*                              Config                                        */
 
 /* -------------------------------------------------------------------------- */
-var urlParams = new URLSearchParams(window.location.search);
-var CONFIG = {
-    isNavbarVerticalCollapsed: urlParams.get('isNavbarVerticalCollapsed') || false,
-    theme: urlParams.get('theme') || 'light',
-    // window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
-    isRTL: urlParams.get('isRTL') || false,
-    isFluid: urlParams.get('isFluid') || false,
-    navbarStyle: urlParams.get('navbarStyle') || 'transparent',
-    navbarPosition: urlParams.get('navbarPosition') || 'vertical'
+let CONFIG = {
+    isNavbarVerticalCollapsed: false,
+    theme: 'light',
+    isRTL: false,
+    isFluid: false,
+    navbarStyle: 'transparent',
+    navbarPosition: 'vertical'
 };
 Object.keys(CONFIG).forEach(function (key) {
-    if (urlParams.get(key) || localStorage.getItem(key) === null) {
+    if (localStorage.getItem(key) === null) {
         localStorage.setItem(key, CONFIG[key]);
     }
 });
@@ -28,4 +26,3 @@ if (JSON.parse(localStorage.getItem('isNavbarVerticalCollapsed'))) {
 if (localStorage.getItem('theme') === 'dark') {
     document.documentElement.classList.add('dark');
 }
-//# sourceMappingURL=config.js.map

@@ -14,6 +14,8 @@
 <script src="{{ asset('vendors/fontawesome/all.min.js') }}"></script>
 <script src="{{ asset('vendors/lodash/lodash.min.js') }}"></script>
 <script src="{{ asset('vendors/list.js/list.min.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="{{ asset('vendors/axios/axios.min.js') }}"></script>
 <script src="{{ asset('js/theme.js') }}"></script>
 <script src="{{ asset('js/helpers.js') }}"></script>
+
+@stack('scripts')

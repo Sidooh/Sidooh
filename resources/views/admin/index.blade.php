@@ -2,7 +2,8 @@
 
 @section('content')
     <?php
-    function statusPill(string $status): array {
+    function statusPill(string $status): array
+    {
         return match (strtolower($status)) {
             'complete', 'completed', 'success' => [
                 'icon'  => 'check',
@@ -86,7 +87,8 @@
                 <!--/.bg-holder-->
                 <div class="card-body position-relative">
                     <h6>
-                        Revenue <span class="badge badge-soft-success rounded-pill ms-2" id="total-revenue-today">0</span>
+                        Revenue <span class="badge badge-soft-success rounded-pill ms-2"
+                                      id="total-revenue-today">0</span>
                     </h6>
                     <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif" id="total-revenue">0</div>
                     <a class="fw-semi-bold fs--1 text-nowrap" href="#">Statistics<span
@@ -438,84 +440,83 @@
         </div>
     </div>
 
-@endsection
+    @push('scripts')
+        <script src="{{ asset('vendors/chartisan/chart.min.js') }}"></script>
+        <script src="{{ asset('vendors/chartisan/chartisan.umd.js') }}"></script>
+        <script src="{{ asset('js/dashboard.js') }}"></script>
 
-@section('js')
-
-    <script src="{{ asset('vendors/chartisan/chart.min.js') }}"></script>
-    <script src="{{ asset('vendors/chartisan/chartisan.umd.js') }}"></script>
-    <script src="{{ asset('js/dashboard.js') }}"></script>
-
-    <script>
-        const revenueChart = new Chartisan({
-            el: '#revenue-chart',
-            url: "@chart('revenue')",
-            hooks: new ChartisanHooks()
-                .custom(({data, merge, server}) => {
-                    return merge(data, {
-                        data: {
-                            datasets: [{
-                                borderColor: localStorage.getItem('theme') === 'dark' ? utils.getColors().primary : utils.settings.chart.borderColor,
-                                borderWidth: 2,
-                            }]
-                        },
-                        options: {
-                            legend: {
-                                display: false
-                            },
-                            tooltips: {
-                                mode: 'x-axis',
-                                xPadding: 20,
-                                yPadding: 10,
-                                displayColors: false,
-                                callbacks: {
-                                    label: (tooltipItem, data) => {
-                                        return `${data.datasets[tooltipItem.datasetIndex].label} - @KES ${tooltipItem.yLabel}`;
-                                    }
-                                }
-                            },
-                            hover: {
-                                mode: 'label'
-                            },
-                            scales: {
-                                xAxes: [{
-                                    scaleLabel: {
-                                        show: true,
-                                        labelString: 'Month'
-                                    },
-                                    ticks: {
-                                        fontColor: utils.rgbaColor('#fff', 0.7),
-                                        fontStyle: 600
-                                    },
-                                    gridLines: {
-                                        color: utils.rgbaColor('#fff', 0.1),
-                                        zeroLineColor: utils.rgbaColor('#fff', 0.1),
-                                        lineWidth: 1
-                                    }
-                                }],
-                                yAxes: [{
-                                    display: false
+        <script>
+            const revenueChart = new Chartisan({
+                el: '#revenue-chart',
+                url: "@chart('revenue')",
+                hooks: new ChartisanHooks()
+                    .custom(({data, merge, server}) => {
+                        return merge(data, {
+                            data: {
+                                datasets: [{
+                                    borderColor: localStorage.getItem('theme') === 'dark' ? utils.getColors().primary : utils.settings.chart.borderColor,
+                                    borderWidth: 2,
                                 }]
+                            },
+                            options: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltips: {
+                                    mode: 'x-axis',
+                                    xPadding: 20,
+                                    yPadding: 10,
+                                    displayColors: false,
+                                    callbacks: {
+                                        label: (tooltipItem, data) => {
+                                            return `${data.datasets[tooltipItem.datasetIndex].label} - @KES ${tooltipItem.yLabel}`;
+                                        }
+                                    }
+                                },
+                                hover: {
+                                    mode: 'label'
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        scaleLabel: {
+                                            show: true,
+                                            labelString: 'Month'
+                                        },
+                                        ticks: {
+                                            fontColor: utils.rgbaColor('#fff', 0.7),
+                                            fontStyle: 600
+                                        },
+                                        gridLines: {
+                                            color: utils.rgbaColor('#fff', 0.1),
+                                            zeroLineColor: utils.rgbaColor('#fff', 0.1),
+                                            lineWidth: 1
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        display: false
+                                    }]
+                                }
                             }
-                        }
+                        })
                     })
-                })
-                .responsive()
-                .datasets([
-                    {
-                        label: 'today',
-                        type: 'line', fill: true,
-                        backgroundColor: chartGradient([255, 255, 225]),
-                        borderColor: localStorage.getItem('theme') === 'dark' ? utils.getColors().primary : utils.settings.chart.borderColor,
-                        borderWidth: 2,
-                    }, {
-                        label: 'yesterday',
-                        type: 'line', fill: true,
-                        backgroundColor: chartGradient([170, 10, 10]),
-                        borderColor: `rgb(170, 10, 10)`,
-                        borderWidth: 2,
-                    }
-                ])
-        });
-    </script>
+                    .responsive()
+                    .datasets([
+                        {
+                            label: 'today',
+                            type: 'line', fill: true,
+                            backgroundColor: chartGradient([255, 255, 225]),
+                            borderColor: localStorage.getItem('theme') === 'dark' ? utils.getColors().primary : utils.settings.chart.borderColor,
+                            borderWidth: 2,
+                        }, {
+                            label: 'yesterday',
+                            type: 'line', fill: true,
+                            backgroundColor: chartGradient([170, 10, 10]),
+                            borderColor: `rgb(170, 10, 10)`,
+                            borderWidth: 2,
+                        }
+                    ])
+            });
+        </script>
+    @endpush
+
 @endsection

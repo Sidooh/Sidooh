@@ -31,9 +31,19 @@ class DashboardController extends Controller
      * @return View|Application
      */
     public function index(): View|Application {
-        $data = $this->dashboard->statistics();
+        $data['data'] = $this->dashboard->statistics();
 
-        return view('admin.index', compact('data'));
+        return view('admin.index', $data);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return View|Application
+     */
+    public function analytics(): View|Application {
+
+        return view('admin.analytics', []);
     }
 
     #[ArrayShape([

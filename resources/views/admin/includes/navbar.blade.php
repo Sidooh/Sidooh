@@ -153,11 +153,11 @@
 </nav>
 
 <script>
-    var navbarPosition = localStorage.getItem('navbarPosition');
-    var navbarVertical = document.querySelector('.navbar-vertical');
-    var navbarTopVertical = document.querySelector('.content .navbar-top');
-    var navbarTop = document.querySelector('[data-layout] .navbar-top');
-    var navbarTopCombo = document.querySelector('.content [data-navbar-top="combo"]');
+    let navbarPosition = localStorage.getItem('navbarPosition');
+    let navbarVertical = document.querySelector('.navbar-vertical');
+    let navbarTopVertical = document.querySelector('.content .navbar-top');
+    let navbarTop = document.querySelector('[data-layout] .navbar-top');
+    let navbarTopCombo = document.querySelector('.content [data-navbar-top="combo"]');
     if (navbarPosition === 'top') {
         navbarTop.removeAttribute('style');
         navbarTopVertical.remove(navbarTopVertical);

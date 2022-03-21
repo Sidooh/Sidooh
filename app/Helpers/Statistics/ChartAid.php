@@ -39,7 +39,6 @@ class ChartAid
     #[ArrayShape(['labels' => "array", 'datasets' => "array"])]
     public function chartDataSet(Collection $models, $frequencyCount = null): array
     {
-//        sleep(3);
         $this->models = $models;
 
         if(is_null($frequencyCount)) {

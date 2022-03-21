@@ -103,7 +103,6 @@ const updateChart = chartCardBody => {
     const chartName = chartCardBody.data('chartName');
     const chartInstanceUrl = window.charts[chartName].options.url;
 
-    console.log(chartCardBody.get(0));
     chartCardBody.find(chartActions).attr('disabled', true)
 
     const queryString = $.param({

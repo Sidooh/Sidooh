@@ -16,7 +16,7 @@
                             <h4 class=" mb-0">Timeseries</h4>
                             <p class="fs--1 fw-semi-bold ">Yesterday</p>
                         </div>
-                        <div class="col-auto d-none d-sm-flex align-items-center chart-actions"></div>
+                        <fieldset class="col-auto d-none d-sm-flex align-items-center chart-actions"></fieldset>
                     </div>
                     <div id="accounts-time-series-chart" style="height: 250px;"></div>
                 </div>
@@ -32,7 +32,7 @@
                             <h4 class=" mb-0">Cumulative</h4>
                             <p class="fs--1 fw-semi-bold ">Yesterday</p>
                         </div>
-                        <div class="col-auto d-none d-sm-flex align-items-center chart-actions"></div>
+                        <fieldset class="col-auto d-none d-sm-flex align-items-center chart-actions"></fieldset>
                     </div>
                     <div id="accounts-cumulative-chart" style="height: 250px;"></div>
                 </div>
@@ -55,7 +55,7 @@
                             <h4 class=" mb-0">Timeseries</h4>
                             <p class="fs--1 fw-semi-bold ">Yesterday</p>
                         </div>
-                        <div class="col-auto d-none d-sm-flex align-items-center chart-actions"></div>
+                        <fieldset class="col-auto d-none d-sm-flex align-items-center chart-actions"></fieldset>
                     </div>
                     <div id="transactions-time-series-chart" style="height: 250px;"></div>
                 </div>
@@ -71,7 +71,7 @@
                             <h4 class=" mb-0">Cumulative</h4>
                             <p class="fs--1 fw-semi-bold ">Yesterday</p>
                         </div>
-                        <div class="col-auto d-none d-sm-flex align-items-center chart-actions"></div>
+                        <fieldset class="col-auto d-none d-sm-flex align-items-center chart-actions"></fieldset>
                     </div>
                     <div id="transactions-cumulative-chart" style="height: 250px;"></div>
                 </div>
@@ -94,7 +94,7 @@
                             <h4 class=" mb-0">Timeseries</h4>
                             <p class="fs--1 fw-semi-bold ">Yesterday</p>
                         </div>
-                        <div class="col-auto d-none d-sm-flex align-items-center chart-actions"></div>
+                        <fieldset class="col-auto d-none d-sm-flex align-items-center chart-actions"></fieldset>
                     </div>
                     <div id="revenue-time-series-chart" style="height: 250px;"></div>
                 </div>
@@ -110,7 +110,7 @@
                             <h4 class=" mb-0">Cumulative</h4>
                             <p class="fs--1 fw-semi-bold ">Yesterday</p>
                         </div>
-                        <div class="col-auto d-none d-sm-flex align-items-center chart-actions"></div>
+                        <fieldset class="col-auto d-none d-sm-flex align-items-center chart-actions"></fieldset>
                     </div>
                     <div id="revenue-cumulative-chart" style="height: 250px;"></div>
                 </div>
@@ -133,7 +133,6 @@
                     .responsive()
                     .datasets([
                         {
-                            label: 'today',
                             type: 'line', fill: true,
                             backgroundColor: chartGradient([14, 120, 210]),
                             borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
@@ -154,7 +153,6 @@
                     .responsive()
                     .datasets([
                         {
-                            label: 'today',
                             type: 'line', fill: true,
                             backgroundColor: chartGradient([14, 120, 210]),
                             borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
@@ -171,7 +169,6 @@
                     .responsive()
                     .datasets([
                         {
-                            label: 'today',
                             type: 'line', fill: true,
                             backgroundColor: chartGradient([170, 10, 10]),
                             borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
@@ -192,7 +189,6 @@
                     .responsive()
                     .datasets([
                         {
-                            label: 'today',
                             type: 'line', fill: true,
                             backgroundColor: chartGradient([170, 10, 10]),
                             borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
@@ -209,7 +205,6 @@
                     .responsive()
                     .datasets([
                         {
-                            label: 'today',
                             type: 'line', fill: true,
                             backgroundColor: chartGradient([115, 232, 49]),
                             borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
@@ -230,7 +225,6 @@
                     .responsive()
                     .datasets([
                         {
-                            label: 'today',
                             type: 'line', fill: true,
                             backgroundColor: chartGradient([115, 232, 49]),
                             borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',

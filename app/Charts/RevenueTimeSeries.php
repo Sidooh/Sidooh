@@ -4,8 +4,9 @@ declare(strict_types = 1);
 
 namespace App\Charts;
 
+use App\Enums\Frequency;
+use App\Enums\Period;
 use App\Helpers\Statistics\ChartAid;
-use App\Helpers\Statistics\Frequency;
 use App\Models\Account;
 use Chartisan\PHP\Chartisan;
 use ConsoleTVs\Charts\BaseChart;
@@ -29,24 +30,20 @@ class RevenueTimeSeries extends BaseChart
      */
     public function handler(Request $request): Chartisan
     {
-        $frequency = Frequency::tryFrom('daily') ?? Frequency::DAILY;
-        $chartAid = new ChartAid($frequency);
+        $period = Period::tryFrom($request->input('period', 'last_30_days')) ?? Period::LAST_THIRTY_DAYS;
+        $frequency = Frequency::tryFrom($request->input('frequency', 'daily')) ?? Frequency::DAILY;
+
+        $chartAid = new ChartAid($period, $frequency);
 
         $data = Account::select(['created_at'])->whereBetween('created_at', [
-            LocalCarbon::today()->startOfDay()->utc(),
-            LocalCarbon::today()->endOfDay()->utc()
-        ])->get()->groupBy(function($item) use ($chartAid) {
-            return $chartAid->chartDateFormat($item->created_at);
-        });
+            $chartAid->chartStartDate()->utc(),
+            LocalCarbon::now()->utc()
+        ])->get()->groupBy(fn($item) => $chartAid->chartDateFormat($item->created_at));
 
-        $hrs = LocalCarbon::now()->diffInHours(LocalCarbon::now()->startOfDay());
-        [
-            'datasets' => $dataset,
-            'labels' => $labels,
-        ] = $chartAid->chartDataSet($data, $hrs + 1);
+        $data = $chartAid->chartDataSet($data);
 
         return Chartisan::build()
-            ->labels($labels)
-            ->dataset('Revenue', $dataset);
+            ->labels($data['labels'])
+            ->dataset('Revenue', $data['datasets']);
     }
 }

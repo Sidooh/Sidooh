@@ -74,7 +74,7 @@ const chartActions = $('.chart-actions');
 * */
 const createSelect = className => $(document.createElement('select')).prop({
     name: 'chart_filter',
-    class: `form-select form-select-sm px-2 w-auto me-1 chart-filter ${className}`,
+    class: `form-select form-select-sm px-2 w-auto ms-1 chart-filter ${className}`,
     style: 'background-image: none'
 });
 
@@ -121,12 +121,12 @@ const statusSelect = createSelect('status')
             text: option.toUpperCase()
         })));
 
-chartActions.append(
+chartActions.prepend(frequencySelect).prepend(periodSelect).append(
     $(document.createElement('button')).prop({
         class: 'btn btn-sm btn-outline-primary ms-1 refresh-chart',
         title: 'Update chart'
     }).append($(document.createElement('i')).prop({class: 'fas fa-sync'}))
-).prepend(periodSelect).prepend(frequencySelect);
+);
 
 /*  ________________________________________________________    UPDATE CHART ON EVENT
 * */

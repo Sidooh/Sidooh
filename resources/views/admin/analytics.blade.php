@@ -56,7 +56,7 @@
                             <p class="fs--1 fw-semi-bold ">Yesterday</p>
                         </div>
                         <fieldset class="col-auto d-none d-sm-flex align-items-center chart-actions">
-                            <select class="form-select form-select-sm px-2 w-auto status chart-filter" aria-label="" style="background-image: none">
+                            <select class="form-select form-select-sm px-2 w-auto ms-1 status chart-filter" aria-label="" style="background-image: none">
                                 <option value="all">All Transactions</option>
                                 <option value="completed" selected>Completed</option>
                                 <option value="reimbursed">Reimbursed</option>
@@ -80,7 +80,7 @@
                             <p class="fs--1 fw-semi-bold ">Yesterday</p>
                         </div>
                         <fieldset class="col-auto d-none d-sm-flex align-items-center chart-actions">
-                            <select class="form-select form-select-sm px-2 w-auto status chart-filter" aria-label="" style="background-image: none">
+                            <select class="form-select form-select-sm px-2 w-auto ms-1 status chart-filter" aria-label="" style="background-image: none">
                                 <option value="all">All Transactions</option>
                                 <option value="completed" selected>Completed</option>
                                 <option value="reimbursed">Reimbursed</option>

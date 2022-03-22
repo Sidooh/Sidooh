@@ -55,7 +55,15 @@
                             <h4 class=" mb-0">Timeseries</h4>
                             <p class="fs--1 fw-semi-bold ">Yesterday</p>
                         </div>
-                        <fieldset class="col-auto d-none d-sm-flex align-items-center chart-actions"></fieldset>
+                        <fieldset class="col-auto d-none d-sm-flex align-items-center chart-actions">
+                            <select class="form-select form-select-sm px-2 w-auto status chart-filter" aria-label="" style="background-image: none">
+                                <option value="all">All Transactions</option>
+                                <option value="completed" selected>Completed</option>
+                                <option value="reimbursed">Reimbursed</option>
+                                <option value="pending">Pending</option>
+                                <option value="failed">Failed</option>
+                            </select>
+                        </fieldset>
                     </div>
                     <div id="transactions-time-series-chart" style="height: 250px;"></div>
                 </div>
@@ -71,7 +79,15 @@
                             <h4 class=" mb-0">Cumulative</h4>
                             <p class="fs--1 fw-semi-bold ">Yesterday</p>
                         </div>
-                        <fieldset class="col-auto d-none d-sm-flex align-items-center chart-actions"></fieldset>
+                        <fieldset class="col-auto d-none d-sm-flex align-items-center chart-actions">
+                            <select class="form-select form-select-sm px-2 w-auto status chart-filter" aria-label="" style="background-image: none">
+                                <option value="all">All Transactions</option>
+                                <option value="completed" selected>Completed</option>
+                                <option value="reimbursed">Reimbursed</option>
+                                <option value="pending">Pending</option>
+                                <option value="failed">Failed</option>
+                            </select>
+                        </fieldset>
                     </div>
                     <div id="transactions-cumulative-chart" style="height: 250px;"></div>
                 </div>
@@ -118,121 +134,127 @@
         </div>
     </div>
 
-@push('scripts')
-    <script src="{{ asset('vendors/chartisan/chart.min.js') }}"></script>
-    <script src="{{ asset('vendors/chartisan/chartisan.umd.js') }}"></script>
-    <script src="{{ asset('js/analytics.js') }}"></script>
+    @push('scripts')
+        <script src="{{ asset('vendors/chartisan/chart.min.js') }}"></script>
+        <script src="{{ asset('vendors/chartisan/chartisan.umd.js') }}"></script>
+        <script src="{{ asset('js/analytics.js') }}"></script>
 
-    <script>
-        window.charts = {
-            'acc-time-series': new Chartisan({
-                el: '#accounts-time-series-chart',
-                url: "@chart('time-series.accounts')",
-                hooks: new ChartisanHooks()
-                    .custom(({data, merge}) => merge(data, mergeOptions(data)))
-                    .responsive()
-                    .datasets([
-                        {
-                            type: 'line', fill: true,
-                            backgroundColor: chartGradient([14, 120, 210]),
-                            borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
-                            borderWidth: 2,
-                        }
-                    ])
-            }),
-            'acc-cumulative': new Chartisan({
-                el: '#accounts-cumulative-chart',
-                url: "@chart('cumulative.accounts')",
-                hooks: new ChartisanHooks()
-                    .custom(({data, merge}) => {
-                        const timeSeries = data.data.datasets[0].data
-                        data.data.datasets[0].data = timeSeries.reduce((a, b, i) => i === 0 ? [b] : [...a, b + a[i - 1]], []);
+        <script>
+            window.charts = {
+                'acc-time-series': new Chartisan({
+                    el: '#accounts-time-series-chart',
+                    url: "@chart('time-series.accounts')",
+                    hooks: new ChartisanHooks()
+                        .custom(({data, merge}) => merge(data, mergeOptions(data)))
+                        .responsive()
+                        .datasets([
+                            {
+                                type: 'line', fill: true,
+                                backgroundColor: chartGradient([14, 120, 210]),
+                                borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
+                                borderWidth: 2,
+                            }
+                        ])
+                }),
+                'acc-cumulative': new Chartisan({
+                    el: '#accounts-cumulative-chart',
+                    url: "@chart('cumulative.accounts')",
+                    hooks: new ChartisanHooks()
+                        .custom(({data, merge}) => {
+                            const timeSeries = data.data.datasets[0].data;
+                            data.data.datasets[0].data = timeSeries.reduce((a, b, i) => i === 0 ? [b] : [
+                                ...a, b + a[i - 1]
+                            ], []);
 
-                        return merge(data, mergeOptions(data))
-                    })
-                    .responsive()
-                    .datasets([
-                        {
-                            type: 'line', fill: true,
-                            backgroundColor: chartGradient([14, 120, 210]),
-                            borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
-                            borderWidth: 2,
-                        }
-                    ])
-            }),
+                            return merge(data, mergeOptions(data));
+                        })
+                        .responsive()
+                        .datasets([
+                            {
+                                type: 'line', fill: true,
+                                backgroundColor: chartGradient([14, 120, 210]),
+                                borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
+                                borderWidth: 2,
+                            }
+                        ])
+                }),
 
-            'trans-time-series': new Chartisan({
-                el: '#transactions-time-series-chart',
-                url: "@chart('cumulative.transactions')",
-                hooks: new ChartisanHooks()
-                    .custom(({data, merge}) => merge(data, mergeOptions(data)))
-                    .responsive()
-                    .datasets([
-                        {
-                            type: 'line', fill: true,
-                            backgroundColor: chartGradient([170, 10, 10]),
-                            borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
-                            borderWidth: 2,
-                        }
-                    ])
-            }),
-            'trans-cumulative': new Chartisan({
-                el: '#transactions-cumulative-chart',
-                url: "@chart('cumulative.transactions')",
-                hooks: new ChartisanHooks()
-                    .custom(({data, merge}) => {
-                        const timeSeries = data.data.datasets[0].data
-                        data.data.datasets[0].data = timeSeries.reduce((a, b, i) => i === 0 ? [b] : [...a, b + a[i - 1]], []);
+                'trans-time-series': new Chartisan({
+                    el: '#transactions-time-series-chart',
+                    url: "@chart('time-series.transactions')",
+                    hooks: new ChartisanHooks()
+                        .custom(({data, merge}) => merge(data, mergeOptions(data)))
+                        .responsive()
+                        .datasets([
+                            {
+                                type: 'line', fill: true,
+                                backgroundColor: chartGradient([170, 10, 10]),
+                                borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
+                                borderWidth: 2,
+                            }
+                        ])
+                }),
+                'trans-cumulative': new Chartisan({
+                    el: '#transactions-cumulative-chart',
+                    url: "@chart('cumulative.transactions')",
+                    hooks: new ChartisanHooks()
+                        .custom(({data, merge}) => {
+                            const timeSeries = data.data.datasets[0].data;
+                            data.data.datasets[0].data = timeSeries.reduce((a, b, i) => i === 0 ? [b] : [
+                                ...a, b + a[i - 1]
+                            ], []);
 
-                        return merge(data, mergeOptions(data))
-                    })
-                    .responsive()
-                    .datasets([
-                        {
-                            type: 'line', fill: true,
-                            backgroundColor: chartGradient([170, 10, 10]),
-                            borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
-                            borderWidth: 2,
-                        }
-                    ])
-            }),
+                            return merge(data, mergeOptions(data));
+                        })
+                        .responsive()
+                        .datasets([
+                            {
+                                type: 'line', fill: true,
+                                backgroundColor: chartGradient([170, 10, 10]),
+                                borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
+                                borderWidth: 2,
+                            }
+                        ])
+                }),
 
-            'rev-time-series': new Chartisan({
-                el: '#revenue-time-series-chart',
-                url: "@chart('time-series.revenue')",
-                hooks: new ChartisanHooks()
-                    .custom(({data, merge}) => merge(data, mergeOptions(data)))
-                    .responsive()
-                    .datasets([
-                        {
-                            type: 'line', fill: true,
-                            backgroundColor: chartGradient([115, 232, 49]),
-                            borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
-                            borderWidth: 2,
-                        }
-                    ])
-            }),
-            'rev-cumulative': new Chartisan({
-                el: '#revenue-cumulative-chart',
-                url: "@chart('cumulative.revenue')",
-                hooks: new ChartisanHooks()
-                    .custom(({data, merge}) => {
-                        const timeSeries = data.data.datasets[0].data
-                        data.data.datasets[0].data = timeSeries.reduce((a, b, i) => i === 0 ? [b] : [...a, b + a[i - 1]], []);
+                'rev-time-series': new Chartisan({
+                    el: '#revenue-time-series-chart',
+                    url: "@chart('time-series.revenue')",
+                    hooks: new ChartisanHooks()
+                        .custom(({data, merge}) => merge(data, mergeOptions(data)))
+                        .responsive()
+                        .datasets([
+                            {
+                                type: 'line', fill: true,
+                                backgroundColor: chartGradient([115, 232, 49]),
+                                borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
+                                borderWidth: 2,
+                            }
+                        ])
+                }),
+                'rev-cumulative': new Chartisan({
+                    el: '#revenue-cumulative-chart',
+                    url: "@chart('cumulative.revenue')",
+                    hooks: new ChartisanHooks()
+                        .custom(({data, merge}) => {
+                            const timeSeries = data.data.datasets[0].data;
+                            data.data.datasets[0].data = timeSeries.reduce((a, b, i) => i === 0 ? [b] : [
+                                ...a, b + a[i - 1]
+                            ], []);
 
-                        return merge(data, mergeOptions(data))
-                    })
-                    .responsive()
-                    .datasets([
-                        {
-                            type: 'line', fill: true,
-                            backgroundColor: chartGradient([115, 232, 49]),
-                            borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
-                            borderWidth: 2,
-                        }
-                    ])
-            })
-        }
-    </script>
-@endpush
+                            return merge(data, mergeOptions(data));
+                        })
+                        .responsive()
+                        .datasets([
+                            {
+                                type: 'line', fill: true,
+                                backgroundColor: chartGradient([115, 232, 49]),
+                                borderColor: localStorage.getItem('theme') === 'dark' ? 'rgba(10, 23, 39, .3)' : 'rgba(255, 255, 255, .7)',
+                                borderWidth: 2,
+                            }
+                        ])
+                })
+            };
+        </script>
+    @endpush
 @endsection

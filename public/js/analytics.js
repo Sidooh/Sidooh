@@ -45,7 +45,18 @@ const mergeOptions = (data, config = {}) => ({
             ],
             yAxes: [
                 {
-                    display: false
+                    ticks: {
+                        callback: function(value, index, ticks) {
+                            const label = data.data.datasets[0].label;
+
+                            if (label.toLowerCase() === 'revenue') {
+                                return new Intl.NumberFormat('en-GB').format(value)
+                            }
+
+                            return value;
+                        }
+                    }
+                    // display: false
                 }
             ]
         },
@@ -63,7 +74,8 @@ const chartActions = $('.chart-actions');
 * */
 const createSelect = className => $(document.createElement('select')).prop({
     name: 'chart_filter',
-    class: `form-select form-select-sm me-1 chart-filter ${className}`
+    class: `form-select form-select-sm px-2 w-auto me-1 chart-filter ${className}`,
+    style: 'background-image: none'
 });
 
 
@@ -102,13 +114,19 @@ const frequencySelect = createSelect('frequency')
         value: option.value,
         text: option.title
     })));
+const statusSelect = createSelect('status')
+    .append(['all', 'completed', 'reimbursed', 'pending', 'failed'].map(option => $(document.createElement('option'))
+        .prop({
+            value: option,
+            text: option.toUpperCase()
+        })));
 
 chartActions.append(
     $(document.createElement('button')).prop({
-        class: 'btn btn-sm btn-outline-primary me-1 refresh-chart',
+        class: 'btn btn-sm btn-outline-primary ms-1 refresh-chart',
         title: 'Update chart'
     }).append($(document.createElement('i')).prop({class: 'fas fa-sync'}))
-).append(periodSelect).append(frequencySelect);
+).prepend(periodSelect).prepend(frequencySelect);
 
 /*  ________________________________________________________    UPDATE CHART ON EVENT
 * */
@@ -121,6 +139,7 @@ const updateChart = chartCardBody => {
     const queryString = $.param({
         period: chartCardBody.find($('.period')).val(),
         frequency: chartCardBody.find($('.frequency')).val(),
+        status: chartCardBody.find($('.status')).val()
     });
 
     window.charts[chartName].update({

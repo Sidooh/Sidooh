@@ -124,9 +124,8 @@
                         </div>
                         <div class="col-lg-4">
                             <h5 class="mb-3 fs-0">Payment</h5>
-                            <div class="d-flex"><img class="me-3" src="{{ asset('img/icons/mpesa.png') }}" width="40"
-                                                     height="30"
-                                                     alt=""/>
+                            <div class="d-flex">
+                                <img class="me-3" src="{{ asset('images/icons/cash.png') }}" width="40" height="40" alt=""/>
                                 <div class="flex-1">
                                     <h6 class="mb-0">{{ $transaction->payment->full_type }}</h6>
                                     <p class="mb-0 fs--1">

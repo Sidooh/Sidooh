@@ -1,4 +1,4 @@
-const mergeOptions = (config = {}) => ({
+const mergeOptions = (data, config = {}) => ({
     options: {
         legend: {
             display: false
@@ -8,6 +8,19 @@ const mergeOptions = (config = {}) => ({
             xPadding: 20,
             yPadding: 10,
             displayColors: false,
+            callbacks: {
+                label: (tooltipItem, data) => {
+                    const label = data.datasets[tooltipItem.datasetIndex].label;
+
+                    if (label.toLowerCase() === 'revenue') {
+                        const currency = new Intl.NumberFormat('en-GB', {style: 'currency', currency: 'KES'})
+                            .format(tooltipItem.yLabel);
+                        return `Amount: ${currency}`;
+                    }
+
+                    return `${tooltipItem.yLabel} ${label}`;
+                }
+            }
         },
         hover: {
             mode: 'label'
@@ -43,7 +56,7 @@ const mergeOptions = (config = {}) => ({
 
 /*  ________________________________________________________    DEFINE GLOBALS
 * */
-const chartActions = $('.chart-actions')
+const chartActions = $('.chart-actions');
 
 
 /*  ________________________________________________________    SET UP CHART ACTIONS
@@ -103,7 +116,7 @@ const updateChart = chartCardBody => {
     const chartName = chartCardBody.data('chartName');
     const chartInstanceUrl = window.charts[chartName].options.url;
 
-    chartCardBody.find(chartActions).attr('disabled', true)
+    chartCardBody.find(chartActions).attr('disabled', true);
 
     const queryString = $.param({
         period: chartCardBody.find($('.period')).val(),
@@ -112,17 +125,17 @@ const updateChart = chartCardBody => {
 
     window.charts[chartName].update({
         url: `${chartInstanceUrl}?${queryString}`,
-    })
+    });
 
     window.charts[chartName].options.url = chartInstanceUrl;
 
-    chartCardBody.find(chartActions).attr('disabled', false)
-}
+    chartCardBody.find(chartActions).attr('disabled', false);
+};
 
 $(document).on('click', '.refresh-chart', function () {
     const chartCardBody = $(this).closest('.card-body.position-relative');
 
-    updateChart(chartCardBody)
+    updateChart(chartCardBody);
 });
 
 $(document).on('change', 'select.period', function () {
@@ -135,13 +148,13 @@ $(document).on('change', 'select.period', function () {
         text: option.title
     })));
 
-    $(frequencySelect).attr('disabled', ['today', 'last_7_days', 'last_6_months'].includes(period))
+    $(frequencySelect).attr('disabled', ['today', 'last_7_days', 'last_6_months'].includes(period));
 });
 
 $(document).on('change', '.chart-filter', function () {
     const chartCardBody = $(this).closest('.card-body.position-relative');
 
-    updateChart(chartCardBody)
+    updateChart(chartCardBody);
 });
 
 

@@ -7,7 +7,7 @@ namespace App\Charts;
 use App\Enums\Frequency;
 use App\Enums\Period;
 use App\Helpers\Statistics\ChartAid;
-use App\Models\Account;
+use App\Models\Transaction;
 use Chartisan\PHP\Chartisan;
 use ConsoleTVs\Charts\BaseChart;
 use Illuminate\Http\Request;
@@ -27,9 +27,9 @@ class CumulativeRevenue extends BaseChart
         $period = Period::tryFrom($request->input('period', 'last_30_days')) ?? Period::LAST_THIRTY_DAYS;
         $frequency = Frequency::tryFrom($request->input('frequency', 'daily')) ?? Frequency::DAILY;
 
-        $chartAid = new ChartAid($period, $frequency);
+        $chartAid = new ChartAid($period, $frequency, 'sum', 'amount');
 
-        $data = Account::select(['created_at'])->whereBetween('created_at', [
+        $data = Transaction::select(['created_at', 'amount'])->whereBetween('created_at', [
             $chartAid->chartStartDate()->utc(),
             LocalCarbon::now()->utc()
         ])->get()->groupBy(fn($item) => $chartAid->chartDateFormat($item->created_at));

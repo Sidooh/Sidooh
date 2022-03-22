@@ -129,7 +129,7 @@
                 el: '#accounts-time-series-chart',
                 url: "@chart('time-series.accounts')",
                 hooks: new ChartisanHooks()
-                    .custom(({data, merge}) => merge(data, mergeOptions()))
+                    .custom(({data, merge}) => merge(data, mergeOptions(data)))
                     .responsive()
                     .datasets([
                         {
@@ -148,7 +148,7 @@
                         const timeSeries = data.data.datasets[0].data
                         data.data.datasets[0].data = timeSeries.reduce((a, b, i) => i === 0 ? [b] : [...a, b + a[i - 1]], []);
 
-                        return merge(data, mergeOptions())
+                        return merge(data, mergeOptions(data))
                     })
                     .responsive()
                     .datasets([
@@ -165,7 +165,7 @@
                 el: '#transactions-time-series-chart',
                 url: "@chart('cumulative.transactions')",
                 hooks: new ChartisanHooks()
-                    .custom(({data, merge}) => merge(data, mergeOptions()))
+                    .custom(({data, merge}) => merge(data, mergeOptions(data)))
                     .responsive()
                     .datasets([
                         {
@@ -184,7 +184,7 @@
                         const timeSeries = data.data.datasets[0].data
                         data.data.datasets[0].data = timeSeries.reduce((a, b, i) => i === 0 ? [b] : [...a, b + a[i - 1]], []);
 
-                        return merge(data, mergeOptions())
+                        return merge(data, mergeOptions(data))
                     })
                     .responsive()
                     .datasets([
@@ -201,7 +201,7 @@
                 el: '#revenue-time-series-chart',
                 url: "@chart('time-series.revenue')",
                 hooks: new ChartisanHooks()
-                    .custom(({data, merge}) => merge(data, mergeOptions()))
+                    .custom(({data, merge}) => merge(data, mergeOptions(data)))
                     .responsive()
                     .datasets([
                         {
@@ -220,7 +220,7 @@
                         const timeSeries = data.data.datasets[0].data
                         data.data.datasets[0].data = timeSeries.reduce((a, b, i) => i === 0 ? [b] : [...a, b + a[i - 1]], []);
 
-                        return merge(data, mergeOptions())
+                        return merge(data, mergeOptions(data))
                     })
                     .responsive()
                     .datasets([

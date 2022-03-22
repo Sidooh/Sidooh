@@ -55,7 +55,7 @@ class ChartAid
                 },
                 Period::LAST_SIX_MONTHS => 6,
                 Period::YTD => match ($this->frequency) {
-                    Frequency::QUARTERLY => 3,
+                    Frequency::QUARTERLY => 4,
                     default => 12,
                 },
             };
@@ -78,6 +78,9 @@ class ChartAid
                     break;
                 case 'weekly':
                     $date->subWeek();
+                    break;
+                case 'quarterly':
+                    $date->subMonths(3);
                     break;
                 case 'yearly':
                 case 'monthly':
@@ -124,8 +127,8 @@ class ChartAid
     public function parseCarbonDate($time): Carbon|CarbonImmutable
     {
         return match ($this->frequency) {
-            Frequency::WEEKLY => Carbon::now()->setISODate(now()->year, $time),
             Frequency::YEARLY => Carbon::createFromDate($time, tz: 'Africa/Nairobi'),
+            Frequency::WEEKLY => Carbon::now()->setISODate(now()->year, $time),
             Frequency::DAILY => Carbon::createFromDate(day: $time, tz: 'Africa/Nairobi'),
             Frequency::HOURLY => Carbon::createFromTime($time, tz: 'Africa/Nairobi'),
             default => Carbon::parse($time, 'Africa/Nairobi')
@@ -144,6 +147,13 @@ class ChartAid
             } else {
                 $name = $date->year;
             }
+        } else if($freq === 'quarterly') {
+            $endDate = $date->isCurrentMonth()
+                ? "Current Month"
+                : $date->shortMonthName;
+            $startDate = $date->subMonths(2)->shortMonthName;
+
+            $name = "$startDate - $endDate";
         } else if($freq === 'monthly') {
             if($date->isCurrentMonth()) {
                 $name = 'This month';
@@ -172,7 +182,7 @@ class ChartAid
                     ? $date->shortDayName
                     : $date->format('dS');
             }
-        } else if($freq === 'hourly') {
+        } else {
             if($date->isCurrentHour()) {
                 $name = 'Current hour';
             } else if($date->isLastHour()) {
@@ -185,7 +195,8 @@ class ChartAid
         return $name;
     }
 
-    public function setShowFuture(bool $showFuture) {
+    public function setShowFuture(bool $showFuture)
+    {
         $this->showFuture = $showFuture;
     }
 
@@ -197,7 +208,7 @@ class ChartAid
 
         return match ($this->frequency) {
             Frequency::YEARLY => $carbonDate->format('Y'),
-            Frequency::MONTHLY => $carbonDate->format('Y-m'),
+            Frequency::QUARTERLY, Frequency::MONTHLY => $carbonDate->format('Y-m'),
             Frequency::WEEKLY => $carbonDate->format('W'),
             Frequency::DAILY => $carbonDate->format('d'),
             Frequency::HOURLY => $carbonDate->format('H'),

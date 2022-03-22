@@ -4,12 +4,25 @@ declare(strict_types = 1);
 
 namespace App\Charts;
 
+use App\Enums\Frequency;
+use App\Enums\Period;
+use App\Helpers\Statistics\ChartAid;
+use App\Models\Transaction;
 use Chartisan\PHP\Chartisan;
 use ConsoleTVs\Charts\BaseChart;
 use Illuminate\Http\Request;
+use LocalCarbon;
 
 class TransactionsTimeSeries extends BaseChart
 {
+    /**
+     * Determines the name suffix of the chart route.
+     * This will also be used to get the chart URL
+     * from the blade directive. If null, the chart
+     * name will be used.
+     */
+    public ?string $routeName = 'time-series.transactions';
+
     /**
      * Handles the HTTP request for the given chart.
      * It must always return an instance of Chartisan
@@ -17,9 +30,22 @@ class TransactionsTimeSeries extends BaseChart
      */
     public function handler(Request $request): Chartisan
     {
+        $period = Period::tryFrom($request->input('period', 'last_30_days')) ?? Period::LAST_THIRTY_DAYS;
+        $frequency = Frequency::tryFrom($request->input('frequency', 'daily')) ?? Frequency::DAILY;
+
+        $chartAid = new ChartAid($period, $frequency);
+
+        $data = Transaction::select(['created_at'])->whereBetween('created_at', [
+            $chartAid->chartStartDate()->utc(),
+            LocalCarbon::now()->utc()
+        ])->get()->groupBy(function($item) use ($chartAid) {
+            return $chartAid->chartDateFormat($item->created_at);
+        });
+
+        $data = $chartAid->chartDataSet($data);
+
         return Chartisan::build()
-            ->labels(['First', 'Second', 'Third'])
-            ->dataset('Sample', [1, 2, 3])
-            ->dataset('Sample 2', [3, 2, 1]);
+            ->labels($data['labels'])
+            ->dataset('Transactions', $data['datasets']);
     }
 }

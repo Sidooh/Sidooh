@@ -21,16 +21,16 @@
             <div class="scrollbar-overlay nine-dots-dropdown">
                 <div class="card-body px-3">
                     <div class="row text-center gx-0 gy-0">
-                        <div class="col-4">
-                            <a class="d-block hover-bg-200 px-2 py-3 rounded-3 text-center text-decoration-none"
-                               href="#" target="_blank">
+                        <div class="col-4" disabled>
+                            <div class="d-block bg-100 px-2 py-3 text-center text-decoration-none"
+                               href="#">
                                 <div class="avatar avatar-2xl">
                                     <div class="avatar-name rounded-circle bg-soft-light text-primary">
                                         <span class="fs-2">A</span>
                                     </div>
                                 </div>
                                 <p class="mb-0 fw-medium text-800 text-truncate fs--2">Accounts</p>
-                            </a>
+                            </div>
                         </div>
                         <div class="col-4">
                             <a class="d-block hover-bg-200 px-2 py-3 rounded-3 text-center text-decoration-none"
@@ -44,59 +44,59 @@
                             </a>
                         </div>
                         <div class="col-4">
-                            <a class="d-block hover-bg-200 px-2 py-3 rounded-3 text-center text-decoration-none"
-                               href="#" target="_blank">
+                            <div class="d-block bg-100 px-2 py-3 text-center text-decoration-none"
+                               href="#">
                                 <div class="avatar avatar-2xl">
                                     <div class="avatar-name rounded-circle bg-soft-dark text-primary">
                                         <span class="fs-2">S</span>
                                     </div>
                                 </div>
                                 <p class="mb-0 fw-medium text-800 text-truncate fs--2">Savings</p>
-                            </a>
+                            </div>
                         </div>
                         <div class="col-4">
-                            <a class="d-block hover-bg-200 px-2 py-3 rounded-3 text-center text-decoration-none"
-                               href="#" target="_blank">
+                            <div class="d-block bg-100 px-2 py-3 text-center text-decoration-none"
+                               href="#">
                                 <div class="avatar avatar-2xl">
                                     <div class="avatar-name rounded-circle bg-soft-info text-primary">
                                         <span class="fs-2">P</span>
                                     </div>
                                 </div>
                                 <p class="mb-0 fw-medium text-800 text-truncate fs--2">Products</p>
-                            </a>
+                            </div>
                         </div>
                         <div class="col-4">
-                            <a class="d-block hover-bg-200 px-2 py-3 rounded-3 text-center text-decoration-none"
-                               href="#" target="_blank">
+                            <div class="d-block bg-100 px-2 py-3 text-center text-decoration-none"
+                               href="#">
                                 <div class="avatar avatar-2xl">
                                     <div class="avatar-name rounded-circle bg-soft-danger text-primary">
                                         <span class="fs-2">P</span>
                                     </div>
                                 </div>
                                 <p class="mb-0 fw-medium text-800 text-truncate fs--2">Payments</p>
-                            </a>
+                            </div>
                         </div>
                         <div class="col-4">
-                            <a class="d-block hover-bg-200 px-2 py-3 rounded-3 text-center text-decoration-none"
-                               href="#" target="_blank">
+                            <div class="d-block bg-100 px-2 py-3 text-center text-decoration-none"
+                               href="#">
                                 <div class="avatar avatar-2xl">
-                                    <div class="avatar-name rounded-circle bg-soft-secondary text-primary">
+                                    <div class="avatar-name rounded-circle bg-100 text-primary">
                                         <span class="fs-2">E</span>
                                     </div>
                                 </div>
                                 <p class="mb-0 fw-medium text-800 text-truncate fs--2">Enterprise</p>
-                            </a>
+                            </div>
                         </div>
                         <div class="col-4">
-                            <a class="d-block hover-bg-200 px-2 py-3 rounded-3 text-center text-decoration-none"
-                               href="#" target="_blank">
+                            <div class="d-block bg-100 px-2 py-3 text-center text-decoration-none"
+                               href="#">
                                 <div class="avatar avatar-2xl">
                                     <div class="avatar-name rounded-circle bg-soft-success text-primary">
                                         <span class="fs-2">U</span>
                                     </div>
                                 </div>
                                 <p class="mb-0 fw-medium text-800 text-truncate fs--2">USSD</p>
-                            </a>
+                            </div>
                         </div>
 
                         <div class="col-12">
@@ -104,7 +104,7 @@
                         </div>
 
                         <div class="col-4">
-                            <a class="d-block hover-bg-200 px-2 py-3 rounded-3 text-center text-decoration-none"
+                            <a class="d-block hover-bg-200 px-2 py-3 text-center text-decoration-none"
                                href="pages/user/profile.html" target="_blank">
                                 <div class="avatar avatar-2xl">
                                     <img class="rounded-circle" src="{{ asset('images/team/2.jpg') }}" alt=""/>
@@ -113,7 +113,7 @@
                             </a>
                         </div>
                         <div class="col-4">
-                            <a class="d-block hover-bg-200 px-2 py-3 rounded-3 text-center text-decoration-none"
+                            <a class="d-block hover-bg-200 px-2 py-3 text-center text-decoration-none"
                                href="#!" target="_blank">
                                 <img class="rounded" src="{{ asset('images/nav-icons/trello.png') }}" alt="" width="40"
                                      height="40"/>
@@ -121,7 +121,7 @@
                             </a>
                         </div>
                         <div class="col-4">
-                            <a class="d-block hover-bg-200 px-2 py-3 rounded-3 text-center text-decoration-none"
+                            <a class="d-block hover-bg-200 px-2 py-3 text-center text-decoration-none"
                                href="#!" target="_blank">
                                 <img class="rounded" src="{{ asset("images/nav-icons/slack.png") }}" alt="" width="40"
                                      height="40"/>
@@ -129,7 +129,7 @@
                             </a>
                         </div>
                         <div class="col-4">
-                            <a class="d-block hover-bg-200 px-2 py-3 rounded-3 text-center text-decoration-none"
+                            <a class="d-block hover-bg-200 px-2 py-3 text-center text-decoration-none"
                                href="#!" target="_blank">
                                 <img class="rounded" src="{{ asset("images/nav-icons/google.png") }}" alt="" width="40"
                                      height="40"/>
@@ -137,7 +137,7 @@
                             </a>
                         </div>
                         <div class="col-4">
-                            <a class="d-block hover-bg-200 px-2 py-3 rounded-3 text-center text-decoration-none"
+                            <a class="d-block hover-bg-200 px-2 py-3 text-center text-decoration-none"
                                href="https://github.com/Sidooh" target="_blank" rel="noopener noreferrer">
                                 <img class="rounded" src="{{ asset("images/nav-icons/github-light.png") }}" alt=""
                                      width="40"

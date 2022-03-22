@@ -17,7 +17,7 @@
         </div>
         <a class="navbar-brand" href="{{ route('admin.index') }}">
             <div class="d-flex align-items-center py-3">
-                <img class="me-2" src="{{ asset('images/logo.png') }}" alt="" style="width: 100%"/>
+                <img class="me-2" src="{{ asset('images/logo.png') }}" alt="" width="100"/>
             </div>
         </a>
     </div>

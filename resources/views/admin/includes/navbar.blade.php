@@ -4,8 +4,10 @@
             aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span
                 class="toggle-line"></span></span></button>
     <a class="navbar-brand me-1 me-sm-3" href="{{ route('admin.index') }}">
-        <div class="d-flex align-items-center"><img class="me-2" src="{{ asset('images/logo.png') }}" alt=""
-                                                    width="40"/><span class="font-sans-serif">sidooh</span></div>
+        <div class="d-flex align-items-center">
+            <img class="me-2" src="{{ asset('images/logo.png') }}" alt="" width="100"/>
+            <span class="font-sans-serif">sidooh</span>
+        </div>
     </a>
     <ul class="navbar-nav align-items-center d-none d-lg-block">
         <li class="nav-item">
@@ -64,7 +66,8 @@
                             class="dropdown-item px-card py-2" href="#!">
                             <div class="d-flex align-items-center">
                                 <div class="file-thumbnail me-2"><img class="border h-100 w-100 fit-cover rounded-3"
-                                                                      src="{{ asset('images/products/3-thumb.png') }}" alt=""/>
+                                                                      src="{{ asset('images/products/3-thumb.png') }}"
+                                                                      alt=""/>
                                 </div>
                                 <div class="flex-1">
                                     <h6 class="mb-0 title">iPhone</h6>
@@ -76,7 +79,8 @@
                         <a class="dropdown-item px-card py-2" href="#!">
                             <div class="d-flex align-items-center">
                                 <div class="file-thumbnail me-2"><img class="img-fluid"
-                                                                      src="{{ asset('images/icons/zip.png') }}" alt=""/></div>
+                                                                      src="{{ asset('images/icons/zip.png') }}" alt=""/>
+                                </div>
                                 <div class="flex-1">
                                     <h6 class="mb-0 title">Sidooh v1.8.2</h6>
                                     <p class="fs--2 mb-0"><span class="fw-semi-bold">John</span><span
@@ -142,7 +146,8 @@
         @include('admin.includes.waffle')
 
         <li class="nav-item dropdown">
-            <a class="nav-link pe-0" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link pe-0" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
                 <div class="avatar avatar-xl">
                     <img class="rounded-circle" src="{{ asset('images/team/2.jpg') }}" alt=""/>
                 </div>

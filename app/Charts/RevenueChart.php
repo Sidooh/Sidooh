@@ -4,9 +4,10 @@ declare(strict_types = 1);
 
 namespace App\Charts;
 
+use App\Enums\Frequency;
+use App\Enums\Period;
 use App\Enums\Status;
 use App\Helpers\Statistics\ChartAid;
-use App\Helpers\Statistics\Frequency;
 use App\Models\Transaction;
 use Chartisan\PHP\Chartisan;
 use ConsoleTVs\Charts\BaseChart;
@@ -31,8 +32,8 @@ class RevenueChart extends BaseChart
      */
     public function handler(Request $request): Chartisan
     {
-        $frequency = Frequency::tryFrom((string)$request->input('frequency')) ?? Frequency::DAILY;
-        $status = $request->input('paymentStatus', 'successful');
+        $frequency = Frequency::tryFrom((string)$request->input('frequency')) ?? Frequency::HOURLY;
+        $status = $request->input('paymentStatus', 'completed');
 
         $whereStatus = match ($status) {
             'completed' => ['COMPLETED'],
@@ -42,7 +43,8 @@ class RevenueChart extends BaseChart
             default => Arr::pluck(Status::cases(), 'name'),
         };
 
-        $chartAid = new ChartAid($frequency, 'sum', 'amount');
+        $chartAid = new ChartAid(Period::TODAY, $frequency, 'sum', 'amount');
+        $chartAid->setShowFuture(true);
 
         $yesterday = Transaction::select(['created_at', 'amount'])->whereBetween('created_at', [
             LocalCarbon::yesterday()->startOfDay()->utc(),
@@ -60,11 +62,7 @@ class RevenueChart extends BaseChart
 
         $todayHrs = LocalCarbon::now()->diffInHours(LocalCarbon::now()->startOfDay());
         ['datasets' => $datasetsToday] = $chartAid->chartDataSet($today, $todayHrs + 1);
-        $revenueYesterday = $chartAid->chartDataSet(
-            $yesterday, $frequency->value === 'daily'
-            ? 24
-            : null
-        );
+        $revenueYesterday = $chartAid->chartDataSet($yesterday);
 
         return Chartisan::build()
             ->labels($revenueYesterday['labels'])

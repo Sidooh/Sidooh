@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\Statistics\ChartAid;
-use App\Helpers\Statistics\Frequency;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\Models\Transaction;
@@ -13,7 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\View\View;
 use JetBrains\PhpStorm\ArrayShape;
-use LocalCarbon;
 
 class DashboardController extends Controller
 {
@@ -28,7 +25,7 @@ class DashboardController extends Controller
     {
         $this->dashboard = $dashboard;
 
-//        $this->factory();
+        $this->factory();
     }
 
     /**
@@ -108,48 +105,28 @@ class DashboardController extends Controller
 
     public function factory()
     {
-        $frequency = Frequency::tryFrom('daily') ?? Frequency::DAILY;
-        $chartAid = new ChartAid($frequency);
-
-        $data = Account::select(['created_at'])->whereBetween('created_at', [
-            LocalCarbon::today()->startOfDay()->utc(),
-            LocalCarbon::today()->endOfDay()->utc()
-        ])->get()->groupBy(function($item) use ($chartAid) {
-            return $chartAid->chartDateFormat($item->created_at);
-        });
-
-        $hrs = LocalCarbon::now()->diffInHours(LocalCarbon::now()->startOfDay());
-        [
-            'datasets' => $dataset,
-            'labels' => $labels,
-        ] = $chartAid->chartDataSet($data, $hrs + 1);
-
-        dd($labels, $dataset);
-
         /**_________________________________    ACCOUNTS FACTORY
          */
-        /*$accounts = Account::get()->map(fn($accounts) => [
-            ...$accounts->toArray(),
-            "created_at" => Carbon::now()->subHours(mt_rand(0, 24)),
-            "updated_at" => $accounts->updated_at
-        ])->toArray();
+//        $accounts = Account::get()->map(fn($accounts) => [
+//            ...$accounts->toArray(),
+//            "created_at" => now()->endOfDay()->subDays(mt_rand(0, 30)),
+//            "updated_at" => $accounts->updated_at
+//        ])->toArray();
+//
+//        Account::upsert($accounts, ["id"], ["created_at"]);
 
-        Account::upsert($accounts, ["id"], ["created_at"]);
-
-        dd($accounts);*/
+//        dd($accounts);
 
         /**_________________________________    TRANSACTIONS FACTORY
          */
-        /*$transactions = Transaction::limit(mt_rand(70, 130))->get()->map(fn($transaction) => [
-            ...$transaction->toArray(),
-            "created_at" => Carbon::now()->subHours(mt_rand(0, 24)),
-            "updated_at" => $transaction->updated_at
-        ])->toArray();
+//        $transactions = Transaction::limit(mt_rand(70, 130))->get()->map(fn($transaction) => [
+//            ...$transaction->toArray(),
+//            "created_at" => Carbon::now()->subHours(mt_rand(0, 24)),
+//            "updated_at" => $transaction->updated_at
+//        ])->toArray();
+//
+//        Transaction::upsert($transactions, ["id"], ["created_at"]);
 
-        Transaction::upsert($transactions, ["id"], ["created_at"]);
-
-        dd($transactions);
-
-        Transaction::whereStatus('failed')->update(['status' => 'FAILED']);*/
+//        dd($transactions);
     }
 }

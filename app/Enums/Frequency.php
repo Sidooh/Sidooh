@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers\Statistics;
+namespace App\Enums;
 
 enum Frequency: string
 {
@@ -8,5 +8,6 @@ enum Frequency: string
     case DAILY = 'daily';
     case WEEKLY = 'weekly';
     case MONTHLY = 'monthly';
+    case QUARTERLY = 'quarterly';
     case YEARLY = 'yearly';
 }

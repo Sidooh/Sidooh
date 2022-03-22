@@ -276,8 +276,10 @@ namespace App\Models{
  * @property string $start_date
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \DrH\Mpesa\Database\Entities\MpesaBulkPaymentRequest|null $b2cRequest
  * @property-read string $full_type
- * @property-read Model|\Eloquent $payable
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $payable
+ * @property-read \DrH\Mpesa\Database\Entities\MpesaStkRequest|null $stkRequest
  * @method static \Illuminate\Database\Eloquent\Builder|Payment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Payment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Payment query()
@@ -292,8 +294,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Payment whereSubtype($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Payment whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Payment whereUpdatedAt($value)
- * @property-read \DrH\Mpesa\Entities\MpesaBulkPaymentRequest|null $b2cRequest
- * @property-read \DrH\Mpesa\Entities\MpesaStkRequest|null $stkRequest
+ * @mixin \Eloquent
  */
 	class IdeHelperPayment {}
 }
@@ -526,6 +527,7 @@ namespace App\Models{
  * @property-read \App\Models\Payment|null $payment
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Payment[] $payments
  * @property-read int|null $payments_count
+ * @property-read \DrH\Tanda\Models\TandaRequest|null $request
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction query()
@@ -539,7 +541,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property-read \DrH\Tanda\Models\TandaRequest|null $request
  */
 	class IdeHelperTransaction {}
 }

@@ -53,7 +53,7 @@ class TransactionController extends Controller
     public function show(Transaction $transaction): View|Factory|Application
     {
         $transaction->load(['account']);
-//
+
         if ($transaction->payment)
             if ($transaction->payment->subtype == 'STK')
                 $transaction->load(['payment.stkRequest.response']);

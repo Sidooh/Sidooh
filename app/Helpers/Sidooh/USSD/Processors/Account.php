@@ -29,104 +29,102 @@ class Account extends Product
     protected function process_previous(Screen $previousScreen, Screen $screen)
     {
         error_log('PROCESS_PREVIOUS');
-        error_log($previousScreen->key);
+        error_log($this->previousScreen->key);
         error_log($screen->key);
 
-        switch ($previousScreen->key) {
+        switch ($this->previousScreen->key) {
             case "main_menu":
                 $this->set_user_number();
                 break;
             case "account":
                 if ($screen->key == 'redeem_amount') {
-                    $this->check_earnings($previousScreen);
+                    $this->check_earnings();
                 } elseif ($screen->key == 'referrals') {
-                    $this->check_referrals($previousScreen);
+                    $this->check_referrals();
                 } else {
                     $this->set_kyc_details();
                 }
                 break;
             case "kyc_details":
-                $this->check_pin_exists($previousScreen);
+                $this->check_pin_exists();
                 break;
             case "kyc_details_name":
-                $this->set_name($previousScreen);
+                $this->set_name();
                 break;
             case "kyc_details_mail":
-                $this->set_email($previousScreen);
+                $this->set_email();
                 break;
             case "kyc_details_new_pin":
-                $this->set_pin($previousScreen);
+                $this->set_pin();
                 break;
             case "kyc_details_new_pin_confirm":
-                $this->set_pin_confirm($previousScreen);
+                $this->set_pin_confirm();
                 break;
 
             case "kyc_update_confirm_pin":
             case "kyc_details_current_pin":
-                $this->check_current_pin($previousScreen);
+            $this->check_current_pin();
                 break;
 
             case "confirm_pin_withdraw":
-                if ($this->check_current_pin($previousScreen)) {
-                    $this->set_earnings($previousScreen);
-                }
+                $this->set_earnings();
                 break;
 
             case "confirm_pin":
 //            case "check_balance":
-                $this->set_earnings($previousScreen);
+                $this->set_earnings();
                 break;
 
             case 'redeem_amount':
-                $this->set_points($previousScreen);
+                $this->set_points();
                 break;
             case 'redeem_account':
-                $this->set_account_type($previousScreen);
+                $this->set_account_type();
                 break;
             case 'redeem_account_select':
-                $this->set_number($previousScreen);
+                $this->set_number();
                 break;
             case 'redeem_other_number_mpesa':
-                $this->set_mpesa_number($previousScreen);
+                $this->set_mpesa_number();
                 break;
 
             case 'biz_pin':
-                $this->set_biz($previousScreen);
+                $this->set_biz();
                 break;
 
             case 'biz_kyc_details_name':
-                $this->set_biz_name($previousScreen);
+                $this->set_biz_name();
                 break;
 
             case 'biz_kyc_details_code':
-                $this->set_biz_code($previousScreen);
+                $this->set_biz_code();
                 break;
 
             case 'biz_kyc_details_contact_person_name':
-                $this->set_contact_name($previousScreen);
+                $this->set_contact_name();
                 break;
 
             case 'biz_kyc_details_contact_person_number':
-                $this->set_contact_number($previousScreen);
+                $this->set_contact_number();
                 break;
 
             case "biz":
                 if ($screen->key == 'biz_balance') {
-                    $this->biz_check_balance($previousScreen);
+                    $this->biz_check_balance();
                 } else if ($screen->key == 'biz_withdraw') {
-                    $this->biz_check_balance($previousScreen);
+                    $this->biz_check_balance();
                 }
                 break;
 
             case "kyc_update_name":
-                $this->update_name($previousScreen);
+                $this->update_name();
                 break;
 
             case "pay_merchant":
-                $this->set_merchant_code($previousScreen);
+                $this->set_merchant_code();
                 break;
             case "pay_merchant_amount":
-                $this->set_amount($previousScreen);
+                $this->set_amount();
                 break;
 
         }
@@ -157,7 +155,7 @@ class Account extends Product
         }
     }
 
-    private function set_pin_title(Screen $previousScreen)
+    private function set_pin_title()
     {
         if ($this->screen->key == 'account') {
             $this->screen->options[1]->next = 'kyc_details_pin';
@@ -200,42 +198,42 @@ class Account extends Product
 
     }
 
-    private function set_name(Screen $previousScreen)
+    private function set_name()
     {
-        $this->vars['{$name}'] = $previousScreen->option_string;
+        $this->vars['{$name}'] = $this->previousScreen->option_string;
         $this->vars['{$email}'] = $this->vars['{$my_number}'] . "@sid.ooh";
     }
 
-    private function set_email(Screen $previousScreen)
+    private function set_email()
     {
-        if ($previousScreen->option_string == "0000")
+        if ($this->previousScreen->option_string == "0000")
             $this->vars['{$email}'] = $this->vars['{$my_number}'] . "@sid.ooh";
         else
-            $this->vars['{$email}'] = $previousScreen->option_string;
+            $this->vars['{$email}'] = $this->previousScreen->option_string;
     }
 
-    private function set_pin(Screen $previousScreen)
+    private function set_pin()
     {
-        $this->vars['{$pin}'] = $previousScreen->option_string;
+        $this->vars['{$pin}'] = $this->previousScreen->option_string;
     }
 
-    private function set_pin_confirm(Screen $previousScreen)
+    private function set_pin_confirm()
     {
-        if ($previousScreen->option_string === $this->vars['{$pin}']) {
-            $this->vars['{$confirm_pin}'] = $previousScreen->option_string;
+        if ($this->previousScreen->option_string === $this->vars['{$pin}']) {
+            $this->vars['{$confirm_pin}'] = $this->previousScreen->option_string;
         } else {
             $this->screen->title = "PINs don't match\n Please try again.";
         }
     }
 
-    private function check_current_pin(Screen $previousScreen)
+    private function check_current_pin()
     {
         $acc = (new AccountRepository)->findByPhone($this->phone);
 
         if ($acc)
             if ($acc->pin) {
-//                if (!Hash::check($previousScreen->option_string, $res->pin)) {
-                if ($previousScreen->option_string !== $acc->pin) {
+//                if (!Hash::check($this->previousScreen->option_string, $res->pin)) {
+                if ($this->previousScreen->option_string !== $acc->pin) {
                     $this->screen->title = "Sorry, but the pin does not match. Please call us if you have forgotten your PIN";
                     $this->screen->type = 'END';
 //                    $this->screen = $this->previousScreen;
@@ -256,7 +254,7 @@ class Account extends Product
     }
 
 
-    private function check_pin_exists(Screen $previousScreen)
+    private function check_pin_exists()
     {
         $acc = (new AccountRepository)->findByPhone($this->phone);
 
@@ -267,9 +265,9 @@ class Account extends Product
 
     }
 
-    private function set_earnings(Screen $previousScreen)
+    private function set_earnings()
     {
-        $acc = $this->check_current_pin($previousScreen);
+        $acc = $this->check_current_pin();
 
         if ($acc) {
             $cbal = $acc->current_account->balance;
@@ -289,7 +287,7 @@ class Account extends Product
 
     }
 
-    private function check_earnings(Screen $previousScreen)
+    private function check_earnings()
     {
         $acc = (new AccountRepository)->findByPhone($this->phone);
 
@@ -324,7 +322,7 @@ class Account extends Product
 
     }
 
-    private function check_referrals(Screen $previousScreen)
+    private function check_referrals()
     {
         $acc = (new AccountRepository())->nth_level_referrers((new AccountRepository())->findByPhone($this->phone), 5, false);
 
@@ -355,40 +353,40 @@ class Account extends Product
 
     }
 
-    private function set_points(Screen $previousScreen)
+    private function set_points()
     {
-        if ($previousScreen->option_string > $this->vars['{$wp}']) {
+        if ($this->previousScreen->option_string > $this->vars['{$wp}']) {
             $this->vars['{$points}'] = (int)floor($this->vars['{$wp}']);
             $this->screen->title = "Points selected are more than available. We will withdraw " . $this->vars['{$points}'] . " points.\n" . $this->screen->title;
         } else {
-            $this->vars['{$points}'] = $previousScreen->option_string;
+            $this->vars['{$points}'] = $this->previousScreen->option_string;
         }
 
         $this->vars['{$amount}'] = $this->vars['{$points}'];
 
     }
 
-    private function set_account_type(Screen $previousScreen)
+    private function set_account_type()
     {
-        $method = $this->methods($previousScreen->option->value);
+        $method = $this->methods($this->previousScreen->option->value);
         $this->vars['{$acc_type}'] = $method;
     }
 
-    private function set_number(Screen $previousScreen)
+    private function set_number()
     {
-        if ($previousScreen->option->value == 1)
+        if ($this->previousScreen->option->value == 1)
             $this->vars['{$to_number}'] = $this->vars['{$my_number}'];
     }
 
-    private function set_mpesa_number(Screen $previousScreen)
+    private function set_mpesa_number()
     {
-        $this->vars['{$to_number}'] = ltrim(PhoneNumber::make($previousScreen->option_string, 'KE')->formatE164(), '+');
+        $this->vars['{$to_number}'] = ltrim(PhoneNumber::make($this->previousScreen->option_string, 'KE')->formatE164(), '+');
     }
 
 
-    private function set_biz(Screen $previousScreen)
+    private function set_biz()
     {
-        $acc = $this->check_current_pin($previousScreen);
+        $acc = $this->check_current_pin($this->previousScreen);
 
         if ($acc) {
             if ($acc->merchant) {
@@ -405,27 +403,27 @@ class Account extends Product
 
     }
 
-    private function set_biz_name(Screen $previousScreen)
+    private function set_biz_name()
     {
-        $this->vars['{$biz_name}'] = $previousScreen->option_string;
+        $this->vars['{$biz_name}'] = $this->previousScreen->option_string;
     }
 
-    private function set_biz_code(Screen $previousScreen)
+    private function set_biz_code()
     {
-        $this->vars['{$biz_code}'] = $previousScreen->option_string;
+        $this->vars['{$biz_code}'] = $this->previousScreen->option_string;
     }
 
-    private function set_contact_name(Screen $previousScreen)
+    private function set_contact_name()
     {
-        $this->vars['{$biz_contact_name}'] = $previousScreen->option_string;
+        $this->vars['{$biz_contact_name}'] = $this->previousScreen->option_string;
     }
 
-    private function set_contact_number(Screen $previousScreen)
+    private function set_contact_number()
     {
-        $this->vars['{$biz_contact_number}'] = $previousScreen->option_string;
+        $this->vars['{$biz_contact_number}'] = $this->previousScreen->option_string;
     }
 
-    private function biz_check_balance(Screen $previousScreen)
+    private function biz_check_balance()
     {
         $acc = (new AccountRepository)->findByPhone($this->phone);
 
@@ -453,15 +451,15 @@ class Account extends Product
 
     }
 
-    private function update_name(Screen $previousScreen)
+    private function update_name()
     {
-        $this->vars['{$name}'] = $previousScreen->option_string;
+        $this->vars['{$name}'] = $this->previousScreen->option_string;
 
     }
 
-    private function set_merchant_code(Screen $previousScreen)
+    private function set_merchant_code()
     {
-        $merchant = (new MerchantRepository)->findByCode($previousScreen->option_string);
+        $merchant = (new MerchantRepository)->findByCode($this->previousScreen->option_string);
 
         if ($merchant) {
 
@@ -486,9 +484,9 @@ class Account extends Product
 
     }
 
-    private function set_amount(Screen $previousScreen)
+    private function set_amount()
     {
-        $this->vars['{$amount}'] = $previousScreen->option_string;
+        $this->vars['{$amount}'] = $this->previousScreen->option_string;
 
         $acc = (new AccountRepository)->findByPhone($this->phone);
 

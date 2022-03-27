@@ -33,11 +33,20 @@ class TandaRequestSuccess
     public function handle(TandaRequestSuccessEvent $event)
     {
         //
-        Log::info('----------------- Tanda Request Success ');
-        Log::info($event->request->provider);
+        Log::info('----------------- Tanda Request Success ', [$event->request->provider]);
 
 //                Update Transaction
-        $transaction = Transaction::find($event->request->relation_id);
+        if ($event->request->relation_id) {
+            $transaction = Transaction::find($event->request->relation_id);
+        } else {
+            $transaction = Transaction::whereStatus('pending')
+                ->whereType('PAYMENT')
+                ->whereAmount($event->request->amount)
+                ->whereLike('description', 'LIKE', "%" . $event->request->destination)
+                ->whereDate('createdAt', '<', $event->request->created_at);
+            $event->request->relation_id = $transaction->id;
+            $event->request->save();
+        }
         (new TransactionRepository())->updateStatus($transaction, 'completed');
 
         $method = $transaction->payment->subtype;

@@ -37,7 +37,18 @@ class TandaRequestFailed
         ]);
 
         //                Update Transaction
-        $transaction = Transaction::find($event->request->relation_id);
+        if ($event->request->relation_id) {
+            $transaction = Transaction::find($event->request->relation_id);
+        } else {
+            $transaction = Transaction::whereStatus('pending')
+                ->whereType('PAYMENT')
+                ->whereAmount($event->request->amount)
+                ->whereLike('description', 'LIKE', "%" . $event->request->destination)
+                ->whereDate('createdAt', '<', $event->request->created_at);
+            $event->request->relation_id = $transaction->id;
+            $event->request->save();
+        }
+
         (new TransactionRepository())->updateStatus($transaction, 'Failed');
 
         $destination = $event->request->destination;
@@ -94,7 +105,7 @@ class TandaRequestFailed
 
             case Providers::NAIROBI_WTR:
 
-            $message = "Sorry! We could not complete your payment to {$provider} of KES{$amount} for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+            $message = "Hi, we have added KES{$amount} to your voucher account because we could not complete your payment to {$provider} of KES{$amount} for {$destination} on {$date}.  New Voucher balance is {$voucher->balance}.";
             NotificationRepository::sendSMS([$sender], $message, EventTypes::UTILITY_PAYMENT_FAILURE);
 //
 //                break;

@@ -192,4 +192,10 @@ class Product
         $this->vars[$key] = $value;
         $this->saveState();
     }
+
+    public
+    function checkVars(string $key)
+    {
+        return $this->vars[$key] ?? null;
+    }
 }

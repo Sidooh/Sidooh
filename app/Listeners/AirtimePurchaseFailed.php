@@ -52,11 +52,11 @@ class AirtimePurchaseFailed
 //        $transaction->save();
 
         $voucher = $account->voucher;
-        $voucher->in += $amount;
+        $voucher->in += (int)$amount;
         $voucher->save();
 
 //        TODO:: Send sms notification
-        $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$phone} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+        $message = "Hi, we have added KES{$amount} to your voucher account because we could not complete your KES{$amount} airtime purchase for {$phone} on {$date}.  New Voucher balance is {$voucher->balance}.";
 
         NotificationRepository::sendSMS([$phone], $message, EventTypes::AIRTIME_PURCHASE_FAILURE);
 

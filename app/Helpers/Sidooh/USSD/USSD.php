@@ -455,7 +455,7 @@ class USSD
             case "MIN|AIRTIME":
                 return $this->validate_amount_min($value, 20);
             case "MIN|WITHDRAW":
-                return $this->validate_amount_min($value, 20);
+                return $this->validate_amount_min_and_withdraw($value, 20);
             case "PIN":
                 return $this->validate_PIN($value);
             case "NUMBER":
@@ -504,6 +504,11 @@ class USSD
     private function validate_amount_min(string $amount, int $min)
     {
         return is_numeric($amount) && (int)$amount >= $min;
+    }
+
+    private function validate_amount_min_and_withdraw(string $amount, int $min)
+    {
+        return $this->validate_amount_min($amount, $min) && $this->product->checkVars('{$wp}') != 0;
     }
 
     private function validate_merchant_code(string $code)

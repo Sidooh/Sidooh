@@ -67,8 +67,6 @@ class ChartAid
         for($i = 0; $i < $frequencyCount; $i++) {
             $dateString = self::chartDateFormat($date);
 
-//            echo "$i - $dateString \n";
-
             $data[$dateString] = $this->aggregate($dateString);
 
             switch($this->frequency->value) {

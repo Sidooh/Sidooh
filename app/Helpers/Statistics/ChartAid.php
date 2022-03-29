@@ -56,7 +56,7 @@ class ChartAid
                 Period::LAST_SIX_MONTHS => 6,
                 Period::YTD => match ($this->frequency) {
                     Frequency::QUARTERLY => 4,
-                    default => 12,
+                    default => 13,
                 },
             };
         }
@@ -66,6 +66,8 @@ class ChartAid
         $data = collect();
         for($i = 0; $i < $frequencyCount; $i++) {
             $dateString = self::chartDateFormat($date);
+
+//            echo "$i - $dateString \n";
 
             $data[$dateString] = $this->aggregate($dateString);
 
@@ -90,6 +92,8 @@ class ChartAid
                     $date->subDay();
             }
         }
+
+//        dd($data);
 
         if($this->showFuture) {
             $data = $data->sortKeys();

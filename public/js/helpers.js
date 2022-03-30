@@ -26,3 +26,16 @@ window.chartGradient = rgbColor => {
 
     return gradient;
 }
+
+window.toast = data => {
+    const duration = (data.duration ?? 7) * 1000,    //  Converts to seconds
+        type = data.type ?? 'success'
+
+    Toastify({
+        text: data.msg,
+        duration: duration,
+        close: true,
+        position: data.position ?? 'right',
+        className:type,
+    }).showToast();
+}

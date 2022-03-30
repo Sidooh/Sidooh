@@ -15,8 +15,8 @@ return [
     */
 
     'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN'),
-        'secret' => env('MAILGUN_SECRET'),
+        'domain'   => env('MAILGUN_DOMAIN'),
+        'secret'   => env('MAILGUN_SECRET'),
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
     ],
 
@@ -25,40 +25,45 @@ return [
     ],
 
     'ses' => [
-        'key' => env('AWS_ACCESS_KEY_ID'),
+        'key'    => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
     'at' => [
-        'key' => env('AT_API_KEY'),
+        'key'      => env('AT_API_KEY'),
         'username' => env('AT_USERNAME'),
-        'phone' => env('AT_PHONE'),
-        'env' => env('AT_ENV', 'local'),
+        'phone'    => env('AT_PHONE'),
+        'env'      => env('AT_ENV', 'local'),
 
-        'sms' => [
-            'key' => env('AT_SMS_API_KEY'),
+        'sms'     => [
+            'key'      => env('AT_SMS_API_KEY'),
             'username' => env('AT_SMS_USERNAME'),
-            'from' => env('AT_SMS_FROM'),
+            'from'     => env('AT_SMS_FROM'),
         ],
         'airtime' => [
-            'key' => env('AT_AIRTIME_API_KEY'),
+            'key'      => env('AT_AIRTIME_API_KEY'),
             'username' => env('AT_AIRTIME_USERNAME'),
         ],
-        'ussd' => [
+        'ussd'    => [
             'code' => env('USSD_CODE'),
         ],
     ],
 
     'sidooh' => [
         'tagline' => env('SIDOOH_TAGLINE'),
-        'about' => "Sidooh is a digital platform that gives you cash refunds on every airtime you purchase from the platform, out of which 80% is then automatically saved and invested to generate extra income for you, so as to improve your financial life.",
+        'about'   => "Sidooh is a digital platform that gives you cash refunds on every airtime you purchase from the platform, out of which 80% is then automatically saved and invested to generate extra income for you, so as to improve your financial life.",
 
-        'services'           => [
-            'notify_dashboard'   => [
+        'services' => [
+            'notify_dashboard' => [
                 'enabled' => true,
-                'url'     => 'https://notify-dashboard-cnwsrirpua-uc.a.run.app',
+                'url'     => env("SIDOOH_NOTIFY_DASHBOARD_URL"),
             ],
+            'accounts'         => [
+                'api' => [
+                    'url' => env("SIDOOH_ACCOUNTS_API_URL")
+                ]
+            ]
         ],
     ]
 

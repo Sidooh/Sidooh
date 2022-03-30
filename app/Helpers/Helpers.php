@@ -73,3 +73,10 @@ if(!function_exists('nav_link_active')) {
             : '';
     }
 }
+
+if(!function_exists('base_64_url_encode')) {
+    function base_64_url_encode($text): array|string
+    {
+        return str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($text));
+    }
+}

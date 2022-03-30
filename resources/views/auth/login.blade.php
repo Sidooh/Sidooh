@@ -3,18 +3,18 @@
 @section('content')
 
     <div class="row min-vh-100 flex-center g-0">
-        <div class="col-lg-8 col-xxl-5 py-3 position-relative"><img class="bg-auth-circle-shape"
-                                                                    src="{{ asset('img/illustrations/bg-shape.png') }}"
-                                                                    alt="" width="250"><img
-                class="bg-auth-circle-shape-2" src="{{ asset('/img/illustrations/shape-1.png') }}" alt="" width="150">
+        <div class="col-lg-8 col-xxl-5 py-3 position-relative">
+            <img class="bg-auth-circle-shape" src="{{ asset('images/icons/spot-illustrations/bg-shape.png') }}" alt=""
+                 width="250">
+            <img class="bg-auth-circle-shape-2" src="{{ asset('images/icons/spot-illustrations/shape-1.png') }}" alt=""
+                 width="150">
             <div class="card overflow-hidden z-index-1">
                 <div class="card-body p-0">
                     <div class="row g-0 h-100">
                         <div class="col-md-5 text-center bg-card-gradient">
                             <div class="position-relative p-4 pt-md-5 pb-md-7 light">
                                 <div class="bg-holder bg-auth-card-shape"
-                                     style="background-image:url({{ asset('img/illustrations/half-circle.png') }});"></div>
-                                <!--/.bg-holder-->
+                                     style="background-image:url({{ asset('images/icons/spot-illustrations/half-circle.png') }});"></div>
                                 <div class="z-index-1 position-relative"><a
                                         class="link-light mb-4 font-sans-serif fs-4 d-inline-block fw-bolder"
                                         href="{{ route('home') }}">Sidooh</a>
@@ -37,12 +37,12 @@
                                         <h3>Account Login</h3>
                                     </div>
                                 </div>
-                                <form method="POST" action="{{ route('login') }}">
+                                <form id="sign-in" method="POST" action="{{ route('login') }}">
                                     @csrf
 
                                     <div class="mb-3">
                                         <label class="form-label" for="card-email">Email address</label>
-                                        <input id="email" type="email"
+                                        <input id="email" type="email" aria-label
                                                class="form-control @error('email') is-invalid @enderror"
                                                name="email" value="{{ old('email') }}" required
                                                autocomplete="email">
@@ -71,20 +71,17 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-
                                     </div>
 
                                     <div class="form-check mb-0">
-                                        <input class="form-check-input" type="checkbox" name="remember"
+                                        <input class="form-check-input" type="checkbox" name="remember" aria-label
                                                id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                        <label
-                                            class="form-check-label" for="card-checkbox">Remember me</label>
+                                        <label class="form-check-label" for="card-checkbox">Remember me</label>
                                     </div>
 
-                                    <div class="mb-3">
-                                        <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">
-                                            Log in
+                                    <div class="d-flex justify-content-center mt-3">
+                                        <button type="submit" class="col btn btn-sm btn-primary ld-ext-right">
+                                            Sign In <i class="fas fa-key"></i><span class="ld ld-ring ld-spin"></span>
                                         </button>
                                     </div>
                                 </form>

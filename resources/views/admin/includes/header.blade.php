@@ -33,6 +33,9 @@
         href="{{ asset('fonts.googleapis.com/css0f39.css?family=Open+Sans:300,400,500,600,700%7cPoppins:100,200,300,400,500,600,700,800,900&amp;display=swap') }}"
         rel="stylesheet">
     <link href="{{ asset('vendors/overlayscrollbars/OverlayScrollbars.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendors/toastify/toastify.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('vendors/loading-btn/loading.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendors/loading-btn/ldbtn.min.css') }}">
     <link href="{{ asset('css/theme-rtl.min.css') }}" rel="stylesheet" id="style-rtl">
     <link href="{{ asset('css/theme.min.css') }}" rel="stylesheet" id="style-default">
     <link href="{{ asset('css/user-rtl.min.css') }}" rel="stylesheet" id="user-style-rtl">

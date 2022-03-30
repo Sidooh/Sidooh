@@ -20,8 +20,6 @@
 <!--    End of Main Content-->
 <!-- ===============================================-->
 
-@include('admin.includes.settings')
-
 @include('admin.includes.scripts')
 @yield('js')
 

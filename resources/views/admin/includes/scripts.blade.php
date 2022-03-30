@@ -2,6 +2,10 @@
 <!--    JavaScripts-->
 <!-- ===============================================-->
 <script src="{{ asset('vendors/jquery/jquery.js') }}"></script>
+<script src="{{ asset('vendors/jquery-validation/jquery.validation.min.js') }}"></script>
+<script src="{{ asset('vendors/jquery-validation/additional-methods.min.js') }}"></script>
+<script src="{{ asset('js/validate.js') }}"></script>
+<script src="{{ asset('vendors/toastify/toastify.min.js') }}"></script>
 <script src="{{ asset('vendors/popper/popper.min.js') }}"></script>
 <script src="{{ asset('vendors/bootstrap/bootstrap.min.js') }}"></script>
 <script src="{{ asset('vendors/anchorjs/anchor.min.js') }}"></script>

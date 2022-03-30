@@ -42,10 +42,10 @@
 
                                     <div class="mb-3">
                                         <label class="form-label" for="card-email">Email address</label>
-                                        <input id="email" type="email" aria-label
+                                        <input id="email" type="email" aria-label autofocus
                                                class="form-control @error('email') is-invalid @enderror"
                                                name="email" value="{{ old('email') }}" required
-                                               autocomplete="email">
+                                               autocomplete="on">
 
                                         @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -62,7 +62,7 @@
                                                     Password?</a>
                                             @endif
                                         </div>
-                                        <input id="password" type="password"
+                                        <input id="password" type="password" aria-label
                                                class="form-control @error('password') is-invalid @enderror"
                                                name="password" required autocomplete="new-password">
 

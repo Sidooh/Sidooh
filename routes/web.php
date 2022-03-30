@@ -25,12 +25,9 @@ use App\Http\Controllers\Admin\UserNotificationController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
+Route::get('/', fn () => view('welcome'));
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 

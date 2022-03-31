@@ -201,7 +201,7 @@ class TransactionController extends Controller
         $destination = count($description) > 1 ? " for " . $description[1] : "";
         $description = $description[0];
 
-        $message = "Sorry! We could not complete your KES{$amount} {$description}{$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+        $message = "Hi, we have added KES{$amount} to your voucher account because we could not complete your KES{$amount} {$description}{$destination} on {$date}.  New Voucher balance is {$voucher->balance}.";
 
         NotificationRepository::sendSMS([$phone], $message, EventTypes::VOUCHER_REFUND);
     }

@@ -52,19 +52,22 @@ return [
 
     'sidooh' => [
         'tagline' => env('SIDOOH_TAGLINE'),
-        'about'   => "Sidooh is a digital platform that gives you cash refunds on every airtime you purchase from the platform, out of which 80% is then automatically saved and invested to generate extra income for you, so as to improve your financial life.",
+        'about' => "Sidooh is a digital platform that gives you cash refunds on every airtime you purchase from the platform, out of which 80% is then automatically saved and invested to generate extra income for you, so as to improve your financial life.",
 
         'services' => [
+            'notify' => [
+                'enabled' => true
+            ],
             'notify_dashboard' => [
                 'enabled' => true,
                 'url'     => env("SIDOOH_NOTIFY_DASHBOARD_URL"),
             ],
-            'accounts'         => [
-                'api' => [
+            'accounts' => [
+                'api'  => [
                     'url' => env("SIDOOH_ACCOUNTS_API_URL")
                 ]
             ]
-        ],
+        ]
     ]
 
 ];

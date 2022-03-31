@@ -9,7 +9,7 @@
         <!--/.bg-holder-->
         <div class="card-body position-relative">
             <h5>Transaction Details: #{{ $transaction->id }}</h5>
-            <p class="fs--1">{{ local_date($transaction->created_at, 'M d, Y, h:m A') }}</p>
+            <p class="fs--1">{{ local_date($transaction->created_at, 'M d, Y, h:i A') }}</p>
             <div>
                 <strong class="me-2">Status: </strong>
                 {{--                TODO: Use status class to decide colour of pill instead of if statement--}}
@@ -190,7 +190,7 @@
                                                 <td class="align-middle text-center">{{ $transaction->payment->stkRequest->status }}</td>
                                                 <td class="align-middle">{{ $transaction->payment->stkRequest->response ? $transaction->payment->stkRequest->response->ResultDesc : null }}</td>
                                                 <td class="align-middle">{{ format_cur($transaction->payment->stkRequest->amount) }}</td>
-                                                <td class="align-middle">{{ local_date($transaction->payment->stkRequest->response ? $transaction->payment->stkRequest->response->created_at : $transaction->payment->stkRequest->created_at, 'M d, Y, h:m A') }}</td>
+                                                <td class="align-middle">{{ local_date($transaction->payment->stkRequest->response ? $transaction->payment->stkRequest->response->created_at : $transaction->payment->stkRequest->created_at, 'M d, Y, h:i A') }}</td>
 
                                                 <td>
                                                     @if($transaction->payment->stkRequest->status === 'Requested')
@@ -218,7 +218,7 @@
                                                 <td class="align-middle text-center">{{ $transaction->payment->b2cRequest->response ? $transaction->payment->b2cRequest->response->ResultCode : null }}</td>
                                                 <td class="align-middle">{{ $transaction->payment->b2cRequest->response ? $transaction->payment->b2cRequest->response->ResultDesc : null }}</td>
                                                 <td class="align-middle">{{ format_cur($transaction->payment->b2cRequest->amount) }}</td>
-                                                <td class="align-middle">{{ local_date($transaction->payment->b2cRequest->response ? $transaction->payment->b2cRequest->response->created_at : $transaction->payment->b2cRequest->created_at, 'M d, Y, h:m A') }}</td>
+                                                <td class="align-middle">{{ local_date($transaction->payment->b2cRequest->response ? $transaction->payment->b2cRequest->response->created_at : $transaction->payment->b2cRequest->created_at, 'M d, Y, h:i A') }}</td>
 
                                                 <td>
                                                     @if($transaction->payment->b2cRequest->status === 'Requested')
@@ -286,7 +286,7 @@
                                             <td class="align-middle">{{ $transaction->airtime->response ? $transaction->airtime->response->phoneNumber : '' }}</td>
                                             <td class="align-middle">{{ $transaction->airtime->response ? $transaction->airtime->response->errorMessage : '' }}</td>
                                             <td class="align-middle text-center">{{ $transaction->airtime->response ? $transaction->airtime->response->status : '' }}</td>
-                                            <td class="align-middle">{{ local_date($transaction->airtime->response ? $transaction->airtime->response->created_at : $transaction->airtime->created_at, 'M d, Y, h:m A') }}</td>
+                                            <td class="align-middle">{{ local_date($transaction->airtime->response ? $transaction->airtime->response->created_at : $transaction->airtime->created_at, 'M d, Y, h:i A') }}</td>
 
                                             <td>
                                                 {{--                                                @if($transaction->airtime->descriptor->status === 'Requested')--}}
@@ -345,7 +345,7 @@
                                             <td class="align-middle">{{ $transaction->request->destination }}</td>
                                             <td class="align-middle">{{ $transaction->request->message }}</td>
                                             <td class="align-middle text-center">{{ $transaction->request->status }}</td>
-                                            <td class="align-middle">{{ local_date($transaction->request->last_modified, 'M d, Y, h:m A') }}</td>
+                                            <td class="align-middle">{{ local_date($transaction->request->last_modified, 'M d, Y, h:i A') }}</td>
 
                                             <td>
                                                 @if ($transaction->request->result)

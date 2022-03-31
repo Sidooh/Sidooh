@@ -27,9 +27,7 @@ use App\Http\Controllers\HomeController;
 
 Auth::routes();
 
-Route::get('/', fn () => view('welcome'));
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('/admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');

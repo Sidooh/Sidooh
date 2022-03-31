@@ -163,7 +163,7 @@
                     <a class="dropdown-item" href="#">Settings</a>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button class="dropdown-item">Logout</button>
+                        <button class="dropdown-item">Sign Out</button>
                     </form>
                 </div>
             </div>

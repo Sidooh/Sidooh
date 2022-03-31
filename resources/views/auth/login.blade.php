@@ -17,10 +17,6 @@
                         <div class="col-auto">
                             <h5>Sign In</h5>
                         </div>
-                        <div class="col-auto fs--1 text-600">
-                            <span class="mb-0 undefined">or</span>
-                            <span><a href="register.html">Create an account</a></span>
-                        </div>
                     </div>
                     <form id="sign-in">
                         <div class="mb-3">
@@ -120,46 +116,6 @@
                         submitButton.prop('disabled', false).html(`Sign In
 										<span class="ld ld-ring ld-spin"></span>`).removeClass('running');
                     }
-
-                    /*$.ajax({
-                        data: data,
-                        url: `/login`,
-                        method: 'POST',
-                        headers: {
-                            Accept: 'application/json'
-                        },
-                        dataType: 'json',
-                        beforeSend: () => submitButton.prop('disabled', false).html(`Signing In...
-										<span class="ld ld-ring ld-spin"></span>`).addClass('running'),
-                        success: response => {
-                            if (response.status) {
-                                location.href = response.url;
-                            } else if (response.message) {
-                                toast({msg: response.message, type: 'warning', duration: 10, position: 'left'});
-                            } else {
-                                toast({
-                                    msg: `Error: unable to sign you in. Kindly contact admin.`,
-                                    type: 'warning',
-                                    position: 'left'
-                                });
-                            }
-                        },
-                        error: xhr => {
-                            let res = eval("(" + xhr.responseText + ")");
-
-                            if (res.errors) {
-                                toast({msg: res.errors[Object.keys(res.errors)], type: 'warning', duration: 10});
-                                submitButton.prop('disabled', false).html(`Sign In
-										<span class="ld ld-ring ld-spin"></span>`).removeClass('running');
-                            }
-                        },
-                        complete: (xhr) => {
-                            let res = eval("(" + xhr.responseText + ")");
-
-                            if (res.status !== true) submitButton.prop('disabled', false).html(`Sign In
-										<span class="ld ld-ring ld-spin"></span>`).removeClass('running');
-                        }
-                    });*/
                 }
             });
         </script>

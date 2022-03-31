@@ -98,7 +98,6 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user): JsonResponse
     {
-        \Auth::login();
         return response()->json(["status" => true, "url" => route("admin.index")]);
     }
 

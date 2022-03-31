@@ -72,7 +72,7 @@ class TandaRequestFailed
             case Providers::AIRTEL:
             case Providers::TELKOM:
 
-                $message = "Sorry! We could not complete your KES{$amount} airtime purchase for {$destination} on {$date}. We have added KES{$amount} to your voucher account. New Voucher balance is {$voucher->balance}.";
+                $message = "Hi, we have added KES{$amount} to your voucher account because we could not complete your KES{$amount} airtime purchase for {$destination} on {$date}.  New Voucher balance is {$voucher->balance}.";
 
             NotificationRepository::sendSMS([$sender], $message, EventTypes::AIRTIME_PURCHASE_FAILURE);
 

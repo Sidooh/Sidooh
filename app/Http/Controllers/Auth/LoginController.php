@@ -45,41 +45,34 @@ class LoginController extends Controller
     }
 
     /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+    /**
      * Handle a login request to the application.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
-     *
      * @throws \Illuminate\Validation\ValidationException
+     *@return bool
+     *
      */
-    public function login(Request $request)
+    public function login(Request $request): bool
     {
-        $this->validateLogin($request);
+        $request->validate([
+            "token" => "required|string",
+            "user" => "required|array",
+            "credentials" => "required|array:email,password"
+        ]);
 
-        // If the class is using the ThrottlesLogins trait, we can automatically throttle
-        // the login attempts for this application. We'll key this by the username and
-        // the IP address of the client making these requests into this application.
-        if (method_exists($this, 'hasTooManyLoginAttempts') &&
-            $this->hasTooManyLoginAttempts($request)) {
-            $this->fireLockoutEvent($request);
+        Session::put('auth', $request->all());
 
-            return $this->sendLockoutResponse($request);
-        }
-
-        if ($this->attemptLogin($this->credentials($request))) {
-            if ($request->hasSession()) {
-                $request->session()->put('auth.password_confirmed_at', time());
-            }
-
-            return $this->sendLoginResponse($request);
-        }
-
-        // If the login attempt was unsuccessful we will increment the number of attempts
-        // to login and redirect the user back to the login form. Of course, when this
-        // user surpasses their maximum number of attempts they will get locked out.
-        $this->incrementLoginAttempts($request);
-
-        return $this->sendFailedLoginResponse($request);
+        return Session::has('auth');
     }
 
     /**
@@ -105,6 +98,7 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user): JsonResponse
     {
+        \Auth::login();
         return response()->json(["status" => true, "url" => route("admin.index")]);
     }
 

@@ -80,3 +80,15 @@ if(!function_exists('base_64_url_encode')) {
         return str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($text));
     }
 }
+
+if(!function_exists('"get_initials')) {
+    function get_initials(string $words): string
+    {
+        $words = explode(" ", $words);
+        $acronym = "";
+
+        foreach ($words as $w) $acronym .= strtoupper($w[0] ?? "");
+
+        return $acronym;
+    }
+}

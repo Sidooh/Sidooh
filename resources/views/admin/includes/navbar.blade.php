@@ -149,7 +149,7 @@
             <a class="nav-link pe-0" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
                 <div class="avatar avatar-xl">
-                    <img class="rounded-circle" src="{{ asset('images/team/2.jpg') }}" alt=""/>
+                    <img class="rounded-circle" src="{{ asset('favicon.ico') }}" alt=""/>
                 </div>
             </a>
             <div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">

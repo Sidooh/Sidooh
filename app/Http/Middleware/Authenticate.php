@@ -35,7 +35,7 @@ class Authenticate extends Middleware
      */
     protected function authenticate($request, array $guards)
     {
-        if(!session()->has('user')) $this->unauthenticated($request, $guards);
+        if(!session()->has('auth')) $this->unauthenticated($request, $guards);
     }
 
     /**

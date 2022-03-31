@@ -61,11 +61,9 @@
 
                         <tr class="btn-reveal-trigger">
                             <td class="align-middle py-2" style="width: 28px;">
-                                <div class="form-check fs-0 mb-0 d-flex align-items-center"><input
-                                        class="form-check-input"
-                                        type="checkbox"
-                                        id="customer-0"
-                                        data-bulk-select-row="data-bulk-select-row"/>
+                                <div class="form-check fs-0 mb-0 d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="customer-0"
+                                           data-bulk-select-row="data-bulk-select-row"/>
                                 </div>
                             </td>
                             <td class="name align-middle white-space-nowrap py-2"><a
@@ -73,7 +71,7 @@
                                     <div class="d-flex d-flex align-items-center">
                                         <div class="avatar avatar-xl me-2">
                                             <div class="avatar-name rounded-circle">
-                                                <span>{{ substr($user->name[0], 0, 1) }}</span></div>
+                                                <span>{{ get_initials($user->name) }}</span></div>
                                         </div>
                                         <div class="flex-1">
                                             <h5 class="mb-0 fs--1">{{ $user->name }}</h5>

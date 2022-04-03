@@ -74,7 +74,7 @@ class TandaRequestFailed
 
                 $message = "Hi, we have added KES{$amount} to your voucher account because we could not complete your KES{$amount} airtime purchase for {$destination} on {$date}.  New Voucher balance is {$voucher->balance}.";
 
-            NotificationRepository::sendSMS([$sender], $message, EventTypes::AIRTIME_PURCHASE_FAILURE);
+                NotificationRepository::sendSMS([$sender], $message, EventTypes::AIRTIME_PURCHASE_FAILURE);
 
                 break;
 
@@ -105,8 +105,8 @@ class TandaRequestFailed
 
             case Providers::NAIROBI_WTR:
 
-            $message = "Hi, we have added KES{$amount} to your voucher account because we could not complete your payment to {$provider} of KES{$amount} for {$destination} on {$date}.  New Voucher balance is {$voucher->balance}.";
-            NotificationRepository::sendSMS([$sender], $message, EventTypes::UTILITY_PAYMENT_FAILURE);
+                $message = "Hi, we have added KES{$amount} to your voucher account because we could not complete your payment to {$provider} of KES{$amount} for {$destination} on {$date}.  New Voucher balance is {$voucher->balance}.";
+                NotificationRepository::sendSMS([$sender], $message, EventTypes::UTILITY_PAYMENT_FAILURE);
 //
 //                break;
 

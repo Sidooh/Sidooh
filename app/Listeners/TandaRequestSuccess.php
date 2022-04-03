@@ -33,7 +33,7 @@ class TandaRequestSuccess
     public function handle(TandaRequestSuccessEvent $event)
     {
         //
-        Log::info('----------------- Tanda Request Success ', [$event->request->provider]);
+        Log::info('----------------- Tanda Request Success ', [$event->request]);
 
 //                Update Transaction
         if ($event->request->relation_id) {
@@ -48,6 +48,8 @@ class TandaRequestSuccess
             $event->request->save();
         }
         (new TransactionRepository())->updateStatus($transaction, 'completed');
+        Log::info('completed transation ', [$transaction]);
+
 
         $method = $transaction->payment->subtype;
 

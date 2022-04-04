@@ -47,9 +47,6 @@ class TandaRequestSuccess
             $event->request->relation_id = $transaction->id;
             $event->request->save();
         }
-        (new TransactionRepository())->updateStatus($transaction, 'completed');
-        Log::info('completed transation ', [$transaction]);
-
 
         $method = $transaction->payment->subtype;
 
@@ -176,6 +173,8 @@ class TandaRequestSuccess
 
         }
 
+        (new TransactionRepository())->updateStatus($transaction, 'completed');
+        Log::info('============ Completed Transaction');
     }
 
 //    TODO: Refactor function to helper file?

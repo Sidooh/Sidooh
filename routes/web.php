@@ -51,6 +51,9 @@ Route::prefix('/admin')->name('admin.')->middleware('auth')->group(function () {
         'subscriptions' => SubscriptionController::class,
     ]);
 
+    Route::post('accounts/{account}/voucher/topup', [AccountController::class, 'topupVoucher'])
+        ->name('accounts.voucher.topup');
+
     Route::post('transactions/status/query', [TransactionController::class, 'queryStatus'])
         ->name('transactions.status.query');
     Route::post('transactions/{transaction}/refund', [TransactionController::class, 'refund'])

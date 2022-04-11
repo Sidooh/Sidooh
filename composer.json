@@ -14,9 +14,9 @@
         "ext-openssl": "*",
         "africastalking/africastalking": "^3.0",
         "drh/laravel-tanda": "^1.1",
-        "drh/mpesa": "^1.0",
+        "drh/mpesa": "^1.2",
         "fideloper/proxy": "^4.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.4",
         "karriere/json-decoder": "^3.1",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
@@ -35,6 +35,11 @@
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.0"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
     },
     "extra": {
         "laravel": {

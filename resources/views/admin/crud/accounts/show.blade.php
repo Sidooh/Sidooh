@@ -23,6 +23,20 @@
                             </div>
                     </div>
             </div>
+
+            <div class="dropdown font-sans-serif">
+                <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end"
+                        type="button" id="dropdown0" data-bs-toggle="dropdown" data-boundary="window"
+                        aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span
+                        class="fas fa-ellipsis-h fs--1"></span></button>
+                <div class="dropdown-menu dropdown-menu-end border py-2">
+
+                    <button class="btn btn-link btn-sm" type="button" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">Top Up Voucher
+                    </button>
+
+                </div>
+            </div>
         </div>
         <div class="card mb-3">
             <div class="card-body">
@@ -431,6 +445,53 @@
                     </div>
                 </div>
             @endforeach
+        </div>
+
+        <div class="modal fade" id="staticBackdrop" data-bs-keyboard="false" data-bs-backdrop="static"
+             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg mt-6" role="document" style="max-width: 400px">
+                <div class="modal-content border-0">
+                    <div class="position-absolute top-0 end-0 mt-3 me-3 z-index-1">
+                        <button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
+                                data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-0">
+                        <div class="bg-light rounded-top-lg py-3 ps-4 pe-6">
+                            <h4 class="mb-1" id="staticBackdropLabel">Voucher Topup</h4>
+                        </div>
+                        <div class="p-4">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="d-flex">
+                                        <div class="flex-1">
+                                            <div class="mb-3">
+                                                <form method="POST"
+                                                      action="{{ route('admin.accounts.voucher.topup', $account) }}">
+                                                    @csrf
+                                                    <label class="form-label"
+                                                           for="amount">Amount</label>
+                                                    <input class="form-control"
+                                                           id="amount"
+                                                           type="number"
+                                                           min="100"
+                                                           max="30000"
+                                                           name="amount"
+                                                           placeholder="1000"/>
+
+                                                    <button class="btn btn-primary my-3 float-end" type="submit">
+                                                        Topup
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
 @endsection

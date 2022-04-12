@@ -81,7 +81,7 @@ class UssdRepository
         $ussd = new USSD($sessionId, $user);
 
         if (self::user_is_starting($text)) {
-            Log::info('Ussd user is starting.');
+            Log::info('Ussd user is starting.', [$sessionId, $phoneNumber]);
             //lets get the home menu
             //reset user
             self::resetUser($user);

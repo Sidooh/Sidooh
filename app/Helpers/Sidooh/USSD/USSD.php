@@ -29,7 +29,6 @@ use Propaganistas\LaravelPhone\PhoneNumber;
 
 class USSD
 {
-//    public User $user;
 
     public Screen $screen;
     public bool $break = false;
@@ -47,9 +46,9 @@ class USSD
 
     public function __construct(string $sessionId, UssdUser $user)
     {
-        error_log("=============================");
-        error_log("Begin");
-        error_log("=============================");
+//        error_log("=============================");
+//        error_log("Begin");
+//        error_log("=============================");
 
         $this->sessionId = $sessionId;
         $this->init($user);
@@ -72,7 +71,7 @@ class USSD
 
     private function reset($home = false)
     {
-        error_log('reset');
+//        error_log('reset');
 
         $screen = $this->retrieveState();
 
@@ -104,7 +103,7 @@ class USSD
 
     private function retrieveState(): ?Screen
     {
-        error_log("retrieveState");
+//        error_log("retrieveState");
 
 //        try {
 //            $contents = Storage::get($this->sessionId . '_state.txt');
@@ -203,7 +202,7 @@ class USSD
 
     private function saveState()
     {
-        error_log("saveState");
+//        error_log("saveState");
         $contents = json_encode($this->screen);
 //        Storage::put($this->sessionId . '_state.txt', $contents);
 
@@ -268,7 +267,7 @@ class USSD
      */
     public function buildResponse(): string
     {
-        error_log("buildResponse: " . $this->screen->type);
+//        error_log("buildResponse: " . $this->screen->type);
         if ($this->screen->type !== "END")
             $message = "CON ";
         else {
@@ -294,7 +293,7 @@ class USSD
 
     private function unsetState()
     {
-        error_log("unsetState");
+//        error_log("unsetState");
         Storage::delete($this->sessionId . '_state.txt');
 
         UssdState::whereSession($this->sessionId)->delete();
@@ -313,7 +312,7 @@ class USSD
     public function processUssd(UssdUser $user, $value)
     {
 //        print_r('processing...');
-        error_log("Chosen: " . $value . ' ' . $this->screen->type);
+//        error_log("Chosen: " . $value . ' ' . $this->screen->type);
 
         if ($this->screen->type !== "GENESIS") {
             if ($value === "0") {
@@ -333,7 +332,7 @@ class USSD
 
         try {
             if ($this->screen->type !== "OPEN") {
-                error_log("USSD:process - if not open");
+//                error_log("USSD:process - if not open");
 
                 $option = $this->screen->findOption($value);
 
@@ -367,7 +366,7 @@ class USSD
                         $this->setScreen($screen);
                 }
             } else {
-                error_log("USSD:process - else");
+//                error_log("USSD:process - else");
 
                 $this->screen->option_string = $value;
 
@@ -400,7 +399,7 @@ class USSD
 
     private function back()
     {
-        error_log('back');
+//        error_log('back');
 
 //        error_log("---------------- Going back?");
 //        error_log($this->screen->previous->key);
@@ -438,7 +437,7 @@ class USSD
 
     private function validateOption(string $value)
     {
-        error_log("Validating option");
+//        error_log("Validating option");
 
         if (!isset($this->screen->option_type))
             return false;

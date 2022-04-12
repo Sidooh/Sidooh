@@ -15,6 +15,7 @@ use App\Listeners\AirtimePurchaseFailed;
 use App\Listeners\AirtimePurchaseSuccess;
 use App\Listeners\B2CPaymentFailed;
 use App\Listeners\B2CPaymentSent;
+use App\Listeners\C2bPaymentConfirmation;
 use App\Listeners\KyandaRequest;
 use App\Listeners\KyandaTransactionFailed;
 use App\Listeners\KyandaTransactionSuccess;
@@ -28,18 +29,18 @@ use App\Listeners\TandaRequestFailed;
 use App\Listeners\TandaRequestSuccess;
 use App\Listeners\TransactionSuccess;
 use App\Listeners\VoucherPurchaseSuccess;
+use DrH\Mpesa\Events\C2bConfirmationEvent;
+use DrH\Mpesa\Events\QueueTimeoutEvent;
+use DrH\Mpesa\Events\StkPushPaymentFailedEvent;
+use DrH\Mpesa\Events\StkPushPaymentSuccessEvent;
 use DrH\Tanda\Events\TandaRequestFailedEvent;
 use DrH\Tanda\Events\TandaRequestSuccessEvent;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-
 use Nabcellent\Kyanda\Events\KyandaRequestEvent;
 use Nabcellent\Kyanda\Events\KyandaTransactionFailedEvent;
 use Nabcellent\Kyanda\Events\KyandaTransactionSuccessEvent;
-use DrH\Mpesa\Events\QueueTimeoutEvent;
-use DrH\Mpesa\Events\StkPushPaymentFailedEvent;
-use DrH\Mpesa\Events\StkPushPaymentSuccessEvent;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -71,6 +72,10 @@ class EventServiceProvider extends ServiceProvider
 
         QueueTimeoutEvent::class => [
             QueueTimeoutListener::class
+        ],
+
+        C2bConfirmationEvent::class => [
+            C2bPaymentConfirmation::class
         ],
 
         AirtimePurchaseSuccessEvent::class => [

@@ -102,7 +102,7 @@ class UssdRepository
         if (count($result) == 1)
             self::resetUser($user);
 
-        error_log($message);
+//        error_log($message);
         echo $ussd->processUssd($user, $message);
 
 //        exit;

@@ -39,7 +39,7 @@ class C2bPaymentConfirmation
 
         $transaction->amount = $c2b->TransAmount;
         $transaction->type = 'PAYMENT';
-        $transaction->description = `Voucher Purchase - $c2b->MSISDN`;
+        $transaction->description = "Voucher Purchase - $c2b->MSISDN";
         $transaction->account_id = $account->id;
         $transaction->product_id = $product->id;
 
@@ -62,7 +62,5 @@ class C2bPaymentConfirmation
         ];
 
         (new ProductRepository())->voucher($transaction, $voucherDetails);
-//        Send Notification
-
     }
 }

@@ -17,7 +17,7 @@ class C2bPaymentConfirmation
      */
     public function handle(C2bConfirmationEvent $event)
     {
-        Log::info($event);
+        Log::info(array($event));
 
         $c2b = $event->transaction;
         //Try to check if this was from STK

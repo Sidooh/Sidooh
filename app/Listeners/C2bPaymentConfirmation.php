@@ -7,7 +7,7 @@ use App\Models\Payment;
 use App\Models\Transaction;
 use App\Repositories\AccountRepository;
 use App\Repositories\ProductRepository;
-use DrH\Mpesa\Database\Entities\MpesaStkRequest;
+use DrH\Mpesa\Database\Entities\MpesaStkCallback;
 use DrH\Mpesa\Events\C2bConfirmationEvent;
 use Illuminate\Support\Facades\Log;
 
@@ -25,7 +25,10 @@ class C2bPaymentConfirmation
 
         $c2b = $event->transaction;
         //Try to check if this was from STK
-        $request = MpesaStkRequest::whereReference($c2b->BillRefNumber)->first();
+        $request = MpesaStkCallback::whereMpesaReceiptNumber($c2b->TransID)->first();
+
+        if ($request)
+            return;
 
 //        Find account
         $accountRep = new AccountRepository();

@@ -25,7 +25,7 @@ class C2bPaymentConfirmation
 
         $c2b = $event->transaction;
         //Try to check if this was from STK
-        $request = MpesaStkCallback::whereMpesaReceiptNumber($c2b->TransID)->exists();
+        $request = MpesaStkCallback::where("MpesaReceiptNumber", $c2b->TransID)->exists();
 
         if ($request)
             return;

@@ -9,7 +9,6 @@ use App\Repositories\AccountRepository;
 use App\Repositories\ProductRepository;
 use DrH\Mpesa\Database\Entities\MpesaStkCallback;
 use DrH\Mpesa\Events\C2bConfirmationEvent;
-use Illuminate\Support\Facades\Log;
 
 class C2bPaymentConfirmation
 {
@@ -21,8 +20,6 @@ class C2bPaymentConfirmation
      */
     public function handle(C2bConfirmationEvent $event)
     {
-        Log::info($event->mpesa_response);
-
         $c2b = $event->transaction;
         //Try to check if this was from STK
         $request = MpesaStkCallback::where("MpesaReceiptNumber", $c2b->TransID)->exists();

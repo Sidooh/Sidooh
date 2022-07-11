@@ -94,15 +94,20 @@
                         let {data} = await axios.post(API_URL, userData);
 
                         const auth = {
-                            token: data.token,
-                            user: JWT.decode(data.token),
+                            token: data.access_token,
+                            user: JWT.decode(data.access_token),
                             credentials: userData
                         };
 
                         let {data: sessionIsSet} = await axios.post('/login', auth);
 
-                        if(!sessionIsSet) {
-                            return toast({msg: "Unable to authenticate!", type: 'danger', duration: 10, position: 'left'});
+                        if (!sessionIsSet) {
+                            return toast({
+                                msg: "Unable to authenticate!",
+                                type: 'danger',
+                                duration: 10,
+                                position: 'left'
+                            });
                         }
 
                         location.href = '{{ route("admin.index") }}'

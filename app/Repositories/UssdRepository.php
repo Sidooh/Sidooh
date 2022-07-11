@@ -10,12 +10,12 @@ use App\Helpers\Sidooh\USSD\USSD;
 use App\Models\UssdLog;
 use App\Models\UssdUser;
 use Carbon\Carbon;
+use DrH\Mpesa\Database\Entities\MpesaBulkPaymentResponse;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use MrAtiebatie\Repository;
-use Samerior\MobileMoney\Mpesa\Database\Entities\MpesaBulkPaymentResponse;
 
 
 class UssdRepository
@@ -186,7 +186,6 @@ class UssdRepository
         if ($initiator === 'b2c') {
             return $this->handleB2cResult();
         }
-        return;
     }
 
 }

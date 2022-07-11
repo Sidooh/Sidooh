@@ -74,12 +74,7 @@ class Withdrawal
 
         $description = $mpesaNumber ? "Withdrawal - $mpesaNumber" : "Withdrawal";
 
-        if (config('services.sidooh.mpesa.env') == 'local') {
-            $number = config('services.sidooh.mpesa.b2c.phone');
-        }
-
         $b2c = mpesa_send($number, $this->amount, $description);
-
 
         DB::transaction(function () use ($mpesaNumber, $b2c) {
 

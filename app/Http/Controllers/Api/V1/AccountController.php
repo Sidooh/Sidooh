@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AccountStoreRequest;
 use App\Http\Resources\AccountResource;
-use App\Model\Account;
+use App\Models\Account;
 use App\Repositories\AccountRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 
 class AccountController extends Controller
@@ -159,6 +160,18 @@ class AccountController extends Controller
      * @param Account $account
      * @return AccountResource
      */
+    public function vouchers(Account $account)
+    {
+        //
+        return new AccountResource($account->vouchers());
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Account $account
+     * @return AccountResource
+     */
     public function earnings(Account $account)
     {
         //
@@ -179,4 +192,21 @@ class AccountController extends Controller
         return new AccountResource($this->account->earningsReport($account->phone));
     }
 
+//    /**
+//     * Display the specified resource.
+//     *
+//     * @param Account $account
+//     * @return AccountResource
+//     */
+    public function calculateInterest(): AccountResource
+    {
+        //
+        return new AccountResource($this->account->invest());
+    }
+
+    public function allocateInterest(): AccountResource
+    {
+        //
+        return new AccountResource($this->account->allocateInterest());
+    }
 }

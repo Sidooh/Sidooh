@@ -3,7 +3,7 @@
 
 namespace App\Repositories;
 
-use App\Model\Payment;
+use App\Models\Payment;
 use Illuminate\Database\Eloquent\Model;
 use MrAtiebatie\Repository;
 

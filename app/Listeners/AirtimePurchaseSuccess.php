@@ -31,18 +31,49 @@ class AirtimePurchaseSuccess
         //
 //        TODO:: Send sms notification
 
-        Log::info('------------------------ Airtime Purchase Success ' . now() . ' ---------------------- ');
+        Log::info('----------------- Airtime Purchase Success ');
 
         $phone = ltrim($event->airtime_response->phoneNumber, '+');
         $sender = $event->airtime_response->request->transaction->account->phone;
+        $method = $event->airtime_response->request->transaction->payment->subtype;
 
-        $amount = explode(".", $event->airtime_response->amount)[0];
+        $amount = str_replace(' ', '', explode(".", $event->airtime_response->amount)[0]);
         $date = $event->airtime_response->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
 
-        $message = "You have received {$amount} airtime from Sidooh account {$sender} on {$date}. Dial *144# to check your balance. \n\nSidooh, Makes You Money!";
+        $points_earned = $this->getPointsEarned(explode(' ', $event->airtime_response->discount)[1]);
 
-        (new AfricasTalkingApi())->sms($phone, $message);
+        $code = config('services.at.ussd.code');
+
+        if ($method == 'VOUCHER') {
+            $bal = $event->airtime_response->request->transaction->account->voucher->balance;
+            $vtext = " New Voucher balance is KES$bal.";
+        } else {
+            $method = 'MPESA';
+            $vtext = '';
+        }
 
         (new TransactionRepository())->statusUpdate($event->airtime_response);
+
+        if ($phone != $sender) {
+            $message = "You have purchased {$amount} airtime for {$phone} from your Sidooh account on {$date} using $method. You have received {$points_earned} cashback.$vtext";
+
+            (new AfricasTalkingApi())->sms($sender, $message);
+
+            $message = "Congratulations! You have received {$amount} airtime from Sidooh account {$sender} on {$date}. Sidooh Makes You Money with Every Purchase.\n\nDial $code NOW for FREE on your Safaricom line to BUY AIRTIME & START EARNING from your purchases.";
+
+            (new AfricasTalkingApi())->sms($phone, $message);
+        } else {
+
+            $message = "You have purchased {$amount} airtime from your Sidooh account on {$date} using $method. You have received {$points_earned} cashback.$vtext";
+
+            (new AfricasTalkingApi())->sms($phone, $message);
+        }
+
+    }
+
+    public function getPointsEarned(float $discount)
+    {
+        $e = $discount * .75;
+        return 'KES' . $e / 6;
     }
 }

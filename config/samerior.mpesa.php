@@ -10,7 +10,7 @@ return [
      | Production base url: https://api.safaricom.co.ke
      |
      */
-    'sandbox' => true,
+    'sandbox' => env('MPESA_SANDBOX', true),
     /*
    |--------------------------------------------------------------------------
    | Cache credentials
@@ -21,7 +21,7 @@ return [
    | generating credentials
    |
    */
-    'cache_credentials' => true,
+    'cache_credentials' => false,
     /*
    |--------------------------------------------------------------------------
    | C2B array
@@ -85,6 +85,43 @@ return [
         /*
          * Sending app consumer key
          */
+        'consumer_key' => env('MPESA_B2C_KEY'),
+//            'Ei4lr5xbDZXS9XEAZ1BhNE4xCBcAYGVyA',
+        /*
+         * Sending app consumer secret
+         */
+        'consumer_secret' => env('MPESA_B2C_SECRET'),
+//            'eMhCDmzFQyx1SNSZ',
+        /*
+         * Shortcode sending funds
+         */
+        'short_code' => env('MPESA_B2C_SHORTCODE'),
+        /*
+        * This is the user initiating the transaction, usually from the Mpesa organization portal
+        * Make sure this was the user who was used to 'GO LIVE'
+        * https://org.ke.m-pesa.com/
+        */
+        'initiator' => env('MPESA_B2C_INITIATOR'),
+        /*
+         * The user security credential.
+         * Go to https://developer.safaricom.co.ke/test_credentials and paste your initiator password to generate
+         * security credential
+         */
+        'security_credential' => 'KcU4MlDi8VXJMxaYS71NSEWmvenjeleJdmEHSTr1+datoe62P5WtT9d6A69fvNccjQgcpCxpuy9MDuNE6/1cA36SidNmGYDBN8gNov6LKlZgGAKrOkBvmDU5xD2OIZ9FggVK1Y4ZuAm2QFQ5zgqaD6QQRUJNde2g9yRnPdFupoSt/wnG3ArDSFBdeWt7cyP7U23GqEnEj7wh5IkubrzkoF/BNGdVljJAW5kf5QmjT58qG/LE2YXXScqyOKGO76LQL4go1Vwm65ceBY63G+vyMg6louITzHWrK4c/i3BEPijJrk3IOS43KnbnY6kNBhUWdhnVhBnONMOe2avBV2LJwg==',
+        /*
+         * Notification URL for timeout
+         */
+        'timeout_url' => env('APP_URL') . '/payments/callbacks/timeout_url/',
+        /**
+         * Result URL
+         */
+//        'result_url' => env('APP_URL') . '/payments/callbacks/result/',
+        'result_url' => env('APP_URL') . '/api/v1/payments/callbacks/result/',
+    ],
+    'b2b' => [
+        /*
+         * Sending app consumer key
+         */
         'consumer_key' => env('MPESA_KEY'),
 //            'Ei4lr5xbDZXS9XEAZ1BhNE4xCBcAYGVyA',
         /*
@@ -95,13 +132,13 @@ return [
         /*
          * Shortcode sending funds
          */
-        'short_code' => 600643,
+        'short_code' => 600000,
         /*
         * This is the user initiating the transaction, usually from the Mpesa organization portal
         * Make sure this was the user who was used to 'GO LIVE'
         * https://org.ke.m-pesa.com/
         */
-        'initiator' => 'TestInit643',
+        'initiator' => 'testapi',
         /*
          * The user security credential.
          * Go to https://developer.safaricom.co.ke/test_credentials and paste your initiator password to generate

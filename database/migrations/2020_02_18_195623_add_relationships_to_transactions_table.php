@@ -16,7 +16,7 @@ class AddRelationshipsToTransactionsTable extends Migration
         Schema::table('transactions', function (Blueprint $table) {
             //
             if (!Schema::hasColumn('transactions', 'account_id')) {
-                $table->bigInteger('account_id')->unsigned()->nullable();
+                $table->bigInteger('account_id')->unsigned();
                 $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             }
             if (!Schema::hasColumn('transactions', 'product_id')) {

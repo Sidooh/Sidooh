@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Model\Transaction;
 use Illuminate\Database\Eloquent\Model;
 
 class AirtimeRequest extends Model

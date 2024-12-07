@@ -27,7 +27,7 @@ class TransactionSuccess
     public function handle(TransactionSuccessEvent $event)
     {
         //
-        Log::info('------------------------ Transaction Success ' . now() . ' ---------------------- ');
+        Log::info('----------------- Transaction Success');
 
         $trans = $event->transaction;
         $earnings = $event->totalEarned;

@@ -18,7 +18,8 @@ class CreateTransactionsTable extends Migration
 
             $table->float('amount');
             $table->string('status', 10)->default('pending');
-            $table->string('type', 10); // Payment or Withdrawal
+            $table->string('type', 10); // Payment or Withdrawal : Transfer? (P2P, B2B)
+            $table->string('description')->nullable();
 
             $table->timestamps();
         });

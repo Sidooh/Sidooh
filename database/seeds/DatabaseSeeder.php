@@ -14,10 +14,12 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class);
 
         $this->call(TelcoSeeder::class);
-        $this->call(AccountSeeder::class);
-        $this->call(ReferralSeeder::class);
+//        $this->call(AccountSeeder::class);
+//        $this->call(ReferralSeeder::class);
+//        $this->call(SubAccountSeeder::class);
+        $this->call(SubscriptionTypeSeeder::class);
 
-        $this->call(UssdMenuSeeder::class);
-        $this->call(UssdMenuItemSeeder::class);
+//        $this->call(UssdMenuSeeder::class);
+//        $this->call(UssdMenuItemSeeder::class);
     }
 }

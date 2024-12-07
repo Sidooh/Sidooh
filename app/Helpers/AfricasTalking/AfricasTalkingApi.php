@@ -4,16 +4,23 @@
 namespace App\Helpers\AfricasTalking;
 
 
-use AfricasTalking\SDK\AfricasTalking;
+use GuzzleHttp\Exception\ServerException;
 
 class AfricasTalkingApi
 {
     /**
      * Guzzle client initialization.
      *
-     * @var AfricasTalking
+     * @var AfricasTalkingSubClass
      */
     protected $AT;
+
+    /**
+     * AfricasTalking APIs application mode.
+     *
+     * @var string
+     */
+    protected $mode;
 
     /**
      * AfricasTalking APIs application username.
@@ -36,29 +43,66 @@ class AfricasTalkingApi
      */
     public function __construct()
     {
-        $mode = config('services.at.env');
+        $this->mode = config('services.at.env');
+    }
 
-        $this->username = config('services.at.username');
-        $this->apiKey = config('services.at.key');
+    private function initialize_app(string $app)
+    {
+//        TODO: Can this be done better in constructor instead of reinitializing?
+        if ($this->mode == 'production') {
+            $this->username = config("services.at.$app.username");
+            $this->apiKey = config("services.at.$app.key");
+        } else {
+            $this->username = config('services.at.username');
+            $this->apiKey = config('services.at.key');
+        }
 
-        $this->AT = new AfricasTalking($this->username, $this->apiKey);
+        $this->AT = new AfricasTalkingSubClass($this->username, $this->apiKey);
     }
 
     public function sms($to, $message, $enqueue = false)
     {
+        $this->initialize_app('sms');
         // Get sms service
         $sms = $this->AT->sms();
 
-        // Use the service
-        return $sms->send([
-            'to' => $to,
-            'message' => $message,
-            'enqueue' => $enqueue
-        ]);
+//        TODO: Should we add a try catch here to ensure message delivery or nah?
+
+        try {
+            // Use the service
+            return $sms->send([
+                'from' => config('services.at.sms.from'),
+                'to' => $to,
+                'message' => $message,
+                'enqueue' => $enqueue
+            ]);
+        } catch (ServerException $e) {
+//            TODO: Can we try send the message once more? and then should we throw error for sentry?
+            $sms->send([
+                'from' => config('services.at.sms.from'),
+                'to' => ['254714611696', '254711414987'],
+                'message' => "ERROR:SMS - Server error with AT",
+                'enqueue' => $enqueue
+            ]);
+
+//            throw $e;
+        } catch (\Exception $e) {
+            $sms->send([
+                'from' => config('services.at.sms.from'),
+                'to' => ['254714611696', '254711414987'],
+                'message' => "ERROR:SMS - Unidentified error with AT",
+                'enqueue' => $enqueue
+            ]);
+
+//            throw $e;
+        }
+
     }
 
     public function airtime(string $to, string $amount, string $currency = 'KES')
     {
+        $this->initialize_app('airtime');
+
         // Get airtime service
         $airtime = $this->AT->airtime();
 
@@ -71,6 +115,20 @@ class AfricasTalkingApi
                     'amount' => $amount
                 ],
             ]
+        ]);
+
+    }
+
+    public function transactionStatus(string $transactionId)
+    {
+        $this->initialize_app('airtime');
+
+        // Get transaction service
+        $transaction = $this->AT->transaction();
+
+        // Use the service
+        return $transaction->check([
+            'transactionId' => $transactionId,
         ]);
 
     }

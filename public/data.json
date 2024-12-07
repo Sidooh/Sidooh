@@ -1,0 +1,1031 @@
+{
+    "main_menu": {
+        "key": "main_menu",
+        "title": "Hi{$name}, Welcome to Sidooh. What would you like to do?",
+        "type": "GENESIS",
+        "options": {
+            "1": {
+                "title": "Know About Sidooh",
+                "type": "int",
+                "value": "1",
+                "next": "about"
+            },
+            "2": {
+                "title": "Buy Airtime",
+                "type": "int",
+                "value": "2",
+                "next": "airtime"
+            },
+            "3": {
+                "title": "Pay",
+                "type": "int",
+                "value": "3",
+                "next": "pay"
+            },
+            "4": {
+                "title": "Save",
+                "type": "int",
+                "value": "4",
+                "next": "coming_soon"
+            },
+            "5": {
+                "title": "Invite",
+                "type": "int",
+                "value": "5",
+                "next": "refer_pin"
+            },
+            "6": {
+                "title": "Become an Agent",
+                "type": "int",
+                "value": "6",
+                "next": "agent"
+            },
+            "7": {
+                "title": "Check My Account",
+                "type": "int",
+                "value": "7",
+                "next": "account"
+            }
+        }
+    },
+    "about": {
+        "key": "about",
+        "type": "ENDs",
+        "title": "Sidooh is a cashback rewards platform that gives you cash refunds on every item you purchase through the platform. The earned cashback is then automatically saved and invested in financial assets like Treasury Bills and Bonds, Fixed Deposits, etc. so as to generate extra income for you.",
+        "options": {},
+        "paginated": true
+    },
+    "airtime": {
+        "key": "airtime",
+        "title": "Buy airtime",
+        "options": {
+            "1": {
+                "title": "Self {$my_number}",
+                "type": "int",
+                "value": "1",
+                "next": "airtime_amount_v2"
+            },
+            "2": {
+                "title": "Other",
+                "type": "int",
+                "value": "2",
+                "next": "other_number"
+            }
+        }
+    },
+    "pay": {
+        "key": "pay",
+        "title": "What would you like to pay for?",
+        "super_product": 3,
+        "options": {
+            "1": {
+                "title": "Ksh365 Sidooh Agent Monthly Subscription Fee",
+                "type": "int",
+                "value": "1",
+                "next": "coming_soon"
+            },
+            "2": {
+                "title": "Voucher",
+                "type": "int",
+                "value": "2",
+                "next": "voucher"
+            },
+            "3": {
+                "title": "Merchant",
+                "type": "int",
+                "value": "3",
+                "next": "merchant"
+            },
+            "4": {
+                "title": "Utilities",
+                "type": "int",
+                "value": "4",
+                "next": "utility"
+            }
+        }
+    },
+    "utility": {
+        "key": "utility",
+        "title": "Select provider:",
+        "options": {
+            "1": {
+                "title": "KPLC Prepaid",
+                "type": "int",
+                "value": "1",
+                "next": "utility_account_no"
+            },
+            "2": {
+                "title": "KPLC Postpaid",
+                "type": "int",
+                "value": "2",
+                "next": "utility_account_no"
+            },
+            "3": {
+                "title": "Nairobi Water",
+                "type": "int",
+                "value": "3",
+                "next": "utility_account_no"
+            },
+            "4": {
+                "title": "DSTV",
+                "type": "int",
+                "value": "4",
+                "next": "utility_account_no"
+            },
+            "5": {
+                "title": "ZUKU",
+                "type": "int",
+                "value": "5",
+                "next": "utility_account_no"
+            },
+            "6": {
+                "title": "GOTV",
+                "type": "int",
+                "value": "6",
+                "next": "utility_account_no"
+            },
+            "7": {
+                "title": "Startimes",
+                "type": "int",
+                "value": "7",
+                "next": "utility_account_no"
+            }
+        }
+    },
+    "utility_account_no": {
+        "key": "utility_account_no",
+        "title": "Enter account no:",
+        "type": "OPEN",
+        "next": "utility_amount",
+        "options": {},
+        "option_type": "MERCHANT_CODE"
+    },
+    "utility_amount": {
+        "key": "utility_amount",
+        "title": "Enter amount (Min. KSh100):",
+        "type": "OPEN",
+        "next": "payment_method",
+        "options": {},
+        "option_type": "MIN"
+    },
+    "voucher": {
+        "key": "voucher",
+        "title": "Buy Voucher",
+        "options": {
+            "1": {
+                "title": "Self {$my_number}",
+                "type": "int",
+                "value": "1",
+                "next": "voucher_amount"
+            },
+            "2": {
+                "title": "Other",
+                "type": "int",
+                "value": "2",
+                "next": "voucher_other_number"
+            }
+        }
+    },
+    "voucher_amount": {
+        "key": "voucher_amount",
+        "title": "Enter voucher amount (Min. KSh100)",
+        "type": "OPEN",
+        "next": "payment_method",
+        "options": {},
+        "option_type": "MIN"
+    },
+    "voucher_other_number": {
+        "key": "voucher_other_number",
+        "title": "Enter other number",
+        "type": "OPEN",
+        "next": "voucher_amount",
+        "options": {},
+        "option_type": "NUMBER"
+    },
+    "merchant": {
+        "key": "merchant",
+        "title": "Enter merchant code:",
+        "type": "OPEN",
+        "next": "merchant_payment",
+        "options": {},
+        "option_type": "MERCHANT_CODE"
+    },
+    "merchant_payment": {
+        "key": "merchant_payment",
+        "title": "Please enter amount:",
+        "type": "OPEN",
+        "next": "merchant_points",
+        "options": {},
+        "option_type": "AMOUNT"
+    },
+    "merchant_points": {
+        "key": "merchant_points",
+        "title": "You have ${merchant_points} points worth ${merchant_points_value}. Enter amount to withdraw.",
+        "type": "OPEN",
+        "next": "merchant_payment_confirmation",
+        "options": {},
+        "option_type": "NUMBER"
+    },
+    "merchant_payment_method": {
+        "key": "merchant_payment_method",
+        "title": "Pay ${merchant_name} ${amount} using:",
+        "type": "OPEN",
+        "next": "merchant_payment_method",
+        "options": {
+            "1": {
+                "title": "Voucher (${voucher_balance})",
+                "type": "int",
+                "value": "1",
+                "next": "merchant_payment_confirmation"
+            }
+        },
+        "option_type": "NUMBER"
+    },
+    "merchant_payment_confirmation": {
+        "key": "merchant_payment_confirmation",
+        "title": "Ksh{$amount} to {$merchant_name} will be deducted from {$payment_method_text}:",
+        "options": {
+            "1": {
+                "title": "Accept",
+                "type": "int",
+                "value": "1",
+                "next": "merchant_confirm_pin"
+            },
+            "2": {
+                "title": "Cancel",
+                "type": "int",
+                "value": "2",
+                "next": "cancel"
+            }
+        }
+    },
+    "merchant_confirm_pin": {
+        "key": "merchant_confirm_pin",
+        "title": "Please enter your Sidooh PIN",
+        "type": "OPEN",
+        "next": "payment_end",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "subscription": {
+        "key": "subscription",
+        "title": "Please select option:",
+        "options": {
+            "1": {
+                "title": "{$subscription_type_1} @Ksh{$subscription_amount_1}/{$period}",
+                "type": "int",
+                "value": "1",
+                "next": "payment_method"
+            },
+            "2": {
+                "title": "{$subscription_type_2} @Ksh{$subscription_amount_2}/{$period}",
+                "type": "int",
+                "value": "2",
+                "next": "payment_method"
+            }
+        }
+    },
+    "save": {
+        "key": "save",
+        "title": "Save",
+        "options": {
+            "1": {
+                "title": "Personal",
+                "type": "int",
+                "value": "1",
+                "next": "personal_savings"
+            },
+            "2": {
+                "title": "Group",
+                "type": "int",
+                "value": "2",
+                "next": "group_savings"
+            }
+        }
+    },
+    "refer_pin": {
+        "key": "refer_pin",
+        "title": "Please enter your Sidooh PIN",
+        "type": "OPEN",
+        "next": "refer",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "refer": {
+        "key": "refer",
+        "title": "Invite your friends to Sidooh and start earning from every airtime they purchase from the platform once they enroll within {$enrollment_time}hrs. Enter no:",
+        "type": "OPEN",
+        "next": "refer_end",
+        "options": {},
+        "option_type": "NUMBER"
+    },
+    "agent": {
+        "key": "agent",
+        "title": "What would you like to do?",
+        "super_product": 6,
+        "options": {
+            "1": {
+                "title": "Pre-register as an agent",
+                "type": "int",
+                "value": "1",
+                "next": "agent_intro"
+            }
+        }
+    },
+    "agent_intro": {
+        "key": "agent_intro",
+        "title": "By registering as a Sidooh Agent through paying a monthly (Ksh365/month) subscription fee, you will earn sales commissions on every airtime purchased from the platform by your referred customers and subagents.",
+        "options": {
+            "1": {
+                "title": "Proceed to register as an Agent",
+                "type": "int",
+                "value": "1",
+                "next": "pre_agent_onboarding_name"
+            }
+        },
+        "paginated": true
+    },
+    "agent_onboarding_name": {
+        "key": "agent_onboarding_name",
+        "title": "Please enter your Full Name\n\nFormat:\nFirstname Lastname",
+        "type": "OPEN",
+        "next": "payment_method",
+        "options": {},
+        "option_type": "NAME"
+    },
+    "agent_onboarding_mail": {
+        "key": "agent_onboarding_mail",
+        "title": "Please enter your email address.\nEnter 0000 if you have no email",
+        "type": "OPEN",
+        "next": "agent_onboarding_category",
+        "options": {},
+        "option_type": "EMAIL"
+    },
+    "agent_onboarding_category": {
+        "key": "agent_onboarding_category",
+        "title": "Select preferred agent category:",
+        "options": {
+            "1": {
+                "title": "{$subscription_type_1} for KES{$subscription_amount_1} {$period}ly earns you commissions up to your {$level_limit_1}rd ripple",
+                "type": "int",
+                "value": "1",
+                "next": "payment_method"
+            },
+            "2": {
+                "title": "{$subscription_type_2} for KES{$subscription_amount_2} {$period}ly earns you commissions up to your {$level_limit_2}th ripple",
+                "type": "int",
+                "value": "2",
+                "next": "payment_method"
+            }
+        },
+        "paginated": true
+    },
+    "agent_upgrade": {
+        "key": "agent_upgrade",
+        "title": "Upgrade to {$subscription_upgrade}?",
+        "options": {
+            "1": {
+                "title": "Accept",
+                "type": "int",
+                "value": "1",
+                "next": "payment_method"
+            },
+            "2": {
+                "title": "Cancel",
+                "type": "int",
+                "value": "2",
+                "next": "cancel"
+            }
+        }
+    },
+    "account": {
+        "key": "account",
+        "title": "What would you like to do?",
+        "options": {
+            "1": {
+                "title": "Profile",
+                "type": "int",
+                "value": "1",
+                "next": "kyc_details"
+            },
+            "2": {
+                "title": "Check Balance",
+                "type": "int",
+                "value": "2",
+                "next": "confirm_pin"
+            },
+            "3": {
+                "title": "Withdraw",
+                "type": "int",
+                "value": "3",
+                "next": "confirm_pin_withdraw"
+            },
+            "4": {
+                "title": "Biz",
+                "type": "int",
+                "value": "4",
+                "next": "biz_pin"
+            },
+            "5": {
+                "title": "Referrals",
+                "type": "int",
+                "value": "5",
+                "next": "referrals"
+            }
+        }
+    },
+    "referrals": {
+        "key": "referrals",
+        "title": "Here is a breakdown of your referrals:\n\n1. Sidooh Points: {$sp}\n\t   - Available Balance: {$ab}\n\t   - Savings & Investments: {$sni}\n2. Voucher Balance: {$vb}\n3. Sidooh Bonus: {$sb}\n4. Withdrawable Amount: {$wb}\n",
+        "type": "OPEN"
+    },
+    "biz": {
+        "key": "biz",
+        "title": "Welcome {$biz_name}. What would you like to do?",
+        "options": {
+            "1": {
+                "title": "Create Merchant Acc.",
+                "type": "int",
+                "value": "1",
+                "next": "biz_kyc_details_name"
+            },
+            "2": {
+                "title": "Check Balance",
+                "type": "int",
+                "value": "2",
+                "next": "biz_balance"
+            },
+            "3": {
+                "title": "Withdraw",
+                "type": "int",
+                "value": "3",
+                "next": "biz_withdraw"
+            },
+            "4": {
+                "title": "Pay",
+                "type": "int",
+                "value": "4",
+                "next": "pay_merchant"
+            },
+            "5": {
+                "title": "Profile",
+                "type": "int",
+                "value": "5",
+                "next": "biz_profile"
+            }
+        }
+    },
+    "biz_withdraw": {
+        "key": "biz_withdraw",
+        "title": "Enter amount you wish to withdraw:\n\n- Merchant Account Balance: {$mb}\n- Withdrawable Balance: {$wb}",
+        "type": "OPEN",
+        "next": "redeem_account",
+        "options": {},
+        "option_type": "AMOUNT"
+    },
+    "pay_merchant": {
+        "key": "pay_merchant",
+        "title": "Enter merchant code:",
+        "type": "OPEN",
+        "next": "pay_merchant_amount",
+        "options": {},
+        "option_type": "MERCHANT_CODE"
+    },
+    "pay_merchant_amount": {
+        "key": "pay_merchant_amount",
+        "title": "Please enter amount:",
+        "type": "OPEN",
+        "next": "merchant_payment_confirmation",
+        "options": {},
+        "option_type": "AMOUNT"
+    },
+    "biz_profile": {
+        "key": "biz_profile",
+        "title": "Your merchant details are as follows:\n\nMerchant Name: {$biz_name}\nMerchant Code: {$biz_code}\nMerchant Contact: {$biz_contact_name}\nMerchant Number: {$biz_contact_number}\n",
+        "options": {
+            "1": {
+                "title": "Update Details",
+                "type": "int",
+                "value": "1",
+                "next": "coming_soon"
+            }
+        }
+    },
+    "biz_balance": {
+        "key": "biz_balance",
+        "title": "Your merchant balance is:\n {$mb}",
+        "type": "OPEN"
+    },
+    "biz_kyc_details_name": {
+        "key": "biz_kyc_details_name",
+        "title": "Please enter Business Name:",
+        "type": "OPEN",
+        "next": "biz_kyc_details_code",
+        "options": {},
+        "option_type": "NAME"
+    },
+    "biz_kyc_details_code": {
+        "key": "biz_kyc_details_code",
+        "title": "Please enter Mpesa Paybill/Till No. If not available, enter mobile number to nominate:",
+        "type": "OPEN",
+        "next": "biz_kyc_details_contact_person_name",
+        "options": {},
+        "option_type": "MERCHANT_CODE"
+    },
+    "biz_kyc_details_contact_person_name": {
+        "key": "biz_kyc_details_contact_person_name",
+        "title": "Please enter Contact Person Name\n\nFormat:\nFirstname Lastname",
+        "type": "OPEN",
+        "next": "biz_kyc_details_contact_person_number",
+        "options": {},
+        "option_type": "NAME"
+    },
+    "biz_kyc_details_contact_person_number": {
+        "key": "biz_kyc_details_contact_person_number",
+        "title": "Please enter Contact Person Number:",
+        "type": "OPEN",
+        "next": "biz_kyc_details_end",
+        "options": {},
+        "option_type": "BUSINESS_NUMBER"
+    },
+    "biz_kyc_details_end": {
+        "key": "biz_kyc_details_end",
+        "title": "Your account will be created with the following details:\n\nMerchant Name: {$biz_name}\nMerchant Code: {$biz_code}\nMerchant Contact: {$biz_contact_name}\nMerchant Number: {$biz_contact_number}\n",
+        "type": "OPEN"
+    },
+    "biz_pin": {
+        "key": "biz_pin",
+        "title": "Enter Sidooh PIN:",
+        "type": "OPEN",
+        "next": "biz",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "redeem_amount": {
+        "key": "redeem_amount",
+        "title": "Enter points you wish to withdraw (Min. 10):\n\n- Available Points: {$ap}\n- Withdrawable Points: {$wp}",
+        "type": "OPEN",
+        "next": "redeem_account",
+        "options": {},
+        "option_type": "MIN|WITHDRAW"
+    },
+    "redeem_account": {
+        "key": "redeem_account",
+        "title": "Where would you like us to send the money?",
+        "options": {
+            "1": {
+                "title": "MPESA Account",
+                "type": "int",
+                "value": "1",
+                "next": "redeem_account_select"
+            },
+            "2": {
+                "title": "Bank Account",
+                "type": "int",
+                "value": "2",
+                "next": "coming_soon"
+            }
+        }
+    },
+    "redeem_account_select": {
+        "key": "redeem_account_select",
+        "title": "Select the account to send the funds to:",
+        "options": {
+            "1": {
+                "title": "Self {$my_number}",
+                "type": "int",
+                "value": "1",
+                "next": "redeem_confirm"
+            },
+            "2": {
+                "title": "Other MPESA number",
+                "type": "int",
+                "value": "2",
+                "next": "redeem_other_number_mpesa"
+            }
+        }
+    },
+    "redeem_other_number_mpesa": {
+        "key": "redeem_other_number_mpesa",
+        "title": "Enter MPESA number",
+        "type": "OPEN",
+        "next": "redeem_confirm",
+        "options": {},
+        "option_type": "MPESA"
+    },
+    "redeem_confirm": {
+        "key": "redeem_confirm",
+        "title": "Please confirm details.\n\nWithdraw: {$points} Sidooh Points\nFor: KSH{$amount}\nTo {$acc_type}: {$to_number}\n",
+        "options": {
+            "1": {
+                "title": "Accept",
+                "type": "int",
+                "value": "1",
+                "next": "redeem_confirm_pin"
+            },
+            "2": {
+                "title": "Decline",
+                "type": "int",
+                "value": "2",
+                "next": "cancel"
+            },
+            "3": {
+                "title": "Change Details",
+                "type": "int",
+                "value": "3",
+                "next": "redeem_amount"
+            }
+        }
+    },
+    "redeem_confirm_pin": {
+        "key": "confirm_pin",
+        "title": "Please enter your Sidooh PIN again to confirm this transaction.",
+        "type": "OPEN",
+        "next": "redeem_end",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "redeem_end": {
+        "key": "redeem_end",
+        "title": "Your request has been received and is being processed. You will receive a confirmation SMS shortly. Thank you.",
+        "type": "END"
+    },
+    "confirm_pin": {
+        "key": "confirm_pin",
+        "title": "Please enter your Sidooh PIN",
+        "type": "OPEN",
+        "next": "check_balance",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "confirm_pin_withdraw": {
+        "key": "confirm_pin_withdraw",
+        "title": "Please enter your Sidooh PIN",
+        "type": "OPEN",
+        "next": "redeem_amount",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "check_balance": {
+        "key": "check_balance",
+        "title": "Select an option below:",
+        "options": {
+            "1": {
+                "title": "Voucher",
+                "type": "int",
+                "value": "1",
+                "next": "voucher_balance"
+            },
+            "2": {
+                "title": "Earnings",
+                "type": "int",
+                "value": "2",
+                "next": "earnings"
+            }
+        }
+    },
+    "earnings": {
+        "key": "earnings",
+        "title": "Your earnings breakdown\n\n1. Sidooh Points {$sp}\n  a. Available Points: {$ap}\n  b. Saved n Invested Points: {$snip}\n  c. Interest Earned: {$spi}\n\n2. Sidooh Bonus: {$sb}\n  a. Interest Earned: {$sbi}\n\n3. Withdrawable Points: {$wp}",
+        "type": "OPEN",
+        "paginated": true
+    },
+    "voucher_balance": {
+        "key": "voucher_balance",
+        "title": "Your voucher balance is:\n {$vb}",
+        "type": "OPEN"
+    },
+    "pre_agent": {
+        "key": "pre_agent",
+        "title": "By Pre-registering as a Sidooh Agent, you will earn sales commissions on every airtime purchased from the platform by your referred customers and subagents for 1 year, WITHOUT PAYING MONTHLY SUBSCRIPTION FEES.",
+        "options": {
+            "1": {
+                "title": "Proceed to Pre-register as an Agent",
+                "type": "int",
+                "value": "1",
+                "next": "pre_agent_onboarding_name"
+            }
+        },
+        "paginated": true
+    },
+    "pre_agent_onboarding_name": {
+        "key": "pre_agent_onboarding_name",
+        "title": "Please enter your Full Name\n\nFormat:\nFirstname Lastname",
+        "type": "OPEN",
+        "next": "pre_agent_onboarding_confirm",
+        "options": {},
+        "option_type": "NAME"
+    },
+    "pre_agent_onboarding_mail": {
+        "key": "pre_agent_onboarding_mail",
+        "title": "Please enter your email address.\nEnter 0000 if you have no email",
+        "type": "OPEN",
+        "next": "pre_agent_onboarding_category",
+        "options": {},
+        "option_type": "EMAIL"
+    },
+    "pre_agent_onboarding_category": {
+        "key": "pre_agent_onboarding_category",
+        "title": "Select preferred agent category:",
+        "options": {
+            "1": {
+                "title": "{$subscription_type_1} for KES{$subscription_amount_1_f} earns you commissions up to your {$level_limit_1}rd ripple for {$period_1} without monthly fees",
+                "type": "int",
+                "value": "1",
+                "next": "pre_agent_onboarding_confirm"
+            },
+            "2": {
+                "title": "{$subscription_type_2} for KES{$subscription_amount_2_f} earns you commissions up to your {$level_limit_2}th ripple for {$period_2} without monthly fees",
+                "type": "int",
+                "value": "2",
+                "next": "pre_agent_onboarding_confirm"
+            }
+        },
+        "paginated": true
+    },
+    "pre_agent_onboarding_confirm": {
+        "key": "pre_agent_onboarding_confirm",
+        "title": "Please confirm your details.\n\nName: {$name}\nAgent: {$subscription_type} @ {$subscription_amount_f}/month",
+        "options": {
+            "1": {
+                "title": "Confirm",
+                "type": "int",
+                "value": "1",
+                "next": "payment_method"
+            },
+            "2": {
+                "title": "Change Details",
+                "type": "int",
+                "value": "2",
+                "next": "pre_agent_onboarding_name"
+            }
+        }
+    },
+    "kyc_details": {
+        "key": "kyc_details",
+        "title": "Your details are as follows\n\nName: {$name}\nNumber: {$my_number}\n\nSubscription: {$subscription}\n",
+        "type": "OPENs",
+        "options": {
+            "1": {
+                "title": "Set/Change Sidooh Pin",
+                "type": "int",
+                "value": "1",
+                "next": "kyc_details_pin"
+            },
+            "2": {
+                "title": "Update Details",
+                "type": "int",
+                "value": "2",
+                "next": "kyc_update_name"
+            }
+        }
+    },
+    "kyc_update_name": {
+        "key": "kyc_update_name",
+        "title": "Please enter your Full Name\n\nFormat:\nFirstname Lastname",
+        "type": "OPEN",
+        "next": "kyc_update_confirm_pin",
+        "options": {},
+        "option_type": "NAME"
+    },
+    "kyc_update_confirm_pin": {
+        "key": "kyc_update_confirm_pin",
+        "title": "Please enter your Sidooh PIN",
+        "type": "OPEN",
+        "next": "kyc_update_end",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "kyc_update_end": {
+        "key": "kyc_update_end",
+        "title": "Congratulations, You have updated your profile. New details are as follows\n\nName: {$name}",
+        "type": "OPEN"
+    },
+    "kyc_details_pin": {
+        "key": "kyc_details_pin",
+        "title": "What would you like to do?",
+        "type": "OPENs",
+        "options": {
+            "1": {
+                "title": "Set new PIN",
+                "type": "int",
+                "value": "1",
+                "next": "kyc_details_name"
+            },
+            "2": {
+                "title": "Change current PIN",
+                "type": "int",
+                "value": "2",
+                "next": "kyc_details_current_pin"
+            }
+        }
+    },
+    "kyc_details_current_pin": {
+        "key": "kyc_details_current_pin",
+        "title": "Please enter your current Sidooh PIN",
+        "type": "OPEN",
+        "next": "kyc_details_new_pin",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "kyc_details_name": {
+        "key": "kyc_details_name",
+        "title": "Please enter your Full Name\n\nFormat:\nFirstname Lastname",
+        "type": "OPEN",
+        "next": "kyc_details_new_pin",
+        "options": {},
+        "option_type": "NAME"
+    },
+    "kyc_details_mail": {
+        "key": "kyc_details_mail",
+        "title": "Please enter your email address.\nEnter 0000 if you have no email",
+        "type": "OPEN",
+        "next": "kyc_details_new_pin",
+        "options": {},
+        "option_type": "EMAIL"
+    },
+    "kyc_details_new_pin": {
+        "key": "kyc_details_new_pin",
+        "title": "Enter new four-digit Sidooh PIN:",
+        "type": "OPEN",
+        "next": "kyc_details_new_pin_confirm",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "kyc_details_new_pin_confirm": {
+        "key": "kyc_details_new_pin_confirm",
+        "title": "Please confirm your new Sidooh Pin:",
+        "type": "OPEN",
+        "next": "kyc_details_pin_end",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "kyc_details_pin_end": {
+        "key": "kyc_details_pin_end",
+        "title": "Your new Sidooh PIN is {$confirm_pin}. Please keep your PIN number safe. Do not share it with anyone.",
+        "type": "END"
+    },
+    "refer_fail": {
+        "key": "refer_fail",
+        "title": "Sorry, the number is not eligible for a referral. Try a different number to start earning from all their purchases from the platform once they enroll within {$enrollment_time}hrs.\n\n Enter friend's no:",
+        "type": "OPEN",
+        "next": "refer_end",
+        "options": {},
+        "option_type": "NUMBER",
+        "paginated": true
+    },
+    "refer_end": {
+        "key": "refer_end",
+        "title": "Thank you for referring Sidooh. Your friend will receive an invite SMS. Once they register and buy airtime within {$enrollment_time}hrs, you will start earning from every airtime they purchase from Sidooh.",
+        "type": "OPEN"
+    },
+    "agent_subscription": {
+        "key": "Please select option:",
+        "title": "agent_subscription",
+        "options": {
+            "1": {
+                "title": "Sidooh Ambitious Agent @ {$currency}{$agent1_amount}/{$period}",
+                "type": "int",
+                "value": "1",
+                "next": "payment_method"
+            },
+            "2": {
+                "title": "Sidooh Thriving Agent @ {$currency}{$agent1_amount}/{$period}",
+                "type": "int",
+                "value": "2",
+                "next": "payment_method"
+            }
+        }
+    },
+    "other_number": {
+        "key": "other_number",
+        "title": "Enter other number",
+        "type": "OPEN",
+        "next": "airtime_amount_v2",
+        "options": {},
+        "option_type": "NUMBER"
+    },
+    "airtime_amount": {
+        "key": "airtime_amount",
+        "title": "Select airtime amount",
+        "options": {
+            "1": {
+                "title": "Ksh100 earns you 0.5 points",
+                "type": "int",
+                "value": "100",
+                "next": "payment_method"
+            },
+            "2": {
+                "title": "Ksh70 earns you 0.35 points",
+                "type": "int",
+                "value": "70",
+                "next": "payment_method"
+            },
+            "3": {
+                "title": "Ksh50 earns you 0.25 points",
+                "type": "int",
+                "value": "50",
+                "next": "payment_method"
+            },
+            "4": {
+                "title": "Ksh30 earns you 0.15 points",
+                "type": "int",
+                "value": "30",
+                "next": "payment_method"
+            },
+            "5": {
+                "title": "Ksh20 earns you 0.1 points",
+                "type": "int",
+                "value": "20",
+                "next": "payment_method"
+            }
+        },
+        "paginated": true
+    },
+    "airtime_amount_v2": {
+        "key": "airtime_amount_v2",
+        "title": "Please input airtime amount (MIN: KES20)",
+        "type": "OPEN",
+        "next": "payment_method",
+        "options": {},
+        "option_type": "MIN|AIRTIME"
+    },
+    "payment_method": {
+        "key": "payment_method",
+        "title": "Pay Ksh{$amount} {$product} for {$number} using:",
+        "options": {
+            "1": {
+                "title": "MPESA",
+                "type": "int",
+                "value": "1",
+                "next": "payment_confirmation"
+            },
+            "2": {
+                "title": "VOUCHER",
+                "type": "int",
+                "value": "2",
+                "next": "payment_pin_confirmation"
+            }
+        }
+    },
+    "payment_pin_confirmation": {
+        "key": "payment_pin_confirmation",
+        "title": "Please enter your Sidooh PIN",
+        "type": "OPEN",
+        "next": "payment_confirmation",
+        "options": {},
+        "option_type": "PIN"
+    },
+    "payment_confirmation": {
+        "key": "payment_confirmation",
+        "title": "Ksh{$amount} {$product} for {$number} will be deducted from {$payment_method_text}:",
+        "options": {
+            "1": {
+                "title": "Accept",
+                "type": "int",
+                "value": "1",
+                "next": "payment_end"
+            },
+            "2": {
+                "title": "Cancel",
+                "type": "int",
+                "value": "2",
+                "next": "cancel"
+            },
+            "3": {
+                "title": "Other MPESA number",
+                "type": "int",
+                "value": "3",
+                "next": "other_number_mpesa"
+            }
+        }
+    },
+    "other_number_mpesa": {
+        "key": "other_number_mpesa",
+        "title": "Enter MPESA number",
+        "type": "OPEN",
+        "next": "payment_confirmation",
+        "options": {},
+        "option_type": "NUMBER"
+    },
+    "payment_end": {
+        "key": "payment_end",
+        "title": "Your request has been received and is being processed. {$method_instruction}. Thank you.",
+        "type": "END"
+    },
+    "coming_soon": {
+        "key": "coming_soon",
+        "title": "COMING SOON. We shall inform you once the service is available.",
+        "type": "OPEN"
+    },
+    "cancel": {
+        "key": "cancel",
+        "title": "Thank you for using Sidooh. Sidooh, Makes You Money on Every Purchase.",
+        "type": "OPEN"
+    },
+    "not_purchased": {
+        "key": "not_purchased",
+        "title": "Sorry, you have not yet purchased airtime on Sidooh. Please do so in order to proceed.",
+        "type": "OPEN"
+    }
+}

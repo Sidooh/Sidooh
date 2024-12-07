@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
-use App\Models\Subscription;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
@@ -25,6 +25,11 @@ class Account extends Model
         'telco_id', 'phone', 'referrer_id'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function isRoot()
     {
         return $this->referrer_id == null;
@@ -35,14 +40,40 @@ class Account extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function sub_accounts()
+    {
+        return $this->hasMany(SubAccount::class);
+    }
+
+    public function current_account()
+    {
+        return $this->hasOne(SubAccount::class)->type('CURRENT');
+    }
+
+    public function savings_account()
+    {
+        return $this->hasOne(SubAccount::class)->type('SAVINGS');
+    }
+
+    public function interest_account()
+    {
+        return $this->hasOne(SubAccount::class)->type('INTEREST');
+    }
+
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
     }
 
+    public function voucher()
+    {
+        return $this->hasOne(Voucher::class);
+    }
+
     public function active_subscription()
     {
-        return $this->hasMany(Subscription::class)->active();
+//        TODO: Has One does not work here???
+        return $this->hasOne(Subscription::class)->active();
     }
 
     public function pending_referrals()
@@ -63,6 +94,11 @@ class Account extends Model
     public function earnings()
     {
         return $this->hasMany(Earning::class);
+    }
+
+    public function merchant()
+    {
+        return $this->hasOne(Merchant::class);
     }
 
     /**
@@ -89,6 +125,17 @@ class Account extends Model
                 $q->where('level_limit', '<=', $level);
             });
         })->whereDepth('>=', -$level);
+    }
+
+    /**
+     * Scope a query to only include account with balance in sub accounts.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function subAccountBalance($query)
+    {
+        return $query->whereHas('active_subscription');
     }
 
 }

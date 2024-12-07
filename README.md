@@ -1,78 +1,163 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# Sidooh
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+[sidooh.co.ke](https://sidooh.co.ke)
 
-## About Laravel
+Built on Laravel 6. Run on App Engine, Cloud Build, Cloud SQL e.t.c.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Requirements
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Project
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 7.4
+- ext-json
+- ext-openssl
+- ext-intl
+- composer
 
-## Learning Laravel
+### Tools
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- lampp
+- cloud_sql_proxy (if you wish to connect to cloud sql)
+- gcloud (if you wish to run gcloud commands straight from dev machine)
+- docker (if you wish to run on docker)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Getting Started
 
-## Laravel Sponsors
+- Clone the project
+- Run `Composer install`
+- Modify env. variables accordingly
+- Run `php artisan migrate --seed`
+- Run `php artisan serve`
+- Voilà! Should be running on port `8000` if all went well.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Running on Docker
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
+Coming soon
 
-## Contributing
+## Running on App Engine
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Requirements
 
-## Code of Conduct
+- GCP Project - will hold all required resources
+- App Engine - VM to hold our code/app
+- Cloud SQL - Will deal with our db
+- Cloud Build - For simple CD (Continuous Deployment)
+- Cloud APIs
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Steps
 
-## Security Vulnerabilities
+#### 1. Create a GCP Project
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Create a project on GCP and enable billing. Billing will be required for appengine to run on flex environment
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Enable APIS
+    - Compute Engine API (App Engine and SQL instances)
+    - Cloud Build API
+    - Cloud SQL Admin API
+    - App Engine Admin API
+    - Google App Engine Flexible Environment
+    - Cloud Deployment Manager V2 API
+    - Cloud Scheduler API (Cron jobs and scheduling)
+
+#### 2. Set up App engine
+
+- Create an App Engine app with flex and other type selected
+- Deploy cron job after the first build with the following command on project directory `gcloud app deploy cron.yaml`
+
+#### 3. Set up Cloud SQL
+
+- Create an instance of mysql 8.0, 1vCPU, 1.7 GB Machine, and 10 GB SSD.
+- Create a database and take note of the connection string
+
+#### 4. Set up Cloud Build
+
+- In settings enable the `App Engine Admin` and `Service Account User` roles
+
+
+- Connect to the repository containing code
+
+
+- Optionally create a sample build trigger and modify as follows:
+    - ```
+      Name: appengine-cd-trigger (or name of branch-trigger)
+      Description: Invokes a build every time code is pushed to appengine-cd branch
+      Event: Push to a branch
+      Source: Repository connected earlier
+      Branch: ^appengine-cd$ (or otherwise)
+      Type: Cloud Build file
+      Location: Repository (__deployment__/cloudbuild.yaml) 
+      ```
+
+- Once all this is done, run the trigger manually for the first time and watch for any errors.
+
+## Debugging
+
+### App Engine
+
+- ssh into the instance on cloud console
+
+```shell
+======================
+--- APPENGINE DEBUG---
+======================
+
+---List containers
+
+sudo docker ps
+
+
+---Log a container
+
+sudo docker logs <container-name>
+
+
+---Start shell in container (like a terminal session)
+
+sudo docker exec -it <container-name> /bin/bash
+
+```
+
+### To Note:
+
+Built using PhpStorm IDE
+
+Run 5 terminals as follows:
+
+1. lampp terminal
+    - `./lampp.sh`
+      used to manage lampp server for local dev, has the following content:
+    ```bash
+      #!/bin/bash
+        
+        sudo service mysql stop
+        sudo service apache2 stop
+        
+        #cd /opt/lampp
+        #sudo ./manager-linux-x64.run &
+        
+        # Alternatively
+        
+        if [ "$1" != "" ]; then
+        echo "Stopping lampp"
+        sudo /opt/lampp/lampp stop
+        else
+        echo "Starting lampp"
+        sudo /opt/lampp/lampp start
+        fi
+      ```
+
+2. ngrok terminal
+    - `ngrok http 8000`
+      used to expose port 8000 for mpesa and africastalking dev
+
+3. remote terminal
+    - `ssh drh@104.154.166.69`
+      used to ssh into compute engine on GCP
+
+4. cloudsql terminal
+    - `./cloud_sql_proxy -instances=hoodis1:us-central1:sidooh=tcp:3309`
+      used to connect to cloud sql instance on GCP. Needs gcloud installed
+
+5. Terminal
+    - local terminal for all other commands

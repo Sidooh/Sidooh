@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Model\Account;
-use App\Model\SubscriptionType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,7 +16,7 @@ class Subscription extends Model
      */
     protected $fillable = [
         'amount', 'active',
-//        'account_id', 'subscription_type_id'
+        'account_id', 'subscription_type_id'
     ];
 
     /**
@@ -29,7 +27,7 @@ class Subscription extends Model
      */
     public function scopeActive($query)
     {
-        return $query->whereActive(true);
+        return $query->latest()->whereActive(true);
     }
 
     public function account()

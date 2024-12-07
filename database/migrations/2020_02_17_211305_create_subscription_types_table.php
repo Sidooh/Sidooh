@@ -17,7 +17,7 @@ class CreateSubscriptionTypesTable extends Migration
             $table->bigIncrements('id');
 
             $table->string('title', 32);
-            $table->float('amount');
+            $table->decimal('amount');
             $table->boolean('active')->default(true);
 
             $table->timestamps();

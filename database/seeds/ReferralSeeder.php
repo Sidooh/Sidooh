@@ -1,6 +1,6 @@
 <?php
 
-use App\Model\Referral;
+use App\Models\Referral;
 use Illuminate\Database\Seeder;
 
 class ReferralSeeder extends Seeder

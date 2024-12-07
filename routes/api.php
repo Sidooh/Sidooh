@@ -21,6 +21,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::get('accounts/{account}/referrer', 'AccountController@referrer')->name('accounts.referrer');
     Route::get('accounts/{account}/referrals', 'AccountController@referrals')->name('accounts.referrals');
     Route::get('accounts/{account}/subscriptions', 'AccountController@subscriptions')->name('accounts.subscriptions');
+    Route::get('accounts/{account}/vouchers', 'AccountController@vouchers')->name('accounts.vouchers');
     Route::get('accounts/{account}/earnings', 'AccountController@earnings')->name('accounts.earnings');
     Route::get('accounts/{account}/reports/earnings', 'AccountController@earningsReport')->name('accounts.reports.earnings');
 
@@ -31,13 +32,15 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
     Route::apiResource('referrals', 'ReferralController', ['only' => ['index', 'store']]);
     Route::get('referrals/{phone}', 'ReferralController@byPhone')->name('referrals.byPhone');
 
-    Route::apiResource('subscriptions', 'SubscriptionController', ['only' => ['index', 'store', 'show']]);
+    Route::apiResource('subscriptions', 'SubscriptionController', ['only' => ['index', 'store', 'show', 'deactivate']]);
+    Route::apiResource('vouchers', 'VoucherController', ['only' => ['index', 'store', 'show']]);
+    Route::apiResource('merchants', 'MerchantController', ['only' => ['index', 'store', 'show']]);
 
 
-    Route::post('ussd', 'UssdController@index')->name('ussd');
+    Route::post('ussd2', 'UssdController@index')->name('ussd');
 
 //    TEST USSD V2
-    Route::post('ussd2', 'UssdController@ussd')->name('ussd2');
+    Route::post('ussd', 'UssdController@ussd')->name('ussd2');
 
     Route::apiResource('ussd_users', 'UssdUserController', ['only' => ['index', 'store', 'show']]);
     Route::apiResource('ussd_menus', 'UssdMenuController', ['only' => ['index', 'store', 'show']]);
@@ -53,4 +56,34 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
 
     Route::post('sms/callback', 'ProductController@smsCallback')->name('sms.callback');
 
+    Route::post('b2b/test', 'PaymentController@b2b')->name('b2b.test');
+
+    Route::get('investment/interest/calculate', 'AccountController@calculateInterest')->name('investments.interest.calculate');
+    Route::get('interest', 'CollectiveInvestmentController@storeRate')->name('investments.rate.store');
+    Route::get('investment/interest/allocate', 'AccountController@allocateInterest')->name('investments.interest.allocate');
+
+    Route::get('jobs/subscriptions/deactivate', 'SubscriptionController@deactivate')->name('subscriptions.deactivate');
+
+//    TODO: Refactor into own service controller?
+//    TEST SERVICES
+    Route::post('services/test/sms', 'UssdController@sms')->name('services.test.sms');
+    Route::post('services/test/airtime', 'UssdController@airtime')->name('services.test.airtime');
+    Route::get('services/test/transaction', 'UssdController@transaction')->name('services.test.transaction');
+    Route::post('services/test/stk', 'UssdController@stk')->name('services.test.stk');
+    Route::post('services/test/b2c', 'UssdController@b2c')->name('services.test.b2c');
+    Route::post('services/sms/bulk', 'UssdController@sms')->name('services.test.sms');
+
+    Route::post('testb2c', 'UssdController@test');
+
+//    TODO: Remove this and reset back once Samerior update library
+    Route::post('/payments/callbacks/result/{section?}', 'UssdController@b2cResult');
+
+    Route::post('settings/provider/{provider}', 'UssdController@setProvider');
+    Route::get('settings/provider', 'UssdController@getProvider');
+
+    Route::post('settings/utilities', 'UssdController@enableUtilities');
+    Route::get('settings/utilities', 'UssdController@getUtilitiesStatus');
+
 });
+
+

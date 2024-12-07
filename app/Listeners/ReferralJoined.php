@@ -29,12 +29,10 @@ class ReferralJoined
         $accPhone = $event->referral->account->phone;
         $refPhone = $event->referral->referee_phone;
 
-        $message = "Congratulations! Your referral {$refPhone} has ";
-        $message .= "successfully registered on Sidooh using your ";
-        $message .= "referral code. Show them how to purchase ";
-        $message .= "airtime (or anything else available) on Sidooh. ";
-        $message .= "This will unlock your referral earnings. The more ";
-        $message .= "friends you refer to Sidooh, the more you earn.";
+        $message = "Congratulations! {$refPhone} has ";
+        $message .= "successfully accessed Sidooh using your invite code. ";
+        $message .= "Show them how to buy airtime from Sidooh so as to unlock your earnings. ";
+        $message .= "The more friends you invite to Sidooh, the more you earn.";
 
         (new AfricasTalkingApi())->sms($accPhone, $message);
     }

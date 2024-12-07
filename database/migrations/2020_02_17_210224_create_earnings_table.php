@@ -17,8 +17,7 @@ class CreateEarningsTable extends Migration
             $table->bigIncrements('id');
 
             $table->string('aggregate_transactions')->nullable();
-            $table->float('earnings');
-//            $table->integer('referee_id');
+            $table->decimal('earnings', $total = 10, $places = 4);
 
             $table->timestamps();
         });

@@ -4,10 +4,14 @@
 namespace App\Repositories;
 
 use App\Events\ReferralJoinedEvent;
+use App\Helpers\AfricasTalking\AfricasTalkingApi;
 use App\Helpers\Sidooh\Report;
-use App\Model\Account;
+use App\Models\Account;
+use App\Models\CollectiveInvestment;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
@@ -51,12 +55,20 @@ class AccountRepository extends Model
             $referral->save();
         }
 
+        (new SubAccountRepository)->store($acc, 'CURRENT');
+        (new SubAccountRepository)->store($acc, 'SAVINGS');
+        (new SubAccountRepository)->store($acc, 'INTEREST');
+
         return $acc;
 
     }
 
     public function create(array $acc): Account
     {
+//        error_log('-------------------');
+//        error_log($acc['phone']);
+//        error_log('-------------------');
+
         $phone = ltrim(PhoneNumber::make($acc['phone'], 'KE')->formatE164(), '+');
 
         $acc = $this->wherePhone($phone)->first();
@@ -83,8 +95,13 @@ class AccountRepository extends Model
             event(new ReferralJoinedEvent($referral));
         }
 
-        return $acc;
+        (new VoucherRepository)->storeOrCreate($arr);
 
+        (new SubAccountRepository)->store($acc, 'CURRENT');
+        (new SubAccountRepository)->store($acc, 'SAVINGS');
+        (new SubAccountRepository)->store($acc, 'INTEREST');
+
+        return $acc;
     }
 
     public function getReferrer(Account $account, $level, $subscribed = false): Account
@@ -109,10 +126,9 @@ class AccountRepository extends Model
     public function nth_level_referrers(Account $account, $level = 1, $withAccount = true)
     {
         //
-        $max_level = 6;
+        $max_level = 5;
 
         $level = $level > $max_level ? $max_level : $level;
-
 
 //        TODO: try get specific depth then use path to get user ids for earnings module possibly
         if (!$withAccount)
@@ -141,29 +157,29 @@ class AccountRepository extends Model
 
             $account = $account_refs->map(function ($item) {
                 $depth = abs((int)$item->depth);
-                $sub = $item->active_subscription->last();
+                $sub = $item->active_subscription;
 
                 if ($depth == 1)
                     return $item->withoutRelations();
 
-                if ($depth < 4) {
+                if ($depth < 3) {
 
                     if ($sub) {
                         $subtype = $sub->subscription_type;
 
-                        if ($subtype->level_limit == 4)
+                        if ($subtype->level_limit == 3)
                             return $item->withoutRelations();
 
                     }
 
                 }
 
-                if ($depth <= 6) {
+                if ($depth <= 5) {
 
                     if ($sub) {
                         $subtype = $sub->subscription_type;
 
-                        if ($subtype->level_limit == 6)
+                        if ($subtype->level_limit == 5)
                             return $item->withoutRelations();
 
                     }
@@ -178,29 +194,29 @@ class AccountRepository extends Model
 
             $account['level_referrers'] = $account_refs->level_referrers->map(function ($item) {
                 $depth = abs((int)$item->depth);
-                $sub = $item->active_subscription->last();
+                $sub = $item->active_subscription;
 
                 if ($depth == 1)
                     return $item->withoutRelations();
 
-                if ($depth < 4) {
+                if ($depth < 3) {
 
                     if ($sub) {
                         $subtype = $sub->subscription_type;
 
-                        if ($subtype->level_limit == 4)
+                        if ($subtype->level_limit == 3)
                             return $item->withoutRelations();
 
                     }
 
                 }
 
-                if ($depth <= 6) {
+                if ($depth <= 5) {
 
                     if ($sub) {
                         $subtype = $sub->subscription_type;
 
-                        if ($subtype->level_limit == 6)
+                        if ($subtype->level_limit == 5)
                             return $item->withoutRelations();
 
                     }
@@ -259,6 +275,163 @@ class AccountRepository extends Model
     public function earningsReport($phoneNumber)
     {
         return (new Report($phoneNumber))->generateJson();
+    }
+
+//    TODO: All these should move to the Investment repository
+    public function invest()
+    {
+//        TODO: Should we use created_at ama invested_at?
+        $cInvestment = CollectiveInvestment::whereDate('created_at', Carbon::today())->first();
+
+        if ($cInvestment) {
+            return $cInvestment;
+        }
+
+        $accounts = $this->model->with(['sub_accounts' => function ($q) {
+            $q->where('in', '>', 'out')->whereIn('type', ['CURRENT', 'SAVINGS', 'INTEREST']);
+        }])->get();
+
+        $accounts = $accounts->map(function ($item, $key) {
+            $item->balance = $item->sub_accounts->reduce(function ($carry, $item) {
+                return $carry + $item->balance;
+            });
+            return $item;
+        })->filter(function ($item, $key) {
+            return $item->balance > 0;
+        });
+
+        $totalAmount = $accounts->reduce(function ($carry, $item) {
+            return $carry + $item->balance;
+        });
+
+        $cI = CollectiveInvestment::create([
+            'amount' => $totalAmount,
+        ]);
+
+        foreach ($accounts as $account) {
+            $cI->subInvestments()->create([
+                'amount' => $account->balance,
+                'account_id' => $account->id,
+            ]);
+        }
+
+        try {
+            (new AfricasTalkingApi())->sms(['254711414987'], "STATUS:INVESTMENT\nCalculating Interest.");
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
+
+
+//        TODO: To be removed after testing auto assignment
+        return $this->calculateInterest(9);
+
+
+        return $cI->subInvestments;
+    }
+
+    public function calculateInterest(float $rate)
+    {
+        $dayRate = $this->getDailyRate($rate);
+
+//       TODO: Should this be in a transaction(db)
+        $cInvestment = CollectiveInvestment::whereInterestRate(null)->latest()->first();
+
+        if (!$cInvestment) {
+            return 'No Pending Investment';
+        }
+
+        $cInvestment->interest_rate = $rate;
+        $cInvestment->interest = $cInvestment->amount * ($dayRate / 100);
+
+//        TODO: Will the following be calculated on manual input or should it be automatically 30days?
+        $cInvestment->maturity_date = Carbon::now()->addMonth();
+
+        foreach ($cInvestment->subInvestments as $investment) {
+            $investment->interest = $investment->amount * ($dayRate / 100);
+            $investment->save();
+
+//            TODO: Should this be done here?
+            $subAcc = $investment->account->interest_account;
+            $subAcc->in += $investment->interest;
+            $subAcc->save();
+        }
+
+        $cInvestment->save();
+
+        return $cInvestment;
+    }
+
+    public function allocateInterest()
+    {
+//        TODO: Will be done every month for those investments that have matured...
+        Log::info('----------------- Interest Allocation');
+
+        $accs = Account::with(['current_account', 'savings_account', 'interest_account'])->get();
+        $allocated = collect();
+        Log::info(count($accs) . ' accounts to be allocated.');
+
+//        DB::beginTransaction();
+
+        try {
+            $counter = 0;
+            foreach ($accs as $acc) {
+                if ($acc->interest_account && $acc->interest_account->balance > 0) {
+                    Log::info($acc->id . ' -> ' . $acc->interest_account->balance);
+                    $interest = $acc->interest_account->balance;
+
+//            1. Add 20% to current account
+//            2. Add 80% to savings account
+//            3. Minus amount from interest account
+                    $acc->current_account->in += .2 * $interest;
+                    $acc->savings_account->in += .8 * $interest;
+                    $acc->interest_account->out += $interest;
+
+                    $acc->current_account->save();
+                    $acc->savings_account->save();
+                    $acc->interest_account->save();
+
+                    $counter++;
+                    $allocated->add($acc);
+                }
+            }
+
+        } catch (\Exception $e) {
+            //failed logic here
+//            DB::rollback();
+            Log::error($e);
+            throw $e;
+        }
+        Log::info('Update completed.');
+
+//        DB::commit();
+
+        if (count($allocated) > 0) {
+            Log::info('Sending sms.');
+
+            try {
+                (new AfricasTalkingApi())->sms(['254714611696', '254711414987'], "STATUS:INVESTMENT\nAllocating Interest. $counter accounts updated.");
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+            }
+
+        }
+
+        Log::info('Completed.');
+
+        return $allocated;
+    }
+
+    public function getDailyRate(float $rate)
+    {
+//        First, divide the APY by 100 to convert to a decimal.
+//        Second, add 1.
+//        Third, raise the result to the 1/365th power.
+//        Fourth, subtract 1.
+//        Fifth, multiply by 100 to find the daily interest rate.
+
+        $rate = (((($rate / 100) + 1) ** (1 / 365)) - 1) * 100;
+
+        return $rate;
     }
 
 }

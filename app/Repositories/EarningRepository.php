@@ -3,8 +3,9 @@
 
 namespace App\Repositories;
 
-use App\Model\Earning;
-use App\Model\Transaction;
+use App\Models\Earning;
+use App\Models\SubAccount;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
@@ -31,17 +32,17 @@ class EarningRepository extends Model
 
     public function calcEarnings(Transaction $transaction, float $earnings)
     {
-        Log::info('------------------------ Calc Earnings ' . now() . ' ---------------------- ');
+        Log::info("----------------- Calc Earnings ($earnings)");
 
         $acc = $transaction->account;
 
         $groupEarnings = round($earnings * .75, 4);
 
-        $userEarnings = round($groupEarnings / 7, 4);
+        $userEarnings = round($groupEarnings / 6, 4);
 
         $totalLeftOverEarnings = $groupEarnings;
 
-        if ($transaction->amount >= 20) {
+        if ($transaction->amount >= 20 || $transaction->product_id == 4) {
 
             if ($acc->isRoot()) {
                 $e = Earning::create([
@@ -51,12 +52,21 @@ class EarningRepository extends Model
                     'type' => 'SELF'
                 ]);
 
+                $sub_acc = $acc->current_account;
+                $sub_acc2 = $acc->savings_account;
+
+                $sub_acc->in += .2 * $userEarnings;
+                $sub_acc2->in += .8 * $userEarnings;
+
+                $sub_acc->save();
+                $sub_acc2->save();
+
                 $totalLeftOverEarnings -= $userEarnings;
 
             } else {
-                $referrals = (new AccountRepository)->subscribed_nth_level_referrers($acc, 6, false);
+                $referrals = (new AccountRepository)->subscribed_nth_level_referrers($acc, 5, false);
 
-                if (count($referrals) + 1 > 7)
+                if (count($referrals) + 1 > 6)
                     abort(500);
 
                 $now = Carbon::now('utc')->toDateTimeString();
@@ -88,6 +98,21 @@ class EarningRepository extends Model
                 }
 
                 $e = Earning::insert($userEarning);
+
+                foreach ($userEarning as $ue) {
+//                    TODO: Get all accounts at once then filter programmatically
+                    $acc = SubAccount::type('CURRENT')->whereAccountId($ue['account_id'])->first();
+                    $acc2 = SubAccount::type('SAVINGS')->whereAccountId($ue['account_id'])->first();
+
+//                    Log::info($acc);
+//                    Log::info($acc2);
+
+                    $acc->in += .2 * $userEarnings;
+                    $acc2->in += .8 * $userEarnings;
+
+                    $acc->save();
+                    $acc2->save();
+                }
 
             }
 

@@ -20,8 +20,8 @@ class AddRelationshipsToEarningsTable extends Migration
                 $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             }
             if (!Schema::hasColumn('earnings', 'transaction_id')) {
-                $table->bigInteger('transaction_id')->unsigned()->nullable();
-                $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('set null');
+                $table->bigInteger('transaction_id')->unsigned();
+                $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
             }
         });
     }

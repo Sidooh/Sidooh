@@ -16,8 +16,8 @@ class AddRelationshipsToAccountsTable extends Migration
         Schema::table('accounts', function (Blueprint $table) {
             //
             if (!Schema::hasColumn('accounts', 'telco_id')) {
-                $table->bigInteger('telco_id')->unsigned()->nullable();
-                $table->foreign('telco_id')->references('id')->on('telcos')->onDelete('set null');
+                $table->bigInteger('telco_id')->unsigned();
+                $table->foreign('telco_id')->references('id')->on('telcos')->onDelete('cascade');
             }
             if (!Schema::hasColumn('accounts', 'referrer_id')) {
                 $table->bigInteger('referrer_id')->unsigned()->nullable();

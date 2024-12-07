@@ -59,7 +59,7 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Transaction $transaction
+     * @param \App\Models\Transaction $transaction
      * @return Response
      */
     public function show(Transaction $transaction)
@@ -70,7 +70,7 @@ class TransactionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Transaction $transaction
+     * @param \App\Models\Transaction $transaction
      * @return Response
      */
     public function edit(Transaction $transaction)

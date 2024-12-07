@@ -4,8 +4,8 @@
 namespace App\Events;
 
 
-use App\Model\Transaction;
 use App\Models\Subscription;
+use App\Models\Transaction;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -17,17 +17,18 @@ class SubscriptionPurchaseEvent
     /**
      * @var Subscription
      */
-    public $subscription;
+    public Subscription $subscription;
 
     /**
      * @var Transaction
      */
-    public $transaction;
+    public Transaction $transaction;
 
     /**
      * Create a new event instance.
      *
      * @param Subscription $subscription
+     * @param Transaction $transaction
      */
     public function __construct(Subscription $subscription, Transaction $transaction)
     {

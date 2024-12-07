@@ -4,20 +4,24 @@
 namespace App\Repositories;
 
 
-use App\Events\AirtimePurchaseEvent;
 use App\Events\AirtimePurchaseFailedEvent;
 use App\Events\AirtimePurchaseSuccessEvent;
+use App\Events\MerchantPurchaseEvent;
 use App\Events\SubscriptionPurchaseEvent;
+use App\Events\SubscriptionPurchaseFailedEvent;
+use App\Events\VoucherPurchaseEvent;
 use App\Helpers\AfricasTalking\AfricasTalkingApi;
-use App\Model\Product;
-use App\Model\SubscriptionType;
-use App\Model\Transaction;
 use App\Models\AirtimeRequest;
 use App\Models\AirtimeResponse;
+use App\Models\Earning;
+use App\Models\Merchant;
+use App\Models\Product;
 use App\Models\Subscription;
+use App\Models\SubscriptionType;
+use App\Models\Transaction;
+use App\Models\Voucher;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use MrAtiebatie\Repository;
 
 class ProductRepository
@@ -49,6 +53,9 @@ class ProductRepository
 
     public function airtime(Transaction $transaction, array $array): AirtimeRequest
     {
+        if ($transaction->airtime)
+            exit;
+
         $response = (new AfricasTalkingApi())->airtime($array['phone'], $array['amount']);
 
         $response = $this->object_to_array($response);
@@ -62,12 +69,31 @@ class ProductRepository
 
             $req->responses()->createMany($response['data']['responses']);
 
-//            TODO:: Remove from here and await callback
-            event(new AirtimePurchaseSuccessEvent($req->responses()->first()));
-
         });
 
-        event(new AirtimePurchaseEvent($req));
+        if ($response['data']['errorMessage'] != "None") {
+//            TODO: Modify event to accept request instead of response
+//            event(new AirtimePurchaseFailedEvent($response));
+
+//            TODO: Once above is modified, the following code won't be needed.
+            $account = $req->transaction->account;
+            $amount = $req->transaction->amount;
+            $phone = $account->phone;
+            $date = $req->updated_at->timezone('Africa/Nairobi')->format(config("settings.sms_date_time_format"));
+
+//            TODO: Can we add a counter to try 3 times before accepting it as failed?
+            $voucher = $account->voucher;
+            $voucher->in += $amount;
+            $voucher->save();
+
+            $transaction->status = 'reimbursed';
+            $transaction->save();
+
+//        TODO:: Send sms notification
+            $message = "Sorry! We could not complete your airtime purchase for {$phone} worth {$amount} on {$date}. We have credited your voucher {$amount} and your balance is now {$voucher->balance}.";
+
+            (new AfricasTalkingApi())->sms($phone, $message);
+        }
 
         return $req;
 
@@ -76,11 +102,12 @@ class ProductRepository
     public function airtimeCallback(array $all)
     {
         $res = AirtimeResponse::where('requestID', '=', $all['requestId'])->firstOrFail();
-        $res->status = $all['status'];
-        $res->save();
+        if ($res->status != 'Success') {
+            $res->status = $all['status'];
+            $res->save();
 
-        $this->fireAirtimePurchaseEvent($res, $all);
-
+            $this->fireAirtimePurchaseEvent($res, $all);
+        }
     }
 
     private function fireAirtimePurchaseEvent(AirtimeResponse $response, array $request)
@@ -113,31 +140,90 @@ class ProductRepository
 
     public function subscription(Transaction $transaction, int $amount): Subscription
     {
+
+        if ($transaction->account->active_subscription) {
+
+            event(new SubscriptionPurchaseFailedEvent($transaction));
+
+            return $transaction->account->active_subscription;
+        }
+
+        $type = SubscriptionType::whereAmount($transaction->amount)->firstOrFail();
+
         $subscription = [
             'amount' => $amount,
             'active' => true,
+            'account_id' => $transaction->account->id,
+            'subscription_type_id' => $type->id
         ];
 
-        Log::info((string)(int)$transaction->amount);
+//        DB::transaction(function () use ($subscription, $amount, $transaction) {
 
         $sub = Subscription::create($subscription);
 
-//        DB::transaction(function () use ($sub, $amount, $transaction) {
-        $type = SubscriptionType::whereAmount((string)(int)$transaction->amount)->firstOrFail();
-
-        $sub->subscription_type()->associate($type);
-        $sub->account()->associate($transaction->account);
-
-        $transaction->status = 'success';
+        $transaction->status = 'completed';
         $transaction->save();
 
         $sub->save();
 
-//        });
+        //        TODO:: Add Cashback of 11%
+
+//        $acc = $transaction->account;
+//
+//        $userEarnings = round(.115 * $amount, 4);
+//
+//        $e = Earning::create([
+//            'account_id' => $acc->id,
+//            'transaction_id' => $transaction->id,
+//            'earnings' => $userEarnings,
+//            'type' => 'SELF'
+//        ]);
+//
+//        $sub_acc = $acc->current_account;
+//        $sub_acc2 = $acc->savings_account;
+//
+//        $sub_acc->in += .2 * $userEarnings;
+//        $sub_acc2->in += .8 * $userEarnings;
+//
+//        $sub_acc->save();
+//        $sub_acc2->save();
 
         event(new SubscriptionPurchaseEvent($sub, $transaction));
 
         return $sub;
 
+//        });
+
+    }
+
+
+    public function voucher(Transaction $transaction, array $array): Voucher
+    {
+        $voucher = (new VoucherRepository())->storeOrCreate($array);
+
+        $voucher->in += $transaction->amount;
+        $voucher->save();
+
+        $transaction->status = 'completed';
+        $transaction->save();
+
+
+        event(new VoucherPurchaseEvent($voucher, $transaction));
+
+        return $voucher;
+    }
+
+    public function merchant(Transaction $transaction, Merchant $merchant): Transaction
+    {
+        $merchant->in += $transaction->amount;
+        $payment = $transaction->payment;
+        $payment->status = "Success";
+
+        $merchant->save();
+        $payment->save();
+
+        event(new MerchantPurchaseEvent($merchant, $transaction));
+
+        return $transaction;
     }
 }
